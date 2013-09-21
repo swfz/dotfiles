@@ -87,11 +87,6 @@ autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
 
 highlight PreProc guifg=#ffffffffffff
-""colorscheme delek
-"colorscheme molokai
-"colorscheme jellybeans
-colorscheme lucius
-hi Normal ctermbg=NONE
 
 au BufNewFile,BufRead *.tt :set ft=html
 
@@ -134,19 +129,23 @@ NeoBundle 'jeffreyiacono/vim-colors-wombat'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'vim-scripts/Lucius'
 NeoBundle 'vim-scripts/Zenburn'
-NeoBundle 'mrkn/mrkn256.vim'
 NeoBundle 'jpo/vim-railscasts-theme'
 NeoBundle 'therubymug/vim-pyte'
 NeoBundle 'tomasr/molokai'
-NeoBundle 'vim-scripts/rdark'
 NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'vim-scripts/rdark'
+NeoBundle 'mrkn/mrkn256.vim'
+
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'tpope/vim-fugitive'
-
 NeoBundle 'itchyny/lightline.vim'
 
 filetype plugin on
 filetype plugin indent on     " Required!
+syntax enable
+
+colorscheme lucius
+hi Normal ctermbg=NONE
 
 " Installation check.
 if neobundle#exists_not_installed_bundles()
