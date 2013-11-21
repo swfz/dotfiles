@@ -57,8 +57,34 @@ nnoremap <silent> [TABCMD]o :<c-u>tabonly<cr>
 nnoremap <silent> [TABCMD]s :<c-u>tabs<cr>
 
 " neocomplcache
-let g:neocomplcache_enable_at_startup = 1 "
+let g:neocomplcache_enable_at_startup = 1
 
+" Use underbar completion.
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_ctags_arguments_list = {
+  \ 'perl' : '-R -h ".pm"'
+  \ }
+let g:neocomplcache_snippets_dir = "~/.vim/snippets"
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default'    : '',
+    \ 'perl'       : $HOME . '/.vim/dict/perl.dict'
+    \ }
+" for snippets
+imap <expr><C-k> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<C-n>"
+smap <C-k> <Plug>(neocomplcache_snippets_expand)
+
+"unite outline
+let g:unite_split_rule = 'botright'
+noremap <silent> <Leader>uo <ESC>:Unite  -no-quit -vertical -winwidth=30 outline<Return>
+
+"smartchr
+inoremap <buffer> <expr> - smartchr#loop('-', ' - ', '->')
+inoremap <buffer> <expr> , smartchr#loop(',', ', ')
+inoremap <buffer> <expr> = smartchr#loop('=', ' == ', '=>')
+inoremap <buffer> <expr> % smartchr#loop('%', '[%  %]' )
+
+"--------------------------------------------------------------------------
 function InsertTabWrapper()
     if pumvisible()
         return "\<c-n>"
@@ -122,6 +148,10 @@ NeoBundle 'ujihisa/unite-font'
 NeoBundle 'vim-scripts/Align'
 NeoBundle 'vim-scripts/SQLUtilities'
 NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'hotchpotch/perldoc-vim'
+NeoBundle "smartchr"
+NeoBundle 'h1mesuke/unite-outline'
 
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'croaker/mustang-vim'
