@@ -169,6 +169,7 @@ NeoBundle 'mrkn/mrkn256.vim'
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'tpope/vim-markdown'
 
 filetype plugin on
 filetype plugin indent on     " Required!
@@ -371,3 +372,4 @@ function! MyCharCode()
   return "'". char ."' ". nr
 endfunction
 ""-----------------------------------------------------------------------
+
