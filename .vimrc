@@ -171,6 +171,10 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'tpope/vim-markdown'
 
+NeoBundle 'koron/codic-vim'
+NeoBundle 'rhysd/unite-codic.vim'
+
+
 filetype plugin on
 filetype plugin indent on     " Required!
 syntax enable
