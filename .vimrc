@@ -18,7 +18,7 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 set laststatus=2
 set t_Co=256
-helptags ~/.vim/doc
+"helptags ~/.vim/doc
 
 "backspace enable
 noremap ^H <BS>
@@ -129,7 +129,14 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc'
+NeoBundle 'Shougo/vimproc', {
+      \ 'build' : {
+      \     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
 
 "plugin
 NeoBundle 'kana/vim-surround'
@@ -149,6 +156,7 @@ NeoBundle 'vim-scripts/Align'
 NeoBundle 'vim-scripts/SQLUtilities'
 NeoBundle 'mattn/zencoding-vim'
 NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'hotchpotch/perldoc-vim'
 NeoBundle "smartchr"
 NeoBundle 'h1mesuke/unite-outline'
