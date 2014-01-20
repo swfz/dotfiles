@@ -1,5 +1,6 @@
 #!/usr/bin/sh
 
+SHELLFILE="~/.bashrc"
 DIRECTORY="~/.vim/bundle ~/bin ~/.tmux"
 
 for dir in $DIRECTORY
@@ -37,11 +38,11 @@ if [ ! -e ~/.tmux/tmux-powerline ]; then
   ln -s ~/dotfiles/tmux/lucius.sh ~/.tmux/tmux-powerline/themes/lucius.sh
   ln -s ~/dotfiles/tmux/.tmux-powerlinerc ~/.tmux-powerlinerc
 
-cat << EOT >> ~/.bashrc
+cat << EOT >> $SHELLFILE
 PS1="\$PS1"'\$([ -n "\$TMUX" ] && tmux setenv TMUXPWD_\$(tmux display -p "#D" | tr -d %) "\$PWD")'
 export TERM=xterm-256color
 EOT
-
+source $SHELLFILE
 fi
 
 if [ ! -e ~/bin/used-mem ]; then
