@@ -177,6 +177,7 @@ NeoBundle 'mrkn/mrkn256.vim'
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'itchyny/lightline.vim'
+
 NeoBundle 'tpope/vim-markdown'
 
 NeoBundle 'koron/codic-vim'
@@ -200,9 +201,9 @@ endif
 "--------------------------------------------------------------------------
 
 " tab settings
-hi TabLineSel  term=bold    cterm=bold,underline ctermfg=019  ctermbg=253   gui=bold,underline guifg=255      guibg=031
-hi TabLineFill term=reverse cterm=reverse,bold   ctermfg=019  ctermbg=white gui=reverse,bold   guifg=DarkGray guibg=LightGray
-hi TabLine     term=reverse cterm=underline      ctermfg=253  ctermbg=019   gui=underline      guifg=255      guibg=DarkGray
+hi TabLineSel  term=bold    cterm=bold,underline ctermfg=117  ctermbg=025   gui=bold,underline guifg=255      guibg=031
+hi TabLineFill term=reverse cterm=reverse,bold   ctermfg=240  ctermbg=075  gui=reverse,bold   guifg=DarkGray guibg=LightGray
+hi TabLine     term=reverse cterm=underline      ctermfg=253  ctermbg=240   gui=underline      guifg=255      guibg=DarkGray
 hi TabLineInfo term=reverse ctermfg=Black        ctermbg=cyan guifg=black                      guibg=cyan
 
 " Anywhere SID.
