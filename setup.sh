@@ -11,7 +11,7 @@ do
 done
 
 if [ ! -e $HOME/.vim/bundle/neobundle.vim ]; then
-  git clone git://github.com/Shougo/neobundle.vim.git $HOME/vim/bundle/neobundle.vim
+  git clone git://github.com/Shougo/neobundle.vim.git $HOME/.vim/bundle/neobundle.vim
 fi
 
 DOTFILES=".tmux.conf .vimrc"
