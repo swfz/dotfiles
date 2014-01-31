@@ -40,6 +40,7 @@ nnoremap <silent> <Leader>vf :<C-u>VimFilerBufferDir -split -simple -winwidth=35
 nnoremap <silent> <Leader>uc :<C-u>Unite colorscheme -auto-preview<CR>
 nnoremap <silent> <Leader>nt :<C-u>NERDTree<CR>
 nnoremap <silent> <Leader>vs :<C-u>VimShell<CR>
+nnoremap <silent> <Leader>md :<C-u>PrevimOpen<CR>
 noremap <buffer> ,ptv <Esc>:'<,'>! perltidy -pbp<CR>
 map <silent> <Leader>pt :%! perltidy
 
@@ -190,8 +191,9 @@ filetype plugin on
 filetype plugin indent on     " Required!
 syntax enable
 
-colorscheme lucius
-hi Normal ctermbg=NONE
+colorscheme hybrid
+""hi Normal ctermbg=NONE
+set t_ut=
 
 " Installation check.
 if neobundle#exists_not_installed_bundles()
