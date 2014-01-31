@@ -182,6 +182,8 @@ NeoBundle 'tpope/vim-markdown'
 
 NeoBundle 'koron/codic-vim'
 NeoBundle 'rhysd/unite-codic.vim'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
 
 
 filetype plugin on
