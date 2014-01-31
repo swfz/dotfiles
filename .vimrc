@@ -191,9 +191,8 @@ filetype plugin on
 filetype plugin indent on     " Required!
 syntax enable
 
-colorscheme hybrid
-""hi Normal ctermbg=NONE
-set t_ut=
+colorscheme lucius
+hi Normal ctermbg=NONE
 
 " Installation check.
 if neobundle#exists_not_installed_bundles()
