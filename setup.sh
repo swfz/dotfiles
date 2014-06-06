@@ -1,5 +1,20 @@
 #!/usr/bin/sh
 
+#git config
+git config --global url."https://".insteadOf git://
+git config --global http.sslVerify false
+git config --global color.ui true
+git config --global core.editor vim
+
+#plenv
+if [ ! -e $HOME/.plenv ]; then
+  git clone git://github.com/tokuhirom/plenv.git ~/.plenv
+  echo 'export PATH="$HOME/.plenv/bin:$PATH"' >> ~/.bash_profile
+  echo 'eval "$(plenv init -)"' >> ~/.bash_profile
+  exec $SHELL -l
+  git clone git://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
+fi
+
 SHELLFILE=".bashrc"
 DIRECTORY=".vim/bundle bin .tmux"
 
