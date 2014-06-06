@@ -1,6 +1,8 @@
 #!/usr/bin/sh
 
 #git config
+git config --global user.name swfz
+git config --global user.email sawafuji.09@gmail.com
 git config --global url."https://".insteadOf git://
 git config --global http.sslVerify false
 git config --global color.ui true
