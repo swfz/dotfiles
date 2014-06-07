@@ -17,6 +17,15 @@ if [ ! -e $HOME/.plenv ]; then
   git clone git://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
 fi
 
+#rbenv
+if [ ! -e $HOME/.rbenv ]; then
+  git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
+  mkdir -p ~/.rbenv/plugins
+  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+  echo 'PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+  echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+fi
+
 SHELLFILE=".bashrc"
 DIRECTORY=".vim/bundle bin .tmux"
 
