@@ -155,7 +155,7 @@ NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
 NeoBundle 'vim-scripts/Align'
 NeoBundle 'vim-scripts/SQLUtilities'
-NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'mattn/emmet-vim'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'hotchpotch/perldoc-vim'
@@ -186,7 +186,8 @@ NeoBundle 'rhysd/unite-codic.vim'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'kana/vim-submode'
-
+NeoBundle 'rking/ag.vim'
+NeoBundle 't9md/vim-quickhl'
 
 filetype plugin on
 filetype plugin indent on     " Required!
@@ -399,3 +400,13 @@ call submode#map('winsize', 'n', '', '>', '<C-w>>')
 call submode#map('winsize', 'n', '', '<', '<C-w><')
 call submode#map('winsize', 'n', '', '+', '<C-w>+')
 call submode#map('winsize', 'n', '', '-', '<C-w>-')
+
+""quickhl
+nmap <Space>m <Plug>(quickhl-manual-this)
+xmap <Space>m <Plug>(quickhl-manual-this)
+nmap <Space>M <Plug>(quickhl-manual-reset)
+xmap <Space>M <Plug>(quickhl-manual-reset)
+nmap <Space>j <Plug>(quickhl-cword-toggle)
+nmap <Space>] <Plug>(quickhl-tag-toggle)
+map H <Plug>(operator-quickhl-manual-this-motion)
+
