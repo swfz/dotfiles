@@ -10,6 +10,7 @@ function exist_command() {
 #plenv
 function install_plenv() {
   if [ ! -e $HOME/.plenv ]; then
+    echo -e "\e[32m plenv install.........."
     git clone git://github.com/tokuhirom/plenv.git ~/.plenv
     echo 'export PATH="$HOME/.plenv/bin:$PATH"' >> ~/.bash_profile
     echo 'eval "$(plenv init -)"' >> ~/.bash_profile
@@ -21,6 +22,7 @@ function install_plenv() {
 #rbenv
 function install_rbenv() {
   if [ ! -e $HOME/.rbenv ]; then
+    echo -e "\e[32m rbenv install.........."
     git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
     mkdir -p ~/.rbenv/plugins
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
@@ -31,6 +33,7 @@ function install_rbenv() {
 
 #ag(silver searcher)
 function install_ag() {
+  echo -e "\e[32m ag install.........."
   exist_ag=`exist_command ag`
   if [ $exist_ag -ne 1 ]; then
     sudo yum -y install pcre-devel xz-devel
@@ -83,6 +86,7 @@ do
 done
 
 #tmux powerline
+echo -e "\e[32m tmux install.........."
 
 if [ ! -e $HOME/.tmux/tmux-powerline ]; then
   git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/tmux-powerline
