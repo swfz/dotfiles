@@ -10,34 +10,23 @@ function exist_command() {
 #plenv
 function install_plenv() {
   if [ ! -e $HOME/.plenv ]; then
-    echo -e "\e[32m plenv install.........."
+    echo -e "\e[32m plenv install..........\e[m"
     git clone git://github.com/tokuhirom/plenv.git ~/.plenv
+    git clone git://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
     echo 'export PATH="$HOME/.plenv/bin:$PATH"' >> ~/.bash_profile
     echo 'eval "$(plenv init -)"' >> ~/.bash_profile
-    exec $SHELL -l
-    git clone git://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
   fi
 }
 
 #rbenv
 function install_rbenv() {
   if [ ! -e $HOME/.rbenv ]; then
-    echo -e "\e[32m rbenv install.........."
+    echo -e "\e[32m rbenv install..........\e[m"
     git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
     mkdir -p ~/.rbenv/plugins
     git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
     echo 'PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
     echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-  fi
-}
-
-#ag(silver searcher)
-function install_ag() {
-  echo -e "\e[32m ag install.........."
-  exist_ag=`exist_command ag`
-  if [ $exist_ag -ne 1 ]; then
-    sudo yum -y install pcre-devel xz-devel
-    sudo rpm -ivh http://swiftsignal.com/packages/centos/6/x86_64/the-silver-searcher-0.13.1-1.el6.x86_64.rpm
   fi
 }
 
@@ -49,10 +38,9 @@ git config --global http.sslVerify false
 git config --global color.ui true
 git config --global core.editor vim
 
+install_vim73
 install_plenv
 install_rbenv
-install_ag
-
 
 SHELLFILE=".bashrc"
 DIRECTORY=".vim/bundle bin .tmux"
@@ -86,7 +74,7 @@ do
 done
 
 #tmux powerline
-echo -e "\e[32m tmux install.........."
+echo -e "\e[32m tmux powerline install..........\e[m"
 
 if [ ! -e $HOME/.tmux/tmux-powerline ]; then
   git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/tmux-powerline
