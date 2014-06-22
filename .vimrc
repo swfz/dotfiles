@@ -188,6 +188,8 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'kana/vim-submode'
 NeoBundle 'rking/ag.vim'
 NeoBundle 't9md/vim-quickhl'
+NeoBundle 'AndrewRadev/linediff.vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 filetype plugin on
 filetype plugin indent on     " Required!
@@ -410,3 +412,9 @@ nmap <Space>j <Plug>(quickhl-cword-toggle)
 nmap <Space>] <Plug>(quickhl-tag-toggle)
 map H <Plug>(operator-quickhl-manual-this-motion)
 
+""vim-indent-guides
+let g:indent_guides_auto_colors=0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=233
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=236
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_guide_size=2
