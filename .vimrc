@@ -153,6 +153,7 @@ NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimshell.vim'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'ujihisa/unite-font'
+NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'vim-scripts/Align'
 NeoBundle 'vim-scripts/SQLUtilities'
 NeoBundle 'mattn/emmet-vim'
@@ -190,6 +191,8 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 't9md/vim-quickhl'
 NeoBundle 'AndrewRadev/linediff.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'LeafCage/yankround.vim'
 
 filetype plugin on
 filetype plugin indent on     " Required!
@@ -418,3 +421,17 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=233
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=236
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_guide_size=2
+
+""vim-over
+nnoremap <silent> <Leader>vo :OverCommandLine<CR>
+nnoremap <silent> <Leader>vow :OverCommandLine<CR>%s/<C-r><C-w>//g<Left><Left>
+nnoremap <silent> <Leader>voy y:OverCommandLine<CR>%s!<C-r>=substitute(@0, '!', '\\!', 'g')<CR>!!gI<Left><Left><Left>
+
+""yankround.vim
+nmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap <C-p> <Plug>(yankround-prev)
+nmap <C-n> <Plug>(yankround-next)
+let g:yankround_max_history = 50
+nnoremap <silent> <Leader>yr<C-p> :<C-u>CtrlPYankRound<CR>
+
