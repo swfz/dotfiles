@@ -7,26 +7,23 @@ function exist_command() {
     echo 2
   fi
 }
-#plenv
-function install_plenv() {
-  if [ ! -e $HOME/.plenv ]; then
-    echo -e "\e[32m plenv install..........\e[m"
-    git clone git://github.com/tokuhirom/plenv.git ~/.plenv
-    git clone git://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
-    echo 'export PATH="$HOME/.plenv/bin:$PATH"' >> ~/.bash_profile
-    echo 'eval "$(plenv init -)"' >> ~/.bash_profile
+
+#anyenv
+function install_anyenv() {
+  if [ ! -e $HOME/.anyenv ]; then
+    echo -e "\e[32m anyenv install..........\e[m"
+    git clone https://github.com/riywo/anyenv ~/.anyenv
+    echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bash_profile
+    echo 'eval "$(anyenv init -)"' >> ~/.bash_profile
+    exec $SHELL -l
   fi
 }
 
-#rbenv
-function install_rbenv() {
-  if [ ! -e $HOME/.rbenv ]; then
-    echo -e "\e[32m rbenv install..........\e[m"
-    git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
-    mkdir -p ~/.rbenv/plugins
-    git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
-    echo 'PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+function install_env() {
+  if [ ! -e $HOME/.anyenv/envs/$1 ]; then
+    anyenv install $1
+    echo 'export PATH="$HOME/.anyenv/envs/$1/shims:$PATH"' >> ~/.bash_profile
+    exec $SHELL -l
   fi
 }
 
@@ -38,9 +35,10 @@ git config --global http.sslVerify false
 git config --global color.ui true
 git config --global core.editor vim
 
-install_vim73
-install_plenv
-install_rbenv
+install_anyenv
+install_env plenv
+install_env rbenv
+install_env ndenv
 
 SHELLFILE=".bashrc"
 DIRECTORY=".vim/bundle bin .tmux"
@@ -74,9 +72,8 @@ do
 done
 
 #tmux powerline
-echo -e "\e[32m tmux powerline install..........\e[m"
-
 if [ ! -e $HOME/.tmux/tmux-powerline ]; then
+  echo -e "\e[32m tmux powerline install..........\e[m"
   git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/tmux-powerline
   ln -s $HOME/dotfiles/tmux/lucius.sh $HOME/.tmux/tmux-powerline/themes/lucius.sh
   ln -s $HOME/dotfiles/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
