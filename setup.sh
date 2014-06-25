@@ -16,12 +16,14 @@ function install_anyenv() {
     echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bash_profile
     echo 'eval "$(anyenv init -)"' >> ~/.bash_profile
   fi
+  source ~/.bash_profile
 }
 
 function install_env() {
   if [ ! -e $HOME/.anyenv/envs/$1 ]; then
     anyenv install $1
     echo 'export PATH="$HOME/.anyenv/envs/$1/shims:$PATH"' >> ~/.bash_profile
+    source ~/.bash_profile
   fi
 }
 
