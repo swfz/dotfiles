@@ -15,7 +15,6 @@ function install_anyenv() {
     git clone https://github.com/riywo/anyenv ~/.anyenv
     echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bash_profile
     echo 'eval "$(anyenv init -)"' >> ~/.bash_profile
-    exec $SHELL -l
   fi
 }
 
@@ -23,7 +22,6 @@ function install_env() {
   if [ ! -e $HOME/.anyenv/envs/$1 ]; then
     anyenv install $1
     echo 'export PATH="$HOME/.anyenv/envs/$1/shims:$PATH"' >> ~/.bash_profile
-    exec $SHELL -l
   fi
 }
 
@@ -91,4 +89,4 @@ if [ ! -e $HOME/bin/used-mem ]; then
   sed -i -e "s/main/run_segment/g" $HOME/bin/used-mem/used-mem
 fi
 
-
+exec $SHELL -l
