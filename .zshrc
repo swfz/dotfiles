@@ -1,8 +1,10 @@
 # servers
 if [ -f $HOME/practice/.alias.server ]; then
-    source $HOME/practice/.alias.server
+  source $HOME/practice/.alias.server
 fi
-
+if [ -f $HOME/dotfiles/.functions ]; then
+  source $HOME/dotfiles/.functions
+fi
 umask 002
 
 export EDITOR=vim
