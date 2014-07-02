@@ -65,9 +65,9 @@ function install_tmux(){
 #yum install -y ncurses-devel
 
 function install_zsh(){
-  wget "http://sourceforge.net/projects/zsh/files/zsh/5.0.2/zsh-5.0.2.tar.gz/download"
-  tar zxvf zsh-5.0.2.tar.gz
-  cd zsh-5.0.2
+  wget "http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.gz"
+  tar zxvf zsh-5.0.5.tar.gz
+  cd zsh-5.0.5
   ./configure --enable-multibyte --enable-locale
   make install
   zsh_path=`which zsh`

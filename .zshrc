@@ -14,8 +14,13 @@ compinit
 
 setopt ZLE
 
+#color settings
+autoload -Uz colors
+colors
+
 # prompt
-PROMPT="%F{cyan}%n%f@%F{cyan}%m%f "
+setopt prompt_subst
+PROMPT="[%F{cyan}%n%f@%F{cyan}%m%f %F{green}%c%f ]$"
 RPROMPT="[%F{magenta}%d%f]"
 
 # history

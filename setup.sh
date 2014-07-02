@@ -78,11 +78,10 @@ if [ ! -e $HOME/.tmux/tmux-powerline ]; then
   git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/tmux-powerline
   ln -s $HOME/dotfiles/tmux/lucius.sh $HOME/.tmux/tmux-powerline/themes/lucius.sh
   ln -s $HOME/dotfiles/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
-cat << EOT >> $HOME/$SHELLFILE
-PS1="\$PS1"'\$([ -n "\$TMUX" ] && tmux setenv TMUXPWD_\$(tmux display -p "#D" | tr -d %) "\$PWD")'
+cat << EOT >> $HOME/$PROFILE
 export TERM=xterm-256color
 EOT
-source $HOME/$SHELLFILE
+source $HOME/$PROFILE
 fi
 
 if [ ! -e $HOME/bin/used-mem ]; then
