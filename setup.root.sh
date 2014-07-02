@@ -70,6 +70,8 @@ function install_zsh(){
   cd zsh-5.0.2
   ./configure --enable-multibyte --enable-locale
   make install
+  zsh_path=`which zsh`
+  echo "$zsh_path" >> /etc/shells
 }
 
 install_rpmforge

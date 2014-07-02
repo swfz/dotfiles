@@ -1,5 +1,6 @@
 #!/usr/bin/sh
 
+PROFILE=".zprofile"
 function exist_command() {
   if which "$1" > /dev/null 2>&1 ; then
     echo 1
@@ -13,17 +14,17 @@ function install_anyenv() {
   if [ ! -e $HOME/.anyenv ]; then
     echo -e "\e[32m anyenv install..........\e[m"
     git clone https://github.com/riywo/anyenv ~/.anyenv
-    echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.bash_profile
-    echo 'eval "$(anyenv init -)"' >> ~/.bash_profile
+    echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> $HOME/$PROFILE
+    echo 'eval "$(anyenv init -)"' >> $HOME/$PROFILE
   fi
-  source ~/.bash_profile
+  source $HOME/$PROFILE
 }
 
 function install_env() {
   if [ ! -e $HOME/.anyenv/envs/$1 ]; then
     anyenv install $1
-    echo 'export PATH="$HOME/.anyenv/envs/$1/shims:$PATH"' >> ~/.bash_profile
-    source ~/.bash_profile
+    echo 'export PATH="$HOME/.anyenv/envs/$1/shims:$PATH"' >> $HOME/$PROFILE
+    source $HOME/$PROFILE
   fi
 }
 
@@ -40,7 +41,7 @@ install_env plenv
 install_env rbenv
 install_env ndenv
 
-SHELLFILE=".bashrc"
+SHELLFILE=".zshrc"
 DIRECTORY=".vim/bundle bin .tmux"
 
 for dir in $DIRECTORY
@@ -54,7 +55,7 @@ if [ ! -e $HOME/.vim/bundle/neobundle.vim ]; then
   git clone git://github.com/Shougo/neobundle.vim.git $HOME/.vim/bundle/neobundle.vim
 fi
 
-DOTFILES=".tmux.conf .vimrc"
+DOTFILES=".tmux.conf .vimrc .zshrc"
 VIMDIRS="snippets dict"
 
 for file in $DOTFILES
@@ -92,3 +93,4 @@ if [ ! -e $HOME/bin/used-mem ]; then
 fi
 
 exec $SHELL -l
+
