@@ -40,6 +40,7 @@ function install_vim73(){
     ./configure --prefix=/usr --enable-multibyte --with-features=huge --disable-selinux
     make
     make install
+    cd
   fi
 }
 

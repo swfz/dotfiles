@@ -81,7 +81,17 @@ if [ ! -e $HOME/.tmux/tmux-powerline ]; then
 cat << EOT >> $HOME/$PROFILE
 export TERM=xterm-256color
 EOT
-source $HOME/$PROFILE
+shell=`echo $SHELL`
+
+  case $shell in
+    *bash)
+cat << EOT >> $HOME/$PROFILE
+PS1="\$PS1"'\$([ -n "\$TMUX" ] && tmux setenv TMUXPWD_\$(tmux display -p "#D" | tr -d %) "\$PWD")'
+EOT
+    ;;
+  esac
+
+  source $HOME/$PROFILE
 fi
 
 if [ ! -e $HOME/bin/used-mem ]; then
