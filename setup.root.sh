@@ -18,7 +18,7 @@ function install_ag() {
   fi
 }
 
-function install_vim73(){
+function install_vim74(){
   exist_vim=`exist_command vim`
   if [ $exist_vim -ne 1 ]; then
     echo -e "\e[32m vim73 install..........\e[m"
@@ -36,8 +36,7 @@ function install_vim73(){
     fi
 
     cat patches/7.4.* | patch -p0
-    #./configure --prefix=/usr/local/vim74 --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp --prefix=/usr/local/vim74 --disable-netbeans --enable-perlinterp --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
-    ./configure --prefix=/usr --enable-multibyte --with-features=huge --disable-selinux
+    ./configure --prefix=/usr/local/vim74 --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp --prefix=/usr/local/vim74 --disable-netbeans --enable-perlinterp --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
     make
     make install
     cd
@@ -63,7 +62,8 @@ function install_tmux(){
   fi
 }
 
-#yum install -y ncurses-devel
+yum install -y ncurses-devel
+yum install -y fontconfig
 
 function install_zsh(){
   wget "http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.gz"
