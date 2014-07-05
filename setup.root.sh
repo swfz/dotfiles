@@ -29,6 +29,7 @@ function install_vim74(){
 #    cd vim74/patches
 #    seq -f http://ftp.vim.org/pub/vim/patches/7.4/7.4.%03g 052 | xargs wget
 #    cd ..
+    cd vim74
 
     exist_patch=`exist_command patch`
     if [ $exist_patch -ne 1 ]; then
@@ -36,7 +37,7 @@ function install_vim74(){
     fi
 
 #    cat patches/7.4.* | patch -p0
-    ./configure --prefix=/usr --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp  --enable-python-config-dir=/usr/lib64/python2.6/config --disable-netbeans --enable-perlinterp --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
+    ./configure --prefix=/usr --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp  --enable-python-config-dir=/usr/lib64/python2.6/config --disable-netbeans --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
     make
     make install
     cd
