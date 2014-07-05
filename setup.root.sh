@@ -21,22 +21,22 @@ function install_ag() {
 function install_vim74(){
   exist_vim=`exist_command vim`
   if [ $exist_vim -ne 1 ]; then
-    echo -e "\e[32m vim73 install..........\e[m"
+    echo -e "\e[32m vim74 install..........\e[m"
     cd
     wget http://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2
     tar xvf vim-7.4.tar.bz2
-    mkdir vim74/patches
-    cd vim74/patches
-    seq -f http://ftp.vim.org/pub/vim/patches/7.4/7.4.%03g 052 | xargs wget
-    cd ..
+#    mkdir vim74/patches
+#    cd vim74/patches
+#    seq -f http://ftp.vim.org/pub/vim/patches/7.4/7.4.%03g 052 | xargs wget
+#    cd ..
 
     exist_patch=`exist_command patch`
     if [ $exist_patch -ne 1 ]; then
       sudo yum -y install patch
     fi
 
-    cat patches/7.4.* | patch -p0
-    ./configure --prefix=/usr/local/vim74 --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp --prefix=/usr/local/vim74 --disable-netbeans --enable-perlinterp --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
+#    cat patches/7.4.* | patch -p0
+    ./configure --prefix=/usr --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp  --enable-python-config-dir=/usr/lib64/python2.6/config --disable-netbeans --enable-perlinterp --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
     make
     make install
     cd
@@ -80,7 +80,7 @@ function install_zsh(){
 }
 
 install_rpmforge
-install_vim73
+install_vim74
 install_ag
 install_tmux
 install_zsh
