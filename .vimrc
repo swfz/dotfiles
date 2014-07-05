@@ -178,7 +178,7 @@ NeoBundle 'mrkn/mrkn256.vim'
 
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'itchyny/lightline.vim'
+""NeoBundle 'itchyny/lightline.vim'
 
 NeoBundle 'tpope/vim-markdown'
 
@@ -193,6 +193,14 @@ NeoBundle 'AndrewRadev/linediff.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
+
+"powerline
+NeoBundle 'Lokaltog/powerline.git'
+
+set laststatus=2
+set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+let g:Powerline_symbols = 'fancy'
+set noshowmode
 
 filetype plugin on
 filetype plugin indent on     " Required!

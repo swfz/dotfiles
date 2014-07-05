@@ -40,6 +40,10 @@ install_anyenv
 install_env plenv
 install_env rbenv
 install_env ndenv
+install_env pyenv
+
+pyenv install 3.4.0
+pyenv global 3.4.0
 
 SHELLFILE=".zshrc"
 DIRECTORY=".vim/bundle bin .tmux"

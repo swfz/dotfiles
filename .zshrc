@@ -24,9 +24,12 @@ autoload -Uz is-at-least
 autoload -Uz colors
 colors
 
+#powerline
+source $HOME/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
+
 # prompt
 setopt prompt_subst
-PROMPT="[%F{cyan}%n%f@%F{cyan}%m%f %F{magenta}%c%f ]$"
+#PROMPT="[%F{cyan}%n%f@%F{cyan}%m%f %F{magenta}%c%f ]$"
 
 # history
 HISTFILE=~/.zsh_history
@@ -193,5 +196,6 @@ function +vi-svn-extra-info() {
   hook_com[unstaged]+=`count_svn_st`
 }
 
-add-zsh-hook precmd _update_vcs_info_msg
+#add-zsh-hook precmd _update_vcs_info_msg
 #====== VCS status to RPROMPT
+

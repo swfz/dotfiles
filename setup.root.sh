@@ -64,6 +64,7 @@ function install_tmux(){
 
 yum install -y ncurses-devel
 yum install -y fontconfig
+yum install -y bzip2-devel
 
 function install_zsh(){
   wget "http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.gz"
