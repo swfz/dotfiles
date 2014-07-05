@@ -56,7 +56,7 @@ function install_rpmforge(){
 
 function install_tmux(){
   exist_tmux=`exist_command tmux`
-  if [ $exist_vim -ne 1 ]; then
+  if [ $exist_tmux -ne 1 ]; then
     echo -e "\e[32m tmux install..........\e[m"
     yum install -y tmux --enablerepo=rpmforge
   fi
@@ -67,13 +67,16 @@ yum install -y fontconfig
 yum install -y bzip2-devel
 
 function install_zsh(){
-  wget "http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.gz"
-  tar zxvf zsh-5.0.5.tar.gz
-  cd zsh-5.0.5
-  ./configure --enable-multibyte --enable-locale
-  make install
-  zsh_path=`which zsh`
-  echo "$zsh_path" >> /etc/shells
+  exist_zsh=`exist_command zsh`
+  if [ $exist_zsh -ne 1 ]; then
+    wget "http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.gz"
+    tar zxvf zsh-5.0.5.tar.gz
+    cd zsh-5.0.5
+    ./configure --enable-multibyte --enable-locale
+    make install
+    zsh_path=`which zsh`
+    echo "$zsh_path" >> /etc/shells
+  fi
 }
 
 install_rpmforge
