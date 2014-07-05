@@ -59,7 +59,14 @@ function install_tmux(){
   exist_tmux=`exist_command tmux`
   if [ $exist_tmux -ne 1 ]; then
     echo -e "\e[32m tmux install..........\e[m"
-    yum install -y tmux --enablerepo=rpmforge
+    wget http://downloads.sourceforge.net/tmux/tmux-1.8.tar.gz
+    tar xvzf tmux-1.8.tar.gz
+    cd tmux-1.8
+    ./configure
+    make
+    make install
+    cd ..
+#    yum install -y tmux --enablerepo=rpmforge
   fi
 }
 
@@ -80,9 +87,28 @@ function install_zsh(){
   fi
 }
 
+function install_libevent(){
+  curl -LO https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
+  tar xvzf libevent-2.0.21-stable.tar.gz
+  cd libevent-2.0.21-stable
+  ./configure
+  make
+  make install
+  cd ..
+  rm -rf libevent-2.0.21-stable
+  rm -rf libevent-2.0.21-stable.tar.gz
+
+  echo /usr/local/lib > /etc/ld.so.conf.d/libevent.conf
+  ldconfig
+}
+
+
+
 install_rpmforge
 install_vim74
 install_ag
+install_libevent
 install_tmux
 install_zsh
+
 
