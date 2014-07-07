@@ -196,6 +196,6 @@ function +vi-svn-extra-info() {
   hook_com[unstaged]+=`count_svn_st`
 }
 
-#add-zsh-hook precmd _update_vcs_info_msg
+add-zsh-hook precmd _update_vcs_info_msg
 #====== VCS status to RPROMPT
 
