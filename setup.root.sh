@@ -19,25 +19,27 @@ function install_ag() {
 }
 
 function install_vim74(){
+  exist_mercurial=`exist_command hg`
+  if [ $exist_mercurial -ne 1 ]; then
+    yum install -y mercurial
+  fi
   exist_vim=`exist_command vim`
   if [ $exist_vim -ne 1 ]; then
     echo -e "\e[32m vim74 install..........\e[m"
     cd
-    wget http://ftp.vim.org/pub/vim/unix/vim-7.4.tar.bz2
-    tar xvf vim-7.4.tar.bz2
-#    mkdir vim74/patches
-#    cd vim74/patches
-#    seq -f http://ftp.vim.org/pub/vim/patches/7.4/7.4.%03g 052 | xargs wget
-#    cd ..
-    cd vim74
-
-    exist_patch=`exist_command patch`
-    if [ $exist_patch -ne 1 ]; then
-      sudo yum -y install patch
-    fi
-
-#    cat patches/7.4.* | patch -p0
-    ./configure --prefix=/usr --disable-selinux --enable-multibyte --with-features=huge --enable-pythoninterp  --enable-python-config-dir=/usr/lib64/python2.6/config --disable-netbeans --disable-xsmp-interact --disable-xsmp --without-x --disable-gui
+    hg clone https://vim.googlecode.com/hg/ vim
+    cd vim/src
+    ./configure \
+        --prefix=/usr \
+        --with-features=huge \
+        --enable-multibyte \
+        --enable-pythoninterp \
+        --with-python-config-dir=/usr/lib64/python2.6/config \
+        --desable-selinux \
+        --without-x \
+        --disable-gui \
+        --enable-cscope \
+        --enable-fontset
     make
     make install
     cd
@@ -59,20 +61,14 @@ function install_tmux(){
   exist_tmux=`exist_command tmux`
   if [ $exist_tmux -ne 1 ]; then
     echo -e "\e[32m tmux install..........\e[m"
-    wget http://downloads.sourceforge.net/tmux/tmux-1.8.tar.gz
-    tar xvzf tmux-1.8.tar.gz
-    cd tmux-1.8
-    ./configure
-    make
-    make install
-    cd ..
-#    yum install -y tmux --enablerepo=rpmforge
+    yum install -y tmux --enablerepo=rpmforge
   fi
 }
 
 yum install -y ncurses-devel
 yum install -y fontconfig
 yum install -y bzip2-devel
+yum install -y python-devel
 
 function install_zsh(){
   exist_zsh=`exist_command zsh`
@@ -87,27 +83,9 @@ function install_zsh(){
   fi
 }
 
-function install_libevent(){
-  curl -LO https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
-  tar xvzf libevent-2.0.21-stable.tar.gz
-  cd libevent-2.0.21-stable
-  ./configure
-  make
-  make install
-  cd ..
-  rm -rf libevent-2.0.21-stable
-  rm -rf libevent-2.0.21-stable.tar.gz
-
-  echo /usr/local/lib > /etc/ld.so.conf.d/libevent.conf
-  ldconfig
-}
-
-
-
 install_rpmforge
 install_vim74
 install_ag
-install_libevent
 install_tmux
 install_zsh
 
