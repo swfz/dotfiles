@@ -24,26 +24,27 @@ function install_vim74(){
     yum install -y mercurial
   fi
   exist_vim=`exist_command vim`
-  if [ $exist_vim -ne 1 ]; then
+#  if [ $exist_vim -ne 1 ]; then
     echo -e "\e[32m vim74 install..........\e[m"
     cd
     hg clone https://vim.googlecode.com/hg/ vim
     cd vim/src
     ./configure \
-        --prefix=/usr \
-        --with-features=huge \
-        --enable-multibyte \
-        --enable-pythoninterp \
-        --with-python-config-dir=/usr/lib64/python2.6/config \
-        --desable-selinux \
-        --without-x \
-        --disable-gui \
-        --enable-cscope \
-        --enable-fontset
+      --with-python-config-dir=/usr/lib64/python2.6/config/ \
+      --enable-pythoninterp \
+      --prefix=/usr \
+      --enable-multibyte \
+      --disable-selinux \
+      --with-features=huge \
+      --disable-gui \
+      --enable-fontset \
+      --with-x=no \
+      --enable-cscope \
+      --enable-fail-if-missing
     make
     make install
     cd
-  fi
+#  fi
 }
 
 function install_rpmforge(){
