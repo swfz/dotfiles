@@ -67,7 +67,7 @@ zstyle ':vcs_info:*' enable git svn
 # misc(%m)
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
 zstyle ':vcs_info:*' actionformats '(%s)-[%b]' '%m' '<!%a>'
-zstyle ':vcs_info:svn:*' formats '%F{green}(%s)%f-%F{yellow}[%b]%f %F{red}%u%f'
+zstyle ':vcs_info:svn:*' formats '%F{075}(%s)%f-%F{220}[%b]%f %F{213}%u%f'
 zstyle ':vcs_info:svn+set-message:*' hooks svn-extra-info
 
 

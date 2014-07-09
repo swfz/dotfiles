@@ -24,7 +24,7 @@ function install_vim74(){
     yum install -y mercurial
   fi
   exist_vim=`exist_command vim`
-#  if [ $exist_vim -ne 1 ]; then
+  if [ $exist_vim -ne 1 ]; then
     echo -e "\e[32m vim74 install..........\e[m"
     cd
     hg clone https://vim.googlecode.com/hg/ vim
@@ -44,7 +44,7 @@ function install_vim74(){
     make
     make install
     cd
-#  fi
+  fi
 }
 
 function install_rpmforge(){
@@ -70,6 +70,7 @@ yum install -y ncurses-devel
 yum install -y fontconfig
 yum install -y bzip2-devel
 yum install -y python-devel
+yum install -y mlocate
 
 function install_zsh(){
   exist_zsh=`exist_command zsh`
