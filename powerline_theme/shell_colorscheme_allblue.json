@@ -1,0 +1,29 @@
+{
+	"name": "Default color scheme for shell prompts",
+	"groups": {
+		"jobnum": { "fg": "brightyellow", "bg": "mediumorange" },
+		"user": { "fg": "gray10", "bg": "darkestblue", "attr": ["bold"] },
+		"superuser": { "fg": "white", "bg": "brightred", "attr": ["bold"] },
+		"virtualenv": { "fg": "white", "bg": "darkcyan" },
+		"branch": { "fg": "gray9", "bg": "gray2" },
+		"branch_dirty": { "fg": "brightyellow", "bg": "gray2" },
+		"branch_clean": { "fg": "gray9", "bg": "gray2" },
+		"continuation": { "fg": "gray9", "bg": "gray4" },
+		"continuation:current": { "fg": "gray10", "bg": "gray4", "attr": ["bold"] },
+		"cwd": { "fg": "steelblue", "bg": "gray2" },
+		"cwd:current_folder": { "fg": "gray10", "bg": "gray2", "attr": ["bold"] },
+		"cwd:divider": { "fg": "steelblue", "bg": "gray2" },
+		"hostname": { "fg": "white", "bg": "steelblue" },
+		"exit_fail": { "fg": "white", "bg": "darkestred" },
+		"exit_success": { "fg": "white", "bg": "darkestgreen" },
+		"environment": { "fg": "white", "bg": "darkestgreen" },
+		"mode": { "fg": "royalblue5", "bg": "skyblue1", "attr": ["bold"] }
+	},
+	"mode_translations": {
+		"vicmd": {
+			"groups": {
+				"mode": {"fg": "darkestcyan", "bg": "white", "attr": ["bold"]}
+			}
+		}
+	}
+}

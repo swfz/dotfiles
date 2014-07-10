@@ -105,5 +105,10 @@ if [ ! -e $HOME/bin/used-mem ]; then
   sed -i -e "s/main/run_segment/g" $HOME/bin/used-mem/used-mem
 fi
 
+if [[ "$1" =~ "scheme" ]]; then
+  mv $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/shell/default.json $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/shell/default_back.json
+  ln -s $HOME/dotfiles/powerline_theme/shell_colorscheme_allblue.json $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/shell/default.json
+fi
+
 exec $SHELL -l
 
