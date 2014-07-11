@@ -108,6 +108,8 @@ fi
 if [[ "$1" =~ "scheme" ]]; then
   mv $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/shell/default.json $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/shell/default_back.json
   ln -s $HOME/dotfiles/powerline_theme/shell_colorscheme_allblue.json $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/shell/default.json
+  mv $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/vim/default.json $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/vim/default_back.json
+  ln -s $HOME/dotfiles/powerline_theme/vim_colorscheme_allblue.json $HOME/.vim/bundle/powerline/powerline/config_files/colorschemes/vim/default.json
 fi
 
 exec $SHELL -l
