@@ -7,6 +7,9 @@ if [ -f $HOME/dotfiles/.functions ]; then
 fi
 umask 002
 
+alias ll="ls -l"
+alias vi="vim"
+
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
@@ -30,6 +33,15 @@ source $HOME/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
 # prompt
 setopt prompt_subst
 #PROMPT="[%F{cyan}%n%f@%F{cyan}%m%f %F{magenta}%c%f ]$"
+PROMPT="$PROMPT
+%F{074}[%C]$%f "
+SPROMPT="%F{red}correct: %R -> %r ? [n,y,a,e] %f"
+
+# ls color
+export LSCOLORS=gxfxcxdxbxegedabagacag
+export LS_COLORS='di=36;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;46'
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+alias ls='ls -F --color'
 
 # history
 HISTFILE=~/.zsh_history
@@ -67,7 +79,7 @@ zstyle ':vcs_info:*' enable git svn
 # misc(%m)
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
 zstyle ':vcs_info:*' actionformats '(%s)-[%b]' '%m' '<!%a>'
-zstyle ':vcs_info:svn:*' formats '%F{075}(%s)%f-%F{220}[%b]%f %F{213}%u%f'
+zstyle ':vcs_info:svn:*' formats '%F{075}(%s)%f-%F{208}[%b]%f %F{200}%u%f'
 zstyle ':vcs_info:svn+set-message:*' hooks svn-extra-info
 
 

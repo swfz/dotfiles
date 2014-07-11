@@ -81,6 +81,7 @@ if [ ! -e $HOME/.tmux/tmux-powerline ]; then
   echo -e "\e[32m tmux powerline install..........\e[m"
   git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/tmux-powerline
   ln -s $HOME/dotfiles/tmux/lucius.sh $HOME/.tmux/tmux-powerline/themes/lucius.sh
+  ln -s $HOME/dotfiles/tmux/blue.sh $HOME/.tmux/tmux-powerline/themes/blue.sh
   ln -s $HOME/dotfiles/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
 cat << EOT >> $HOME/$PROFILE
 export TERM=xterm-256color
