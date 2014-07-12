@@ -7,12 +7,25 @@ if [ -f $HOME/dotfiles/.functions ]; then
 fi
 umask 002
 
+#alias
 alias ll="ls -l"
 alias vi="vim"
+alias lls="ll --sort=size"
+alias lle="ll --sort=extension"
+alias llt="ll -t"
+alias smdr="svn merge --dry-run -c"
+alias sstu="svn st -u"
+alias supck="svn st -u | grep '*'"
+alias view='vim -R'
+alias mysqlu="mysql --default-character-set=utf8"
 
+#env
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
+
+#function
+
 
 # complete
 autoload -U compinit

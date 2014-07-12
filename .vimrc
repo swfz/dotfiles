@@ -207,7 +207,8 @@ filetype plugin indent on     " Required!
 syntax enable
 
 colorscheme lucius
-hi Normal ctermbg=NONE
+LuciusBlack
+""hi Normal ctermbg=NONE
 
 " Installation check.
 if neobundle#exists_not_installed_bundles()

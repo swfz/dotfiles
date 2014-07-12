@@ -25,11 +25,11 @@ if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 		"date 067 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
 		"time 067 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
-		"vcs_branch 074 253" \
-		"vcs_compare 117 253" \
-		"vcs_staged 074 253" \
-		"vcs_modified 117 253" \
-		"vcs_others 74 253" \
+		"vcs_branch 074 255" \
+		"vcs_compare 117 255" \
+		"vcs_staged 074 255" \
+		"vcs_modified 117 255" \
+		"vcs_others 74 255" \
 	)
 fi
 
