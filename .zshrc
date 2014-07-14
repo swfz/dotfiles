@@ -2,30 +2,18 @@
 if [ -f $HOME/practice/.alias.server ]; then
   source $HOME/practice/.alias.server
 fi
+if [ -f $HOME/dotfiles/.alias.command ]; then
+  source $HOME/dotfiles/.alias.command
+fi
 if [ -f $HOME/dotfiles/.functions ]; then
   source $HOME/dotfiles/.functions
 fi
 umask 002
 
-#alias
-alias ll="ls -l"
-alias vi="vim"
-alias lls="ll --sort=size"
-alias lle="ll --sort=extension"
-alias llt="ll -t"
-alias smdr="svn merge --dry-run -c"
-alias sstu="svn st -u"
-alias supck="svn st -u | grep '*'"
-alias view='vim -R'
-alias mysqlu="mysql --default-character-set=utf8"
-
 #env
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
-
-#function
-
 
 # complete
 autoload -U compinit
