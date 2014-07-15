@@ -66,11 +66,12 @@ function install_tmux(){
   fi
 }
 
-yum install -y ncurses-devel
-yum install -y fontconfig
-yum install -y bzip2-devel
-yum install -y python-devel
-yum install -y mlocate
+function pkg_install(){
+  exist_pkg=`rpm -qa | grep $1 | wc -l`
+  if [[ "$exist_pkg" -lt 1 ]]; then
+    yum install -y $1
+  fi
+}
 
 function install_zsh(){
   exist_zsh=`exist_command zsh`
@@ -84,6 +85,12 @@ function install_zsh(){
     echo "$zsh_path" >> /etc/shells
   fi
 }
+
+pkgs="ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip"
+for pkg in $pkgs
+do
+  pkg_install $pkg
+done
 
 install_rpmforge
 install_vim74
