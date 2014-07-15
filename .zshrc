@@ -19,6 +19,8 @@ export LC_CTYPE=ja_JP.utf8
 autoload -U compinit
 compinit
 
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
 setopt ZLE
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
