@@ -29,8 +29,7 @@ function install_env() {
 }
 
 function set_env(){
-  exist_version=`$1 versions | grep $2`
-  echo $exist_version
+  exist_version=`$1 versions | grep $2 | wc -l`
   if [[ "$exist_version" -lt 1 ]]; then
     $1 install $2
     $1 global $2
