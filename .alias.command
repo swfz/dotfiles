@@ -6,6 +6,7 @@ alias llt="ll -t"
 #svn
 alias smdrc="svn merge --dry-run -c"
 alias smc="svn merge -c"
+alias sst="svn st"
 alias sstu="svn st -u"
 alias sstug="svn st -u | grep '*'"
 alias sd="svn diff"
