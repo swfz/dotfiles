@@ -58,6 +58,16 @@ function install_rpmforge(){
   fi
 }
 
+function install_epel(){
+  rpmforge=`yum repolist all | grep epel | wc -l`
+  if [ $rpmforge -eq 0 ]; then
+    echo -e "\e[32m epel install..........\e[m"
+    wget http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+    rpm -Uvh epel-release-6-8.noarch.rpm
+    sed -i "s/enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+  fi
+}
+
 function install_tmux(){
   exist_tmux=`exist_command tmux`
   if [ $exist_tmux -ne 1 ]; then
@@ -93,6 +103,7 @@ do
 done
 
 install_rpmforge
+install_epel
 install_vim74
 install_ag
 install_tmux
