@@ -23,19 +23,19 @@ TMUX_POWERLINE_DEFAULT_RIGHTSIDE_SEPARATOR=${TMUX_POWERLINE_DEFAULT_RIGHTSIDE_SE
 
 if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
-		"date 237 213 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
-		"time 237 213 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
-		"vcs_branch 30 121" \
-		"vcs_compare 60 255" \
-		"vcs_staged 64 255" \
-		"vcs_modified 126 211" \
-		"vcs_others 245 0" \
+		"date 029 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+		"time 029 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}" \
+		"vcs_branch 071 255" \
+		"vcs_compare 113 255" \
+		"vcs_staged 071 255" \
+		"vcs_modified 113 255" \
+		"vcs_others 71 255" \
 	)
 fi
 
 if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
-		"used-mem 237 222" \
-		"load 239 122" \
+		"used-mem 029 254" \
+		"load 035 255" \
 	)
 fi

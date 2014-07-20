@@ -89,6 +89,7 @@ install_tmux_powerline(){
     git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/tmux-powerline
     ln -s $HOME/dotfiles/tmux/lucius.sh $HOME/.tmux/tmux-powerline/themes/lucius.sh
     ln -s $HOME/dotfiles/tmux/blue.sh $HOME/.tmux/tmux-powerline/themes/blue.sh
+    ln -s $HOME/dotfiles/tmux/green.sh $HOME/.tmux/tmux-powerline/themes/green.sh
     ln -s $HOME/dotfiles/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
 cat << EOT >> $HOME/$PROFILE
 export TERM=xterm-256color
@@ -131,6 +132,16 @@ install_tmux_powerline
 if [[ "$#" -gt 1 ]]; then
   powerline_config="$HOME/.vim/bundle/powerline/powerline/config_files/colorschemes"
 
+  if [ "$2" = "list" ]; then
+    if [ "$1" = "shell" -o "$1" = "vim" ]; then
+      ls -l $HOME/dotfiles/powerline_theme/"$1"_colorscheme_*.json | awk -F" " '{print $9}' | awk -F"/" '{print $NF}' | awk -F"[_.]" '{print $(NF - 1)}'
+    fi
+    if [ "$1" = "tmux" ]; then
+      ls -l $HOME/dotfiles/tmux/ | awk -F " " '{print $9}' | awk -F"/" '{print $NF}' | awk -F"." '{print $1}'
+    fi
+    exit
+  fi
+
   if [ "$1" = "shell" -o "$1" = "vim" ]; then
     if [ -L $powerline_config/$1/default.json ]; then
       rm $powerline_config/$1/default.json
@@ -138,6 +149,16 @@ if [[ "$#" -gt 1 ]]; then
       mv $powerline_config/$1/default.json $powerline_config/$1/default_back.json
     fi
     ln -s $HOME/dotfiles/powerline_theme/"$1"_colorscheme_"$2".json $powerline_config/$1/default.json
+  fi
+  if [ "$1" = "tmux" ]; then
+    if [ -L $HOME/."$1"/.tmux.color.conf ]; then
+      rm $HOME/."$1"/.tmux.color.conf
+    fi
+    ln -s $HOME/dotfiles/tmux/.tmux."$2".conf $HOME/.tmux/.tmux.color.conf
+    if [ -L $HOME/.tmux-powerlinerc ]; then
+      rm $HOME/.tmux-powerlinerc
+    fi
+    ln -s $HOME/dotfiles/tmux/.tmux-"$2"-powerlinerc $HOME/.tmux-powerlinerc
   fi
 fi
 
