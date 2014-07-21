@@ -130,7 +130,15 @@ install_tmux_powerline
 
 # set colorscheme
 if [[ "$#" -gt 1 ]]; then
-  powerline_config="$HOME/.vim/bundle/powerline/powerline/config_files/colorschemes"
+  powerline_config="$HOME/.vim/bundle/powerline/powerline/config_files"
+  powerline_colorschemes="$powerline_config/colorschemes"
+
+  if [ -L $powerline_config/colors.json ]; then
+    rm $powerline_config/colors.json
+  else
+    mv $powerline_config/colors.json $powerline_config/colors.json.orig
+  fi
+  ln -s $HOME/dotfiles/powerline_theme/colors.json $powerline_config/colors.json
 
   if [ "$2" = "list" ]; then
     if [ "$1" = "shell" -o "$1" = "vim" ]; then
@@ -143,12 +151,12 @@ if [[ "$#" -gt 1 ]]; then
   fi
 
   if [ "$1" = "shell" -o "$1" = "vim" ]; then
-    if [ -L $powerline_config/$1/default.json ]; then
-      rm $powerline_config/$1/default.json
+    if [ -L $powerline_colorschemes/$1/default.json ]; then
+      rm $powerline_colorschemes/$1/default.json
     else
-      mv $powerline_config/$1/default.json $powerline_config/$1/default_back.json
+      mv $powerline_colorschemes/$1/default.json $powerline_colorschemes/$1/default_back.json
     fi
-    ln -s $HOME/dotfiles/powerline_theme/"$1"_colorscheme_"$2".json $powerline_config/$1/default.json
+    ln -s $HOME/dotfiles/powerline_theme/"$1"_colorscheme_"$2".json $powerline_colorschemes/$1/default.json
   fi
   if [ "$1" = "tmux" ]; then
     if [ -L $HOME/."$1"/.tmux.color.conf ]; then
