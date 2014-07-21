@@ -220,9 +220,9 @@ endif
 "--------------------------------------------------------------------------
 
 " tab settings
-hi TabLineSel  term=bold    cterm=bold,underline ctermfg=117  ctermbg=025   gui=bold,underline guifg=255      guibg=031
-hi TabLineFill term=reverse cterm=reverse,bold   ctermfg=240  ctermbg=075  gui=reverse,bold   guifg=DarkGray guibg=LightGray
-hi TabLine     term=reverse cterm=underline      ctermfg=253  ctermbg=240   gui=underline      guifg=255      guibg=DarkGray
+hi TabLineSel  term=bold    cterm=bold,underline ctermfg=219  ctermbg=024   gui=bold,underline guifg=255      guibg=031
+hi TabLineFill term=reverse cterm=reverse,bold   ctermfg=236  ctermbg=075  gui=reverse,bold   guifg=DarkGray guibg=LightGray
+hi TabLine     term=reverse cterm=underline      ctermfg=117  ctermbg=236   gui=underline      guifg=255      guibg=DarkGray
 hi TabLineInfo term=reverse ctermfg=Black        ctermbg=cyan guifg=black                      guibg=cyan
 
 " Anywhere SID.
