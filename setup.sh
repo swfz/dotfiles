@@ -157,6 +157,11 @@ if [[ "$#" -gt 1 ]]; then
       mv $powerline_colorschemes/$1/default.json $powerline_colorschemes/$1/default_back.json
     fi
     ln -s $HOME/dotfiles/powerline_theme/"$1"_colorscheme_"$2".json $powerline_colorschemes/$1/default.json
+
+    if [ "$1" = "shell" ]; then
+      rm $HOME/.zshrc.color
+      ln -s $HOME/dotfiles/zsh_colors/"$2" $HOME/.zshrc.color
+    fi
   fi
   if [ "$1" = "tmux" ]; then
     if [ -L $HOME/."$1"/.tmux.color.conf ]; then

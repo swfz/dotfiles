@@ -1,0 +1,6 @@
+# prompt
+setopt prompt_subst
+#PROMPT="[%F{cyan}%n%f@%F{cyan}%m%f %F{magenta}%c%f ]$"
+PROMPT="$PROMPT
+${CONSOLE}[%C]$ ${RESET}"
+SPROMPT="%F{red}correct: %R -> %r ? [n,y,a,e] %f"

@@ -1,0 +1,10 @@
+VCS_CUR="%F{075}"
+VCS_MOD="%F{219}"
+VCS_ERR="%F{215}"
+ENV_PL="%F{117}"
+ENV_PY="%F{230}"
+ENV_RB="%F{215}"
+ENV_ND="%F{075}"
+CONSOLE="%F{075}"
+RESET="%f"
+

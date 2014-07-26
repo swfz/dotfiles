@@ -35,7 +35,7 @@ fi
 
 if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
-		"used-mem 237 116" \
+		"used-mem 237 117" \
 		"load 239 230" \
 	)
 fi

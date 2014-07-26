@@ -1,0 +1,71 @@
+plenv_version(){
+  if [ -n "$PLENV_ROOT" ]; then
+    VERSION=''
+    NOTFOUND=''
+    if [ -r .perl-version ]; then
+      VERSION=`cat .perl-version`
+      ls "$PLENV_ROOT/versions/" | egrep "^$VERSION$" >/dev/null 2>&1 || NOTFOUND='{?}'
+    else
+      if [ -r $PLENV_ROOT/version ]; then
+        VERSION=`cat "$PLENV_ROOT/version"`
+      else
+        VERSION='?'
+      fi
+    fi
+   echo "perl[$VERSION]$NOTFOUND"
+  fi
+}
+
+rbenv_version(){
+  if [ -n "$RBENV_ROOT" ]; then
+    VERSION=''
+    NOTFOUND=''
+    if [ -r .ruby-version ]; then
+      VERSION=`cat .ruby-version`
+      ls "$RBENV_ROOT/versions/" | egrep "^$VERSION$" >/dev/null 2>&1 || NOTFOUND='{?}'
+    else
+      if [ -r $RBENV_ROOT/version ]; then
+        VERSION=`cat "$RBENV_ROOT/version"`
+      else
+        VERSION='?'
+      fi
+    fi
+   echo "ruby[$VERSION]$NOTFOUND"
+  fi
+}
+
+ndenv_version(){
+  if [ -n "$NDENV_ROOT" ]; then
+    VERSION=''
+    NOTFOUND=''
+    if [ -r .node-version ]; then
+      VERSION=`cat .node-version`
+      ls "$NDENV_ROOT/versions/" | egrep "^$VERSION$" >/dev/null 2>&1 || NOTFOUND='{?}'
+    else
+      if [ -r $NDENV_ROOT/version ]; then
+        VERSION=`cat "$NDENV_ROOT/version"`
+      else
+        VERSION='?'
+      fi
+    fi
+   echo "node[$VERSION]$NOTFOUND"
+  fi
+}
+
+pyenv_version(){
+  if [ -n "$PYENV_ROOT" ]; then
+    VERSION=''
+    NOTFOUND=''
+    if [ -r .python-version ]; then
+      VERSION=`cat .python-version`
+      ls "$PYENV_ROOT/versions/" | egrep "^$VERSION$" >/dev/null 2>&1 || NOTFOUND='{?}'
+    else
+      if [ -r $PYENV_ROOT/version ]; then
+        VERSION=`cat "$PYENV_ROOT/version"`
+      else
+        VERSION='?'
+      fi
+    fi
+   echo "python[$VERSION]$NOTFOUND"
+  fi
+}
