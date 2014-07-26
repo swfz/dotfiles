@@ -80,6 +80,10 @@ function link_dotfiles(){
       ln -s $HOME/dotfiles/.vim/$dir $HOME/.vim/$dir
     fi
   done
+
+  if [ ! -L $HOME/.config/peco/config.json ]; then
+    ln -s $HOME/dotfiles/config/peco/config.json $HOME/.config/peco/config.json
+  fi
 }
 
 #tmux powerline
