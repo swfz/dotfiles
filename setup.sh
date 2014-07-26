@@ -165,7 +165,7 @@ if [[ "$#" -gt 1 ]]; then
 
     if [ "$1" = "shell" ]; then
       rm $HOME/.zshrc.color
-      ln -s $HOME/dotfiles/zsh_colors/"$2" $HOME/.zshrc.color
+      ln -s $HOME/dotfiles/zsh/.color."$2" $HOME/.zshrc.color
     fi
   fi
   if [ "$1" = "tmux" ]; then
