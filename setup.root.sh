@@ -96,7 +96,18 @@ function install_zsh(){
   fi
 }
 
-pkgs="ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip"
+function install_peco(){
+  echo -e "\e[32m peco install..........\e[m"
+  exist_peco=`exist_command peco`
+  if [ $exist_peco -ne 1 ]; then
+    cd
+    curl -LO https://github.com/peco/peco/releases/download/v0.2.2/peco_linux_amd64.tar.gz
+    tar -xzf peco_linux_amd64.tar.gz
+    mv peco_linux_amd64/peco /usr/local/bin/
+  fi
+}
+
+pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip"
 for pkg in $pkgs
 do
   pkg_install $pkg
@@ -108,5 +119,6 @@ install_vim74
 install_ag
 install_tmux
 install_zsh
+install_peco
 
 
