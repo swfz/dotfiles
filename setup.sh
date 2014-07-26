@@ -82,6 +82,7 @@ function link_dotfiles(){
   done
 
   if [ ! -L $HOME/.config/peco/config.json ]; then
+    mkdir -p $HOME/.config/peco
     ln -s $HOME/dotfiles/config/peco/config.json $HOME/.config/peco/config.json
   fi
 }
