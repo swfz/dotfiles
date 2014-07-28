@@ -193,6 +193,7 @@ NeoBundle 'AndrewRadev/linediff.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
+NeoBundle 'tyru/caw.vim.git'
 
 "powerline
 NeoBundle 'Lokaltog/powerline.git'
@@ -450,3 +451,6 @@ nmap <C-n> <Plug>(yankround-next)
 let g:yankround_max_history = 50
 nnoremap <silent> <Leader>yr<C-p> :<C-u>CtrlPYankRound<CR>
 
+"" caw comment out
+nmap <Leader>c <Plug>(caw:i:toggle)
+vmap <Leader>c <Plug>(caw:i:toggle)
