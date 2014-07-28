@@ -210,6 +210,7 @@ colorscheme lucius
 LuciusBlack
 ""hi Normal ctermbg=NONE
 
+
 " Installation check.
 if neobundle#exists_not_installed_bundles()
   echomsg 'Not installed bundles : ' .
@@ -404,6 +405,11 @@ function! MyCharCode()
   return "'". char ."' ". nr
 endfunction
 ""-----------------------------------------------------------------------
+
+"" cursorline
+""autocmd InsertEnter,InsertLeave * set cursorline!
+set cursorline
+highlight CursorLine ctermbg=234
 
 "" submode.vim
 call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
