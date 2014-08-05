@@ -194,6 +194,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'tyru/caw.vim.git'
+NeoBundle 'rhysd/clever-f.vim'
 
 "powerline
 NeoBundle 'Lokaltog/powerline.git'
