@@ -109,7 +109,9 @@ nmap <Esc>2<Esc> :set nu<CR><Esc>
 
 augroup HighlightTrailingSpaces
 autocmd!
-autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
+autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline ctermbg=DarkCyan
+set list
+set listchars=tab:>.,trail:_,eol:↲,extends:>,precedes:<,nbsp:%
 autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
 
