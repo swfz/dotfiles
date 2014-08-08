@@ -80,6 +80,9 @@ function pkg_install(){
   exist_pkg=`rpm -qa | grep $1 | wc -l`
   if [[ "$exist_pkg" -lt 1 ]]; then
     yum install -y $1
+    echo 1
+  else
+    echo 0
   fi
 }
 
@@ -107,6 +110,20 @@ function install_peco(){
   fi
 }
 
+function install_samba(){
+  just_installed=`pkg_install samba`
+  if [ $just_installed -eq 1 ]; then
+    cat << EOF > /etc/samba/smb.conf
+    [public]
+    path = /
+    public = yes
+    writable = yes
+    hide dot files = no
+    oplocks = no
+EOF
+  fi
+}
+
 pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip"
 for pkg in $pkgs
 do
@@ -120,5 +137,6 @@ install_ag
 install_tmux
 install_zsh
 install_peco
+install_samba
 
 
