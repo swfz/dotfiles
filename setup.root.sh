@@ -100,9 +100,9 @@ function install_zsh(){
 }
 
 function install_peco(){
-  echo -e "\e[32m peco install..........\e[m"
   exist_peco=`exist_command peco`
   if [ $exist_peco -ne 1 ]; then
+    echo -e "\e[32m peco install..........\e[m"
     cd
     curl -LO https://github.com/peco/peco/releases/download/v0.2.2/peco_linux_amd64.tar.gz
     tar -xzf peco_linux_amd64.tar.gz
@@ -112,9 +112,14 @@ function install_peco(){
 
 function install_samba(){
   just_installed=`pkg_install samba`
-  if [ $just_installed -eq 1 ]; then
-    cat << EOF > /etc/samba/smb.conf
-    [public]
+  if [ "$just_installed" -eq 1 ]; then
+    cat << EOF >> /etc/samba/smb.conf
+[global]
+    security = share
+    create mask = 644
+    guest account = root
+    disable spooless = yes
+[public]
     path = /
     public = yes
     writable = yes
