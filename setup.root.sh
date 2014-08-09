@@ -80,9 +80,6 @@ function pkg_install(){
   exist_pkg=`rpm -qa | grep $1 | wc -l`
   if [[ "$exist_pkg" -lt 1 ]]; then
     yum install -y $1
-    echo 1
-  else
-    echo 0
   fi
 }
 
@@ -111,9 +108,12 @@ function install_peco(){
 }
 
 function install_samba(){
-  just_installed=`pkg_install samba`
-  if [ "$just_installed" -eq 1 ]; then
-    cat << EOF >> /etc/samba/smb.conf
+  pkg_install samba
+  if [ -e /etc/samba/smb.conf ]; then
+    done_setting=`grep 'for local settings' /etc/samba/smb.conf | wc -l`
+    if [ $done_setting -lt 1 ]; then
+      cat << EOF >> /etc/samba/smb.conf
+# for local settings
 [global]
     security = share
     create mask = 644
@@ -126,6 +126,8 @@ function install_samba(){
     hide dot files = no
     oplocks = no
 EOF
+      /etc/init.d/smb start
+    fi
   fi
 }
 
