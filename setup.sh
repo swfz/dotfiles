@@ -98,6 +98,7 @@ install_tmux_powerline(){
     ln -s $HOME/dotfiles/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
 cat << EOT >> $HOME/$PROFILE
 export TERM=xterm-256color
+export POWERLINE_COMMAND=$HOME/.vim/bundle/powerline/scripts/powerline-render
 EOT
 shell=`echo $SHELL`
 
@@ -132,7 +133,6 @@ done
 set_env pyenv 3.4.0
 
 install_tmux_powerline
-export POWERLINE_COMMAND=$HOME/.vim/bundle/powerline/scripts/powerline-render
 
 function replace_link(){
   if [ -L $1 ]; then
