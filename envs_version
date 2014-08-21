@@ -1,19 +1,19 @@
 plenv_version(){
+  VERSION=''
   if [ -n "$PLENV_ROOT" ]; then
-    VERSION=''
-    NOTFOUND=''
     if [ -r .perl-version ]; then
       VERSION=`cat .perl-version`
-      ls "$PLENV_ROOT/versions/" | egrep "^$VERSION$" >/dev/null 2>&1 || NOTFOUND='{?}'
     else
-      if [ -r $PLENV_ROOT/version ]; then
-        VERSION=`cat "$PLENV_ROOT/version"`
-      else
-        VERSION='?'
-      fi
+      VERSION=`plenv version | awk -F" " '{print \$1}'`
     fi
-   echo "perl[$VERSION]$NOTFOUND"
+  else
+    VERSION="system"
   fi
+
+  if [ "$VERSION" = "system" ]; then
+    VERSION=`perl -v | grep 'This is perl' | awk -F" " '{print \$4}'`
+  fi
+  echo "perl[$VERSION]"
 }
 
 rbenv_version(){
