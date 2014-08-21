@@ -98,16 +98,17 @@ install_tmux_powerline(){
     ln -s $HOME/dotfiles/tmux/.tmux-powerlinerc $HOME/.tmux-powerlinerc
 cat << EOT >> $HOME/$PROFILE
 export TERM=xterm-256color
+export POWERLINE_COMMAND=$HOME/.vim/bundle/powerline/scripts/powerline-render
 EOT
 shell=`echo $SHELL`
 
-    case $shell in
-      *bash)
-cat << EOT >> $HOME/$PROFILE
-PS1="\$PS1"'\$([ -n "\$TMUX" ] && tmux setenv TMUXPWD_\$(tmux display -p "#D" | tr -d %) "\$PWD")'
-EOT
-      ;;
-    esac
+#    case $shell in
+#      *bash)
+#cat << EOT >> $HOME/$PROFILE
+#PS1="\$PS1"'\$([ -n "\$TMUX" ] && tmux setenv TMUXPWD_\$(tmux display -p "#D" | tr -d %) "\$PWD")'
+#EOT
+#      ;;
+#    esac
 
     source $HOME/$PROFILE
   fi
@@ -133,17 +134,23 @@ set_env pyenv 3.4.0
 
 install_tmux_powerline
 
+function replace_link(){
+  if [ -L $1 ]; then
+    rm $1
+  else
+    if [ -e $1 ]; then
+      mv $1 "$1".orig
+    fi
+  fi
+  ln -s $2 $1
+}
+
 # set colorscheme
-if [[ "$#" -gt 1 ]]; then
+function set_scheme(){
   powerline_config="$HOME/.vim/bundle/powerline/powerline/config_files"
   powerline_colorschemes="$powerline_config/colorschemes"
 
-  if [ -L $powerline_config/colors.json ]; then
-    rm $powerline_config/colors.json
-  else
-    mv $powerline_config/colors.json $powerline_config/colors.json.orig
-  fi
-  ln -s $HOME/dotfiles/powerline_theme/colors.json $powerline_config/colors.json
+  replace_link "$powerline_config"/colors.json $HOME/dotfiles/powerline_theme/colors.json
 
   if [ "$2" = "list" ]; then
     if [ "$1" = "shell" -o "$1" = "vim" ]; then
@@ -156,29 +163,17 @@ if [[ "$#" -gt 1 ]]; then
   fi
 
   if [ "$1" = "shell" -o "$1" = "vim" ]; then
-    if [ -L $powerline_colorschemes/$1/default.json ]; then
-      rm $powerline_colorschemes/$1/default.json
-    else
-      mv $powerline_colorschemes/$1/default.json $powerline_colorschemes/$1/default_back.json
-    fi
-    ln -s $HOME/dotfiles/powerline_theme/"$1"_colorscheme_"$2".json $powerline_colorschemes/$1/default.json
-
-    if [ "$1" = "shell" ]; then
-      rm $HOME/.zshrc.color
-      ln -s $HOME/dotfiles/zsh/.color."$2" $HOME/.zshrc.color
-    fi
+    replace_link $powerline_colorschemes/$1/default.json $HOME/dotfiles/powerline_theme/"$1"_colorscheme_"$2".json
+    replace_link $HOME/.zshrc.color $HOME/dotfiles/zsh/.color."$2"
   fi
   if [ "$1" = "tmux" ]; then
-    if [ -L $HOME/."$1"/.tmux.color.conf ]; then
-      rm $HOME/."$1"/.tmux.color.conf
-    fi
-    ln -s $HOME/dotfiles/tmux/.tmux."$2".conf $HOME/.tmux/.tmux.color.conf
-    if [ -L $HOME/.tmux-powerlinerc ]; then
-      rm $HOME/.tmux-powerlinerc
-    fi
-    ln -s $HOME/dotfiles/tmux/.tmux-"$2"-powerlinerc $HOME/.tmux-powerlinerc
+    replace_link $HOME/."$1"/.tmux.color.conf $HOME/dotfiles/tmux/.tmux."$2".conf
+    replace_link $HOME/.tmux-powerlinerc $HOME/dotfiles/tmux/.tmux-"$2"-powerlinerc
   fi
+}
+
+if [[ "$#" -gt 1 ]]; then
+  set_scheme $1 $2
 fi
 
-exec $SHELL -l
 

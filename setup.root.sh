@@ -97,13 +97,37 @@ function install_zsh(){
 }
 
 function install_peco(){
-  echo -e "\e[32m peco install..........\e[m"
   exist_peco=`exist_command peco`
   if [ $exist_peco -ne 1 ]; then
+    echo -e "\e[32m peco install..........\e[m"
     cd
     curl -LO https://github.com/peco/peco/releases/download/v0.2.2/peco_linux_amd64.tar.gz
     tar -xzf peco_linux_amd64.tar.gz
     mv peco_linux_amd64/peco /usr/local/bin/
+  fi
+}
+
+function install_samba(){
+  pkg_install samba
+  if [ -e /etc/samba/smb.conf ]; then
+    done_setting=`grep 'for local settings' /etc/samba/smb.conf | wc -l`
+    if [ $done_setting -lt 1 ]; then
+      cat << EOF >> /etc/samba/smb.conf
+# for local settings
+[global]
+    security = share
+    create mask = 644
+    guest account = root
+    disable spooless = yes
+[public]
+    path = /
+    public = yes
+    writable = yes
+    hide dot files = no
+    oplocks = no
+EOF
+      /etc/init.d/smb start
+    fi
   fi
 }
 
@@ -120,5 +144,6 @@ install_ag
 install_tmux
 install_zsh
 install_peco
+install_samba
 
 

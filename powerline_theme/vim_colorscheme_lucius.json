@@ -1,0 +1,95 @@
+{
+	"name": "Default color scheme",
+	"groups": {
+		"background":               { "fg": "white", "bg": "gray1" },
+		"background:divider":       { "fg": "gray9", "bg": "gray2" },
+		"mode":                     { "fg": "white", "bg": "darkestblue", "attr": ["bold"] },
+		"visual_range":             { "fg": "gray2", "bg": "white", "attr": ["bold"] },
+		"modified_indicator":       { "fg": "pink", "bg": "gray2", "attr": ["bold"] },
+		"paste_indicator":          { "fg": "darkestblue", "bg": "white", "attr": ["bold"] },
+		"readonly_indicator":       { "fg": "orange", "bg": "darkcyan" },
+		"branch":                   { "fg": "pink", "bg": "gray3" },
+		"branch_dirty":             { "fg": "mediumorange", "bg": "gray5" },
+		"branch_clean":             { "fg": "white", "bg": "gray5" },
+		"branch:divider":           { "fg": "white", "bg": "gray5" },
+		"file_directory":           { "fg": "lightblue", "bg": "gray2" },
+		"file_name":                { "fg": "lightblue", "bg": "gray2", "attr": ["bold"] },
+		"window_title":             { "fg": "white", "bg": "gray4" },
+		"file_size":                { "fg": "gray8", "bg": "gray2" },
+		"file_name_no_file":        { "fg": "gray9", "bg": "gray4", "attr": ["bold"] },
+		"file_name_empty":          { "fg": "gray9", "bg": "gray4" },
+		"file_format":              { "fg": "lightgreen", "bg": "gray2" },
+		"file_encoding":            { "fg": "lightgreen", "bg": "gray2" },
+		"file_type":                { "fg": "pink", "bg": "gray3" },
+		"file_vcs_status":          { "fg": "brightestred", "bg": "gray4" },
+		"file_vcs_status_M":        { "fg": "brightyellow", "bg": "gray4" },
+		"file_vcs_status_A":        { "fg": "GREEN_Orange_red", "bg": "gray4" },
+		"line_percent":             { "fg": "brightorange", "bg": "gray5" },
+		"line_percent_gradient":    { "fg": "yellow_red", "bg": "gray5" },
+		"position":                 { "fg": "gray9", "bg": "gray6" },
+		"position_gradient":        { "fg": "yellow_red", "bg": "gray6" },
+		"line_current":             { "fg": "lightyellow2", "bg": "gray7", "attr": ["bold"] },
+		"line_current_symbol":      { "fg": "lightgreen", "bg": "gray7" },
+		"virtcol_current_gradient": { "fg": "lightyellow2", "bg": "gray7" },
+		"col_current":              { "fg": "gray10", "bg": "gray5" },
+		"modified_buffers":         { "fg": "brightyellow", "bg": "gray2" },
+		"environment":              { "fg": "white", "bg": "gray8" },
+		"error":                    { "fg": "brightestred", "bg": "darkred", "attr": ["bold"] },
+		"warning":                  { "fg": "brightyellow", "bg": "darkorange", "attr": ["bold"] },
+		"current_tag":              { "fg": "gray9", "bg": "gray2" }
+	},
+	"mode_translations": {
+		"nc": {
+			"colors": {
+				"lightblue": "gray9",
+				"pink": "brightorange",
+				"gray7": "gray4",
+				"gray3": "gray3",
+				"gray2": "gray3",
+				"gray1": "gray2",
+				"lightgreen": "gray10",
+				"lightyellow2": "gray10",
+				"yellow_red": "gray10"
+			}
+		},
+		"i": {
+			"colors": {
+				"gray1": "bluegreen",
+				"gray2": "bluegreen",
+				"gray3": "steelblue",
+				"gray4": "bluegreen",
+				"gray5": "steelblue",
+				"gray6": "steelblue",
+				"gray7": "steelblue",
+				"lightblue": "white",
+				"pink": "brightorange",
+				"yellow_red": "white"
+			},
+			"groups": {
+				"mode":               { "fg": "bluegreen", "bg": "white", "attr": ["bold"] },
+				"background:divider": { "fg": "white", "bg": "bluegreen" },
+				"branch:divider":     { "fg": "white", "bg": "bluegreen" }
+			}
+		},
+		"v": {
+			"groups": {
+				"mode": { "fg": "white", "bg": "darkestgreen", "attr": ["bold"] }
+			}
+		},
+		"V": {
+			"groups": {
+				"mode": { "fg": "white", "bg": "magenta", "attr": ["bold"] }
+			}
+		},
+		"^V": {
+			"groups": {
+				"mode": { "fg": "white", "bg": "magenta", "attr": ["bold"] }
+			}
+		},
+		"R": {
+			"groups": {
+				"mode": { "fg": "white", "bg": "brightred", "attr": ["bold"] }
+			}
+		}
+	}
+}
