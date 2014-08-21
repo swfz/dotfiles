@@ -97,7 +97,7 @@ let g:unite_split_rule = 'botright'
 noremap <silent> <Leader>uo <ESC>:Unite  -no-quit -vertical -winwidth=30 outline<Return>
 
 "smartchr
-inoremap <buffer> <expr> - smartchr#loop('-', ' - ', '->')
+inoremap <buffer> <expr> - smartchr#loop('-', ' - ', '->', '--')
 inoremap <buffer> <expr> , smartchr#loop(',', ', ')
 inoremap <buffer> <expr> = smartchr#loop('=', ' == ', '=>')
 inoremap <buffer> <expr> % smartchr#loop('%', '[%  %]' )
