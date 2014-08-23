@@ -42,6 +42,7 @@ nnoremap <silent> <Leader>uc :<C-u>Unite codic<CR>
 nnoremap <silent> <Leader>nt :<C-u>NERDTree<CR>
 nnoremap <silent> <Leader>vs :<C-u>VimShell<CR>
 nnoremap <silent> <Leader>md :<C-u>PrevimOpen<CR>
+nmap <Leader>w  <Plug>(openbrowser-smart-search)
 noremap <buffer> ,ptv <Esc>:'<,'>! perltidy -pbp<CR>
 map <silent> <Leader>pt :%! perltidy
 
