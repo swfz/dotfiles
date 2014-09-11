@@ -98,6 +98,12 @@ endif
 let g:unite_split_rule = 'botright'
 noremap <silent> <Leader>uo <ESC>:Unite  -no-quit -vertical -winwidth=30 outline<Return>
 
+" taglist
+" let Tlist_Show_One_File = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Use_Right_Window = 1
+map <silent> <leader>l :TlistToggle<CR>
+
 "smartchr
 inoremap <buffer> <expr> - smartchr#loop('-', ' - ', '->', '--')
 inoremap <buffer> <expr> , smartchr#loop(',', ', ')
@@ -215,6 +221,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'tyru/caw.vim.git'
+NeoBundle 'vim-scripts/taglist.vim'
 
 "powerline
 NeoBundle 'Lokaltog/powerline.git'

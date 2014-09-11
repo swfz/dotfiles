@@ -18,6 +18,17 @@ function install_ag() {
   fi
 }
 
+function install_ctags() {
+  cd
+  wget http://prdownloads.sourceforge.net/ctags/ctags-5.8.tar.gz
+  tar zxf ctags-5.8.tar.gz
+  cd ctags-5.8
+  mkdir -p $HOME/local
+  ./configure  --prefix=$HOME/local
+  make
+  make install
+}
+
 function install_vim74(){
   exist_mercurial=`exist_command hg`
   if [ $exist_mercurial -ne 1 ]; then
