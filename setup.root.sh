@@ -156,5 +156,6 @@ install_tmux
 install_zsh
 install_peco
 install_samba
+install_ctags
 
 
