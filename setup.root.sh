@@ -79,11 +79,34 @@ function install_epel(){
   fi
 }
 
+
+function install_libevent2(){
+  cd
+  curl -LO https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
+  tar zxvf libevent-2.0.21-stable.tar.gz
+  cd libevent-2.0.21-stable.tar.gz
+  ./configure
+  make
+  make install
+}
+
 function install_tmux(){
   exist_tmux=`exist_command tmux`
   if [ $exist_tmux -ne 1 ]; then
     echo -e "\e[32m tmux install..........\e[m"
-    yum install -y tmux --enablerepo=rpmforge
+    # yum install -y tmux --enablerepo=rpmforge
+    install_libevent2
+    echo /usr/local/lib >> /etc/ld.so.conf.d/libevent.conf
+    ldconfig
+    ln -s /usr/local/lib/pkgconfig/libevent.pc /usr/lib64/pkgconfig/libevent.pc
+
+    cd
+    curl -LO http://downloads.sourceforge.net/tmux/tmux-1.9a.tar.gz
+    tar zxvf tmux-1.9a.tar.gz
+    cd tmux-1.9a
+    ./configure --sysconfdir=/etc --localstatedir=/var
+    make
+    make install
   fi
 }
 

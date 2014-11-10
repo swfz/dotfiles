@@ -31,3 +31,8 @@ alias mysqlu="mysql --default-character-set=utf8"
 
 alias psg="ps aux | grep "
 
+#env
+
+alias pe="plenv exec "
+alias re="rbenv exec "
+
