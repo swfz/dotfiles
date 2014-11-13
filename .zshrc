@@ -13,7 +13,12 @@ export LC_CTYPE=ja_JP.utf8
 autoload -U compinit
 compinit
 
+# Upper and Lower Case
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+# complete option
+zstyle ':completion:*:default' menu select=2
+zstyle ':completion:*:setopt:*' menu true select
 
 setopt ZLE
 autoload -Uz vcs_info
@@ -30,6 +35,8 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt hist_ignore_dups
 setopt share_history
+setopt extended_history
+setopt hist_no_store
 
 # vim-keybind
 bindkey -v
@@ -47,6 +54,11 @@ setopt auto_pushd
 setopt correct
 setopt list_packed
 setopt nolistbeep
+setopt list_types
+setopt magic_equal_subst
+
+#command color
+source $HOME/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 #powerline
 source $HOME/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh

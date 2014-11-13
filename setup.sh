@@ -121,8 +121,15 @@ shell=`echo $SHELL`
   fi
 }
 
+zsh_command_color(){
+  if [ ! -e $HOME/bin/zsh-syntax-highlighting ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/bin/
+  fi
+}
+
 git_config
 link_dotfiles
+zsh_command_color
 
 install_anyenv
 envs="plenv rbenv ndenv pyenv"
