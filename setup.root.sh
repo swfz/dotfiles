@@ -165,6 +165,42 @@ EOF
   fi
 }
 
+function install_parallel(){
+  cd
+  wget ftp://ftp.gnu.org/gnu/parallel/parallel-20110722.tar.bz2
+  tar xvjf parallel-20110722.tar.bz2
+  cd parallel-20110722
+  ./configure
+  make
+  make install
+}
+
+function install_openssh6(){
+  pkgs="rpm-build openssl-devel libedit-devel tcp_wrappers-devel tcp_wrappers pam-devel libX11-devel glibc-devel xmkmf libXt libXt-devel gtk2-devel"
+  for pkg in $pkgs
+  do
+    pkg_install $pkg
+  done
+
+  wget http://www.ftp.ne.jp/OpenBSD/OpenSSH/portable/openssh-6.6p1.tar.gz
+  tar zxvf openssh-6.6p1.tar.gz
+
+  wget wget http://pkgs.fedoraproject.org/repo/pkgs/openssh/x11-ssh-askpass-1.2.4.1.tar.gz/8f2e41f3f7eaa8543a2440454637f3c3/x11-ssh-askpass-1.2.4.1.tar.gz
+  tar zxvf x11-ssh-askpass-1.2.4.1.tar.gz
+  cp x11-ssh-askpass-1.2.4.1/* openssh-6.6p1/
+
+  rm -rf openssh-6.6p1/aix/
+  rm -rf openssh-6.6p1/cygwin/
+  rm -rf openssh-6.6p1/caldera/
+  rm -rf openssh-6.6p1/hpux/
+  rm -rf openssh-6.6p1/solaris/
+  rm -rf openssh-6.6p1/suse/
+
+  rm openssh-6.6p1.tar.gz
+  tar czvf openssh-6.6p1.tar.gz openssh-6.6p1/
+  rpmbuild -tb --clean openssh-6.6p1.tar.gz
+}
+
 pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip"
 for pkg in $pkgs
 do
@@ -180,5 +216,6 @@ install_zsh
 install_peco
 install_samba
 install_ctags
+install_parallel
 
 

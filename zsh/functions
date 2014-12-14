@@ -1,6 +1,33 @@
 alias pmversion='perl -le '"'"'for $module (@ARGV) { eval "use $module"; print "$module ", ${"$module\::VERSION"} || "not found" }'"'"
 
+alias str2sha256='perl -MDigest::SHA=sha256_hex -le '\''print sha256_hex($ARGV[0])'\'' '
+
 function colorlist(){
   for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo
+}
+
+function mrank() {
+  ps alx  | awk '{printf ("%dM\t%s\t%d\n", $8/1024,$13,$3)}' | sort -nr | head -$1
+}
+
+function cpurank() {
+  ps auxwww | awk '{printf ("%s\t%d\t%s\n", $3,$2,$11)}' | sort -nr | head -$1
+}
+
+function binlog() {
+  mysqlbinlog --start-datetime="$2" --stop-datetime="$3" $1 | perl -e 'while(<>){ chomp; next if m!^#!; if ( m{/\*!\*/;$} ) { $p .= $_; print "$p\n"; $p="" } else { $p .= $_." "} }'
+}
+
+function sql.trace(){
+ sudo /usr/sbin/tcpdump -i lo -s 0 -l -w - dst port 3306 | strings | perl -nle '
+   chomp;
+   next if /^[^ ]+[ ]*$/;
+   if ( /^(SELECT|UPDATE|DELETE|INSERT|SET|COMMIT|ROLLBACK|CREATE|DROP|ALTER)/i ) {
+     print $q if defined $q;
+     $q = $_;
+   } else {
+     $_ =~ s/^[ \t]+//;
+     $q .= " $_";
+   }'
 }
 

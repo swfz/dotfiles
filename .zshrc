@@ -2,6 +2,10 @@
 if [ -f $HOME/practice/.alias.server ]; then
   source $HOME/practice/.alias.server
 fi
+if [ -f ~/practice/.functions ]; then
+  . ~/practice/.functions
+fi
+
 umask 002
 
 #env
@@ -39,7 +43,7 @@ setopt extended_history
 setopt hist_no_store
 
 # vim-keybind
-bindkey -v
+bindkey -e
 
 # history search
 autoload history-search-end
