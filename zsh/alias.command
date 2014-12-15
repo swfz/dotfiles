@@ -33,6 +33,9 @@ alias psg="ps aux | grep "
 
 #env
 
+alias ne="ndenv exec"
 alias pe="plenv exec "
+alias ce="carton exec"
 alias re="rbenv exec "
+alias be="bundle exec"
 
