@@ -123,7 +123,7 @@ shell=`echo $SHELL`
 
 zsh_command_color(){
   if [ ! -e $HOME/bin/zsh-syntax-highlighting ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/bin/
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/bin/zsh-syntax-highlighting
   fi
 }
 
