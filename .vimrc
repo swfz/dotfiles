@@ -237,7 +237,7 @@ syntax enable
 
 colorscheme lucius
 LuciusBlack
-""hi Normal ctermbg=NONE
+hi Normal ctermbg=NONE
 
 
 " Installation check.
@@ -438,7 +438,7 @@ endfunction
 "" cursorline
 ""autocmd InsertEnter,InsertLeave * set cursorline!
 set cursorline
-highlight CursorLine ctermbg=234
+highlight CursorLine ctermbg=240
 
 "" submode.vim
 call submode#enter_with('winsize', 'n', '', '<C-w>>', '<C-w>>')
@@ -461,8 +461,8 @@ map H <Plug>(operator-quickhl-manual-this-motion)
 
 ""vim-indent-guides
 let g:indent_guides_auto_colors=0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=233
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=236
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=240
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=238
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_guide_size=2
 

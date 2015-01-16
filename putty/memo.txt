@@ -1,0 +1,83 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\01vagranttest]
+"Colour0"="220,220,220"
+"Colour1"="227,191,33"
+"Colour2"="43,62,80"
+"Colour3"="255,0,0"
+"Colour4"="142,228,120"
+"Colour5"="252,111,250"
+"Colour6"="79,79,79"
+"Colour7"="130,130,130"
+"Colour8"="255,108,96"
+"Colour9"="250,105,96"
+"Colour10"="142,228,120"
+"Colour11"="142,228,120"
+"Colour12"="251,176,54"
+"Colour13"="254,255,185"
+"Colour14"="87,150,237"
+"Colour15"="87,150,237"
+"Colour16"="255,115,253"
+"Colour17"="255,115,253"
+"Colour18"="107,159,237"
+"Colour19"="87,150,237"
+"Colour20"="238,238,238"
+"Colour21"="255,255,255"
+
+0:LIGHTGRAY-標準出力
+1:
+2:background
+3:
+4:
+5:カーソル色
+6:BLACK
+7:DARKGRAY
+8:zshの補完候補聞いてくるとき
+9:
+10:GREEN
+11:LIGHTGREEN
+12:BROWN
+13:YELLOW
+14:BLUE
+15:LIGHTBLUE
+16:pecoでの選択行背景色
+17:LIGHTPURPLE
+18:CYAN
+19:LIGHTCYAN
+20:LIGHTGRAY
+21:WHITE
+
+
+#define _color0        #4f4f4f 79,79,79 濃いグレー
+#define _color8        #4f4f4f 79,79,79 濃いグレー
+!RED Tag
+#define _color1        #ff6c60 255,108,96 朱色
+#define _color9        #fa6960 250,105,96 朱色
+!GRN SpecialKey
+#define _color2        #fbb036 251,176,54 山吹色
+#define _color10       #fbb036 251,176,54 山吹色
+!YEL Keyword
+#define _color3        #ffffb6 255,255,182 薄い黄色
+#define _color11       #feffb9 254,255,185 薄い黄色
+!BLU Number
+#define _color4        #5796ed 87,150,237 ライトブルー
+#define _color12       #6b9fed 107,159,237 彩度低いライトブルー
+!MAG Precondit
+#define _color5        #ff73fd 255,115,253 ピンク
+#define _color13       #fc6ffa 252,111,250 ピンク
+!CYN Float
+#define _color6        #8ee478 142,228,120 緑
+#define _color14       #8ee478 142,228,120 緑
+!WHT Search
+#define _color7        #eeeeee 238,238,238 薄いグレー
+#define _color15       #ffffff 255,255,255 白
+!FMT Include, StatusLine, ErrorMsg
+#define _colorBD       #ffffff 255,255,255 白
+#define _colorUL       #ffffff 255,255,255 白
+#define _colorIT       #ffffff 255,255,255 白
+!TXT Normal, Normal, Cursor
+#define _foreground    #f8f8f2 248,248,242 薄いグレー
+#define _background    #2b3e50 43,62,80 紺
+#define _cursorColor   #e3bf21 227,191,33 濃い山吹色
+
+
