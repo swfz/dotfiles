@@ -222,6 +222,8 @@ NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'raphamorim/lucario'
+NeoBundle 'derekwyatt/vim-scala'
 
 "powerline
 NeoBundle 'Lokaltog/powerline.git'
