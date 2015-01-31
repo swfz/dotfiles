@@ -1,0 +1,4 @@
+Host github.com
+  User swfz
+  Port 22
+  Hostname github.com
