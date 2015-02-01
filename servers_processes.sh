@@ -24,7 +24,7 @@ echo_server(){
   server=$1
   bgcolor=$2
   num=$3
-  echo -e "$bgcolor $server $RESET $num\c"
+  echo -e "$bgcolor $server $RESET $num\t\c"
 }
 
 metric(){
@@ -32,30 +32,25 @@ metric(){
   num=`ssh $server "$COMMAND"`
   num=`expr $num % 10`
 
+  echo -e "\033[K\c"
   echo_server $server $BGBLUE $num
-
-  if [ $num -lt ${before_["$server"]} ]; then
-    echo_length " " ${before_["$server"]}
-    echo_server $server $BGBLUE $num
-  fi
 
   [ $num -lt $SHRESHOLD ] && COLOR="$FGRED" || COLOR="$FGCYAN"
   echo -e "$COLOR\c"
   echo_length "#" $num
   echo -e "$RESET"
 
-  before_["$1"]=$num
 }
 
-declare -A before_
+clear
 while true
 do
   for server in ${SERVERS[@]}
   do
-    before_["$server"]=0
     metric $server
   done
   sleep 1
-  clear
+  echo -e "\033[0;0H\c"
+  # clear
 done
 
