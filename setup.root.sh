@@ -201,7 +201,7 @@ function install_openssh6(){
   rpmbuild -tb --clean openssh-6.6p1.tar.gz
 }
 
-pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip"
+pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs"
 for pkg in $pkgs
 do
   pkg_install $pkg
