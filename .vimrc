@@ -27,6 +27,11 @@ set backspace=2
 
 syntax on
 
+"date
+inoremap ,todo <C-R>=strftime('%Y-%m-%d %a')<CR>
+inoremap ,date <C-R>=strftime('%Y-%m-%d')<CR>
+inoremap ,time <C-R>=strftime('%H:%M:%S')<CR>
+
 "status line
 set statusline=%n\:%y%F\ \|%{(&fenc!=''?&fenc:&enc).'\|'.&ff.'\|'}%m%r%{fugitive#statusline()}%=<%l/%L:%p%%>
 inoremap <c-j> <esc>
@@ -143,6 +148,7 @@ augroup END
 highlight PreProc guifg=#ffffffffffff
 
 au BufNewFile,BufRead *.tt :set ft=html
+au BufRead,BufNewFile *.tmp set filetype=tmp
 
 "--------------------------------------------------------------------------
 " neobundle
@@ -463,8 +469,8 @@ map H <Plug>(operator-quickhl-manual-this-motion)
 
 ""vim-indent-guides
 let g:indent_guides_auto_colors=0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=240
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=238
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd   ctermbg=024
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven  ctermbg=026
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_guide_size=2
 
