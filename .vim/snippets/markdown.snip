@@ -14,14 +14,24 @@ snippet table4
     |  |  |  |  |
 
 snippet link
-    [title](url "alt")
+    [title](${1:func} "alt")
 
 snippet code
-    ```
-    ```
+    \`\`\`
+    ${1:func}
+    \`\`\`
 
 snippet image
-    ![text](url "alt")
+    ![text](${1:func} "alt")
+
+snippet separate
+    ------------------------------
 
 snippet line
-    ------------------------------
+    \`${1:func}\`
+
+snippet em
+    * ${1:func} *
+
+snippet st
+    ** ${1:func} **
