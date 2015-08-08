@@ -127,9 +127,14 @@ zsh_command_color(){
   fi
 }
 
+install_enhancd(){
+  curl -L git.io/enhancd | sh
+}
+
 git_config
 link_dotfiles
 zsh_command_color
+install_enhancd
 
 install_anyenv
 envs="plenv rbenv ndenv pyenv"
