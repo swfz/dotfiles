@@ -32,13 +32,18 @@ NeoBundle 'AndrewRadev/linediff.vim'
 NeoBundle 'mattn/emmet-vim'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'LeafCage/yankround.vim'
 
-" filer
+" filer move
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'wesleyche/SrcExpl'
+NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'thinca/vim-ref'
 
 " shell
 NeoBundle 'thinca/vim-quickrun'
@@ -60,6 +65,7 @@ NeoBundle 'mrkn/mrkn256.vim'
 NeoBundle 'ChasingLogic/ChasingLogic-colorscheme-vim'
 NeoBundle 'raphamorim/lucario'
 NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'therubymug/vim-pyte'
 
 " syntax
 NeoBundle 'scrooloose/syntastic'
@@ -85,13 +91,7 @@ NeoBundle 'kana/vim-submode'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " other
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'ujihisa/unite-font'
 NeoBundle 'hotchpotch/perldoc-vim'
-NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'therubymug/vim-pyte'
-NeoBundle 'LeafCage/yankround.vim'
-NeoBundle 'vim-scripts/taglist.vim'
 
 " powerline
 NeoBundle 'Lokaltog/powerline.git'
