@@ -80,3 +80,7 @@ export ENHANCD_FILTER="peco"
 if [ -f "/home/sawafuji.yuya/.enhancd/zsh/enhancd.zsh" ]; then
     source "/home/sawafuji.yuya/.enhancd/zsh/enhancd.zsh"
 fi
+
+# cheatsheet
+export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
+export CHEATCOLORS=true

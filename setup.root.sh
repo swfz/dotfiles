@@ -201,13 +201,19 @@ function install_openssh6(){
   rpmbuild -tb --clean openssh-6.6p1.tar.gz
 }
 
-pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs"
+function install_cheat(){
+  easy_install pip
+  pip install cheat
+}
+
+
+pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools"
 for pkg in $pkgs
 do
   pkg_install $pkg
 done
 
-#install_rpmforge
+install_rpmforge
 install_epel
 install_vim74
 install_ag
@@ -217,4 +223,5 @@ install_peco
 install_samba
 install_ctags
 install_parallel
+install_cheat
 
