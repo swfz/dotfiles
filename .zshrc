@@ -5,6 +5,10 @@ fi
 if [ -f ~/practice/.functions ]; then
   . ~/practice/.functions
 fi
+if [ -f ~/practice/.export ]; then
+  . ~/practice/.export
+fi
+
 
 umask 002
 
