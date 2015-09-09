@@ -1,3 +1,4 @@
+StrictHostKeyChecking no
 Host github.com
   User swfz
   Port 22
