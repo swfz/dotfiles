@@ -1,0 +1,46 @@
+# リダイレクトも追う
+curl -L 'http://url'
+
+# cookieの保存
+curl -c filename.cookie 'http://url'
+
+# cookieの送信
+curl -b filename.cookie 'http://url'
+
+# ユーザーエージェント
+curl -A 'Mozilla/........' 'http://url'
+
+# 出力の加工
+curl 'http://url' -w "%{http_code}\t%{time_total}"
+
+# SSL警告の無視
+curl --insecure 'http://url'
+
+# basic認証
+curl -u user:pass 'http://url'
+
+# POSTデータ送信
+curl 'http://url' -d {"key":"value"}
+
+# タイムアウト
+curl -m 30 'http://url'
+
+# リファラの指定
+curl -e 'http://refere.com' 'http://request.com'
+
+# ヘッダの変更
+curl -H "Host: http://test.com" 'http://url'
+
+# ヘッダの取得
+curl -I 'http://url'
+
+# やりとりの表示
+curl -v 'http://url'
+
+# ファイルへ出力
+curl -D filename 'http://url'
+
+# 標準出力へ出力
+curl -D - 'http://url'
+
+
