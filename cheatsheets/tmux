@@ -1,0 +1,10 @@
+# list session
+tmux ls
+
+# atach 0:のセッションに
+tmux a -t 0
+
+# current session
+tmux lsc
+
+
