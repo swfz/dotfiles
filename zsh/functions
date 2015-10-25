@@ -31,3 +31,6 @@ function sql.trace(){
    }'
 }
 
+function jg() {
+  echo "$@" | json_xs -f eval
+}
