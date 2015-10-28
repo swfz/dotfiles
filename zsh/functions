@@ -34,3 +34,9 @@ function sql.trace(){
 function jg() {
   echo "$@" | json_xs -f eval
 }
+
+function dates() {
+  for i in `seq 0 $2`;do date +"%F" --date "$1 $i days";done
+}
+
+

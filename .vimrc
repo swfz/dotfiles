@@ -23,4 +23,5 @@ source ~/dotfiles/vimrc/plugins/indent-guides.vim
 source ~/dotfiles/vimrc/plugins/yankround.vim
 source ~/dotfiles/vimrc/plugins/caw.vim
 source ~/dotfiles/vimrc/plugins/smartchr.vim
+source ~/dotfiles/vimrc/plugins/srcexpl.vim
 

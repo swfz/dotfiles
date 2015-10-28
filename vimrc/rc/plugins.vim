@@ -77,6 +77,7 @@ NeoBundle 't9md/vim-quickhl'
 " git
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'vim-scripts/vcscommand.vim'
 
 " api
 NeoBundle 'koron/codic-vim'

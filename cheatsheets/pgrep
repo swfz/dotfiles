@@ -1,0 +1,6 @@
+# show full command line
+pgrep -lf command
+
+# show process name
+pgrep -l command
+
