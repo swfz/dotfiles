@@ -1,0 +1,8 @@
+# 詳細
+mysqlbinlog /path/to/binlog/mysql-bin.000001 -vv
+
+# base64デコード
+mysqlbinlog /path/to/binlog/mysql-bin.000001 --base64-output=DECODE-ROWS
+
+# 期間指定
+mysqlbinlog /path/to/binlog/mysql-bin.000001 --start-datetime="2015-10-20 10:10:10" --stop-datetime="2015-10-20 10:10:15"
