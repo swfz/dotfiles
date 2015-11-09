@@ -128,13 +128,25 @@ zsh_command_color(){
 }
 
 install_enhancd(){
-  curl -L git.io/enhancd | sh
+  if [ ! -e $HOME/.enhancd ]; then
+    curl -L git.io/enhancd | sh
+  fi
+}
+
+install_cleaver(){
+  exist_cleaver=`exist_command cleaver`
+  if [ $exist_cleaver -ne 1 ]; then
+    ndenv install v5.0.0
+    ndenv global v5.0.0
+    npm install -g cleaver
+  fi
 }
 
 git_config
 link_dotfiles
 zsh_command_color
 install_enhancd
+install_cleaver
 
 install_anyenv
 envs="plenv rbenv ndenv pyenv"

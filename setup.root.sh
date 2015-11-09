@@ -73,8 +73,7 @@ function install_epel(){
   rpmforge=`yum repolist all | grep epel | wc -l`
   if [ $rpmforge -eq 0 ]; then
     echo -e "\e[32m epel install..........\e[m"
-    wget http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-    rpm -Uvh epel-release-6-8.noarch.rpm
+    rpm -ivh http://ftp-srv2.kddilabs.jp/Linux/distributions/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
     sed -i "s/enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
   fi
 }
@@ -84,7 +83,7 @@ function install_libevent2(){
   cd
   curl -LO https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
   tar zxvf libevent-2.0.21-stable.tar.gz
-  cd libevent-2.0.21-stable.tar.gz
+  cd libevent-2.0.21-stable
   ./configure
   make
   make install
@@ -206,8 +205,26 @@ function install_cheat(){
   pip install cheat
 }
 
+function install_git(){
+  dependent_pkgs="zlib-devel perl-devel gettext gcc curl-devel"
+  for pkg in $dependent_pkgs
+  do
+    pkg_install $pkg
+  done
 
-pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS"
+  wget https://git-core.googlecode.com/files/git-1.8.5.5.tar.gz
+  tar zxvf git-1.8.5.5.tar.gz
+  cd git-1.8.5.5
+  ./configure
+  make
+  make install
+}
+
+function install_ansible(){
+  yum install -y --enablerepo=epel ansible
+}
+
+pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix"
 for pkg in $pkgs
 do
   pkg_install $pkg
