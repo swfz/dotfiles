@@ -136,11 +136,19 @@ install_enhancd(){
 install_cleaver(){
   exist_cleaver=`exist_command cleaver`
   if [ $exist_cleaver -ne 1 ]; then
+    chmod +x $HOME
     ndenv install v5.0.0
     ndenv global v5.0.0
     npm install -g cleaver
   fi
 }
+
+# nginx.conf
+    # server{
+    #     location /cleaver {
+    #         root $HOME;
+    #     }
+    # }
 
 git_config
 link_dotfiles
