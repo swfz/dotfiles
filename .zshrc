@@ -2,6 +2,9 @@
 if [ -f $HOME/practice/.alias.server ]; then
   source $HOME/practice/.alias.server
 fi
+if [ -f $HOME/practice/.alias.command ]; then
+  source $HOME/practice/.alias.command
+fi
 if [ -f ~/practice/.functions ]; then
   . ~/practice/.functions
 fi

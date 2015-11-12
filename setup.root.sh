@@ -226,6 +226,8 @@ function install_ansible(){
 
 function install_CutyCapt(){
   yum install -y --enablerepo=epel CutyCapt
+  # for Xvfb
+  dbus-uuidgen > /var/lib/dbus/machine-id
 }
 
 function install_nginx(){

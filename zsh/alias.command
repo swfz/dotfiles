@@ -32,6 +32,12 @@ alias view='vim -R -'
 alias mysqlu="mysql --default-character-set=utf8"
 alias psgrep="ps aux | grep "
 
+alias V='| vim -R -'
+alias Gc='grep -c'
+alias G='grep'
+alias ZG='zgrep'
+alias CS='cheat'
+
 #env
 alias ne="ndenv exec"
 alias pe="plenv exec "
