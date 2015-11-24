@@ -235,6 +235,11 @@ function install_nginx(){
   yum install -y nginx
 }
 
+function install_jq(){
+  curl -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -o /usr/local/bin/jq
+  chmod +x /usr/local/bin/jq
+}
+
 pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix unix2dos ctags xorg-x11-server-Xvfb ImageMagick ImageMagick-devel"
 for pkg in $pkgs
 do
@@ -256,4 +261,5 @@ install_git
 install_ansible
 install_nginx
 install_CutyCapt
+install_jq
 

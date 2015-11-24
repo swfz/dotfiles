@@ -1,4 +1,6 @@
 StrictHostKeyChecking no
+ServerAliveInterval 60
+ServerAliveCountMax 3
 Host github.com
   User swfz
   Port 22

@@ -67,4 +67,5 @@ augroup HighlightTrailingSpaces
 augroup END
 " -----------------------------------------------------
 
-
+" json syntax
+autocmd Filetype json setl conceallevel=0
