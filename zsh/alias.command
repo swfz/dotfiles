@@ -28,7 +28,7 @@ alias gdi="git diff"
 
 #vim
 alias vi="vim"
-alias view='vim -R -'
+alias view='| vim -R -'
 alias mysqlu="mysql --default-character-set=utf8"
 alias psgrep="ps aux | grep "
 
@@ -44,4 +44,8 @@ alias pe="plenv exec "
 alias ce="carton exec"
 alias re="rbenv exec "
 alias be="bundle exec"
+
+alias L="less"
+alias G="grep"
+alias GC="grep --color=always"
 

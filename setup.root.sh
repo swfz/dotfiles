@@ -165,13 +165,7 @@ EOF
 }
 
 function install_parallel(){
-  cd
-  wget ftp://ftp.gnu.org/gnu/parallel/parallel-20110722.tar.bz2
-  tar xvjf parallel-20110722.tar.bz2
-  cd parallel-20110722
-  ./configure
-  make
-  make install
+  rpm -ivh ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/csbuild:/centosextra/CentOS_CentOS-6/noarch/parallel-20130122-2.1.noarch.rpm
 }
 
 function install_openssh6(){
@@ -241,6 +235,7 @@ function install_jq(){
 }
 
 pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix unix2dos ctags xorg-x11-server-Xvfb ImageMagick ImageMagick-devel"
+
 for pkg in $pkgs
 do
   pkg_install $pkg
