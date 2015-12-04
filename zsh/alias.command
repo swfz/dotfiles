@@ -49,4 +49,5 @@ alias L="less"
 alias G="grep"
 alias GC="grep --color=always"
 
+alias ltoj="awk -F\"\\t\" '{print \$3}'"
 
