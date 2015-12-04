@@ -1,0 +1,5 @@
+# requirements.yml を使ってgithubなどからもDL可能
+ansible-galaxy install -r requirements.yml -p roles
+
+# 上書き
+ansible-galaxy install -r requirements.yml -p roles --force

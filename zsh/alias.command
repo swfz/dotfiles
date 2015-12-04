@@ -36,7 +36,7 @@ alias V='| vim -R -'
 alias Gc='grep -c'
 alias G='grep'
 alias ZG='zgrep'
-alias CS='cheat'
+alias cs='cheat'
 
 #env
 alias ne="ndenv exec"
@@ -48,4 +48,5 @@ alias be="bundle exec"
 alias L="less"
 alias G="grep"
 alias GC="grep --color=always"
+
 
