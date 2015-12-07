@@ -28,11 +28,11 @@ alias gdi="git diff"
 
 #vim
 alias vi="vim"
-alias view='| vim -R -'
+alias view='vim -R -'
 alias mysqlu="mysql --default-character-set=utf8"
 alias psgrep="ps aux | grep "
 
-alias V='| vim -R -'
+alias V='vim -R -'
 alias Gc='grep -c'
 alias G='grep'
 alias ZG='zgrep'
