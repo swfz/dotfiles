@@ -24,6 +24,8 @@ jq '.AutoScalingGroups[]|select(.AutoScalingGroupName == "backends")|.Instances[
 # 日付の比較
 jq 'select(.time <= "2015-12-18 03:20:00")|select(.time >= "2015-12-18 03:10:00")|'
 
+# 複数取得
+jq '.Messages[].Body, .Messages[].Handle'
 
 
 
