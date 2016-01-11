@@ -27,5 +27,11 @@ jq 'select(.time <= "2015-12-18 03:20:00")|select(.time >= "2015-12-18 03:10:00"
 # 複数取得
 jq '.Messages[].Body, .Messages[].Handle'
 
+# 一行出力
+jq '-c [.group.unread_count_display, .group.name]'
 
+# 特定の要素が存在するか
+jq 'select(has("age"))'
 
+# 特定の要素を含むかチェック
+jq 'select(contains({age:20}))'
