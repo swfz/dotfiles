@@ -227,11 +227,30 @@ function install_CutyCapt(){
 function install_nginx(){
   rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
   yum install -y nginx
+
+  # /etc/hosts
+  # mkdocs
+  # 192.168.30.11 docs.local
+  # cleaver
+  # 192.168.30.11 cleaver.local
 }
 
 function install_jq(){
   curl -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -o /usr/local/bin/jq
   chmod +x /usr/local/bin/jq
+}
+
+function install_tukubai(){
+  cd
+  wget --no-check-certificate http://uec.usp-lab.com/TUKUBAI/DOWNLOAD/open-usp-tukubai-2014061402.tar.bz2
+  tar jxf open-usp-tukubai-2014061402.tar.bz2
+  cd open-usp-tukubai-2014061402
+  make install
+}
+
+function install_percona_toolkit(){
+  yum install perl-Time-HiRes perl-IO-Socket-SSL perl-DBI perl-DBD-MySQL perl-TermReadKey
+  rpm -ivh https://www.percona.com/downloads/percona-toolkit/2.2.16/RPM/percona-toolkit-2.2.16-1.noarch.rpm
 }
 
 pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix unix2dos ctags xorg-x11-server-Xvfb ImageMagick ImageMagick-devel"
@@ -257,4 +276,6 @@ install_ansible
 install_nginx
 install_CutyCapt
 install_jq
+install_tukubai
+install_percona_toolkit
 
