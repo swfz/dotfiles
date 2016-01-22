@@ -31,8 +31,12 @@ function sql.trace(){
    }'
 }
 
-function jg() {
+function h2j() {
   echo "$@" | json_xs -f eval
+}
+
+function h2y() {
+  echo "$@" | json_xs -f eval -t yaml
 }
 
 function dates() {
