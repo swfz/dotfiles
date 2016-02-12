@@ -1,0 +1,14 @@
+# utf8 判別結果
+nkf -g
+
+# UTF-8
+nkf -w
+
+# EUC
+nkf -e
+
+# Shift-JIS
+nkf -s
+
+# 変換上書き
+nkf --overwrite -w path.ext
