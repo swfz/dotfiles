@@ -87,6 +87,10 @@ function link_dotfiles(){
   fi
 }
 
+path2dotfiles_bin(){
+  echo 'export PATH="$HOME/dotfiles/bin:$PATH"' >> $HOME/$PROFILE
+}
+
 #tmux powerline
 install_tmux_powerline(){
   if [ ! -e $HOME/.tmux/tmux-powerline ]; then
@@ -152,10 +156,10 @@ install_cleaver(){
 
 git_config
 link_dotfiles
+path2dotfiles_bin
 zsh_command_color
 install_enhancd
 install_cleaver
-
 
 install_anyenv
 envs="plenv rbenv ndenv pyenv"
