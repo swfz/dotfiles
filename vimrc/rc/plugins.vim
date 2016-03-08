@@ -73,6 +73,7 @@ NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 't9md/vim-quickhl'
+NeoBundle "slim-template/vim-slim"
 
 " git
 NeoBundle 'gregsexton/gitv'
