@@ -25,3 +25,7 @@ function csp () {
   print -z "$BUFFER"
   export CHEATCOLORS=true
 }
+
+function tvi () {
+  vim $( tree --charset=o -f $1 | peco | tr -d '\||`|-' )
+}
