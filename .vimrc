@@ -19,7 +19,7 @@ source ~/dotfiles/vimrc/plugins/unite-outline.vim
 source ~/dotfiles/vimrc/plugins/taglist.vim
 source ~/dotfiles/vimrc/plugins/submode.vim
 source ~/dotfiles/vimrc/plugins/quickhl.vim
-source ~/dotfiles/vimrc/plugins/indent-guides.vim
+source ~/dotfiles/vimrc/plugins/indentline.vim
 source ~/dotfiles/vimrc/plugins/yankround.vim
 source ~/dotfiles/vimrc/plugins/caw.vim
 source ~/dotfiles/vimrc/plugins/smartchr.vim

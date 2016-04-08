@@ -90,7 +90,8 @@ NeoBundle 'tyru/open-browser.vim'
 
 " design
 NeoBundle 'kana/vim-submode'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle "Yggdroot/indentLine"
+" NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " other
 NeoBundle 'hotchpotch/perldoc-vim'
