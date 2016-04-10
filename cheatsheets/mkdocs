@@ -1,1 +1,1 @@
-mkdocs serve --dev-addr=192.168.70.11:8000
+mkdocs serve --dev-addr=$(/sbin/ifconfig eth1 | grep -Po 'inet addr:.*? ' | awk -F"[: ]" '{print $3}'):8000
