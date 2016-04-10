@@ -206,9 +206,9 @@ function install_git(){
     pkg_install $pkg
   done
 
-  wget https://git-core.googlecode.com/files/git-1.8.5.5.tar.gz
-  tar zxvf git-1.8.5.5.tar.gz
-  cd git-1.8.5.5
+  wget https://www.kernel.org/pub/software/scm/git/git-2.7.4.tar.gz
+  tar zxvf git-2.7.4.tar.gz
+  cd git-2.7.4
   ./configure
   make
   make install
