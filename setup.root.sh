@@ -75,6 +75,8 @@ function install_epel(){
     echo -e "\e[32m epel install..........\e[m"
     rpm -ivh http://ftp-srv2.kddilabs.jp/Linux/distributions/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
     sed -i "s/enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+    sed -i "s/#baseurl/baseurl/" /etc/yum.repos.d/epel.repo
+    sed -i "s/mirrorlist/#mirrorlist/" /etc/yum.repos.d/epel.repo
   fi
 }
 
