@@ -242,6 +242,10 @@ function install_jq(){
   chmod +x /usr/local/bin/jq
 }
 
+function install_q(){
+  rpm -ivh https://github.com/harelba/packages-for-q/raw/master/rpms/q-text-as-data-1.5.0-1.noarch.rpm
+}
+
 function install_tukubai(){
   cd
   wget --no-check-certificate http://uec.usp-lab.com/TUKUBAI/DOWNLOAD/open-usp-tukubai-2014061402.tar.bz2
@@ -278,6 +282,7 @@ install_ansible
 install_nginx
 install_CutyCapt
 install_jq
+install_q
 install_tukubai
 install_percona_toolkit
 
