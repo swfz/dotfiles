@@ -43,4 +43,8 @@ function dates() {
   for i in `seq 0 $2`;do date +"%F" --date "$1 $i days";done
 }
 
+function submodule_update() {
+  git submodule foreach git pull origin master
+}
+
 
