@@ -242,6 +242,15 @@ function install_jq(){
   chmod +x /usr/local/bin/jq
 }
 
+function install_jo(){
+  curl -LO https://github.com/jpmens/jo/releases/download/v1.0/jo-1.0.tar.gz
+  tar zxvf jo-1.0.tar.gz
+  cd jo-1.0
+  ./configure
+  make check
+  make install
+}
+
 function install_q(){
   rpm -ivh https://github.com/harelba/packages-for-q/raw/master/rpms/q-text-as-data-1.5.0-1.noarch.rpm
 }
@@ -282,6 +291,7 @@ install_ansible
 install_nginx
 install_CutyCapt
 install_jq
+install_jo
 install_q
 install_tukubai
 install_percona_toolkit
