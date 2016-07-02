@@ -1,0 +1,14 @@
+- name: install samba
+  yum: name=samba state=installed
+
+- name: set config
+  template: src=smb.conf dest=/etc/samba/smb.conf
+  register: samba_config
+
+- name: running samba
+  service: name=smb state=running enabled=yes
+
+- name: restart samba
+  service: name=smb state=restarted
+  when: samba_config.changed
+

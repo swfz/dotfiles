@@ -1,0 +1,16 @@
+#!/bin/bash
+
+autoscale_group=$1
+
+instance_ids=`aws autoscaling describe-auto-scaling-groups \
+  | jq -r ".AutoScalingGroups[] \
+    |select(.AutoScalingGroupName == \"$autoscale_group\") \
+    |.Instances[] \
+    |select(.LifecycleState == \"InService\") \
+    |select(.HealthStatus == \"Healthy\") \
+    |.InstanceId"`
+
+aws ec2 describe-instances \
+  --instance-ids $instance_ids \
+  | jq -r '.Reservations[].Instances[]|select(.State.Name == "running")|.PrivateIpAddress'
+

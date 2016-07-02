@@ -1,0 +1,47 @@
+---
+- hosts: local
+  vars_files:
+    - common_vars.yml
+  become: yes
+  roles:
+    - common
+    # from source
+    # - git
+    # - zsh
+    # - jo
+    # to bin
+    # - peco
+    # - jq
+    # - docker-compose
+    # yum
+    # - tmux
+    # - docker
+    # - samba
+    # - q
+    # - nginx
+    # pip
+    - by_pip # cheat, mycli
+    # repository
+    # - rpmforge
+    # TODO
+    # - apex
+    # - terraform
+    # - aws cli
+
+- hosts: local
+  vars_files:
+    - common_vars.yml
+  become_user: "{{ user }}"
+  roles:
+    # - config
+    # to bin and install languages
+    - anyenv
+    # TODO
+    # - powerline # from pip
+    # - envfile
+    # - enhanced
+    # - zsh_command_color
+    # - link
+    # - vim_plugins
+
+

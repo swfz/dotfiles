@@ -1,0 +1,48 @@
+- name: exist tmux
+  command: which tmux
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_tmux
+  changed_when: false
+  ignore_errors: true
+
+- name: get tmux version
+  shell: tmux -V
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_tmux
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_tmux.rc == 0
+
+- block:
+  - name: install dependencies package
+    yum: name={{ item }} state=installed
+    with_items:
+      - libevent-devel
+      - ncurses-devel
+      - gcc
+
+  - name: get source
+    get_url:
+      url: "{{ tmux.src }}"
+      dest: /tmp/{{ tmux.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ tmux.tgz }}
+      dest: /tmp
+      copy: no
+
+  - name: configure make install
+    command: chdir=/tmp/{{ tmux.dir }} {{ item }}
+    with_items:
+      - ./configure
+      - make
+      - make install
+
+  when:
+    exist_tmux.rc != 0
+    or ( version_in_tmux is defined and version_in_tmux.stdout.find(tmux_version) == -1 )
+

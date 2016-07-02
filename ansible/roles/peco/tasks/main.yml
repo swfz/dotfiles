@@ -1,0 +1,38 @@
+- name: exist peco
+  command: which peco
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_peco
+  changed_when: false
+  ignore_errors: true
+
+- name: get peco version
+  shell: peco --version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_peco
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_peco.rc == 0
+
+- block:
+  - name: peco get source
+    get_url:
+      url: "{{ peco.url }}"
+      dest: /tmp/{{ peco.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ peco.tgz }}
+      dest: /tmp/
+      copy: no
+
+  - name: move peco
+    command: mv /tmp/{{ peco.dir }}/peco /usr/local/bin/peco
+
+  when:
+    exist_peco.rc != 0
+    or ( version_in_peco is defined and version_in_peco.stderr.find(peco_version) == -1 )
+
+

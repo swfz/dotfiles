@@ -1,0 +1,22 @@
+# local config
+user: sawafuji.yuya
+git_username: swfz
+git_usermail: sawafuji.09@gmail.com
+git_editor: vim
+envs:
+  - { name: plenv, version: 5.25.2 }
+  - { name: rbenv, version: 2.3.1 }
+  - { name: pyenv, version: 3.5.2 }
+  - { name: ndenv, version: v6.2.2 }
+
+# root config
+git_v: 2.9.0
+tmux_v: 2.1
+peco_v: v0.3.6
+zsh_v: 5.2
+jq_v: 1.5
+jo_v: 1.0
+q_v: 1.5.0-1
+docker_v: 1.10.3
+docker_compose_v: 1.7.1
+

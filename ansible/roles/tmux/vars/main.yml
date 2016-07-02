@@ -1,0 +1,6 @@
+tmux_version: "{{ tmux_v|default('2.1')}}"
+
+tmux:
+  dir: tmux-{{ tmux_version }}
+  tgz: tmux-{{ tmux_version }}.tar.gz
+  src: https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz

@@ -1,0 +1,48 @@
+- name: dependencies packages
+  yum: name={{ item }}
+  with_items:
+    - perl-ExtUtils-MakeMaker
+    - zlib-devel
+
+- name: exist git
+  command: which git
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_git
+  changed_when: false
+  ignore_errors: true
+
+- name: get git version
+  shell: git --version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_git
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_git.rc == 0
+
+- block:
+  - name: get source
+    get_url:
+      url: "{{ git.src }}"
+      dest: /tmp/{{ git.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ git.tgz }}
+      dest: /tmp
+      copy: no
+
+  - name: configure make install
+    command: chdir=/tmp/{{ git.dir }} {{ item }}
+    with_items:
+      - ./configure
+      - make
+      - make install
+
+  when:
+    exist_git.rc != 0
+    or ( version_in_git is defined and version_in_git.stdout.find(git_version) == -1 )
+
+

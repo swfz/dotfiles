@@ -1,0 +1,14 @@
+- name: install easy_install
+  yum: name=python-setuptools state=installed
+
+- name: install pip
+  easy_install: name=pip state=present
+
+# cheat
+- name: install cheat
+  pip: name=cheat state=present
+
+# mycli
+- name: install mycli
+  pip: name=mycli state=present
+

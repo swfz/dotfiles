@@ -1,0 +1,6 @@
+peco_version: "{{ peco_v|default('v0.3.6')}}"
+
+peco:
+  dir: peco_linux_amd64
+  tgz: peco_linux_amd64.tar.gz
+  url: https://github.com/peco/peco/releases/download/{{ peco_version }}/peco_linux_amd64.tar.gz

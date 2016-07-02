@@ -1,0 +1,3 @@
+q_version: "{{ q_v|default('1.5.0-1')}}"
+q:
+  src: https://github.com/harelba/packages-for-q/raw/master/rpms/q-text-as-data-{{ q_version }}.noarch.rpm

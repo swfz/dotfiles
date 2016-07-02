@@ -1,0 +1,6 @@
+jo_version: "{{ jo_v|default('1.0')}}"
+
+jo:
+  dir: jo-{{ jo_version }}
+  tgz: jo-{{ jo_version }}.tar.gz
+  src: https://github.com/jpmens/jo/releases/download/v{{ jo_version }}/jo-{{ jo_version }}.tar.gz

@@ -1,0 +1,39 @@
+- name: install packages
+  yum: name={{ item }} state=installed
+  with_items:
+    - curl-devel
+    - epel-release
+    - patch
+    - wget
+    - gcc
+    - bc
+    - mlocate
+    - tar
+    - gzip
+    - unzip
+    - dos2unix
+    - unix2dos
+    - openssl-devel
+    - readline-devel
+    - the_silver_searcher
+    - lsof
+    - dstat
+    - tcpdump
+    - python-devel
+    - dig
+
+- name: install rpmforge
+  yum_repository:
+    name: rpmforge
+    description: RPMforge YUM repo
+    file: external_repos
+    baseurl: http://apt.sw.be/redhat/el{{ ansible_distribution_major_version }}/en/$basearch/rpmforge
+    mirrorlist: http://mirrorlist.repoforge.org/el{{ ansible_distribution_major_version }}/mirrors-rpmforge
+    enabled: no
+
+- name: set timezone to Asia/Tokyo
+  file:
+    src: /usr/share/zoneinfo/Japan
+    dest: /etc/localtime
+    state: link
+

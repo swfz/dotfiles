@@ -1,0 +1,7 @@
+- name: set git config
+  template:
+    src: config.j2
+    dest: ~/.gitconfig
+    owner: "{{ user }}"
+    mode: 0644
+

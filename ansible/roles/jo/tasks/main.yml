@@ -1,0 +1,42 @@
+- name: exist jo
+  command: which jo
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_jo
+  changed_when: false
+  ignore_errors: true
+
+- name: get jo version
+  shell: jo -v
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_jo
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_jo.rc == 0
+
+- block:
+  - name: get source
+    get_url:
+      url: "{{ jo.src }}"
+      dest: /tmp/{{ jo.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ jo.tgz }}
+      dest: /tmp
+      copy: no
+
+  - name: configure make install
+    command: chdir=/tmp/{{ jo.dir }} {{ item }}
+    with_items:
+      - ./configure
+      - make
+      - make install
+
+  when:
+    exist_jo.rc != 0
+    or ( version_in_jo is defined and version_in_jo.stdout.find(jo_version) == -1 )
+
+
