@@ -5,24 +5,22 @@
   become: yes
   roles:
     - common
-    # from source
-    # - git
-    # - zsh
-    # - jo
-    # to bin
-    # - peco
-    # - jq
-    # - docker-compose
-    # yum
-    # - tmux
-    # - docker
-    # - samba
-    # - q
-    # - nginx
-    # pip
+    # ========== from source to build ==========
+    - git
+    - zsh
+    - jo
+    # ========== from source to bin ==========
+    - peco
+    - jq
+    - docker-compose
+    # ========== yum ==========
+    - tmux
+    - docker
+    - samba
+    - q
+    - nginx
+    # ========== pip ==========
     - by_pip # cheat, mycli
-    # repository
-    # - rpmforge
     # TODO
     # - apex
     # - terraform
@@ -33,14 +31,14 @@
     - common_vars.yml
   become_user: "{{ user }}"
   roles:
-    # - config
+    - config
     # to bin and install languages
     - anyenv
     # TODO
-    # - powerline # from pip
+    - powerline
+    - zsh_syntax_highlighting
     # - envfile
     # - enhanced
-    # - zsh_command_color
     # - link
     # - vim_plugins
 
