@@ -4,15 +4,23 @@ git_username: swfz
 git_usermail: sawafuji.09@gmail.com
 git_editor: vim
 envs:
-  - { name: plenv, version: 5.25.2 }
-  - { name: rbenv, version: 2.3.1 }
-  - { name: pyenv, version: 3.5.2 }
-  - { name: ndenv, version: v6.2.2 }
+  plenv:
+    { version: 5.25.2 }
+  rbenv:
+    { version: 2.3.1 }
+  pyenv:
+    { version: 3.5.2 }
+  ndenv:
+    { version: v6.2.2 }
 
 dotfiles:
   src:
     repo: http://github.com/swfz/dotfiles.git
   dest: ~/dotfiles
+  files:
+    - .zshrc
+    - .vimrc
+    - .tmux.conf
 
 command_dir: ~/bin
 

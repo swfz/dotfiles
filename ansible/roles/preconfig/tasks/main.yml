@@ -5,20 +5,17 @@
     owner: "{{ user }}"
     mode: 0644
 
-- name: clone git repository
-  git:
-    repo: "{{ dotfiles.src.repo }}"
-    dest: "{{ dotfiles.dest }}"
-    clone: yes
+# - name: clone git repository
+#   git:
+#     repo: "{{ dotfiles.src.repo }}"
+#     dest: "{{ dotfiles.dest }}"
+#     clone: yes
 
 - name: symlink dotfiles
   file:
     src: "{{ dotfiles.dest }}/{{ item }}"
     dest: "~/{{ item }}"
     state: link
-  with_items:
-    - .zshrc
-    - .vimrc
-    - .tmux.conf
+  with_items: "{{ dotfiles.files }}"
 
 

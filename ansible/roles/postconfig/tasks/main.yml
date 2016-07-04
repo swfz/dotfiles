@@ -1,0 +1,19 @@
+- name: symlink zsh color theme
+  file:
+    src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
+    dest: "~/.zshrc.color"
+    state: link
+  when: zsh_color is defined
+  tags:
+    - color
+
+- name: symlink zsh color theme for powerline
+  file:
+    src: "{{ dotfiles.dest }}/powerline_theme/shell_colorscheme_{{ zsh_color }}.json"
+    dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
+    state: link
+    force: yes
+  when: zsh_color is defined
+  tags:
+    - color
+

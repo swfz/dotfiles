@@ -31,15 +31,16 @@
     - common_vars.yml
   become_user: "{{ user }}"
   roles:
-    - config
+    - preconfig
     # to bin and install languages
     - anyenv
-    # TODO
     - powerline
     - zsh_syntax_highlighting
+    # TODO
     # - envfile
     # - enhanced
     # - link
     # - vim_plugins
+    - postconfig
 
 

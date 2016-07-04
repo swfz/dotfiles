@@ -13,7 +13,7 @@ plenv_version(){
   if [ "$VERSION" = "system" ]; then
     VERSION=`perl -v | grep 'This is perl' | awk -F" " '{print \$4}'`
   fi
-  echo "perl[$VERSION]"
+  echo "pl[$VERSION]"
 }
 
 rbenv_version(){
@@ -30,7 +30,7 @@ rbenv_version(){
         VERSION='?'
       fi
     fi
-   echo "ruby[$VERSION]$NOTFOUND"
+   echo "rb[$VERSION]$NOTFOUND"
   fi
 }
 
@@ -48,7 +48,7 @@ ndenv_version(){
         VERSION='?'
       fi
     fi
-   echo "node[$VERSION]$NOTFOUND"
+   echo "nd[$VERSION]$NOTFOUND"
   fi
 }
 
@@ -66,6 +66,6 @@ pyenv_version(){
         VERSION='?'
       fi
     fi
-   echo "python[$VERSION]$NOTFOUND"
+   echo "py[$VERSION]$NOTFOUND"
   fi
 }
