@@ -1,5 +1,8 @@
+- name: upgrade pip
+  pip: name=pip state=latest
+
 - name: install powerline
-  pip: name="{{ item }}" state=present
+  pip: name="{{ item }}" state=present editable=false
   with_items:
-    - powerline
+    - "git+git://github.com/powerline/powerline"
     - psutil

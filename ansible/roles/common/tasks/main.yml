@@ -1,15 +1,16 @@
+- name: install epel-release
+  yum: name=epel-release state=installed
+
 - name: install packages
   yum: name={{ item }} state=installed
   with_items:
     - curl-devel
-    - epel-release
     - patch
     - wget
     - gcc
     - bc
     - mlocate
     - tar
-    - gzip
     - unzip
     - dos2unix
     - unix2dos
@@ -20,7 +21,7 @@
     - dstat
     - tcpdump
     - python-devel
-    - dig
+    - vim
 
 - name: install rpmforge
   yum_repository:
@@ -37,3 +38,5 @@
     dest: /etc/localtime
     state: link
 
+- name: disable SELinux
+  selinux: state=disabled

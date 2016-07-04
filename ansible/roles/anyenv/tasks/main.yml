@@ -11,7 +11,7 @@
     - 'export PATH="$HOME/.anyenv/bin:$PATH"'
     - 'eval "$(anyenv init -)"'
 
-- name: exist {{ item.name }}
+- name: "exist {{ item.name }}"
   command: which {{ item.name }}
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
@@ -20,14 +20,14 @@
   ignore_errors: true
   with_items: "{{ envs }}"
 
-- name: install envs {{ item.0 }}
-  command: anyenv install {{ item.0 }}
+- name: "install envs {{ item.0.name }}"
+  command: anyenv install {{ item.0.name }}
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_envs.results }}"
 
-- name: store {{ item.name }} to zshenv
+- name: "store {{ item.name }} to zshenv"
   lineinfile:
     dest: ~/.zshenv
     state: present
