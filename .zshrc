@@ -72,7 +72,9 @@ setopt magic_equal_subst
 source $HOME/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 #powerline
-source $HOME/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
+python_full_ver=$(pyenv global)
+python_minor_ver=$(pyenv global|grep -oP '\d+\.\d+')
+source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_minor_ver}/site-packages/powerline/bindings/zsh/powerline.zsh
 
 source $HOME/.zshrc.color
 source $HOME/dotfiles/envs_version
