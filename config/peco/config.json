@@ -1,8 +1,14 @@
 {
-    "keymap": {
-        "C-j": "peco.SelectNext",
-        "C-k": "peco.SelectPrevious",
-        "C-f": "peco.SelectNextPage",
-        "C-b": "peco.SelectPreviousPage"
-    }
+  "keymap": {
+    "C-j": "peco.SelectDown",
+    "C-k": "peco.SelectUp",
+    "C-l": "peco.ScrollPageDown",
+    "C-h": "peco.ScrollPageUp"
+  },
+  "Style": {
+    "Basic": ["on_default", "default"],
+    "Selected": ["underline", "on_cyan", "white"],
+    "Query": ["yellow", "bold"],
+    "Matched": ["red"]
+  }
 }

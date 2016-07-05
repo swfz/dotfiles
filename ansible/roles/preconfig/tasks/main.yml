@@ -5,11 +5,11 @@
     owner: "{{ user }}"
     mode: 0644
 
-# - name: clone git repository
-#   git:
-#     repo: "{{ dotfiles.src.repo }}"
-#     dest: "{{ dotfiles.dest }}"
-#     clone: yes
+- name: clone git repository
+  git:
+    repo: "{{ dotfiles.src.repo }}"
+    dest: "{{ dotfiles.dest }}"
+    clone: yes
 
 - name: symlink dotfiles
   file:
@@ -17,5 +17,16 @@
     dest: "~/{{ item }}"
     state: link
   with_items: "{{ dotfiles.files }}"
+
+- name: symlink peco config
+  file:
+    path: "~/.config/peco"
+    state: directory
+
+- name: symlink peco config
+  file:
+    src: "{{ dotfiles.dest }}/config/peco/config.json"
+    dest: "~/.config/peco/config.json"
+    state: link
 
 

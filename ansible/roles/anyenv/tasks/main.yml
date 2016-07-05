@@ -20,8 +20,8 @@
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: "install envs {{ item.0.key }}"
-  command: anyenv install {{ item.0.key }}
+- name: "install envs"
+  command: anyenv install {{ item.0 }}
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
@@ -35,7 +35,7 @@
     line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$PATH"'
   with_dict: "{{ envs }}"
 
-- name: "exist version {{ item.key }} {{ item.value.version }}"
+- name: "exist version in every envs"
   shell: "{{ item.key }} versions | grep {{ item.value.version }}"
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
@@ -44,14 +44,14 @@
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: "install {{ item.0.key }} {{ item.0.value.version }}"
-  command: "{{ item.0.key }} install {{ item.0.value.version }}"
+- name: "install envs version"
+  command: "{{ item.0 }} install {{ envs[item.0].version }}"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_version.results }}"
 
-- name: "exist global {{ item.key }} {{ item.value.version }}"
+- name: "exist global envs version"
   command: "{{ item.key }} global"
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
@@ -60,9 +60,9 @@
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: "set global {{ item.0.key }} {{ item.0.value.version }}"
-  command: "{{ item.0.key }} global {{ item.0.value.version }}"
-  when: item.1.stdout is defined and item.1.stdout.find(item.0.version) == -1
+- name: "set global envs version"
+  command: "{{ item.0 }} global {{ envs[item.0].version }}"
+  when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1
   with_together:
     - "{{ envs }}"
     - "{{ exist_global.results }}"

@@ -1,4 +1,8 @@
+powerline_dir: ~/.anyenv/envs/pyenv/versions/{{ envs.pyenv.version }}/lib/python{{ envs.pyenv.version.rsplit('.',1).pop(0) }}/site-packages/powerline
 link:
   zsh:
-    dest_dir: ~/.anyenv/envs/pyenv/versions/{{ envs.pyenv.version }}/lib/python{{ envs.pyenv.version.rsplit('.',1).pop(0) }}/site-packages/powerline/config_files/colorschemes
+    dest_dir: {{ powerline_dir }}/config_files/colorschemes
     dest_file: default.json
+  tmux:
+    dest_dir: {{ powerline_dir }}/bindings/tmux
+    dest_file: powerline-base.conf

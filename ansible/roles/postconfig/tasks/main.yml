@@ -7,13 +7,37 @@
   tags:
     - color
 
-- name: symlink zsh color theme for powerline
+- name: symlink zsh color theme for powerline(custom)
   file:
     src: "{{ dotfiles.dest }}/powerline_theme/shell_colorscheme_{{ zsh_color }}.json"
     dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
     state: link
     force: yes
-  when: zsh_color is defined
+  when: zsh_color is defined and zsh_color != 'soralized'
   tags:
     - color
+
+- name: symlink zsh color theme for powerline(soralized)
+  file:
+    src: "{{ link.zsh.dest_dir }}/shell/soralized.json"
+    dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
+    state: link
+    force: yes
+  when: zsh_color is defined and zsh_color == 'soralized'
+  tags:
+    - color
+
+- name: symlink tmux powerline config
+  file:
+    src: "{{ link.tmux.dest_dir }}/{{ link.tmux.dest_file }}"
+    dest: "~/.tmux_powerline.conf"
+    state: link
+    force: yes
+
+# TODO tmuxのカラー設定
+
+# TODO vimの設定へのリンク
+
+# TODO soralizedの追加
+
 
