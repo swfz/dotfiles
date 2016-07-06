@@ -1,3 +1,10 @@
+- name: symlink dotfiles
+  file:
+    src: "{{ dotfiles.dest }}/{{ item }}"
+    dest: "~/{{ item }}"
+    state: link
+  with_items: "{{ dotfiles.files }}"
+
 - name: symlink zsh color theme
   file:
     src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
@@ -29,10 +36,11 @@
 
 - name: symlink tmux powerline config
   file:
-    src: "{{ link.tmux.dest_dir }}/{{ link.tmux.dest_file }}"
-    dest: "~/.tmux_powerline.conf"
+    src: "{{ link.tmux.basedir }}/{{ item }}"
+    dest: "~/.tmux-{{ item }}"
     state: link
     force: yes
+  with_items: "{{ link.tmux.files }}"
 
 # TODO tmuxのカラー設定
 

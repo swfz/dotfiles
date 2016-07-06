@@ -11,23 +11,21 @@
     - 'export PATH="$HOME/.anyenv/bin:$PATH"'
     - 'eval "$(anyenv init -)"'
 
-- name: "exist {{ item.value.version }}"
+- name: "exist envs"
   command: which {{ item.key }}
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
   register: exist_envs
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
 - name: "install envs"
-  command: anyenv install {{ item.0 }}
+  command: "{{ execute }} 'anyenv install {{ item.0 }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_envs.results }}"
 
-- name: "store {{ item.key }} to zshenv"
+- name: "store envs path to zshenv"
   lineinfile:
     dest: ~/.zshenv
     state: present
@@ -36,16 +34,14 @@
   with_dict: "{{ envs }}"
 
 - name: "exist version in every envs"
-  shell: "{{ item.key }} versions | grep {{ item.value.version }}"
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"
   register: exist_version
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
 - name: "install envs version"
-  command: "{{ item.0 }} install {{ envs[item.0].version }}"
+  command: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
@@ -53,8 +49,6 @@
 
 - name: "exist global envs version"
   command: "{{ item.key }} global"
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
   register: exist_global
   changed_when: false
   ignore_errors: true

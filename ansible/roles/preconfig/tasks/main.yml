@@ -11,13 +11,6 @@
     dest: "{{ dotfiles.dest }}"
     clone: yes
 
-- name: symlink dotfiles
-  file:
-    src: "{{ dotfiles.dest }}/{{ item }}"
-    dest: "~/{{ item }}"
-    state: link
-  with_items: "{{ dotfiles.files }}"
-
 - name: symlink peco config
   file:
     path: "~/.config/peco"

@@ -23,6 +23,7 @@ dotfiles:
     - .tmux.conf
 
 command_dir: ~/bin
+execute: /usr/local/bin/zsh -lc
 
 # root config
 git_v: 2.9.0
