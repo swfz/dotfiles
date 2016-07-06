@@ -10,6 +10,7 @@
     src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
     dest: "~/.zshrc.color"
     state: link
+    force: yes
   when: zsh_color is defined
   tags:
     - color
@@ -20,17 +21,17 @@
     dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
     state: link
     force: yes
-  when: zsh_color is defined and zsh_color != 'soralized'
+  when: zsh_color is defined and zsh_color != 'solarized'
   tags:
     - color
 
-- name: symlink zsh color theme for powerline(soralized)
+- name: symlink zsh color theme for powerline(solarized)
   file:
-    src: "{{ link.zsh.dest_dir }}/shell/soralized.json"
+    src: "{{ link.zsh.dest_dir }}/shell/solarized.json"
     dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
     state: link
     force: yes
-  when: zsh_color is defined and zsh_color == 'soralized'
+  when: zsh_color is defined and zsh_color == 'solarized'
   tags:
     - color
 
@@ -43,9 +44,9 @@
   with_items: "{{ link.tmux.files }}"
 
 # TODO tmuxのカラー設定
+# .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
 
 # TODO vimの設定へのリンク
 
-# TODO soralizedの追加
 
 

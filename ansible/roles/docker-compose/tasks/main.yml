@@ -27,4 +27,15 @@
     exist_docker_compose.rc != 0
     or ( version_in_docker_compose is defined and version_in_docker_compose.stdout.find(docker_compose_version) == -1 )
 
+- name: get docker-compose completion in bash
+  get_url:
+    url: "{{ docker_compose_completion.bash }}"
+    dest: /etc/bash_completion.d/docker-compose
+    mode: 0755
+
+- name: get docker-compose completion in zsh
+  get_url:
+    url: "{{ docker_compose_completion.zsh }}"
+    dest: "{{ zsh_completion_dir }}/_docker-compose"
+    mode: 0755
 

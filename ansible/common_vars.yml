@@ -23,6 +23,8 @@ dotfiles:
     - .tmux.conf
 
 command_dir: ~/bin
+zsh_completion_dir: /etc/zsh_completion.d/src
+bash_completion_dir: /etc/bash_completion.d
 execute: /usr/local/bin/zsh -lc
 
 # root config

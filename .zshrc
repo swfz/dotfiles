@@ -31,6 +31,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*:setopt:*' menu true select
 
+fpath=(/etc/zsh_completion.d/src $fpath)
+
 setopt ZLE
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook

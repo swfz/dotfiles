@@ -4,3 +4,6 @@ zsh:
   dir: zsh-{{ zsh_version }}
   tgz: zsh-{{ zsh_version }}.tar.gz
   src: http://downloads.sourceforge.net/project/zsh/zsh/{{ zsh_version }}/zsh-{{ zsh_version }}.tar.gz
+
+zsh_completion:
+  src: https://github.com/zsh-users/zsh-completions.git
