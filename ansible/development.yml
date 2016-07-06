@@ -13,6 +13,9 @@
     - peco
     - jq
     - docker-compose
+    - terraform
+    # execute install.sh
+    - apex
     # ========== yum ==========
     - tmux
     - docker
@@ -20,11 +23,7 @@
     - q
     - nginx
     # ========== pip ==========
-    - by_pip # cheat, mycli
-    # TODO
-    # - apex
-    # - terraform
-    # - aws cli
+    - by_pip # cheat, mycli, awscli
 
 - hosts: local
   vars_files:
@@ -39,7 +38,6 @@
     # TODO
     # - envfile
     # - enhanced
-    # - link
     # - vim_plugins
     - postconfig
 

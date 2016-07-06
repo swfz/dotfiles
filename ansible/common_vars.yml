@@ -37,5 +37,7 @@ jo_v: 1.0
 q_v: 1.5.0-1
 docker_v: 1.10.3
 docker_compose_v: 1.7.1
+apex_v: 0.9.0
+terraform_v: 0.6.16
 
 
