@@ -23,6 +23,7 @@
     - tcpdump
     - python-devel
     - vim
+    - ctags
 
 - name: install rpmforge
   yum_repository:

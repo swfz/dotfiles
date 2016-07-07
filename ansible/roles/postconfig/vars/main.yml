@@ -12,4 +12,9 @@ link:
       - powerline-base.conf
       - powerline.conf
 
+vim:
+  neobundle:
+    src: https://github.com/Shougo/neobundle.vim
+    parent_dir: ~/.vim/bundle
+    dest_dir: neobundle.vim
 

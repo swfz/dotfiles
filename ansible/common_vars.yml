@@ -19,7 +19,7 @@ dotfiles:
   dest: ~/dotfiles
   files:
     - .zshrc
-    # - .vimrc
+    - .vimrc
     - .tmux.conf
 
 command_dir: ~/bin

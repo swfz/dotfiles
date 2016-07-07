@@ -53,10 +53,25 @@
     force: yes
   with_items: "{{ link.tmux.files }}"
 
+- name: set vim neobundle directory
+  file:
+    path: "{{ vim.neobundle.parent_dir }}"
+    state: directory
+
+- name: set vim neobundle
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  git:
+    repo: "{{ vim.neobundle.src }}"
+    dest: "{{ vim.neobundle.parent_dir }}/{{ vim.neobundle.dest_dir }}"
+    clone: yes
+
+- name: set vim neobundle
+  command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
+
 # TODO tmuxのカラー設定
 # .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
 
 # TODO vimの設定へのリンク
-
 
 
