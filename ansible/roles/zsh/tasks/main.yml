@@ -58,6 +58,7 @@
   git:
     repo: "{{ zsh_completion.src }}"
     dest: "{{ zsh_completion_dir }}"
+    update: yes
     clone: yes
 
 - name: change shell in {{ user }}

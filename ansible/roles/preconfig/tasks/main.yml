@@ -10,6 +10,8 @@
     repo: "{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
     clone: yes
+    update: yes
+    force: yes
 
 - name: symlink peco config
   file:
