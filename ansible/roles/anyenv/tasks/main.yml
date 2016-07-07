@@ -48,14 +48,14 @@
     - "{{ exist_version.results }}"
 
 - name: "exist global envs version"
-  command: "{{ item.key }} global"
+  command: "{{ execute }} '{{ item.key }} global'"
   register: exist_global
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
 - name: "set global envs version"
-  command: "{{ item.0 }} global {{ envs[item.0].version }}"
+  command: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1
   with_together:
     - "{{ envs }}"
