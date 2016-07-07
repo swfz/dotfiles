@@ -68,6 +68,7 @@
 
 - name: set vim neobundle
   command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
+  ignore_errors: true
 
 # TODO tmuxのカラー設定
 # .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
