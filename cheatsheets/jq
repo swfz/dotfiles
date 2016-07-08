@@ -35,3 +35,13 @@ jq 'select(has("age"))'
 
 # 特定の要素を含むかチェック
 jq 'select(contains({age:20}))'
+
+# ハッシュの生成
+jq '.[]|{a: .foo, b: bar}'
+
+# 特定のキーでソート
+jq 'sort_by(.key)'
+
+# 全行をまとめて配列にしてjqに食わせる
+jq '.[]|{a: .foo, b: bar}' | paste -s -d ',' | sed -e 's/^/\[/' -e 's/$/\]/' | jq 'sort_by(.b)'
+
