@@ -65,7 +65,7 @@
     dest: "{{ zsh_completion_dir }}"
     update: yes
     clone: yes
-  when: exist_zsh_completion.stat.exists is undefined
+  when: not exist_zsh_completion.stat.exists
 
 - name: change shell in {{ user }}
   user: name={{ user }} shell={{ zsh_path.stdout }}
