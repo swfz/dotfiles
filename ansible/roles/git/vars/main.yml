@@ -1,5 +1,3 @@
-git_version: "{{ git_v|default('2.9.0')}}"
-
 git:
   dir: git-{{ git_version }}
   tgz: git-{{ git_version }}.tar.gz

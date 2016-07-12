@@ -1,5 +1,3 @@
-docker_compose_version: "{{ docker_compose_v|default('1.7.1')}}"
-
 docker_compose:
   src: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
 

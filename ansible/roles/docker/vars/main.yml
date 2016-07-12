@@ -1,5 +1,3 @@
-docker_version: "{{ docker_v|default('1.10.3')}}"
-
 docker_completion:
   bash: https://raw.githubusercontent.com/docker/docker/v{{ docker_version }}/contrib/completion/bash/docker
   zsh: https://raw.githubusercontent.com/docker/docker/v{{ docker_version }}/contrib/completion/zsh/_docker

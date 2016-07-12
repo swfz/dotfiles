@@ -1,5 +1,3 @@
-peco_version: "{{ peco_v|default('v0.3.6')}}"
-
 peco:
   dir: peco_linux_amd64
   tgz: peco_linux_amd64.tar.gz

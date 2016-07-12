@@ -1,4 +1,2 @@
-embulk_version: "{{ embulk_v|default('0.8.9')}}"
-
 embulk:
   src: http://dl.embulk.org/embulk-latest.jar
