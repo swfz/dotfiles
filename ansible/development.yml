@@ -1,5 +1,6 @@
 ---
 - hosts: local
+  # strategy: debug
   vars_files:
     - common_vars.yml
   become: yes
@@ -14,6 +15,7 @@
     - jq
     - docker-compose
     - terraform
+    - embulk
     # execute install.sh
     - apex
     # ========== yum ==========
@@ -26,6 +28,7 @@
     - by_pip # cheat, mycli, awscli
 
 - hosts: local
+  # strategy: debug
   vars_files:
     - common_vars.yml
   become_user: "{{ user }}"
