@@ -28,17 +28,17 @@ bash_completion_dir: /etc/bash_completion.d
 execute: /usr/local/bin/zsh -lc
 
 # root config
-git_version: 2.9.0
-tmux_version: 2.1
-peco_version: v0.3.6
-zsh_version: 5.2
-jq_version: 1.5
-jo_version: 1.0
-q_version: 1.5.0-1
-docker_version: 1.10.3
-docker_compose_version: 1.7.1
-apex_version: 0.9.0
-terraform_version: 0.6.16
-embulk_version: 0.8.9
+git_version: '2.9.0'
+tmux_version: '2.1'
+peco_version: 'v0.3.6'
+zsh_version: '5.2'
+jq_version: '1.5'
+jo_version: '1.0'
+q_version: '1.5.0-1'
+docker_version: '1.10.3'
+docker_compose_version: '1.7.1'
+apex_version: '0.9.0'
+terraform_version: '0.6.16'
+embulk_version: '0.8.9'
 
 
