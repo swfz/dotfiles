@@ -51,3 +51,11 @@ alias GC="grep --color=always"
 
 alias ltoj="awk -F\"\\t\" '{print \$3}'"
 
+# docker
+alias dk="sudo docker"
+alias dke="sudo docker exec"
+alias dkps="sudo docker ps"
+alias dklogs="sudo docker logs"
+alias dktop="sudo docker top"
+
+
