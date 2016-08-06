@@ -12,3 +12,6 @@
 - name: install mycli
   pip: name=mycli state=present
 
+# awscli
+- name: install awscli
+  pip: name=awscli state=present

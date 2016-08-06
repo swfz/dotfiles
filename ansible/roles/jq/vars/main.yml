@@ -1,4 +1,2 @@
-jq_version: "{{ jq_v|default('1.5')}}"
-
 jq:
   src: https://github.com/stedolan/jq/releases/download/jq-{{ jq_version }}/jq-linux64

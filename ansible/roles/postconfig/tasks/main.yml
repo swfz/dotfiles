@@ -5,7 +5,17 @@
     state: link
   with_items: "{{ dotfiles.files }}"
 
-- name: symlink zsh color theme
+- name: symlink base color
+  file:
+    src: "{{ dotfiles.dest }}/powerline_theme/base_colorscheme_{{ base_color }}.json"
+    dest: "{{ link.base.target_dir }}/{{ link.base.target_file }}"
+    state: link
+    force: yes
+  when: base_color is defined
+  tags:
+    - color
+
+- name: symlink zsh color
   file:
     src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
     dest: "~/.zshrc.color"
@@ -15,20 +25,20 @@
   tags:
     - color
 
-- name: symlink zsh color theme for powerline(custom)
+- name: symlink zsh color for powerline(custom)
   file:
     src: "{{ dotfiles.dest }}/powerline_theme/shell_colorscheme_{{ zsh_color }}.json"
-    dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
+    dest: "{{ link.zsh.target_dir }}/{{ link.zsh.target_file }}"
     state: link
     force: yes
   when: zsh_color is defined and zsh_color != 'solarized'
   tags:
     - color
 
-- name: symlink zsh color theme for powerline(solarized)
+- name: symlink zsh color for powerline(solarized)
   file:
-    src: "{{ link.zsh.dest_dir }}/shell/solarized.json"
-    dest: "{{ link.zsh.dest_dir }}/shell/{{ link.zsh.dest_file }}"
+    src: "{{ link.zsh.target_dir }}/solarized.json"
+    dest: "{{ link.zsh.target_dir }}/{{ link.zsh.target_file }}"
     state: link
     force: yes
   when: zsh_color is defined and zsh_color == 'solarized'
@@ -43,10 +53,26 @@
     force: yes
   with_items: "{{ link.tmux.files }}"
 
+- name: set vim neobundle directory
+  file:
+    path: "{{ vim.neobundle.parent_dir }}"
+    state: directory
+
+- name: set vim neobundle
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  git:
+    repo: "{{ vim.neobundle.src }}"
+    dest: "{{ vim.neobundle.parent_dir }}/{{ vim.neobundle.dest_dir }}"
+    clone: yes
+
+- name: set vim neobundle
+  command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
+  ignore_errors: true
+
 # TODO tmuxのカラー設定
 # .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
 
 # TODO vimの設定へのリンク
-
 
 
