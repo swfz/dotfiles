@@ -102,10 +102,16 @@ function install_tmux(){
     ln -s /usr/local/lib/pkgconfig/libevent.pc /usr/lib64/pkgconfig/libevent.pc
 
     cd
-    curl -LO http://downloads.sourceforge.net/tmux/tmux-1.9a.tar.gz
-    tar zxvf tmux-1.9a.tar.gz
-    cd tmux-1.9a
-    ./configure --sysconfdir=/etc --localstatedir=/var
+    # curl -LO http://downloads.sourceforge.net/tmux/tmux-1.9a.tar.gz
+    # tar zxvf tmux-1.9a.tar.gz
+    # cd tmux-1.9a
+    # ./configure --sysconfdir=/etc --localstatedir=/var
+    # make
+    # make install
+    git clone https://github.com/tmux/tmux.git
+    cd tmux
+    sh autogen.sh
+    ./configure
     make
     make install
   fi
@@ -113,9 +119,9 @@ function install_tmux(){
 
 function pkg_install(){
   exist_pkg=`rpm -qa | grep $1 | wc -l`
-  if [[ "$exist_pkg" -lt 1 ]]; then
+  # if [[ "$exist_pkg" -lt 1 ]]; then
     yum install -y $1
-  fi
+  # fi
 }
 
 function install_zsh(){
@@ -264,11 +270,11 @@ function install_tukubai(){
 }
 
 function install_percona_toolkit(){
-  yum install perl-Time-HiRes perl-IO-Socket-SSL perl-DBI perl-DBD-MySQL perl-TermReadKey
+  yum install -y perl-Time-HiRes perl-IO-Socket-SSL perl-DBI perl-DBD-MySQL perl-TermReadKey
   rpm -ivh https://www.percona.com/downloads/percona-toolkit/2.2.16/RPM/percona-toolkit-2.2.16-1.noarch.rpm
 }
 
-pkgs="man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix unix2dos ctags xorg-x11-server-Xvfb ImageMagick ImageMagick-devel libxml2-devel"
+pkgs="patch sqlite-devel man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix unix2dos ctags xorg-x11-server-Xvfb ImageMagick ImageMagick-devel libxml2-devel"
 
 for pkg in $pkgs
 do
@@ -295,4 +301,5 @@ install_jo
 install_q
 install_tukubai
 install_percona_toolkit
+
 

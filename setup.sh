@@ -158,7 +158,7 @@ git_config
 link_dotfiles
 path2dotfiles_bin
 zsh_command_color
-install_enhancd
+# install_enhancd
 install_cleaver
 
 install_anyenv

@@ -1,5 +1,5 @@
 # local config
-user: sawafuji.yuya
+user: vagrant
 git_username: swfz
 git_usermail: sawafuji.09@gmail.com
 git_editor: vim
@@ -21,6 +21,7 @@ dotfiles:
     - .zshrc
     - .vimrc
     - .tmux.conf
+    - .agignore
 
 command_dir: ~/bin
 zsh_completion_dir: /etc/zsh_completion.d/src

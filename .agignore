@@ -1,0 +1,9 @@
+node_modules
+vendor/bundle
+vendor/cache
+*.min.js
+*.min.css
+*.swp
+jquery-*.js
+bootstrap*.css
+bootstrap*.js
