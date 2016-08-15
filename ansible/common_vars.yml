@@ -12,6 +12,8 @@ envs:
     { version: 3.5.2 }
   ndenv:
     { version: v6.2.2 }
+  goenv:
+    { version: 1.6.1 }
 
 dotfiles:
   src:

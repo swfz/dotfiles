@@ -22,6 +22,12 @@
       name: docker
       state: installed
 
+  - name: docker start and enabled
+    service:
+      name: docker
+      state: running
+      enabled: yes
+
   when:
     exist_docker.rc != 0
     or ( version_in_docker is defined and version_in_docker.stdout.find(docker_version) == -1 )
