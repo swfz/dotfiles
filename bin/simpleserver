@@ -1,0 +1,57 @@
+#!/bin/bash
+
+PIDFILE="/tmp/simpleserver.pid"
+PROGRAM="simpleserver"
+
+_usage(){
+cat << EOF
+Usage: simpleserver [command] [port]
+
+  simple server
+
+Options:
+  command(required),  [start|stop|restart]
+  port,               server port.
+EOF
+exit 1
+}
+
+start_server(){
+  python_version=$( python -V | awk -F "[. ]" '{print $2}' )
+  if [ "${python_version}" == "3" ]; then
+    module="http.server"
+  else
+    module="SimpleHTTPServer"
+  fi
+
+  port=${2:-8081}
+  python -m ${module} ${port} &
+  echo $! > ${PIDFILE}
+}
+
+stop_server(){
+  [ ! -e ${PIDFILE} ] && echo "${PROGRAM} not started" && exit 1
+  kill $( cat ${PIDFILE} )
+  rm -f ${PIDFILE}
+  echo "Stopped simple server"
+}
+
+
+case "$1" in
+  start)
+    start_server $@
+    ;;
+  stop)
+    stop_server
+    ;;
+  restart)
+    stop_server
+    start_server $@
+    ;;
+  *)
+    _usage
+    exit 1
+esac
+
+
+
