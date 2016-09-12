@@ -5,6 +5,7 @@
   yum: name={{ item }} state=installed
   with_items:
     - curl-devel
+    - bash-completion
     - patch
     - wget
     - gcc
@@ -22,6 +23,7 @@
     - tcpdump
     - python-devel
     - vim
+    - ctags
 
 - name: install rpmforge
   yum_repository:
@@ -40,3 +42,26 @@
 
 - name: disable SELinux
   selinux: state=disabled
+
+# add '/usr/local/bin' into PATH
+- name: set profile.d
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/profile.d/{{ item }}.sh"
+    mode: 0755
+  with_items:
+    - path
+
+- name: set path to zshenv
+  template:
+    src: path.j2
+    dest: /etc/zshenv
+    mode: 0755
+
+- name: edit suduers
+  replace:
+    dest: /etc/sudoers
+    regexp: 'secure_path = /sbin:/bin:/usr/sbin:/usr/bin$'
+    replace: 'secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
+
+

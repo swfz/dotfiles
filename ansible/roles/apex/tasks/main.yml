@@ -1,0 +1,34 @@
+- name: exist apex
+  command: which apex
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_apex
+  changed_when: false
+  ignore_errors: true
+
+- name: get apex version
+  shell: apex version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_apex
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_apex.rc == 0
+
+
+- block:
+  - name: get install.sh
+    get_url:
+      url: "{{ apex.src }}"
+      dest: /tmp/install.sh
+      mode: 0755
+
+  - name: install apex
+    command: /tmp/install.sh
+
+  when:
+    exist_apex.rc != 0
+    or ( version_in_apex is defined and version_in_apex.stdout.find(apex_version) == -1 )
+
+

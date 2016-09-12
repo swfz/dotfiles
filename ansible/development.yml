@@ -1,5 +1,6 @@
 ---
 - hosts: local
+  # strategy: debug
   vars_files:
     - common_vars.yml
   become: yes
@@ -13,6 +14,10 @@
     - peco
     - jq
     - docker-compose
+    - terraform
+    - embulk
+    # execute install.sh
+    - apex
     # ========== yum ==========
     - tmux
     - docker
@@ -20,26 +25,23 @@
     - q
     - nginx
     # ========== pip ==========
-    - by_pip # cheat, mycli
-    # TODO
-    # - apex
-    # - terraform
-    # - aws cli
+    - by_pip # cheat, mycli, awscli
 
 - hosts: local
+  # strategy: debug
   vars_files:
     - common_vars.yml
   become_user: "{{ user }}"
   roles:
-    - config
+    - preconfig
     # to bin and install languages
     - anyenv
-    # TODO
     - powerline
     - zsh_syntax_highlighting
+    # TODO
     # - envfile
     # - enhanced
-    # - link
     # - vim_plugins
+    - postconfig
 
 

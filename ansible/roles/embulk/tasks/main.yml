@@ -1,0 +1,31 @@
+- name: dependencies java install
+  yum: name=java-1.8.0-openjdk-devel state=installed
+
+- name: exist embulk
+  command: which embulk
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_embulk
+  changed_when: false
+  ignore_errors: true
+
+- name: get embulk version
+  shell: embulk --version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_embulk
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_embulk.rc == 0
+
+- name: get source
+  get_url:
+    url: "{{ embulk.src }}"
+    dest: /usr/local/bin/embulk
+    mode: 0755
+  when:
+    exist_embulk.rc != 0
+    or ( version_in_embulk is defined and version_in_embulk.stdout.find(embulk_version) == -1 )
+
+

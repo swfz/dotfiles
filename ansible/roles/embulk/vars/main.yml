@@ -1,0 +1,2 @@
+embulk:
+  src: http://dl.embulk.org/embulk-latest.jar

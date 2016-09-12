@@ -4,5 +4,5 @@
 - name: install powerline
   pip: name="{{ item }}" state=present editable=false
   with_items:
-    - "git+git://github.com/powerline/powerline"
     - psutil
+    - "git+git://github.com/powerline/powerline"

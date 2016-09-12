@@ -69,3 +69,4 @@ augroup END
 
 " json syntax
 autocmd Filetype json setl conceallevel=0
+let g:vim_json_syntax_conceal = 0

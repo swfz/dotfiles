@@ -11,58 +11,52 @@
     - 'export PATH="$HOME/.anyenv/bin:$PATH"'
     - 'eval "$(anyenv init -)"'
 
-- name: "exist {{ item.name }}"
-  command: which {{ item.name }}
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+- name: "exist envs"
+  command: which {{ item.key }}
   register: exist_envs
   changed_when: false
   ignore_errors: true
-  with_items: "{{ envs }}"
+  with_dict: "{{ envs }}"
 
-- name: "install envs {{ item.0.name }}"
-  command: anyenv install {{ item.0.name }}
+- name: "install envs"
+  command: "{{ execute }} 'anyenv install {{ item.0 }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_envs.results }}"
 
-- name: "store {{ item.name }} to zshenv"
+- name: "store envs path to zshenv"
   lineinfile:
     dest: ~/.zshenv
     state: present
     create: yes
-    line: 'export PATH="$HOME/.anyenv/envs/{{ item.name }}/shims:$PATH"'
-  with_items: "{{ envs }}"
+    line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$PATH"'
+  with_dict: "{{ envs }}"
 
-- name: "exist version {{ item.name }} {{ item.version }}"
-  shell: "{{ item.name }} versions | grep {{ item.version }}"
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+- name: "exist version in every envs"
+  shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"
   register: exist_version
   changed_when: false
   ignore_errors: true
-  with_items: "{{ envs }}"
+  with_dict: "{{ envs }}"
 
-- name: "install {{ item.0.name }} {{ item.0.version }}"
-  command: "{{ item.0.name }} install {{ item.0.version }}"
+- name: "install envs version"
+  command: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_version.results }}"
 
-- name: "exist global {{ item.name }} {{ item.version }}"
-  command: "{{ item.name }} global"
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+- name: "exist global envs version"
+  command: "{{ execute }} '{{ item.key }} global'"
   register: exist_global
   changed_when: false
   ignore_errors: true
-  with_items: "{{ envs }}"
+  with_dict: "{{ envs }}"
 
-- name: "set global {{ item.0.name }} {{ item.0.version }}"
-  command: "{{ item.0.name }} global {{ item.0.version }}"
-  when: item.1.stdout is defined and item.1.stdout.find(item.0.version) == -1
+- name: "set global envs version"
+  command: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
+  when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1
   with_together:
     - "{{ envs }}"
     - "{{ exist_global.results }}"

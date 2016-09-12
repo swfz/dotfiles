@@ -122,8 +122,8 @@ function _update_vcs_info_msg() {
     rbenv=`rbenv_version`
     ndenv=`ndenv_version`
     pyenv=`pyenv_version`
-    #RPROMPT="${ENV_PL}${plenv} ${ENV_RB}${rbenv} ${ENV_ND}${ndenv} ${ENV_PY}${pyenv}${RESET} ${prompt}"
-    RPROMPT="${ENV_PL}${plenv} ${RESET} ${prompt}"
+    RPROMPT="${ENV_PL}${plenv} ${ENV_RB}${rbenv} ${ENV_ND}${ndenv} ${ENV_PY}${pyenv}${RESET} ${prompt}"
+    #RPROMPT="${ENV_PL}${plenv} ${RESET} ${prompt}"
 }
 
 function count_svn_st() {

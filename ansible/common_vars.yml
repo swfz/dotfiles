@@ -1,30 +1,47 @@
 # local config
-user: sawafuji.yuya
+user: vagrant
 git_username: swfz
 git_usermail: sawafuji.09@gmail.com
 git_editor: vim
 envs:
-  - { name: plenv, version: 5.25.2 }
-  - { name: rbenv, version: 2.3.1 }
-  - { name: pyenv, version: 3.5.2 }
-  - { name: ndenv, version: v6.2.2 }
+  plenv:
+    { version: 5.25.2 }
+  rbenv:
+    { version: 2.3.1 }
+  pyenv:
+    { version: 3.5.2 }
+  ndenv:
+    { version: v6.2.2 }
+  goenv:
+    { version: 1.6.1 }
 
 dotfiles:
   src:
     repo: http://github.com/swfz/dotfiles.git
   dest: ~/dotfiles
+  files:
+    - .zshrc
+    - .vimrc
+    - .tmux.conf
+    - .agignore
 
 command_dir: ~/bin
+zsh_completion_dir: /etc/zsh_completion.d
+bash_completion_dir: /etc/bash_completion.d
+execute: /usr/local/bin/zsh -lc
 
 # root config
-git_v: 2.9.0
-tmux_v: 2.1
-peco_v: v0.3.6
-zsh_v: 5.2
-jq_v: 1.5
-jo_v: 1.0
-q_v: 1.5.0-1
-docker_v: 1.10.3
-docker_compose_v: 1.7.1
+git_version: '2.9.0'
+tmux_version: '2.1'
+peco_version: 'v0.3.6'
+zsh_version: '5.2'
+jq_version: '1.5'
+jo_version: '1.0'
+q_version: '1.5.0-1'
+docker_version: '1.10.3'
+docker_compose_version: '1.8.0'
+apex_version: '0.9.0'
+terraform_version: '0.6.16'
+embulk_version: '0.8.9'
 
 

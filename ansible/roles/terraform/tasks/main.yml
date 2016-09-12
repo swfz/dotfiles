@@ -1,0 +1,36 @@
+- name: exist terraform
+  command: which terraform
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_terraform
+  changed_when: false
+  ignore_errors: true
+
+- name: get terraform version
+  shell: terraform version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_terraform
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_terraform.rc == 0
+
+- block:
+  - name: get zip
+    get_url:
+      url: "{{ terraform.src }}"
+      dest: "/tmp/{{ terraform.zip }}"
+
+  - name: unarchive zip
+    unarchive:
+      src: /tmp/{{ terraform.zip }}
+      dest: /usr/local/bin/
+      copy: no
+
+  when:
+    exist_terraform.rc != 0
+    or ( version_in_terraform is defined and version_in_terraform.stdout.find(terraform_version) == -1 )
+
+
+

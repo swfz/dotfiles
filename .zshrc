@@ -20,6 +20,9 @@ export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
 
+# zsh completion path
+fpath=(/etc/zsh_completion.d/src $fpath)
+
 # complete
 autoload -U compinit
 compinit
@@ -30,6 +33,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # complete option
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*:setopt:*' menu true select
+
 
 setopt ZLE
 autoload -Uz vcs_info
@@ -72,7 +76,9 @@ setopt magic_equal_subst
 source $HOME/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
 #powerline
-source $HOME/.vim/bundle/powerline/powerline/bindings/zsh/powerline.zsh
+python_full_ver=$(pyenv global)
+python_minor_ver=$(pyenv global|grep -oP '\d+\.\d+')
+source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_minor_ver}/site-packages/powerline/bindings/zsh/powerline.zsh
 
 source $HOME/.zshrc.color
 source $HOME/dotfiles/envs_version

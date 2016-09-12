@@ -10,15 +10,18 @@
     repo: "{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
     clone: yes
+    update: yes
+    force: yes
 
-- name: symlink dotfiles
+- name: symlink peco config
   file:
-    src: "{{ dotfiles.dest }}/{{ item }}"
-    dest: "~/{{ item }}"
+    path: "~/.config/peco"
+    state: directory
+
+- name: symlink peco config
+  file:
+    src: "{{ dotfiles.dest }}/config/peco/config.json"
+    dest: "~/.config/peco/config.json"
     state: link
-  with_items:
-    - .zshrc
-    - .vimrc
-    - .tmux.conf
 
 
