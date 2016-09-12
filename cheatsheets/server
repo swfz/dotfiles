@@ -1,2 +1,5 @@
-# ワンライナーサーバ
+# ワンライナーサーバ python2
 python -m SimpleHTTPServer 8080
+
+# ワンライナーサーバ python3
+python -m http.server 8080
