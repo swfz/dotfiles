@@ -1,0 +1,11 @@
+#!/bin/bash
+
+server start
+trap 'server stop' INT
+
+inotifywait -mr -e MODIFY --exclude '.*\.sw[pox]' ./ | while read;
+do
+  server restart
+done
+
+

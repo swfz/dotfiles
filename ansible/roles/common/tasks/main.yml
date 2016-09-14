@@ -24,6 +24,7 @@
     - python-devel
     - vim
     - ctags
+    - inotify-tools
 
 - name: install rpmforge
   yum_repository:

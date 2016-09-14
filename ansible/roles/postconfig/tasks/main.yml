@@ -1,3 +1,12 @@
+- name: store bin path to zshenv
+  lineinfile:
+    dest: ~/.zshenv
+    state: present
+    create: yes
+    line: "{{ item }}"
+  with_items:
+    - 'export PATH="$HOME/dotfiles/bin:$PATH"'
+
 - name: symlink dotfiles
   file:
     src: "{{ dotfiles.dest }}/{{ item }}"
