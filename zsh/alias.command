@@ -51,6 +51,13 @@ alias GC="grep --color=always"
 
 alias ltoj="awk -F\"\\t\" '{print \$3}'"
 
+# docker-compose
+alias dkc="sudo docker-compose"
+alias dkce"sudo docker-compose exec"
+alias dkps="sudo docker-compose ps"
+alias dklogs="sudo docker-compose logs"
+alias dktop="sudo docker-compose top"
+
 # docker
 alias dk="sudo docker"
 alias dke="sudo docker exec"
