@@ -26,6 +26,7 @@
     - vim
     - ctags
     - sqlite-devel
+    - inotify-tools
 
 - name: install rpmforge
   yum_repository:
