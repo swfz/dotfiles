@@ -9,6 +9,7 @@
     - patch
     - wget
     - gcc
+    - gcc-c++
     - bc
     - mlocate
     - tar
@@ -24,6 +25,7 @@
     - python-devel
     - vim
     - ctags
+    - sqlite-devel
 
 - name: install rpmforge
   yum_repository:
