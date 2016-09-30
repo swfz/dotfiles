@@ -49,6 +49,7 @@ alias L="less"
 alias G="grep"
 alias GC="grep --color=always"
 
+# log to json from fluentd
 alias ltoj="awk -F\"\\t\" '{print \$3}'"
 
 # docker-compose

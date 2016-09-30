@@ -47,4 +47,28 @@ function submodule_update() {
   git submodule foreach git pull origin master
 }
 
+# comvert between hex dec bin
+function tobc(){
+  echo "obase=$1;ibase=$2;$3" | bc
+}
+function hex2dec(){
+  tobc 10 16 $1
+}
+function hex2bin(){
+  tobc 2 16 $1
+}
+function dec2hex(){
+  tobc 16 10 $1
+}
+function dec2bin(){
+  tobc 2 10 $1
+}
+function bin2dec(){
+  tobc 10 2 $1
+}
+function bin2hex(){
+  tobc 16 2 $1
+}
+
+
 
