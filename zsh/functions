@@ -75,7 +75,14 @@ function bin2dec(){
   tobc 10 2 $1
 }
 function bin2hex(){
-  tobc 16 2 $1
+  result=`tobc 16 2 $1`
+  # 00001111 -> 0F
+  expected_words=`expr "${#1}" / 4`
+  fill=`expr "${expected_words}" - "${#result}"`
+  if [ ${fill} -gt 0 ]; then
+    result=`for i in $(seq 1 ${fill}); do printf "0"; done`$result
+  fi
+  echo ${result}
 }
 
 
