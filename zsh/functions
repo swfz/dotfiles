@@ -47,4 +47,43 @@ function submodule_update() {
   git submodule foreach git pull origin master
 }
 
+# comvert between hex dec bin
+function tobc(){
+  str=`echo $3 | tr "[:lower:]" "[:upper:]"`
+  echo "obase=$1;ibase=$2;${str}" | bc
+}
+function hex2dec(){
+  tobc 10 16 $1
+}
+function hex2bin(){
+  result=`tobc 2 16 $1`
+  # F -> 1111
+  expected_words=`expr "${#1}" \* 4`
+  fill=`expr "${expected_words}" - "${#result}"`
+  if [ ${fill} -gt 0 ]; then
+    result=`for i in $(seq 1 ${fill}); do printf "0"; done`$result
+  fi
+  echo ${result}
+}
+function dec2hex(){
+  tobc 16 10 $1
+}
+function dec2bin(){
+  tobc 2 10 $1
+}
+function bin2dec(){
+  tobc 10 2 $1
+}
+function bin2hex(){
+  result=`tobc 16 2 $1`
+  # 00001111 -> 0F
+  expected_words=`expr "${#1}" / 4`
+  fill=`expr "${expected_words}" - "${#result}"`
+  if [ ${fill} -gt 0 ]; then
+    result=`for i in $(seq 1 ${fill}); do printf "0"; done`$result
+  fi
+  echo ${result}
+}
+
+
 
