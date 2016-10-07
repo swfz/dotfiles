@@ -51,6 +51,7 @@ alias GC="grep --color=always"
 
 # log to json from fluentd
 alias ltoj="awk -F\"\\t\" '{print \$3}'"
+alias jqless="jq '.' -C | less -R"
 
 # docker-compose
 alias dkc="sudo docker-compose"
