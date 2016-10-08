@@ -49,6 +49,7 @@
 
 - name: "exist global envs version"
   command: "{{ execute }} '{{ item.key }} global'"
+  when: item.0 != "goenv"
   register: exist_global
   changed_when: false
   ignore_errors: true
@@ -56,7 +57,7 @@
 
 - name: "set global envs version"
   command: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
-  when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1
+  when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
   with_together:
     - "{{ envs }}"
     - "{{ exist_global.results }}"
