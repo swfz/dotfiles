@@ -47,6 +47,11 @@ main(){
     esac
   done
 
+  if [ "${SLACK_WEB_API_TOKEN}" == "" ]; then
+    echo 'not exist environment!!'
+    _usage
+  fi
+
   post2slack
 }
 
