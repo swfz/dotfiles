@@ -49,7 +49,7 @@
 
 - name: "exist global envs version"
   command: "{{ execute }} '{{ item.key }} global'"
-  when: item.0 != "goenv"
+  when: item.key != "goenv"
   register: exist_global
   changed_when: false
   ignore_errors: true
