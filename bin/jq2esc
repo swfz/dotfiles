@@ -1,0 +1,5 @@
+#!/bin/bash
+
+param=${1:.}
+jq -r "$1" | sed -e 's/\\\"/"/g' | perl -Xpne 's/\\u([0-9a-fA-F]{4})/chr(hex($1))/eg'
+
