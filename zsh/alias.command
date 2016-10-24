@@ -54,6 +54,8 @@ alias ltoj="awk -F\"\\t\" '{print \$3}'"
 alias jqless="jq '.' -C | less -R"
 alias twjq="jq -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }'"
 alias twjqless="jq -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }' | less -R "
+# url decode
+alias ud="perl -Xnpe 's/\\?/\\n/g; s/&/\\n/g; s/=/\\t/g' | nkf --url-input"
 
 # docker-compose
 alias dkc="sudo docker-compose"
