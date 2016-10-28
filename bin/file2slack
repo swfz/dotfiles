@@ -10,9 +10,9 @@ post2slack(){
   echo ${FILE}
 
   if [ -n "${FILE}" ]; then
-    curl -F file=@${FILE} -F channels=${CHANNEL} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
+    curl -F file=@${FILE} -F title=${TITLE} -F channels=${CHANNEL} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
   else
-    curl -F content="$(cat -)" -F channels=${CHANNEL} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
+    curl -F content="$(cat -)" -F title=${TITLE} -F channels=${CHANNEL} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
   fi
 }
 
@@ -29,12 +29,13 @@ usage:
 options)
   -f : filename (if this option is not exist, to post the stdin.)
   -c : post channel
+  -t : file title
 EOS
   exit 1
 }
 
 main(){
-  while getopts hc:f:u: opt
+  while getopts hc:f:t:u: opt
   do
     case ${opt} in
       h)
@@ -43,6 +44,8 @@ main(){
         CHANNEL=${OPTARG};;
       f)
         FILE=${OPTARG};;
+      t)
+        TITLE=${OPTARG};;
       :|\?) _usage;;
     esac
   done
