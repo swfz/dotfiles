@@ -97,3 +97,6 @@ fi
 # cheatsheet
 export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
 export CHEATCOLORS=true
+
+# GOPATH
+export GOPATH=~/go

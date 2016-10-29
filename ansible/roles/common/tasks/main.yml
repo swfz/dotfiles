@@ -27,6 +27,7 @@
     - ctags
     - sqlite-devel
     - inotify-tools
+    - ansible
 
 - name: install rpmforge
   yum_repository:
