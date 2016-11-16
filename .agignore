@@ -4,6 +4,7 @@ vendor/cache
 *.min.js
 *.min.css
 *.swp
+dump.sql
 jquery-*.js
 bootstrap*.css
 bootstrap*.js
