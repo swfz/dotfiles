@@ -1,6 +1,7 @@
 node_modules
 vendor/bundle
 vendor/cache
+docs/_book
 *.min.js
 *.min.css
 *.swp

@@ -83,5 +83,10 @@
 # .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
 
 # TODO vimの設定へのリンク
+- name: symlink vim snippet
+  file:
+    src: "{{ dotfiles.dest }}/.vim/snippets"
+    dest: ~/.vim/snippets
+    state: link
 
 
