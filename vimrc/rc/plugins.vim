@@ -76,6 +76,19 @@ NeoBundle 't9md/vim-quickhl'
 NeoBundle "slim-template/vim-slim"
 NeoBundle 'fatih/vim-go'
 
+" TypeScript
+NeoBundleLazy 'leafgarland/typescript-vim', {
+      \ 'autoload' : {
+      \   'filetypes' : ['typescript'] }
+      \}
+NeoBundleLazy 'jason0x43/vim-js-indent', {
+      \ 'autoload' : {
+      \   'filetypes' : ['javascript', 'typescript', 'html'],
+      \}}
+let g:js_indent_typescript = 1
+NeoBundle 'Quramy/tsuquyomi'
+
+
 " git
 NeoBundle 'gregsexton/gitv'
 NeoBundle 'tpope/vim-fugitive'
