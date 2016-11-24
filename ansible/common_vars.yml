@@ -11,9 +11,9 @@ envs:
   pyenv:
     { version: 3.5.2 }
   ndenv:
-    { version: v6.2.2 }
+    { version: v7.1.0 }
   goenv:
-    { version: 1.7 }
+    { version: 1.7.3 }
 
 dotfiles:
   src:
