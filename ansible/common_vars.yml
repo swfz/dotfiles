@@ -40,8 +40,8 @@ jo_version: '1.0'
 q_version: '1.5.0-1'
 docker_version: '1.10.3'
 docker_compose_version: '1.8.0'
-apex_version: '0.10.2'
-terraform_version: '0.6.16'
-embulk_version: '0.8.9'
+apex_version: '0.11.0'
+terraform_version: '0.7.13'
+embulk_version: '0.8.15'
 
 

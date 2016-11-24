@@ -7,7 +7,7 @@
   ignore_errors: true
 
 - name: get terraform version
-  shell: terraform version
+  shell: "terraform version | grep Terraform"
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
   register: version_in_terraform

@@ -5,27 +5,27 @@
     - common_vars.yml
   become: yes
   roles:
-    - common
+    - { role: common, tags: common }
     # ========== from source to build ==========
-    - git
-    - zsh
-    - jo
+    - { role: git , tags: git }
+    - { role: zsh , tags: zsh }
+    - { role: jo  , tags: jo }
     # ========== from source to bin ==========
-    - peco
-    - jq
-    - docker-compose
-    - terraform
-    - embulk
-    # execute install.sh
-    - apex
+    - { role: peco           , tags: peco }
+    - { role: jq             , tags: jq }
+    - { role: docker-compose , tags: docker-compose }
+    - { role: terraform      , tags: terraform }
+    - { role: embulk         , tags: embulk }
+    # ========== execute install.sh ==========
+    - { role: apex, tags: apex }
     # ========== yum ==========
-    - tmux
-    - docker
-    - samba
-    - q
-    - nginx
+    - { role: tmux   , tags: tmux }
+    - { role: docker , tags: docker }
+    - { role: samba  , tags: samba }
+    - { role: q      , tags: q }
+    - { role: nginx  , tags: nginx }
     # ========== pip ==========
-    - by_pip # cheat, mycli, awscli
+    - { role: by_pip,  tags: by_pip } # cheat, mycli, awscli
 
 - hosts: local
   # strategy: debug
@@ -33,15 +33,11 @@
     - common_vars.yml
   become_user: "{{ user }}"
   roles:
-    - preconfig
+    - { role: preconfig, tags: preconfig }
     # to bin and install languages
-    - anyenv
-    - powerline
-    - zsh_syntax_highlighting
-    # TODO
-    # - envfile
-    # - enhanced
-    # - vim_plugins
-    - postconfig
+    - { role: anyenv                  , tags: anyenv }
+    - { role: powerline               , tags: powerline }
+    - { role: zsh_syntax_highlighting , tags: zsh_syntax_highlighting }
+    - { role: postconfig              , tags: postconfig }
 
 
