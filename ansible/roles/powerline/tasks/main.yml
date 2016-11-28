@@ -2,7 +2,9 @@
   pip: name=pip state=latest
 
 - name: install powerline
-  pip: name="{{ item }}" state=present editable=false
+  # FIXME not idempotency because install login user. but not loaded zshenv via pip module
+  # pip: name="{{ item }}" state=present editable=false
+  command: "{{ execute }} pip install {{ item }}"
   with_items:
     - psutil
     - "git+git://github.com/powerline/powerline"
