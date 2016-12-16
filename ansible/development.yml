@@ -16,6 +16,7 @@
     - { role: docker-compose , tags: docker-compose }
     - { role: terraform      , tags: terraform }
     - { role: embulk         , tags: embulk }
+    - { role: sshrc          , tags: sshrc }
     # ========== execute install.sh ==========
     - { role: apex, tags: apex }
     # ========== yum ==========

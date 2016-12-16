@@ -21,7 +21,7 @@ jq '.[].Instances'
 # 組み合わせ autoscalingのinstance_idを取得
 jq '.AutoScalingGroups[]|select(.AutoScalingGroupName == "backends")|.Instances[].InstanceId'
 
-# 日付の比較
+# 日付の比較(複数select)
 jq 'select(.time <= "2015-12-18 03:20:00")|select(.time >= "2015-12-18 03:10:00")|'
 
 # 複数取得
