@@ -1,0 +1,40 @@
+# ファイルタイプ指定(.c .h .xs)
+ag --cc ${word}
+
+# ファイルタイプ指定(.htm .html .shtml .xhtml)
+ag --html ${word}
+
+# ファイルタイプ指定(.java .properties)
+ag --java ${word}
+
+# ファイルタイプ指定(.js .jsx)
+ag --js ${word}
+
+# ファイルタイプ指定(.pl .pm .pm6 .pod .t)
+ag --perl ${word}
+
+# ファイルタイプ指定(.py)
+ag --python ${word}
+
+# ファイルタイプ指定(.rb .rhtml .rjs .rxml .erb .rake .spec)
+ag --ruby ${word}
+
+# ファイルタイプ指定(.sh .bash .csh .tcsh .ksh .zsh)
+ag --shell ${word}
+
+# ファイルタイプ指定(.yaml .yml)
+ag --yaml ${word}
+
+# ファイルタイプ指定できるリスト
+ag --list-file-types
+
+# 隠しファイル
+ag --hidden ${word}
+
+# マッチしたファイル名だけ
+ag -l ${word}
+
+# ファイル名に対しての検索
+ag -g ${word}
+
+
