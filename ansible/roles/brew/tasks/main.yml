@@ -1,0 +1,13 @@
+- name: install brew
+  homebrew: name={{ item }} state=installed
+  with_items:
+    - peco
+    - nkf
+    - jq
+    - awscli
+    # GUI
+    - google-chrome
+    - vagrant
+    - virtualbox
+    - slack
+

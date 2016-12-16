@@ -1,0 +1,18 @@
+---
+# - hosts: local
+  # strategy: debug
+  # vars_files:
+  #   - common_vars.yml
+  # become: yes
+  # roles:
+  #   - { role: common, tags: common }
+- hosts: local
+  # strategy: debug
+  vars_files:
+    - common_vars.yml
+  become_user: "{{ user }}"
+  roles:
+    - { role: brew, tags: brew }
+    - { role: anyenv , tags: anyenv }
+
+
