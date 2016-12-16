@@ -1,0 +1,2 @@
+# ワンライナーでメールデバッグ
+python -m smtpd -n -c DebuggingServer 192.168.30.93:3025
