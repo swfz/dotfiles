@@ -29,3 +29,8 @@ function csp () {
 function tvi () {
   vim $( tree --charset=o -f $1 | peco | tr -d '\||`|-' )
 }
+
+function aliasp () {
+  BUFFER=$(alias | peco --query "$LBUFFER" | awk -F"=" '{print $1}')
+  print -z "$BUFFER"
+}
