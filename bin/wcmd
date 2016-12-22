@@ -1,0 +1,11 @@
+#!/bin/bash
+
+inotifywait --recursive --monitor --quiet \
+  --event MODIFY \
+  --exclude ".*\.sw[pox]|./log|./tmp" \
+  ./ | while read d e f;
+do
+  echo "$d$f"
+  "$@"
+  echo '---------- END ----------'
+done
