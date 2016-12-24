@@ -24,9 +24,16 @@ set hlsearch
 syntax on
 
 " shortcut mapping
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
-nmap <Esc>1<Esc> :set nonu<CR><Esc>
-nmap <Esc>2<Esc> :set nu<CR><Esc>
+nmap <Esc>id :IndentLinesDisable<CR>
+nmap <Esc>ie :IndentLinesEnable<CR>
+nmap <Esc>nn :set nonu<CR><Esc>
+nmap <Esc>nu :set nu<CR><Esc>
+nmap <Esc><Esc> :noh<CR><Esc>
+
+" コロンとセミコロンを入れ替え(for 英字キーボード)
+nnoremap ; :
+nnoremap : ;
+
 inoremap <c-j> <esc>
 
 " backspace enable
