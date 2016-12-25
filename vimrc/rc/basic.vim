@@ -31,8 +31,10 @@ nmap <Esc>nu :set nu<CR><Esc>
 nmap <Esc><Esc> :noh<CR><Esc>
 
 " コロンとセミコロンを入れ替え(for 英字キーボード)
-nnoremap ; :
-nnoremap : ;
+if $KB_TYPE == 'US'
+  nnoremap ; :
+  nnoremap : ;
+endif
 
 inoremap <c-j> <esc>
 
