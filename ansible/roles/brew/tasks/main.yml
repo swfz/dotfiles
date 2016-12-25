@@ -5,9 +5,13 @@
     - nkf
     - jq
     - awscli
+    - coreutils
+    - binutils
+    - findutils
     # GUI
     - google-chrome
     - vagrant
     - virtualbox
     - slack
+    - licecap
 

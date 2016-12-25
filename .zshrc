@@ -12,7 +12,6 @@ if [ -f ~/practice/.export ]; then
   . ~/practice/.export
 fi
 
-
 umask 002
 
 #env
@@ -84,10 +83,18 @@ source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_m
 source $HOME/.zshrc.color
 source $HOME/dotfiles/envs_version
 
+# zshディレクトリ以下の設定ファイルを読み込み
 for file in $HOME/dotfiles/zsh/*
 do
   source $file
 done
+
+# macの場合は追加で設定ファイルを読み込み
+case ${OSTYPE} in
+  darwin*)
+    source $HOME/dotfiles/.darwin.rc
+    ;;
+esac
 
 # enhancd
 export ENHANCD_FILTER="peco"
