@@ -2,7 +2,7 @@
 
 inotifywait --recursive --monitor --quiet \
   --event MODIFY \
-  --exclude ".*\.sw[pox]|./log|./tmp" \
+  --exclude ".*\.sw[pox]|./log|./tmp|./git" \
   ./ | while read d e f;
 do
   echo "$d$f"

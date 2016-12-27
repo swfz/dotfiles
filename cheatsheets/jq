@@ -45,3 +45,6 @@ jq 'sort_by(.key)'
 # 全行をまとめて配列にしてjqに食わせる
 jq '.[]|{a: .foo, b: bar}' | paste -s -d ',' | sed -e 's/^/\[/' -e 's/$/\]/' | jq 'sort_by(.b)'
 
+# CSV的な出力
+jq -r '.TargetHealthDescriptions[]|select(.TargetHealth.State!="healthy2")|[.Target.Id,.TargetHealth.State]|join(",")'
+
