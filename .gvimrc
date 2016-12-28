@@ -33,3 +33,8 @@ function LeaveIM()
   set iminsert=0
   set noimdisable
 endfunction
+
+" mac用
+nnoremap ; :
+nnoremap : ;
+
