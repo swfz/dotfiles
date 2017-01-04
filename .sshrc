@@ -2,9 +2,9 @@
 export VIMINIT="let \$MYVIMRC='$SSHHOME/.sshrc.d/.vimrc' | source \$MYVIMRC"
 # alias
 alias jqless="jq '.' -C | less -R"
+alias grep="grep --line-buffered"
 # url decode
 alias ud="perl -Xnpe 's/\\?/\\n/g; s/&/\\n/g; s/=/\\t/g' | nkf --url-input"
 # vim
 alias vi="vim"
-
 
