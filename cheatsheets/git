@@ -1,4 +1,25 @@
 # set remote URL on ssh
+git remote set-url origin git@github.com:swfz/dotfiles.git
 
-  git remote set-url origin git@github.com:swfz/dotfiles.git
+# 変更ファイルを出力
+git log --stat --name-only <commitA> <commitB>
+
+# ブランチ間の差分
+git log master..feature/test
+
+# ブランチ間の差分(変更ファイルを出力)
+git log --stat --name-only master..feature/test
+
+# ブランチ間の差分(コード詳細)
+git log -p --reverse master..feature/test
+
+# ブランチの削除
+git branch -d feature/aaa
+
+# マージ済みブランチ
+git branch --merged
+
+# マージ済みブランチの削除
+git branch --merged | grep -v '*' | xargs -i git branch -d {}
+
 
