@@ -19,6 +19,7 @@ export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
 export LESS="-R -W -i -M"
+export LESSCHARSET=utf-8
 
 # zsh completion path
 fpath=(/etc/zsh_completion.d/src $fpath)
