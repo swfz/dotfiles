@@ -1,0 +1,7 @@
+# account切り替え
+twurl set default <name> <consumer_key>
+
+# ads api
+twurl -H 'ads-api.twitter.com' '/1/acounts/...'
+
+
