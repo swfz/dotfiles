@@ -25,6 +25,7 @@ alias gad="git add"
 alias gsp="git stash pop"
 alias gdic="git diff --cached"
 alias gdi="git diff"
+alias gbd="git branch --merged | grep -v '*' | xargs -i git branch -d {}"
 
 #vim
 alias vi="vim"
