@@ -34,3 +34,32 @@ function aliasp () {
   BUFFER=$(alias | peco --query "$LBUFFER" | awk -F"=" '{print $1}')
   print -z "$BUFFER"
 }
+
+# git branchを選択
+function peco-git-branch () {
+  local current_buffer=$BUFFER
+  local selected_branch_name="$(git branch -a | peco | tr -d ' ' | tr -d '*')"
+  case "$selected_branch_name" in
+    *-\>* )
+      selected_branch_name="$(echo ${selected_branch_name} | perl -ne 's/^.*->(.*?)\/(.*)$/\2/;print')";;
+    remotes* )
+      selected_branch_name="$(echo ${selected_branch_name} | perl -ne 's/^.*?remotes\/(.*?)\/(.*)$/\2/;print')";;
+  esac
+  if [ -n "$selected_branch_name" ]; then
+    BUFFER="${current_buffer}${selected_branch_name}"
+    CURSOR=$#BUFFER
+  fi
+}
+zle -N peco-git-branch
+bindkey '^g^b' peco-git-branch
+
+# commit hashを選択
+function peco-git-hash () {
+  local current_buffer=$BUFFER
+  local git_hash="$(git log --oneline --branches | peco | awk '{print $1}')"
+  BUFFER="${current_buffer}${git_hash}"
+  CURSOR=$#BUFFER
+}
+zle -N peco-git-hash
+bindkey '^g^h' peco-git-hash
+

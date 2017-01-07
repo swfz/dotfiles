@@ -32,6 +32,8 @@
   ltg = log --graph --date=short --pretty=format:'%Cgreen%h %cd %Cblue%cn %Creset%s'
   lta = log --graph --all --color --pretty='%x09%h %cn%x09%s %Cred%d%Creset'
   # diff
+  dd = log -p --reverse
+  df = log --stat --name-only
   dm = diff master
   dw = diff --color-words
   dc = diff --cached
