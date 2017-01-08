@@ -47,6 +47,7 @@ function peco-git-branch () {
   esac
   if [ -n "$selected_branch_name" ]; then
     BUFFER="${current_buffer}${selected_branch_name}"
+  # カーソル位置を末尾に移動
     CURSOR=$#BUFFER
   fi
 }
@@ -58,8 +59,19 @@ function peco-git-hash () {
   local current_buffer=$BUFFER
   local git_hash="$(git log --oneline --branches | peco | awk '{print $1}')"
   BUFFER="${current_buffer}${git_hash}"
+  # カーソル位置を末尾に移動
   CURSOR=$#BUFFER
 }
 zle -N peco-git-hash
 bindkey '^g^h' peco-git-hash
 
+# プロセスIDを取得
+function peco-ps () {
+  local current_buffer=$BUFFER
+  local process_id="$(ps auxf | peco | awk '{print $2}')"
+  BUFFER="${current_buffer}${process_id}"
+  # カーソル位置を末尾に移動
+  CURSOR=$#BUFFER
+}
+zle -N peco-ps
+bindkey '^g^p' peco-ps
