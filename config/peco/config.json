@@ -3,7 +3,8 @@
     "C-j": "peco.SelectDown",
     "C-k": "peco.SelectUp",
     "C-l": "peco.ScrollPageDown",
-    "C-h": "peco.ScrollPageUp"
+    "C-h": "peco.ScrollPageUp",
+    "C-s": "peco.ToggleSelectionAndSelectNext"
   },
   "Style": {
     "Basic": ["on_default", "default"],
