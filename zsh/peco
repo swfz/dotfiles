@@ -75,3 +75,15 @@ function peco-ps () {
 }
 zle -N peco-ps
 bindkey '^g^p' peco-ps
+
+# git stのファイルを(複数)選択
+function peco-git-files () {
+  local current_buffer=$BUFFER
+  local git_files="$(git status -sb | peco | awk 'BEGIN {ORS=" "}; {print $2}')"
+  BUFFER="${current_buffer}${git_files}"
+  # カーソル位置を末尾に移動
+  CURSOR=$#BUFFER
+}
+zle -N peco-git-files
+bindkey '^g^f' peco-git-files
+
