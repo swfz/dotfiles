@@ -33,6 +33,7 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'LeafCage/yankround.vim'
+NeoBundle 'tpope/vim-speeddating'
 
 " filer move
 NeoBundle 'scrooloose/nerdtree'
