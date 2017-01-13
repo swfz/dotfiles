@@ -22,4 +22,9 @@ git branch --merged
 # マージ済みブランチの削除
 git branch --merged | grep -v '*' | xargs -i git branch -d {}
 
+# stashの変更を適用 apply
+git stash apply stash@{0}
+
+# 変更をstashへ退避
+git stash save
 
