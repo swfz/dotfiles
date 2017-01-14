@@ -37,6 +37,7 @@
     - { role: preconfig, tags: preconfig }
     # to bin and install languages
     - { role: anyenv                  , tags: anyenv }
+    - { role: nodemodules             , tags: nodemodules }
     - { role: powerline               , tags: powerline }
     - { role: zsh_syntax_highlighting , tags: zsh_syntax_highlighting }
     - { role: postconfig              , tags: postconfig }

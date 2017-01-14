@@ -85,5 +85,8 @@ function bin2hex(){
   echo ${result}
 }
 
+function gdif(){
+  git diff --color $@ | diff-so-fancy
+}
 
 

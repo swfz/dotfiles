@@ -1,0 +1,5 @@
+- name: install diff-so-fancy
+  command: "{{ execute }} npm install -g {{ item }}"
+  with_items:
+    - diff-so-fancy
+
