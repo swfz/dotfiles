@@ -28,3 +28,8 @@ git stash apply stash@{0}
 # 変更をstashへ退避
 git stash save
 
+# 変更を参照
+git stash show stash@{0}
+
+# 変更を破棄
+git stash drop stash@{0}
