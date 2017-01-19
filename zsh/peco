@@ -35,9 +35,17 @@ function aliasp () {
   print -z "$BUFFER"
 }
 
+function peco-p() {
+  selected=$@
+  if [ -n "$selected" ]; then
+    BUFFER="${BUFFER}${selected}"
+    # カーソル位置を末尾に移動
+    CURSOR=$#BUFFER
+  fi
+}
+
 # git branchを選択
 function peco-git-branch () {
-  local current_buffer=$BUFFER
   local selected_branch_name="$(git branch -a | peco | tr -d ' ' | tr -d '*')"
   case "$selected_branch_name" in
     *-\>* )
@@ -45,55 +53,39 @@ function peco-git-branch () {
     remotes* )
       selected_branch_name="$(echo ${selected_branch_name} | perl -ne 's/^.*?remotes\/(.*?)\/(.*)$/\2/;print')";;
   esac
-  if [ -n "$selected_branch_name" ]; then
-    BUFFER="${current_buffer}${selected_branch_name}"
-  # カーソル位置を末尾に移動
-    CURSOR=$#BUFFER
-  fi
+  peco-p ${selected_branch_name}
 }
 zle -N peco-git-branch
 bindkey '^gb' peco-git-branch
 
 # commit hashを選択
 function peco-git-hash () {
-  local current_buffer=$BUFFER
   local git_hash="$(git log --oneline --branches | peco | awk '{print $1}')"
-  BUFFER="${current_buffer}${git_hash}"
-  # カーソル位置を末尾に移動
-  CURSOR=$#BUFFER
+  peco-p ${git_hash}
 }
 zle -N peco-git-hash
 bindkey '^gh' peco-git-hash
 
 # プロセスIDを取得
 function peco-ps () {
-  local current_buffer=$BUFFER
   local process_id="$(ps auxf | peco | awk '{print $2}')"
-  BUFFER="${current_buffer}${process_id}"
-  # カーソル位置を末尾に移動
-  CURSOR=$#BUFFER
+  peco-p ${process_id}
 }
 zle -N peco-ps
 bindkey '^gp' peco-ps
 
 # git stのファイルを(複数)選択
 function peco-git-files () {
-  local current_buffer=$BUFFER
   local git_files="$(git status -sb | peco | awk 'BEGIN {ORS=" "}; {print $2}')"
-  BUFFER="${current_buffer}${git_files}"
-  # カーソル位置を末尾に移動
-  CURSOR=$#BUFFER
+  peco-p ${git_files}
 }
 zle -N peco-git-files
 bindkey '^gf' peco-git-files
 
 # git sash のリストから選択
 function peco-git-stash () {
-  local current_buffer=$BUFFER
   local stash="$(git stash list | peco | awk -F'[ :]' '{print $1}')"
-  BUFFER="${current_buffer}${stash}"
-  # カーソル位置を末尾に移動
-  CURSOR=$#BUFFER
+  peco-p ${stash}
 }
 zle -N peco-git-stash
 bindkey '^gs' peco-git-stash
