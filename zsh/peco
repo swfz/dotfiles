@@ -68,7 +68,7 @@ bindkey '^gh' peco-git-hash
 
 # プロセスIDを取得
 function peco-ps () {
-  local process_id="$(ps auxf | peco | awk '{print $2}')"
+  local process_id="$(ps auxf | peco | awk 'BEGIN {ORS=" "}; {print $2}')"
   peco-p ${process_id}
 }
 zle -N peco-ps

@@ -3,6 +3,7 @@ alias ll="ls -l"
 alias lls="ll --sort=size"
 alias lle="ll --sort=extension"
 alias llt="ll -t"
+alias grep="grep --color=always"
 
 #svn
 alias smdrc="svn merge --dry-run -c"
