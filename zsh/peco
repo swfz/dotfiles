@@ -60,7 +60,7 @@ bindkey '^gb' peco-git-branch
 
 # commit hashを選択
 function peco-git-hash () {
-  local git_hash="$(git log --oneline --branches | peco | awk '{print $1}')"
+  local git_hash="$(git log --oneline --branches --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s' | peco | awk '{print $1}')"
   peco-p ${git_hash}
 }
 zle -N peco-git-hash
