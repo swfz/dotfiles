@@ -68,6 +68,8 @@ NeoBundle 'raphamorim/lucario'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'therubymug/vim-pyte'
 NeoBundle 'Blevs/vim-dzo'
+NeoBundle 'bcicen/vim-vice'
+
 
 " syntax
 NeoBundle 'scrooloose/syntastic'

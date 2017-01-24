@@ -9,7 +9,7 @@ source ~/dotfiles/vimrc/plugins/complete.vim
 " this settings dependencies colorscheme. section
 source ~/dotfiles/vimrc/plugins/powerline.vim
 
-colorscheme lucario
+colorscheme vice
 " colorscheme lucius
 " LuciusBlack
 " hi Normal ctermbg=NONE
