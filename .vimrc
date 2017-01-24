@@ -9,10 +9,10 @@ source ~/dotfiles/vimrc/plugins/complete.vim
 " this settings dependencies colorscheme. section
 source ~/dotfiles/vimrc/plugins/powerline.vim
 
-" colorscheme Chasing_Logic
-colorscheme lucius
-LuciusBlack
-hi Normal ctermbg=NONE
+colorscheme lucario
+" colorscheme lucius
+" LuciusBlack
+" hi Normal ctermbg=NONE
 
 " source ~/dotfiles/vimrc/plugins/lightline.vim
 source ~/dotfiles/vimrc/plugins/unite-outline.vim

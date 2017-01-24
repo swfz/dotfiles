@@ -67,6 +67,7 @@ NeoBundle 'ChasingLogic/ChasingLogic-colorscheme-vim'
 NeoBundle 'raphamorim/lucario'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'therubymug/vim-pyte'
+NeoBundle 'Blevs/vim-dzo'
 
 " syntax
 NeoBundle 'scrooloose/syntastic'
