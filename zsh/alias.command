@@ -3,7 +3,7 @@ alias ll="ls -l"
 alias lls="ll --sort=size"
 alias lle="ll --sort=extension"
 alias llt="ll -t"
-alias grep="grep --color=always"
+alias grep="grep --color=always --line-buffered"
 
 #svn
 alias smdrc="svn merge --dry-run -c"
@@ -59,7 +59,9 @@ alias jqless="jq '.' -C | less -R"
 alias twjq="jq --unbuffered -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }'"
 alias twjqless="jq --unbuffered -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }' | less -R "
 # url decode
-alias ud="perl -Xnpe '$|=1; s/\\?/\\n/g; s/&/\\n/g; s/=/:\\t/g' | nkf -u --url-input"
+alias url="perl -Xnpe '$|=1; s/\\?/\\n/g; s/&/\\n/g; s/=/:\\t/g' | nkf -u --url-input"
+# unicode decode
+alias uni="perl -Xpne 's/\\\u([0-9a-fA-F]{4})/chr(hex($1))/eg'"
 
 # docker-compose
 alias dkc="sudo docker-compose"
