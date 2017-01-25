@@ -51,13 +51,15 @@ alias L="less"
 alias G="grep"
 alias GC="grep --color=always"
 
-# log to json from fluentd
+# log file utility
+# ltsv to json from fluentd
 alias ltoj="awk -F\"\\t\" '{print \$3}'"
 alias jqless="jq '.' -C | less -R"
-alias twjq="jq -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }'"
-alias twjqless="jq -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }' | less -R "
+# for twitter
+alias twjq="jq --unbuffered -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }'"
+alias twjqless="jq --unbuffered -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }' | less -R "
 # url decode
-alias ud="perl -Xnpe 's/\\?/\\n/g; s/&/\\n/g; s/=/\\t/g' | nkf --url-input"
+alias ud="perl -Xnpe '$|=1; s/\\?/\\n/g; s/&/\\n/g; s/=/:\\t/g' | nkf -u --url-input"
 
 # docker-compose
 alias dkc="sudo docker-compose"
