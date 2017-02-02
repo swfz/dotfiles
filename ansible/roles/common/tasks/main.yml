@@ -68,4 +68,10 @@
     regexp: 'secure_path = /sbin:/bin:/usr/sbin:/usr/bin$'
     replace: 'secure_path = /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin'
 
+- name: enable ipv4 forward for docker
+  lineinfile:
+    dest: /etc/sysctl.conf
+    state: present
+    line: "net.ipv4.ip_forward=1"
+
 
