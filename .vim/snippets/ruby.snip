@@ -1,2 +1,4 @@
 snippet dbg
-    ap "[DEBUG] #{self.class}::#{__method__} --------------------"
+    ap "[DEBUG] #{self.class}::#{__method__} --------------------
+snippet warn
+    Rails.logger.warn(${1:func})
