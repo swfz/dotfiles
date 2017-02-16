@@ -9,7 +9,11 @@ source ~/dotfiles/vimrc/plugins/complete.vim
 " this settings dependencies colorscheme. section
 source ~/dotfiles/vimrc/plugins/powerline.vim
 
-colorscheme vice
+" colorscheme patch
+autocmd ColorScheme * highlight IncSearch ctermfg=17 ctermbg=214
+autocmd ColorScheme * highlight Search ctermfg=17 ctermbg=214
+
+colorscheme lucario
 " colorscheme lucius
 " LuciusBlack
 " hi Normal ctermbg=NONE
