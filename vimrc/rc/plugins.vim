@@ -69,6 +69,8 @@ NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'therubymug/vim-pyte'
 NeoBundle 'Blevs/vim-dzo'
 NeoBundle 'bcicen/vim-vice'
+NeoBundle 'jacoborus/tender.vim'
+NeoBundle 'arcticicestudio/nord-vim'
 
 
 " syntax
@@ -113,6 +115,8 @@ NeoBundle "Yggdroot/indentLine"
 
 " other
 NeoBundle 'hotchpotch/perldoc-vim'
+NeoBundle 'gko/vim-coloresque'
+NeoBundle 'tsukkee/unite-tag'
 
 " powerline
 NeoBundle 'Lokaltog/powerline.git'
