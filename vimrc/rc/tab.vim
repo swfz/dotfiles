@@ -48,4 +48,6 @@ noremap <silent> [Tag]n :tabnext<CR>
 " tn 次のタブ
 noremap <silent> [Tag]p :tabprevious<CR>
 " tp 前のタブ
+noremap <silent> [Tag]l :Unite tab<CR>
+" タブで開いているファイル一覧
 
