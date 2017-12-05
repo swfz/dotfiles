@@ -74,7 +74,9 @@ NeoBundle 'arcticicestudio/nord-vim'
 
 
 " syntax
-NeoBundle 'scrooloose/syntastic'
+" NeoBundle 'scrooloose/syntastic'
+" NeoBundle 'vim-syntastic/syntastic'
+NeoBundle 'w0rp/ale'
 NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'kien/rainbow_parentheses.vim'

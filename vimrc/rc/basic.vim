@@ -54,7 +54,7 @@ au BufNewFile,BufRead *.tt :set ft=html
 au BufRead,BufNewFile *.tmp set filetype=tmp
 
 " highlight
-highlight PreProc guifg=#ffffffffffff
+highlight PreProc guifg=#ffffff
 
 " cursorline ------------------------------------------
 " autocmd InsertEnter,InsertLeave * set cursorline!
