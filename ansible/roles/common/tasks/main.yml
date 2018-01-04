@@ -2,7 +2,7 @@
   yum: name=epel-release state=installed
 
 - name: vim8 repo
-  get_urll:
+  get_url:
     url: https://copr.fedorainfracloud.org/coprs/mcepl/vim8/repo/epel-7/mcepl-vim8-epel-7.repo
     dest: /etc/yum.repos.d/mcepl-vim8-epel-7.repo
 
