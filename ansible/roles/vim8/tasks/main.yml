@@ -1,0 +1,29 @@
+- name: vim8 repo
+  get_url:
+    url: https://copr.fedorainfracloud.org/coprs/mcepl/vim8/repo/epel-7/mcepl-vim8-epel-7.repo
+    dest: /etc/yum.repos.d/mcepl-vim8-epel-7.repo
+
+- name: exist vim
+  command: which vim
+  register: exist_vim
+  changed_when: false
+  ignore_errors: true
+
+- name: get vim version
+  shell: vim -version | grep 'IMproved'
+  register: version_in_vim
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_vim.rc == 0
+
+- block:
+  - name: uninstall vim7 and install vim8
+    shell: yum remove -y vim-minimal vim-common vim && yum install -y vim sudo && \cp -f /etc/sudoers.rpmsave /etc/sudoers
+
+  when:
+    exist_vim.rc != 0
+    or ( version_in_vim is defined and version_in_vim.stdout.find('IMproved 8') == -1)
+
+
+

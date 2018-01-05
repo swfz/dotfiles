@@ -1,11 +1,6 @@
 - name: install epel-release
   yum: name=epel-release state=installed
 
-- name: vim8 repo
-  get_url:
-    url: https://copr.fedorainfracloud.org/coprs/mcepl/vim8/repo/epel-7/mcepl-vim8-epel-7.repo
-    dest: /etc/yum.repos.d/mcepl-vim8-epel-7.repo
-
 - name: install packages
   yum: name={{ item }} state=installed
   with_items:
@@ -28,7 +23,6 @@
     - dstat
     - tcpdump
     - python-devel
-    - vim
     - ctags
     - sqlite-devel
     - inotify-tools

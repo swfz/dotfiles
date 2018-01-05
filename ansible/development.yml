@@ -20,6 +20,7 @@
     # ========== execute install.sh ==========
     - { role: apex, tags: apex }
     # ========== yum ==========
+    - { role: vim8   , tags: vim8 }
     - { role: tmux   , tags: tmux }
     - { role: docker , tags: docker }
     - { role: samba  , tags: samba }
