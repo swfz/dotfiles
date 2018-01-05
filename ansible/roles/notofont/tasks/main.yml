@@ -1,0 +1,26 @@
+- name: dependency package
+  yum: name={{item}}
+  with_items:
+    - unzip
+
+- name: directory
+  file:
+    path: /usr/share/fonts/noto
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: get zip
+  get_url:
+    url: "{{ notofont.src }}"
+    dest: "/tmp/{{ notofont.zip }}"
+
+- name: unarchive zip
+  unarchive:
+    src: "/tmp/{{ notofont.zip }}"
+    dest: /usr/share/fonts/noto/
+    copy: no
+
+- name: font-cache
+  command: fc-cache -fv
