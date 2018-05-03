@@ -22,5 +22,10 @@
     dest: /usr/share/fonts/noto/
     copy: no
 
+- name: change permission
+  file:
+    path: /usr/share/fonts/noto/*.otf
+    mode: 0644
+
 - name: font-cache
   command: fc-cache -fv

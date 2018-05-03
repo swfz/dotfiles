@@ -1,3 +1,8 @@
+- name: command directory
+  file:
+    path: "{{ command_dir }}"
+    state: directory
+
 - name: set git config
   template:
     src: config.j2

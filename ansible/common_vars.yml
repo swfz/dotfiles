@@ -7,13 +7,13 @@ envs:
   plenv:
     { version: 5.25.2 }
   rbenv:
-    { version: 2.3.1 }
+    { version: 2.4.2 }
   pyenv:
     { version: 3.5.2 }
   ndenv:
-    { version: v7.1.0 }
+    { version: v9.11.1 }
   goenv:
-    { version: 1.7.3 }
+    { version: 1.10.2 }
 
 dotfiles:
   src:
@@ -32,17 +32,17 @@ bash_completion_dir: /etc/bash_completion.d
 execute: /usr/local/bin/zsh -lc
 
 # root config
-git_version: '2.9.0'
-tmux_version: '2.1'
-peco_version: 'v0.3.6'
+git_version: '2.17.0'
+tmux_version: '2.7'
+peco_version: 'v0.5.3'
 zsh_version: '5.2'
 jq_version: '1.5'
 jo_version: '1.0'
 q_version: '1.5.0-1'
 docker_version: '1.10.3'
-docker_compose_version: '1.8.0'
+docker_compose_version: '1.21.2'
 apex_version: '0.11.0'
-terraform_version: '0.7.13'
-embulk_version: '0.8.15'
+terraform_version: '0.11.7'
+embulk_version: '0.9.7'
 
 

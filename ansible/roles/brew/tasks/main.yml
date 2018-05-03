@@ -1,4 +1,4 @@
-- name: install brew
+- name: install with brew
   homebrew: name={{ item }} state=installed
   with_items:
     - peco
@@ -15,3 +15,7 @@
     - slack
     - licecap
 
+- name: install with cask
+  honebrew_cask: name={{ item}} state=installed
+  with_items:
+    - bitbar
