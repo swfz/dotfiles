@@ -1,0 +1,26 @@
+---
+# - hosts: local
+  # strategy: debug
+  vars_files:
+    - common_vars.yml
+  become: yes
+  roles:
+    - { role: peco, tags: peco }
+    - { role: zsh, tags: zsh }
+    - { role: jq, tags: jq }
+    # - { role: notofont, tags: notofont } # require exclude yum
+    - { role: by_pip,  tags: by_pip } # cheat, mycli, awscli
+
+- hosts: local
+  # strategy: debug
+  vars_files:
+    - common_vars.yml
+  become_user: "{{ user }}"
+  roles:
+    - { role: preconfig, tags: preconfig }
+    - { role: anyenv , tags: anyenv }
+    - { role: powerline               , tags: powerline }
+    - { role: zsh_syntax_highlighting , tags: zsh_syntax_highlighting }
+    - { role: postconfig              , tags: postconfig }
+
+
