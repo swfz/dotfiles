@@ -1,6 +1,6 @@
 dotfiles
 
-# install
+# install(centos)
 
 ```
 ansible-playbook -i hosts development.yml
@@ -18,4 +18,13 @@ ansible-playbook -i hosts development.yml --extra-vars "zsh_color=allblue" --tag
 ansible-playbook -i hosts development.yml --list-tags
 ansible-playbook -i hosts development.yml --tags apex,terraform
 ```
+
+## ubuntu(wsl)
+
+```
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars="user=hoge" --extra-vars="execute='/usr/bin/zsh -lc'"
+```
+
+`execute` is shell executer
+
 

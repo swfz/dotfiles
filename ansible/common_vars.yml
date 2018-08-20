@@ -29,6 +29,7 @@ dotfiles:
 command_dir: ~/bin
 zsh_completion_dir: /etc/zsh_completion.d
 bash_completion_dir: /etc/bash_completion.d
+execute: /usr/local/bin/zsh -lc
 
 # root config
 git_version: '2.18.0'
