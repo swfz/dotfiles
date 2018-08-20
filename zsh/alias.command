@@ -77,4 +77,6 @@ alias dkps="sudo docker ps"
 alias dklogs="sudo docker logs"
 alias dktop="sudo docker top"
 
+# tmux
+alias tmcp="xargs -0 tmux set-buffer"
 
