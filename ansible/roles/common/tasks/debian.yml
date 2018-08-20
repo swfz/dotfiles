@@ -7,10 +7,13 @@
     - make
     - tar
     - zsh
-    - zlib
     - unzip
     - dos2unix
     - openssl
     - ctags
     - nkf
+    - libssl-dev
+    - libreadline-dev
+    - zlib
+    - zlib1g-dev
 

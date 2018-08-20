@@ -5,7 +5,7 @@ git_usermail: sawafuji.09@gmail.com
 git_editor: vim
 envs:
   plenv:
-    { version: 5.25.2 }
+    { version: 5.26.2 }
   rbenv:
     { version: 2.5.1 }
   pyenv:
