@@ -1,0 +1,42 @@
+- name: exist zsh
+  command: which zsh
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: exist_zsh
+  changed_when: false
+  ignore_errors: true
+
+- name: get zsh version
+  shell: zsh --version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+  register: version_in_zsh
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_zsh.rc == 0
+
+- block:
+  - name: get source
+    get_url:
+      url: "{{ zsh.src }}"
+      dest: /tmp/{{ zsh.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ zsh.tgz }}
+      dest: /tmp
+      copy: no
+
+  - name: configure make install
+    command: chdir=/tmp/{{ zsh.dir }} {{ item }}
+    with_items:
+      - ./configure
+      - make
+      - make install
+
+  when:
+    exist_zsh.rc != 0
+    or ( version_in_zsh is defined and version_in_zsh.stdout.find(zsh_version) == -1 )
+
+

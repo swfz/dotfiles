@@ -1,7 +1,7 @@
 - name: install apt-packages
   apt: name={{ item }} state=present
   with_items:
-    - curl-devel
+    - curl
     - bash-completion
     - gcc
     - make
@@ -9,6 +9,7 @@
     - zsh
     - unzip
     - dos2unix
-    - openssl-devel
+    - openssl
     - ctags
     - nkf
+

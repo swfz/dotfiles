@@ -1,5 +1,5 @@
 # local config
-user: vagrant
+user: sawafuji.yuya
 git_username: swfz
 git_usermail: sawafuji.09@gmail.com
 git_editor: vim
@@ -7,11 +7,11 @@ envs:
   plenv:
     { version: 5.25.2 }
   rbenv:
-    { version: 2.4.2 }
+    { version: 2.5.1 }
   pyenv:
-    { version: 3.5.2 }
+    { version: 3.6.6 }
   ndenv:
-    { version: v9.11.1 }
+    { version: v10.9.0 }
   goenv:
     { version: 1.10.2 }
 
@@ -32,7 +32,7 @@ bash_completion_dir: /etc/bash_completion.d
 execute: /usr/local/bin/zsh -lc
 
 # root config
-git_version: '2.17.0'
+git_version: '2.18.0'
 tmux_version: '2.7'
 peco_version: 'v0.5.3'
 zsh_version: '5.2'

@@ -1,3 +1,11 @@
+- name: debian tasks
+  include: debian.yml
+  when: "ansible_os_family == 'Debian'"
+
+- name: redhat tasks
+  include: redhat.yml
+  when: "ansible_os_family == 'RedHat'"
+
 # add '/usr/local/bin' into PATH
 - name: set profile.d
   template:

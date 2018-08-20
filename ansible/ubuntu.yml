@@ -5,7 +5,7 @@
     - common_vars.yml
   become: yes
   roles:
-    - { role: apt, tags: apt }
+    - { role: zsh, tags: zsh }
     - { role: common, tags: common }
     - { role: peco, tags: peco }
     - { role: jq, tags: jq }
