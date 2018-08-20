@@ -3,6 +3,7 @@
   # strategy: debug
   vars_files:
     - common_vars.yml
+    - "{{ ansible_os_family }}-shell.yml"
   become: yes
   roles:
     - { role: zsh, tags: zsh }
