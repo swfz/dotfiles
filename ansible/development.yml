@@ -5,6 +5,7 @@
     - common_vars.yml
   become: yes
   roles:
+    - { role: yum, tags: yum }
     - { role: common, tags: common }
     # ========== from source to build ==========
     - { role: git , tags: git }

@@ -1,0 +1,14 @@
+- name: install apt-packages
+  yum: name={{ item }} state=present
+  with_items:
+    - curl-devel
+    - bash-completion
+    - gcc
+    - make
+    - tar
+    - zsh
+    - unzip
+    - dos2unix
+    - openssl-devel
+    - ctags
+    - nkf

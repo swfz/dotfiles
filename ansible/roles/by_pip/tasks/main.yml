@@ -1,5 +1,6 @@
 - name: install easy_install
   yum: name=python-setuptools state=installed
+  when: "ansible_os_family == 'RedHat'"
 
 - name: install pip
   easy_install: name=pip state=present

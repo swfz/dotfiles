@@ -1,17 +1,18 @@
 ---
-# - hosts: local
+- hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
   become: yes
   roles:
+    - { role: apt, tags: apt }
+    - { role: common, tags: common }
     - { role: peco, tags: peco }
-    - { role: zsh, tags: zsh }
     - { role: jq, tags: jq }
     # - { role: notofont, tags: notofont } # require exclude yum
     - { role: by_pip,  tags: by_pip } # cheat, mycli, awscli
 
-- hosts: local
+- hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
