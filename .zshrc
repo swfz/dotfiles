@@ -109,3 +109,5 @@ export CHEATCOLORS=true
 
 # GOPATH
 export GOPATH=~/go
+
+# export KB_TYPE="US"

@@ -50,6 +50,7 @@ NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'Shougo/vimshell.vim'
 NeoBundle 'rking/ag.vim'
+NeoBundle 'benmills/vimux'
 
 " colorscheme
 NeoBundle 'nanotech/jellybeans.vim'

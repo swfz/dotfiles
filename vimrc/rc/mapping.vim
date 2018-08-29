@@ -9,3 +9,18 @@ nmap <Leader>w  <Plug>(openbrowser-smart-search)
 noremap <buffer> ,ptv <Esc>:'<,'>! perltidy -pbp<CR>
 map <silent> <Leader>pt :%! perltidy
 
+noremap <silent> <Leader>vlo :call VimuxOpenRunner()<CR>
+noremap <silent> <Leader>vlc :call VimuxRunCommand('<C-r>"')<CR>
+
+function VimuxRunFromYank()
+  call setreg('z',getline('.'))
+  VimuxRunCommand(@z)
+endfunction
+
+function VimuxSendTextFromYank()
+  call setreg('z',getline('.'))
+  call VimuxSendText(@z)
+endfunction
+
+noremap <silent> <Leader>vlr :call VimuxRunFromYank()<CR>
+noremap <silent> <Leader>vlp :call VimuxSendTextFromYank()<CR>
