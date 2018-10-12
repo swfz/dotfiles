@@ -1,6 +1,6 @@
 - name: vim8 repo
   get_url:
-    url: https://copr.fedorainfracloud.org/coprs/mcepl/vim8/repo/epel-7/mcepl-vim8-epel-7.repo
+    url: https://copr.fedorainfracloud.org/coprs/unixcommunity/vim/repo/epel-7/unixcommunity-vim-epel-7.repo
     dest: /etc/yum.repos.d/mcepl-vim8-epel-7.repo
 
 - name: exist vim
