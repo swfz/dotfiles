@@ -22,10 +22,18 @@
     dest: /usr/share/fonts/noto/
     copy: no
 
+- name: change permission file list
+  find:
+    paths: /usr/share/fonts/noto/
+    patterns: "*.otf"
+  register: otf_files
+
 - name: change permission
   file:
-    path: /usr/share/fonts/noto/*.otf
+    path: "{{ item.path }}"
     mode: 0644
+  with_items:
+    - "{{ otf_files.files }}"
 
 - name: font-cache
   command: fc-cache -fv
