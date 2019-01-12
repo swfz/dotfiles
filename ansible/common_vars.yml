@@ -1,5 +1,5 @@
 # local config
-user: sawafuji.yuya
+user: vagrant
 git_username: swfz
 git_usermail: sawafuji.09@gmail.com
 git_editor: vim
@@ -32,17 +32,17 @@ bash_completion_dir: /etc/bash_completion.d
 execute: /usr/local/bin/zsh -lc
 
 # root config
-git_version: '2.18.0'
-tmux_version: '2.7'
+git_version: '2.20.1'
+tmux_version: '2.8'
 peco_version: 'v0.5.3'
 zsh_version: '5.2'
-jq_version: '1.5'
+jq_version: '1.6'
 jo_version: '1.0'
 q_version: '1.5.0-1'
-docker_version: '1.10.3'
-docker_compose_version: '1.21.2'
-apex_version: '0.11.0'
-terraform_version: '0.11.7'
-embulk_version: '0.9.7'
+docker_version: '18.09'
+docker_compose_version: '1.23.2'
+apex_version: '0.16.0'
+terraform_version: '0.11.11'
+embulk_version: '0.9.11'
 
 
