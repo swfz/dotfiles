@@ -28,6 +28,9 @@
     - sqlite-devel
     - inotify-tools
     - ansible
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
 
 - name: chrome
   yum:
