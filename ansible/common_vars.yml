@@ -4,16 +4,16 @@ git_username: swfz
 git_usermail: sawafuji.09@gmail.com
 git_editor: vim
 envs:
-  plenv:
-    { version: 5.26.2 }
+  # plenv:
+  #   { version: 5.26.2 }
   rbenv:
     { version: 2.5.1 }
   pyenv:
     { version: 3.6.6 }
-  ndenv:
+  nodenv:
     { version: v10.9.0 }
-  goenv:
-    { version: 1.10.2 }
+  # goenv:
+  #   { version: 1.10.2 }
 
 dotfiles:
   src:
