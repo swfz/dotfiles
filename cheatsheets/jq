@@ -48,3 +48,5 @@ jq '.[]|{a: .foo, b: bar}' | paste -s -d ',' | sed -e 's/^/\[/' -e 's/$/\]/' | j
 # CSV的な出力
 jq -r '.TargetHealthDescriptions[]|select(.TargetHealth.State!="healthy2")|[.Target.Id,.TargetHealth.State]|join(",")'
 
+# 特定のをnullに書き換え（ない場合もある）
+jq 'if(has(".next_cursor")) then .next_cursor|=null else . end'
