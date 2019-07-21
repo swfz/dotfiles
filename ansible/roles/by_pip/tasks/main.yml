@@ -11,8 +11,14 @@
 
 # mycli
 - name: install mycli
-  pip: name=mycli state=present
+  pip:
+    name: mycli
+    state: present
+    extra_args: --ignore-installed
 
 # awscli
 - name: install awscli
-  pip: name=awscli state=present
+  pip:
+    name: awscli
+    state: present
+    extra_args: --ignore-installed

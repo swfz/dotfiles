@@ -29,6 +29,9 @@
     - inotify-tools
     - ansible
     - vsftpd
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
 
 - name: chrome
   yum:

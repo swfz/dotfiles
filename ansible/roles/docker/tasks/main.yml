@@ -17,9 +17,12 @@
     exist_docker.rc == 0
 
 - block:
+  - name: download repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
   - name: install
     yum:
-      name: docker
+      name: docker-ce
       state: installed
 
   - name: docker start and enabled
@@ -32,15 +35,15 @@
     exist_docker.rc != 0
     or ( version_in_docker is defined and version_in_docker.stdout.find(docker_version) == -1 )
 
-- name: get docker completion in bash
-  get_url:
-    url: "{{ docker_completion.bash }}"
-    dest: /etc/bash_completion.d/docker
-    mode: 0755
+# - name: get docker completion in bash
+#   get_url:
+#     url: "{{ docker_completion.bash }}"
+#     dest: /etc/bash_completion.d/docker
+#     mode: 0755
 
-- name: get docker completion in zsh
-  get_url:
-    url: "{{ docker_completion.zsh }}"
-    dest: "{{ zsh_completion_dir }}/src/_docker"
-    mode: 0755
+# - name: get docker completion in zsh
+#   get_url:
+#     url: "{{ docker_completion.zsh }}"
+#     dest: "{{ zsh_completion_dir }}/src/_docker"
+#     mode: 0755
 
