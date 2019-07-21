@@ -64,18 +64,18 @@ alias url="perl -Xnpe '$|=1; s/\\?/\\n/g; s/&/\\n/g; s/=/:\\t/g' | nkf -u --url-
 alias uni="perl -Xpne 's/\\\u([0-9a-fA-F]{4})/chr(hex($1))/eg'"
 
 # docker-compose
-alias dkc="sudo docker-compose"
-alias dkce="sudo docker-compose exec"
-alias dkcps="sudo docker-compose ps"
-alias dkclogs="sudo docker-compose logs"
-alias dkctop="sudo docker-compose top"
+alias dkc="sudo -E docker-compose"
+alias dkce="sudo -E docker-compose exec"
+alias dkcps="sudo -E docker-compose ps"
+alias dkclogs="sudo -E docker-compose logs"
+alias dkctop="sudo -E docker-compose top"
 
 # docker
-alias dk="sudo docker"
-alias dke="sudo docker exec"
-alias dkps="sudo docker ps"
-alias dklogs="sudo docker logs"
-alias dktop="sudo docker top"
+alias dk="sudo -E docker"
+alias dke="sudo -E docker exec"
+alias dkps="sudo -E docker ps"
+alias dklogs="sudo -E docker logs"
+alias dktop="sudo -E docker top"
 
 # tmux
 alias tmcp="xargs -0 tmux set-buffer"

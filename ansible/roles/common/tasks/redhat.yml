@@ -28,6 +28,7 @@
     - sqlite-devel
     - inotify-tools
     - ansible
+    - vsftpd
 
 - name: chrome
   yum:
