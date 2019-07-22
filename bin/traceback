@@ -1,0 +1,108 @@
+#!/bin/bash
+
+_usage(){
+cat << EOS
+usage:
+  traceback
+
+options)
+  -t : takeover data
+  -f : result file
+  -r : range (int)
+  -d : starting date (eg. 20190701)
+  -e : executor [rubycritic|rubocop]
+EOS
+  exit 1
+}
+
+traceback_rubycritic(){
+  mkdir -p /tmp/traceback
+
+
+  out_file=${TARGET_FILE:-"./rubycritic-score.json"}
+  term=${RANGE:-10}
+  start=${STARTING_DATE:-$(date +"%Y%m%d")}
+  is_new_file=${IS_NEW_FILE:-true}
+  executor=${EXECUTOR}
+
+  TMP_OUT_FILE=/tmp/traceback/tmp-out-$$.json
+  RESULT_FILE=/tmp/traceback/${EXECUTOR}-$$.json
+
+cat << EOS
+==================================================
+  output file: ${out_file}
+  run ${term} days back from ${start}.
+==================================================
+EOS
+
+  if "${is_new_file}"; then
+    echo '[["date","score"]]' > ${TMP_OUT_FILE}
+    echo '[["date","score"]]' > ${RESULT_FILE}
+  fi
+
+  # install commands
+  case ${executor} in
+    "rubycritic") gem install -N rubycritic;;
+    "rubocop") gem install -N bundler;;
+  esac
+  # install commands
+
+  for i in `seq 0 ${term}`
+  do
+    date_str=$(date +"%F" --date "${start} $i days ago")
+    echo ${date_str}
+
+    hash=$(git log -1 --until="${date_str}" --format=%H)
+    git reset --hard ${hash}
+
+    # command
+    case ${executor} in
+      "rubycritic")
+        rubycritic ./app ./lib --no-browser --format json
+        score=$(cat ./tmp/rubycritic/report.json | jq '.score')
+        echo $score
+        ;;
+      "rubocop")
+        bundle install
+        bundle exec rubocop -f json -o copped.json
+        score=$(cat ./copped.json | jq '.summary.offense_count')
+        echo $score
+        ;;
+    esac
+    cat ${RESULT_FILE} | jq "length as \$l|.[\$l] |= [\"${date_str}\", ${score}]|[.[0]]+([.[range(1;\$l+1)]]|sort_by(.[0]))" > ${TMP_OUT_FILE}
+    # command
+
+    if [ ! -s ${TMP_OUT_FILE} ]; then
+      echo "empty file!!"
+    else
+      cp ${TMP_OUT_FILE} ${RESULT_FILE}
+    fi
+  done
+
+  cp ${RESULT_FILE} ${out_file}
+}
+
+main(){
+  while getopts htf:r:d:e: opt
+  do
+    case ${opt} in
+      h)
+        _usage;;
+      t)
+        IS_NEW_FILE=false;;
+      f)
+        TARGET_FILE=${OPTARG};;
+      r)
+        RANGE=${OPTARG};;
+      d)
+        STARTING_DATE=${OPTARG};;
+      e)
+        EXECUTOR=${OPTARG};;
+      :|\?) _usage;;
+    esac
+  done
+
+  traceback_rubycritic
+}
+
+main $@
