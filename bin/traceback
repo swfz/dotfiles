@@ -15,11 +15,12 @@ EOS
   exit 1
 }
 
-traceback_rubycritic(){
+traceback_metric(){
   mkdir -p /tmp/traceback
 
 
-  out_file=${TARGET_FILE:-"./rubycritic-score.json"}
+  # TODO: RESULT_FILE名をプロセスID含めたので途中から書き込みのパターンに対応できていない
+  out_file=${TARGET_FILE:-"./${EXECUTOR}-metrics.json"}
   term=${RANGE:-10}
   start=${STARTING_DATE:-$(date +"%Y%m%d")}
   is_new_file=${IS_NEW_FILE:-true}
@@ -38,6 +39,8 @@ EOS
   if "${is_new_file}"; then
     echo '[["date","score"]]' > ${TMP_OUT_FILE}
     echo '[["date","score"]]' > ${RESULT_FILE}
+  else
+    cp ${out_file} ${RESULT_FILE}
   fi
 
   # install commands
@@ -102,7 +105,7 @@ main(){
     esac
   done
 
-  traceback_rubycritic
+  traceback_metric
 }
 
 main $@
