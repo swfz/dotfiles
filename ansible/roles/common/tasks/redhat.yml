@@ -32,6 +32,7 @@
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
+    - bzip2
 
 - name: chrome
   yum:
