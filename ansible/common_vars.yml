@@ -7,13 +7,13 @@ envs:
   # plenv:
   #   { version: 5.26.2 }
   rbenv:
-    { version: 2.5.1 }
+    { version: 2.6.0 }
   pyenv:
     { version: 3.6.6 }
   nodenv:
-    { version: v10.9.0 }
-  # goenv:
-  #   { version: 1.10.2 }
+    { version: 12.6.0 }
+  goenv:
+    { version: 1.12.7 }
 
 dotfiles:
   src:
