@@ -11,11 +11,17 @@
     - 'export PATH="$HOME/.anyenv/bin:$PATH"'
     - 'eval "$(anyenv init - zsh)"'
 
+- name: check init
+  stat:
+    path: "{{ ansible_env.HOME }}/.config/anyenv/anyenv-install"
+  register: anyenv_install_dir
+
 - name: init
   expect:
     command: "{{ ansible_env.HOME }}/.anyenv/libexec/anyenv install --init"
     responses:
       '.*Do you want to checkout.*': y
+  when: not anyenv_install_dir.stat.exists
 
 - name: "exist envs"
   command: which {{ item.key }}
