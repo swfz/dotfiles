@@ -9,7 +9,13 @@
     line: "{{ item }}"
   with_items:
     - 'export PATH="$HOME/.anyenv/bin:$PATH"'
-    - 'eval "$(anyenv init -)"'
+    - 'eval "$(anyenv init - zsh)"'
+
+- name: init
+  expect:
+    command: "{{ ansible_env.HOME }}/.anyenv/libexec/anyenv install --init"
+    responses:
+      '.*Do you want to checkout.*': y
 
 - name: "exist envs"
   command: which {{ item.key }}
