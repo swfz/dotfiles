@@ -1,0 +1,2 @@
+direnv:
+  src: https://github.com/direnv/direnv/releases/download/{{ direnv_version }}/direnv.linux-amd64
