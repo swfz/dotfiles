@@ -10,4 +10,8 @@ ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --
 ansible-playbook -i hosts development.yml
 ```
 
+# use tag
 
+```
+ansible-playbook -i hosts -c local development.yml --tags "git"
+```
