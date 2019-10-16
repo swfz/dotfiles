@@ -6,7 +6,7 @@
   register: samba_config
 
 - name: running samba
-  service: name=smb state=running enabled=yes
+  service: name=smb state=started enabled=yes
 
 - name: restart samba
   service: name=smb state=restarted
