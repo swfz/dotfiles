@@ -5,6 +5,10 @@
 - name: install pip
   easy_install: name=pip state=present
 
+# pexpect
+- name: install pexpect
+  pip: name=pexpect state=present
+
 # cheat
 - name: install cheat
   pip: name=cheat state=present
