@@ -29,4 +29,5 @@ source ~/dotfiles/vimrc/plugins/caw.vim
 source ~/dotfiles/vimrc/plugins/smartchr.vim
 source ~/dotfiles/vimrc/plugins/srcexpl.vim
 source ~/dotfiles/vimrc/plugins/ale.vim
+source ~/dotfiles/vimrc/plugins/vim-go.vim
 
