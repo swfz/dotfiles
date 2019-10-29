@@ -1,3 +1,4 @@
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 alias xargs=/usr/local/bin/gxargs
 alias find=/usr/local/bin/gfind
+alias date=/usr/local/bin/gdate
