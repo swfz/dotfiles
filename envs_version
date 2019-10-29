@@ -52,6 +52,24 @@ ndenv_version(){
   fi
 }
 
+nodenv_version(){
+  if [ -n "$NODENV_ROOT" ]; then
+    VERSION=''
+    NOTFOUND=''
+    if [ -r .node-version ]; then
+      VERSION=`cat .node-version`
+      ls "$NODENV_ROOT/versions/" | egrep "^$VERSION$" >/dev/null 2>&1 || NOTFOUND='{?}'
+    else
+      if [ -r $NODENV_ROOT/version ]; then
+        VERSION=`cat "$NODENV_ROOT/version"`
+      else
+        VERSION='?'
+      fi
+    fi
+   echo "nd[$VERSION]$NOTFOUND"
+  fi
+}
+
 pyenv_version(){
   if [ -n "$PYENV_ROOT" ]; then
     VERSION=''

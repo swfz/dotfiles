@@ -121,8 +121,9 @@ function _update_vcs_info_msg() {
     plenv=`plenv_version`
     rbenv=`rbenv_version`
     ndenv=`ndenv_version`
+    nodenv=`nodenv_version`
     pyenv=`pyenv_version`
-    RPROMPT="${ENV_PL}${plenv} ${ENV_RB}${rbenv} ${ENV_ND}${ndenv} ${ENV_PY}${pyenv}${RESET} ${prompt}"
+    RPROMPT="${ENV_PL}${plenv} ${ENV_RB}${rbenv} ${ENV_ND}${ndenv} ${ENV_ND}${nodenv} ${ENV_PY}${pyenv}${RESET} ${prompt}"
     #RPROMPT="${ENV_PL}${plenv} ${RESET} ${prompt}"
 }
 
