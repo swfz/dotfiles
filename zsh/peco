@@ -35,6 +35,10 @@ function aliasp () {
   print -z "$BUFFER"
 }
 
+function ssh-peco () {
+  ssh $(grep --color=no 'Host ' ~/.ssh/config | peco | awk '{print $2}')
+}
+
 function peco-p() {
   selected=$@
   if [ -n "$selected" ]; then
