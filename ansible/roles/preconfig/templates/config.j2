@@ -1,16 +1,26 @@
 [user]
-    name = {{ git.username|default('vagrant') }}
-    email = {{ git.usermail|default('vagrant@example.com') }}
+  name = {{ git.username|default('vagrant') }}
+  email = {{ git.usermail|default('vagrant@example.com') }}
 [color]
-    ui = true
+  ui = true
+[color "diff"]
+  old = 013
+  new = 014
+  whitespace = "red reverse"
+  compactionHeuristic = true
+[color "diff-hightlight"]
+  oldNormal = "013 bold"
+  oldHighlight = "000 005"
+  newNormal = "014 bold"
+  newHighlight = "000 014"
 [core]
-    editor = {{ git_editor|default('vi') }}
-    pager  = less -cm
-    quotepath = false
+  editor = {{ git_editor|default('vi') }}
+  pager  = less -cm
+  quotepath = false
 [url "https://"]
-    insteadOf = git://
+  insteadOf = git://
 [http]
-    sslVerify = false
+  sslVerify = false
 [alias]
   a  = add
   ci = commit
