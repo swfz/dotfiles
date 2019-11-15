@@ -1,0 +1,25 @@
+#!/bin/basn -x
+
+# ls text | xargs -i sh mbsplit.sh text text3 {} 5000
+
+input_dir=$1
+output_dir=$2
+filename=$3
+threashold=$4
+count=1
+
+: > /tmp/${filename}
+
+cat ${input_dir}/${filename} | while read line
+do
+  echo ${line} >> /tmp/${filename}
+
+  bytes=`wc --bytes /tmp/${filename} | awk '{print $1}'`
+
+  if [ ${bytes} -gt ${threashold} ]; then
+    count=$(( count + 1 ))
+    : > /tmp/${filename}
+  fi
+
+  echo ${line} >> ${output_dir}/${filename}_${count}
+done
