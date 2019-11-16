@@ -1,6 +1,6 @@
 #!/bin/basn -x
 
-# ls text | xargs -i sh mbsplit.sh text text3 {} 5000
+# ls text | xargs -i sh mbsplit text text3 {} 5000
 
 input_dir=$1
 output_dir=$2
