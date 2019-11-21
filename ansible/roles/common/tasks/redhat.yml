@@ -33,6 +33,9 @@
     - device-mapper-persistent-data
     - lvm2
     - bzip2
+    - Xvfb
+    - libgconf-2.so.4
+    - GConf2
 
 - name: chrome
   yum:
