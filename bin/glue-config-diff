@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# glue-config-diff profile JobName1 JobName2
+
+diff -u -w <(aws --profile=$1 glue get-job --job-name $2) <(aws --profile=$1 glue get-job --job-name $3) | diff-so-fancy
