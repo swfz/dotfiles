@@ -85,12 +85,20 @@ jq with transform escaped sequence
 cat hoge.json | jq2esc '.hoge'
 ```
 
-## gluediff
+## glue-diff
 
 text diff between glue job
 
 ```
-gluediff awsProfile jobName1 jobName2
+glue-diff awsProfile jobName1 jobName2
+```
+
+## glue-diff
+
+text diff between glue config
+
+```
+glue-config-diff awsProfile jobName1 jobName2
 ```
 
 ## traceback
