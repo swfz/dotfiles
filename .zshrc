@@ -99,8 +99,8 @@ esac
 
 # enhancd
 export ENHANCD_FILTER="peco"
-if [ -f "/home/sawafuji.yuya/.enhancd/zsh/enhancd.zsh" ]; then
-    source "/home/sawafuji.yuya/.enhancd/zsh/enhancd.zsh"
+if [ -f "/home/${USER}/.enhancd/zsh/enhancd.zsh" ]; then
+    source "/home/${USER}/.enhancd/zsh/enhancd.zsh"
 fi
 
 # cheatsheet
