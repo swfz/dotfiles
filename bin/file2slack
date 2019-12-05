@@ -32,6 +32,7 @@ options)
   -f : filename (if this option is not exist, to post the stdin.)
   -c : post channel
   -t : file title
+  -s : filetype syntax
 EOS
   exit 1
 }
