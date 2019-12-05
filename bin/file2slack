@@ -9,10 +9,12 @@ CHANNEL="#swfz"
 post2slack(){
   echo ${FILE}
 
+  filetype=${SYNTAX:-text}
+
   if [ -n "${FILE}" ]; then
-    curl -F file=@${FILE} -F title=${TITLE} -F channels=${CHANNEL} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
+    curl -F file=@${FILE} -F title=${TITLE} -F channels=${CHANNEL} -F filetype=${filetype} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
   else
-    curl -F content="$(cat -)" -F title=${TITLE} -F channels=${CHANNEL} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
+    curl -F content="$(cat -)" -F title=${TITLE} -F channels=${CHANNEL} -F filetype=${filetype} -F token=${SLACK_WEB_API_TOKEN} ${API_URL}
   fi
 }
 
@@ -35,7 +37,7 @@ EOS
 }
 
 main(){
-  while getopts hc:f:t:u: opt
+  while getopts hc:f:t:u:s: opt
   do
     case ${opt} in
       h)
@@ -46,6 +48,8 @@ main(){
         FILE=${OPTARG};;
       t)
         TITLE=${OPTARG};;
+      s)
+        SYNTAX=${OPTARG};;
       :|\?) _usage;;
     esac
   done
