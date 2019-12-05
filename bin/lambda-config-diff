@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# lambda-config-diff profile FunctionName1 FunctionName2
+
+diff -u -w <(aws --profile=$1 lambda get-function-configuration --function-name $2) <(aws --profile=$1 lambda get-function-configuration --function-name $3) | diff-so-fancy
