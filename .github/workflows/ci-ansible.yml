@@ -13,8 +13,10 @@ jobs:
       - uses: actions/checkout@master
       - name: install ansible
         run: |
-          pip install --upgrade pip
-          pip install ansible
+          apt update
+          apt install software-properties-common
+          apt-add-repository --yes --update ppa:ansible/ansible
+          apt install ansible
       - name: run ansible
         run: |
           cd ansible
