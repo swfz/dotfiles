@@ -1,0 +1,14 @@
+name: ansible
+
+on: [push]
+  # push:
+  #   paths:
+  #     - 'ansible/*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: 'first step'
+    steps:
+      - name: 'echo hello'
+        run: echo hello
