@@ -4,13 +4,13 @@ name: ansible
 on:
   push:
     paths:
-      - 'ansible/*'
+      - 'ansible/**'
       - '.github/workflows/ci-ansible.yml'
 
 jobs:
   build-ubuntu:
     runs-on: ubuntu-latest
-    name: 'ansible playbook'
+    name: 'ansible playbook ubuntu'
     steps:
       - uses: actions/checkout@master
       - name: install ansible
@@ -29,7 +29,7 @@ jobs:
 
   build-mac:
     runs-on: macos-latest
-    name: 'ansible playbook'
+    name: 'ansible playbook mac'
     steps:
       - uses: actions/checkout@master
       - name: install ansible
