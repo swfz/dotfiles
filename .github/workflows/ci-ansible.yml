@@ -1,9 +1,10 @@
 name: ansible
 
-on: [push]
-  # push:
-  #   paths:
-  #     - 'ansible/*'
+on:
+  push:
+    paths:
+      - 'ansible/*'
+      - '.github/workflows/ci-ansible.yml'
 
 jobs:
   build:
