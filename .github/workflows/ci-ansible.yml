@@ -8,7 +8,7 @@ on:
       - '.github/workflows/ci-ansible.yml'
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ubuntu-latest
     name: 'ansible playbook'
     steps:
@@ -26,3 +26,19 @@ jobs:
         run: |
           cd ansible
           ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner
+
+  build-mac:
+    runs-on: macos-latest
+    name: 'ansible playbook'
+    steps:
+      - uses: actions/checkout@master
+      - name: install ansible
+        run: |
+          brew install ansible
+      - name: run ansible
+        run: |
+          ansible --version
+          cd ansible
+          ansible-playbook -i localhost, -c local mac.yml
+
+
