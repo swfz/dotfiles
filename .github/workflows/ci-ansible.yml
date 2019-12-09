@@ -20,7 +20,7 @@ jobs:
           sudo apt install ansible
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
           sudo python get-pip.py
-          pip install pexpect
+          pip install pexpect --user
       - name: run ansible
         run: |
           ansible-playbook --version
