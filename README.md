@@ -1,5 +1,7 @@
 dotfiles
 
+![](https://github.com/swfz/dotfiles/workflows/ansible/badge.svg)
+
 # install(centos)
 
 ```
