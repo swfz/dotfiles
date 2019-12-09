@@ -1,5 +1,7 @@
 - name: install with brew
-  homebrew: name={{ item }} state=installed
+  homebrew:
+    name: "{{ item }}"
+    state: installed
   with_items:
     - peco
     - nkf
