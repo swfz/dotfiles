@@ -16,6 +16,8 @@
     - licecap
 
 - name: install with cask
-  honebrew_cask: name={{ item}} state=installed
+  honebrew_cask:
+    name: {{ item }}
+    state: installed
   with_items:
     - bitbar
