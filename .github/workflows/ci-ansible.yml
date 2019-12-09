@@ -19,5 +19,6 @@ jobs:
           sudo apt install ansible
       - name: run ansible
         run: |
+          ansible --version
           cd ansible
           ansible-playbook -i localhost, -c local ubuntu.yml
