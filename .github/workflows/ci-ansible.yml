@@ -1,3 +1,4 @@
+---
 name: ansible
 
 on:
@@ -23,6 +24,5 @@ jobs:
           pip install pexpect --user
       - name: run ansible
         run: |
-          ansible-playbook --version
           cd ansible
           ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner
