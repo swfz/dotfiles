@@ -22,4 +22,4 @@ jobs:
         run: |
           ansible-playbook --version
           cd ansible
-          ansible-playbook -i localhost, -c local ubuntu.yml
+          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner
