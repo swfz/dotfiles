@@ -1,14 +1,58 @@
+---
 name: ansible
 
-on: [push]
-  # push:
-  #   paths:
-  #     - 'ansible/*'
+on:
+  push:
+    paths:
+      - 'ansible/**'
+      - '.github/workflows/ci-ansible.yml'
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ubuntu-latest
-    name: 'first step'
+    name: 'ansible playbook ubuntu'
+    env:
+      CI: true
     steps:
-      - name: 'echo hello'
-        run: echo hello
+      - uses: actions/checkout@master
+      - name: install ansible
+        run: |
+          sudo apt update
+          sudo apt install software-properties-common
+          sudo apt-add-repository --yes --update ppa:ansible/ansible
+          sudo apt install ansible
+          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+          sudo python get-pip.py
+          pip install pexpect --user
+      - name: run ansible
+        run: |
+          cd ansible
+          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner
+
+  build-mac:
+    runs-on: macos-latest
+    env:
+      CI: true
+    name: 'ansible playbook mac'
+    steps:
+      - uses: actions/checkout@master
+      - name: install ansible
+        run: |
+          brew install ansible
+      - name: run ansible
+        run: |
+          ansible --version
+          cd ansible
+          ansible-playbook -i localhost, -c local mac.yml
+
+  build-centos:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    name: 'ansible playbook centos'
+    steps:
+      - uses: actions/checkout@master
+      - name: 'ansible playbook centos'
+        run: |
+          docker-compose run ansible ansible-playbook -i localhost, -c local development.yml
+
