@@ -41,4 +41,12 @@ jobs:
           cd ansible
           ansible-playbook -i localhost, -c local mac.yml
 
+  build-centos:
+    runs-on: ubuntu-latest
+    name: 'ansible playbook centos'
+    steps:
+      - uses: actions/checkout@master
+      - name: 'ansible playbook centos'
+        run: |
+          docker-compose run ansible ansible-playbook -i localhost, -c local development.yml
 
