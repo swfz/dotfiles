@@ -24,7 +24,7 @@
   when: not anyenv_install_dir.stat.exists
 
 - name: "exist envs"
-  command: which {{ item.key }}
+  command: "{{ execute }} 'which {{ item.key }}'"
   register: exist_envs
   changed_when: false
   ignore_errors: true
@@ -44,6 +44,11 @@
     create: yes
     line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$PATH"'
   with_dict: "{{ envs }}"
+
+- name: "nodenv default packages"
+  copy:
+    src: ../files/nodenv-default-packages
+    dest: "$HOME/.anyenv/envs/nodenv/default-packages"
 
 - name: "exist version in every envs"
   shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"
