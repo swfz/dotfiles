@@ -22,14 +22,6 @@
     exist_vim.rc == 0
 
 - block:
-    - name: install packages
-      yum: name={{ item }} state=installed
-      with_items:
-        - git
-        - lua-devel
-        - perl-ExtUtils-Embed
-        - make
-        - ncurses-devel
     - name: install vim
       script: "install.sh v{{ vim_version }}.{{ vim_version_patch }}"
   when:
