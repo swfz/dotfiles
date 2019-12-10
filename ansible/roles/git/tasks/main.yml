@@ -4,6 +4,7 @@
     - perl-ExtUtils-MakeMaker
     - zlib-devel
     - tcl
+    - gettext
 
 - name: exist git
   command: which git
