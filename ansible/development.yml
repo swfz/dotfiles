@@ -17,8 +17,6 @@
     - { role: terraform      , tags: terraform }
     - { role: embulk         , tags: embulk }
     - { role: sshrc          , tags: sshrc }
-    # ========== execute install.sh ==========
-    - { role: apex, tags: apex }
     # ========== yum ==========
     - { role: vim8   , tags: vim8 }
     - { role: tmux   , tags: tmux }
@@ -30,7 +28,7 @@
     - { role: notofont, tags: notofont }
     - { role: by_pip,  tags: by_pip } # cheat, mycli, awscli
 
-- hosts: local
+- hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
