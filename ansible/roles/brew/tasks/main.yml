@@ -17,9 +17,9 @@
     - slack
     - licecap
 
-# - name: install with cask
-#   honebrew_cask:
-#     name: "{{ item }}"
-#     state: installed
-#   with_items:
-#     - bitbar
+- name: install with cask
+  homebrew_cask:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - bitbar
