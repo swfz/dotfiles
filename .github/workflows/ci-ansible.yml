@@ -11,12 +11,8 @@ jobs:
   build-ubuntu:
     runs-on: ubuntu-latest
     name: 'ansible playbook ubuntu'
-    env:
-      CI: true
     steps:
       - uses: actions/checkout@master
-      - name: env
-        run: env
       - name: install ansible
         run: |
           sudo apt update
@@ -27,14 +23,14 @@ jobs:
           sudo python get-pip.py
           pip install pexpect --user
       - name: run ansible
+        env:
+          CI: true
         run: |
           cd ansible
           ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner
 
   build-mac:
     runs-on: macos-latest
-    env:
-      CI: true
     name: 'ansible playbook mac'
     steps:
       - uses: actions/checkout@master
@@ -42,6 +38,8 @@ jobs:
         run: |
           brew install ansible
       - name: run ansible
+        env:
+          CI: true
         run: |
           ansible --version
           cd ansible
@@ -49,8 +47,6 @@ jobs:
 
   build-centos:
     runs-on: ubuntu-latest
-    env:
-      CI: true
     name: 'ansible playbook centos'
     steps:
       - uses: actions/checkout@master
