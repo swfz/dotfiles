@@ -59,4 +59,4 @@
 
 - name: disable SELinux
   selinux: state=disabled
-  when: ansible_env.CI != "true"
+  when: ansible_env.has_key('CI') and ansible_env.CI != "true"
