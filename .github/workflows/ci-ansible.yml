@@ -54,5 +54,5 @@ jobs:
       - uses: actions/checkout@master
       - name: 'ansible playbook centos'
         run: |
-          docker-compose run ansible ansible-playbook -i localhost, -c local development.yml
+          docker-compose run -e CI=true ansible ansible-playbook -i localhost, -c local development.yml
 
