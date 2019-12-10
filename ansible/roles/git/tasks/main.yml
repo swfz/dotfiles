@@ -3,6 +3,7 @@
   with_items:
     - perl-ExtUtils-MakeMaker
     - zlib-devel
+    - tcl
 
 - name: exist git
   command: which git
