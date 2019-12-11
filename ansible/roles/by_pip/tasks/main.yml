@@ -5,24 +5,12 @@
 - name: install pip
   easy_install: name=pip state=present
 
-# pexpect
-- name: install pexpect
-  pip: name=pexpect state=present
-
-# cheat
-- name: install cheat
-  pip: name=cheat state=present
-
-# mycli
-- name: install mycli
+- name: pip modules
   pip:
-    name: mycli
-    state: present
-    extra_args: --ignore-installed
-
-# awscli
-- name: install awscli
-  pip:
-    name: awscli
+    name:
+      - pexpect
+      - cheat
+      - mycli
+      - awscli
     state: present
     extra_args: --ignore-installed
