@@ -1,8 +1,28 @@
 version: "3"
 services:
-  ansible:
-    build: ./ansible
+  centos:
+    build:
+      context: ./ansible
+      dockerfile: Dockerfile
     volumes:
       - ./ansible:/usr/local/src/ansible
     tty: true
-    command: "/bin/bash"
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    command: "python"
+  ubuntu:
+    build:
+      context: ./ansible
+      dockerfile: Dockerfile.ubuntu
+    volumes:
+      - ./ansible:/usr/local/src/ansible
+    tty: true
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    command: "python"
