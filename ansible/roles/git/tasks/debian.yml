@@ -8,3 +8,4 @@
     - gettext
     - autoconf
     - asciidoc
+    - libcurl4-openssl-dev
