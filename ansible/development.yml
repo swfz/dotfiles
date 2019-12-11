@@ -32,6 +32,7 @@
   # strategy: debug
   vars_files:
     - common_vars.yml
+  become: no
   become_user: "{{ user }}"
   roles:
     - { role: preconfig, tags: preconfig }
