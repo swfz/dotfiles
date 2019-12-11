@@ -1,10 +1,10 @@
-- name: dependencies packages
-  yum: name={{ item }}
-  with_items:
-    - perl-ExtUtils-MakeMaker
-    - zlib-devel
-    - tcl
-    - gettext
+- name: debian tasks
+  include: debian.yml
+  when: "ansible_os_family == 'Debian'"
+
+- name: redhat tasks
+  include: redhat.yml
+  when: "ansible_os_family == 'RedHat'"
 
 - name: exist git
   command: which git
