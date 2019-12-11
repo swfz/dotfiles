@@ -1,7 +1,7 @@
 - name: exist docker_compose
   command: which docker-compose
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_docker_compose
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get docker_compose version
   shell: docker-compose --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_docker_compose
   changed_when: false
   ignore_errors: true

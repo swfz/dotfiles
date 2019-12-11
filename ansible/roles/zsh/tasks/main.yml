@@ -9,7 +9,7 @@
 - name: zsh_path
   command: which zsh
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: zsh_path
   changed_when: false
 
@@ -26,7 +26,7 @@
 
 - name: install zsh-completion
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   git:
     repo: "{{ zsh_completion.src }}"
     dest: "{{ zsh_completion_dir }}"

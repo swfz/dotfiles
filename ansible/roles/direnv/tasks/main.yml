@@ -1,7 +1,7 @@
 - name: exist direnv
   command: which direnv
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_direnv
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get direnv version
   shell: direnv --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_direnv
   changed_when: false
   ignore_errors: true

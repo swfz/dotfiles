@@ -1,5 +1,5 @@
 - name: dependency package
-  yum: name={{item}}
+  yum: name={{ item }}
   with_items:
     - unzip
 

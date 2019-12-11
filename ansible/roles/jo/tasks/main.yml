@@ -1,7 +1,7 @@
 - name: exist jo
   command: which jo
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_jo
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get jo version
   shell: jo -v
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_jo
   changed_when: false
   ignore_errors: true
