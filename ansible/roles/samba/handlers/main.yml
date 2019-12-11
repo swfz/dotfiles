@@ -1,0 +1,3 @@
+- name: restart samba
+  service: name=smb state=restarted
+  when: ansible_env.has_key('CI') and ansible_env.CI != "true"
