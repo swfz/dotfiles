@@ -1,5 +1,5 @@
 - name: upgrade pip
-  pip: name=pip state=latest
+  pip: name=pip
 
 - name: install powerline
   # FIXME not idempotency because install login user. but not loaded zshenv via pip module
