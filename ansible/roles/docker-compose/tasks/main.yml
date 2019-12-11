@@ -7,7 +7,7 @@
   ignore_errors: true
 
 - name: get docker_compose version
-  shell: docker-compose --version
+  command: docker-compose --version
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_docker_compose
