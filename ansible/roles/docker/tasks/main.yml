@@ -28,8 +28,9 @@
   - name: docker start and enabled
     service:
       name: docker
-      state: running
+      state: started
       enabled: yes
+    when: ansible_env.has_key('CI') and ansible_env.CI != "true"
 
   when:
     exist_docker.rc != 0

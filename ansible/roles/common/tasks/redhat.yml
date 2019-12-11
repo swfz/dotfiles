@@ -36,6 +36,7 @@
     - Xvfb
     - libgconf-2.so.4
     - GConf2
+    - make
 
 - name: chrome
   yum:
@@ -59,4 +60,4 @@
 
 - name: disable SELinux
   selinux: state=disabled
-  when: ansible_env.CI != "true"
+  when: ansible_env.has_key('CI') and ansible_env.CI != "true"

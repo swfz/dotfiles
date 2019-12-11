@@ -24,14 +24,14 @@
   when: not anyenv_install_dir.stat.exists
 
 - name: "exist envs"
-  command: which {{ item.key }}
+  shell: "{{ execute }} 'which {{ item.key }}'"
   register: exist_envs
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
 - name: "install envs"
-  command: "{{ execute }} 'anyenv install {{ item.0 }}'"
+  shell: "{{ execute }} 'anyenv install {{ item.0 }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
@@ -45,6 +45,11 @@
     line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$PATH"'
   with_dict: "{{ envs }}"
 
+- name: "nodenv default packages"
+  copy:
+    src: ../files/nodenv-default-packages
+    dest: "$HOME/.anyenv/envs/nodenv/default-packages"
+
 - name: "exist version in every envs"
   shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"
   register: exist_version
@@ -53,14 +58,14 @@
   with_dict: "{{ envs }}"
 
 - name: "install envs version"
-  command: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
+  shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_version.results }}"
 
 - name: "exist global envs version"
-  command: "{{ execute }} '{{ item.key }} global'"
+  shell: "{{ execute }} '{{ item.key }} global'"
   when: item.key != "goenv"
   register: exist_global
   changed_when: false
@@ -68,7 +73,7 @@
   with_dict: "{{ envs }}"
 
 - name: "set global envs version"
-  command: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
+  shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
   with_together:
     - "{{ envs }}"

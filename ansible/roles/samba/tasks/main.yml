@@ -7,8 +7,9 @@
 
 - name: running samba
   service: name=smb state=started enabled=yes
+  when: ansible_env.has_key('CI') and ansible_env.CI != "true"
 
 - name: restart samba
   service: name=smb state=restarted
   when: samba_config.changed
-
+  when: ansible_env.has_key('CI') and ansible_env.CI != "true"

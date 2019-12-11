@@ -31,7 +31,7 @@
   - name: configure make install
     command: chdir=/tmp/{{ zsh.dir }} {{ item }}
     with_items:
-      - ./configure
+      - ./configure --with-tcsetpgrp
       - make
       - make install
 
