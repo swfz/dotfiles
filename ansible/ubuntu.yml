@@ -9,8 +9,8 @@
     - { role: common, tags: common }
     - { role: peco, tags: peco }
     - { role: jq, tags: jq }
-    # - { role: notofont, tags: notofont } # require exclude yum
-    # - { role: by_pip,  tags: by_pip } # cheat, mycli, awscli
+    - { role: notofont, tags: notofont }
+    - { role: by_pip,  tags: by_pip }
 
 - hosts: localhost
   # strategy: debug
