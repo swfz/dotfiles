@@ -21,7 +21,6 @@
     dest: /etc/zshenv
     mode: 0755
 
-- debug: var={{ ansible_env }}
 - name: edit suduers
   replace:
     dest: /etc/sudoers
