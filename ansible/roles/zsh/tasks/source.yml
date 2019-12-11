@@ -7,7 +7,7 @@
   ignore_errors: true
 
 - name: get zsh version
-  shell: zsh --version
+  command: zsh --version
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
   register: version_in_zsh

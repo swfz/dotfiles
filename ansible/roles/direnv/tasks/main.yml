@@ -7,7 +7,7 @@
   ignore_errors: true
 
 - name: get direnv version
-  shell: direnv --version
+  command: direnv --version
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
   register: version_in_direnv

@@ -7,7 +7,7 @@
   ignore_errors: true
 
 - name: get peco version
-  shell: peco --version
+  command: peco --version
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
   register: version_in_peco
