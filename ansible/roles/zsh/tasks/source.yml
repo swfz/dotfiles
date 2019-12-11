@@ -1,7 +1,7 @@
 - name: exist zsh
   command: which zsh
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_zsh
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get zsh version
   shell: zsh --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_zsh
   changed_when: false
   ignore_errors: true

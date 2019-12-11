@@ -1,7 +1,7 @@
 - name: exist terraform
   command: which terraform
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_terraform
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get terraform version
   shell: "terraform version | grep Terraform"
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_terraform
   changed_when: false
   ignore_errors: true

@@ -1,7 +1,7 @@
 - name: exist docker
   command: which docker
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_docker
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get docker version
   shell: docker --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_docker
   changed_when: false
   ignore_errors: true

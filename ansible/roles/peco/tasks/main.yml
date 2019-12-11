@@ -1,7 +1,7 @@
 - name: exist peco
   command: which peco
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_peco
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get peco version
   shell: peco --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_peco
   changed_when: false
   ignore_errors: true

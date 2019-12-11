@@ -1,7 +1,7 @@
 - name: exist tmux
   command: which tmux
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_tmux
   changed_when: false
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: get tmux version
   shell: tmux -V
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_tmux
   changed_when: false
   ignore_errors: true

@@ -4,7 +4,7 @@
 - name: exist embulk
   command: which embulk
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_embulk
   changed_when: false
   ignore_errors: true
@@ -12,7 +12,7 @@
 - name: get embulk version
   shell: embulk --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH}}"
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_embulk
   changed_when: false
   ignore_errors: true
