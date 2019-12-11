@@ -47,7 +47,7 @@
 
 - name: "nodenv default packages"
   copy:
-    src: ../files/nodenv-default-packages
+    src: nodenv-default-packages
     dest: "$HOME/.anyenv/envs/nodenv/default-packages"
 
 - name: "exist version in every envs"
