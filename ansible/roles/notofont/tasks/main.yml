@@ -1,8 +1,3 @@
-- name: dependency package
-  yum: name={{ item }}
-  with_items:
-    - unzip
-
 - name: directory
   file:
     path: /usr/share/fonts/noto
