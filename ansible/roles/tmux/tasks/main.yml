@@ -46,4 +46,3 @@
   when:
     exist_tmux.rc != 0
     or ( version_in_tmux is defined and version_in_tmux.stdout.find(tmux_version) == -1 )
-

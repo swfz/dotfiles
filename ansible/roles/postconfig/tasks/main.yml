@@ -93,5 +93,3 @@
     src: "{{ dotfiles.dest }}/.sshrc.d"
     dest: ~/.sshrc.d
     state: link
-
-

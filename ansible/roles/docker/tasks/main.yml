@@ -36,7 +36,6 @@
   when:
     exist_docker.rc != 0
     or ( version_in_docker is defined and version_in_docker.stdout.find(docker_version) == -1 )
-
 # - name: get docker completion in bash
 #   get_url:
 #     url: "{{ docker_completion.bash }}"
@@ -48,4 +47,3 @@
 #     url: "{{ docker_completion.zsh }}"
 #     dest: "{{ zsh_completion_dir }}/src/_docker"
 #     mode: 0755
-

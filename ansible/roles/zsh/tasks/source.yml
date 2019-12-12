@@ -39,5 +39,3 @@
   when:
     exist_zsh.rc != 0
     or ( version_in_zsh is defined and version_in_zsh.stdout.find(zsh_version) == -1 )
-
-

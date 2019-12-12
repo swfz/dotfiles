@@ -37,4 +37,3 @@
 
 - name: change shell in {{ user }}
   user: name={{ user }} shell={{ zsh_path.stdout }}
-
