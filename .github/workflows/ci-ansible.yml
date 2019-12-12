@@ -54,3 +54,20 @@ jobs:
         run: |
           docker-compose run -e CI=true centos ansible-playbook -i localhost, -c local development.yml
 
+  ansible-lint:
+    runs-on: ubuntu-latest
+    name: 'ansible-lint'
+    steps:
+      - uses: actions/checkout@master
+      - name: install ansible
+        run: |
+          sudo apt update
+          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+          sudo python get-pip.py
+          pip install ansible-lint --user
+      - name: run ansible-lint
+        env:
+          CI: true
+        run: |
+          cd ansible
+          ansible-lint development.yml mac.yml ubuntu.yml
