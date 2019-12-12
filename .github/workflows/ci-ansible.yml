@@ -56,10 +56,10 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    name: 'ansible-lint'
+    name: 'lint'
     steps:
       - uses: actions/checkout@master
-      - name: install ansible-lint
+      - name: install ansible-lint yamllint
         run: |
           sudo apt update
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
