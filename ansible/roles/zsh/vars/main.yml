@@ -1,3 +1,4 @@
+---
 zsh:
   dir: zsh-{{ zsh_version }}
   tgz: zsh-{{ zsh_version }}.tar.gz

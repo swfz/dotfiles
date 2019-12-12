@@ -1,3 +1,4 @@
+---
 - name: exist jq
   command: which jq
   environment:

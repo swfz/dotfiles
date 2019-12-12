@@ -1,3 +1,4 @@
+---
 - name: dependencies java install
   yum: name=java-1.8.0-openjdk-devel state=installed
 
@@ -27,5 +28,3 @@
   when:
     exist_embulk.rc != 0
     or ( version_in_embulk is defined and version_in_embulk.stdout.find(embulk_version) == -1 )
-
-

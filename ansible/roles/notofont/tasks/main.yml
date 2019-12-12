@@ -1,3 +1,4 @@
+---
 - name: directory
   file:
     path: /usr/share/fonts/noto

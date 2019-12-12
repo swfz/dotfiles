@@ -1,3 +1,4 @@
+---
 - name: exist jo
   command: which jo
   environment:
@@ -38,5 +39,3 @@
   when:
     exist_jo.rc != 0
     or ( version_in_jo is defined and version_in_jo.stdout.find(jo_version) == -1 )
-
-

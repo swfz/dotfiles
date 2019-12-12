@@ -1,2 +1,3 @@
+---
 - name: install q
   yum: name={{ q.src }} state=installed
