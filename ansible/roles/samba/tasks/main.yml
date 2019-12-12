@@ -4,11 +4,8 @@
 - name: set config
   template: src=smb.conf dest=/etc/samba/smb.conf
   register: samba_config
+  notify: restart samba
 
 - name: running samba
   service: name=smb state=started enabled=yes
   when: ansible_env.has_key('CI') and ansible_env.CI != "true"
-
-- name: restart samba
-  service: name=smb state=restarted
-  when: samba_config.changed and ansible_env.has_key('CI') and ansible_env.CI != "true"
