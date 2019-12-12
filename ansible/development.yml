@@ -26,7 +26,7 @@
     - { role: nginx, tags: nginx }
     # ========== pip ==========
     - { role: notofont, tags: notofont }
-    - { role: by_pip, tags: by_pip } # cheat, mycli, awscli
+    - { role: by_pip, tags: by_pip }  # cheat, mycli, awscli
 
 - hosts: localhost
   # strategy: debug
