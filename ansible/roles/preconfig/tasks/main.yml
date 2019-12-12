@@ -29,5 +29,3 @@
     src: "{{ dotfiles.dest }}/config/peco/config.json"
     dest: "~/.config/peco/config.json"
     state: link
-
-

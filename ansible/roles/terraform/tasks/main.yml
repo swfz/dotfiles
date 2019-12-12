@@ -32,6 +32,3 @@
   when:
     exist_terraform.rc != 0
     or ( version_in_terraform is defined and version_in_terraform.stdout.find(terraform_version) == -1 )
-
-
-

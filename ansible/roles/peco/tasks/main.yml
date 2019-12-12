@@ -35,5 +35,3 @@
   when:
     exist_peco.rc != 0
     or ( version_in_peco is defined and version_in_peco.stderr.find(peco_version) == -1 )
-
-
