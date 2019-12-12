@@ -70,4 +70,4 @@ jobs:
           CI: true
         run: |
           cd ansible
-          `pwd`/local/bin/ansible-lint development.yml mac.yml ubuntu.yml
+          `which ansible-lint` development.yml mac.yml ubuntu.yml
