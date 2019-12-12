@@ -15,7 +15,7 @@
   changed_when: false
   ignore_errors: true
 
-- name: get git version # noqa 303
+- name: get git version  # noqa 303
   command: git --version
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
