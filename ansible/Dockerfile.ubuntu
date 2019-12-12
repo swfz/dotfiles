@@ -3,6 +3,6 @@ FROM ubuntu:latest
 RUN apt update
 RUN apt install -y software-properties-common
 RUN apt-add-repository --yes --update ppa:ansible/ansible
-RUN apt install -y ansible ansible-lint
+RUN apt install -y ansible ansible-lint yamllint
 
 WORKDIR /usr/local/src/ansible
