@@ -35,4 +35,4 @@
     create: yes
     line: "{{ item }}"
   with_items:
-    - 'eval "$(direnv hook zsh)"'
+  - 'eval "$(direnv hook zsh)"'

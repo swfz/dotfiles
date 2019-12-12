@@ -40,9 +40,9 @@
   - name: configure make install
     command: chdir=/tmp/{{ git.dir }} {{ item }}
     with_items:
-      - ./configure
-      - make
-      - make install
+    - ./configure
+    - make
+    - make install
 
   when:
     exist_git.rc != 0

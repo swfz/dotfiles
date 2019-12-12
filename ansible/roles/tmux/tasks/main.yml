@@ -21,9 +21,9 @@
   - name: install dependencies package
     yum: name={{ item }} state=installed
     with_items:
-      - libevent-devel
-      - ncurses-devel
-      - gcc
+    - libevent-devel
+    - ncurses-devel
+    - gcc
 
   - name: get source
     get_url:
@@ -39,9 +39,9 @@
   - name: configure make install
     command: chdir=/tmp/{{ tmux.dir }} {{ item }}
     with_items:
-      - ./configure
-      - make
-      - make install
+    - ./configure
+    - make
+    - make install
 
   when:
     exist_tmux.rc != 0

@@ -32,9 +32,9 @@
   - name: configure make install
     command: chdir=/tmp/{{ jo.dir }} {{ item }}
     with_items:
-      - ./configure
-      - make
-      - make install
+    - ./configure
+    - make
+    - make install
 
   when:
     exist_jo.rc != 0
