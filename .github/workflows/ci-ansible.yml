@@ -59,7 +59,7 @@ jobs:
     name: 'ansible-lint'
     steps:
       - uses: actions/checkout@master
-      - name: install ansible
+      - name: install ansible-lint
         run: |
           sudo apt update
           curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
@@ -70,4 +70,4 @@ jobs:
           CI: true
         run: |
           cd ansible
-          ./local/bin/ansible-lint development.yml mac.yml ubuntu.yml
+          `pwd`/local/bin/ansible-lint development.yml mac.yml ubuntu.yml
