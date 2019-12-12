@@ -1,7 +1,7 @@
 - name: upgrade pip
   pip: name=pip
 
-- name: install powerline
+- name: install powerline # noqa 301
   # FIXME not idempotency because install login user. but not loaded zshenv via pip module
   # pip: name="{{ item }}" state=present editable=false
   shell: "{{ execute }} pip install {{ item }}" # noqa 305
