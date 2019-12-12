@@ -32,9 +32,9 @@
   - name: configure make install
     command: chdir=/tmp/{{ zsh.dir }} {{ item }}
     with_items:
-      - ./configure --with-tcsetpgrp
-      - make
-      - make install
+    - ./configure --with-tcsetpgrp
+    - make
+    - make install
 
   when:
     exist_zsh.rc != 0
