@@ -1,3 +1,4 @@
+---
 powerline_dir: ~/.anyenv/envs/pyenv/versions/{{ envs.pyenv.version }}/lib/python{{ envs.pyenv.version.rsplit('.',1).pop(0) }}/site-packages/powerline
 link:
   base:

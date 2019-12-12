@@ -1,2 +1,3 @@
+---
 jq:
   src: https://github.com/stedolan/jq/releases/download/jq-{{ jq_version }}/jq-linux64

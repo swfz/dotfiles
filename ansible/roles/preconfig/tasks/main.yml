@@ -1,3 +1,4 @@
+---
 - name: command directory
   file:
     path: "{{ command_dir }}"

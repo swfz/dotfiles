@@ -1,3 +1,4 @@
+---
 - name: install easy_install
   yum: name=python-setuptools state=installed
   when: "ansible_os_family == 'RedHat'"

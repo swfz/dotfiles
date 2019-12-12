@@ -1,3 +1,4 @@
+---
 - name: store bin path to zshenv
   lineinfile:
     dest: ~/.zshenv

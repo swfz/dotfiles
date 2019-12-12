@@ -1,3 +1,4 @@
+---
 - name: exist terraform
   command: which terraform
   environment:

@@ -1,3 +1,4 @@
+---
 - name: exist peco
   command: which peco
   environment:

@@ -1,3 +1,4 @@
+---
 - name: install anyenv
   git: repo="{{ anyenv.url }}" dest=~/.anyenv
 

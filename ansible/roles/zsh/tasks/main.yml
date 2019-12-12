@@ -1,3 +1,4 @@
+---
 - name: from source install
   include: source.yml
   when: "ansible_os_family == 'RedHat'"

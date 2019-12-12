@@ -1,5 +1,5 @@
+---
 git:
   dir: git-{{ git_version }}
   tgz: git-{{ git_version }}.tar.gz
   src: https://www.kernel.org/pub/software/scm/git/git-{{ git_version }}.tar.gz
-

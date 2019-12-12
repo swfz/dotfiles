@@ -1,3 +1,4 @@
+---
 - name: install repository
   yum:
     name: "{{ nginx.repo }}"
@@ -8,4 +9,3 @@
     name: nginx
     state: installed
     disable_gpg_check: yes
-
