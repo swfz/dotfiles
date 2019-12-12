@@ -11,7 +11,7 @@
     - { role: peco, tags: peco }
     - { role: jq, tags: jq }
     - { role: notofont, tags: notofont }
-    - { role: by_pip,  tags: by_pip }
+    - { role: by_pip, tags: by_pip }
 
 - hosts: localhost
   # strategy: debug
@@ -21,9 +21,7 @@
   become_user: "{{ user }}"
   roles:
     - { role: preconfig, tags: preconfig }
-    - { role: anyenv , tags: anyenv }
-    - { role: powerline               , tags: powerline }
-    - { role: zsh_syntax_highlighting , tags: zsh_syntax_highlighting }
-    - { role: postconfig              , tags: postconfig }
-
-
+    - { role: anyenv, tags: anyenv }
+    - { role: powerline, tags: powerline }
+    - { role: zsh_syntax_highlighting, tags: zsh_syntax_highlighting }
+    - { role: postconfig, tags: postconfig }

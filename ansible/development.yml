@@ -7,26 +7,26 @@
   roles:
     - { role: common, tags: common }
     # ========== from source to build ==========
-    - { role: git , tags: git }
-    - { role: zsh , tags: zsh }
-    - { role: jo  , tags: jo }
+    - { role: git, tags: git }
+    - { role: zsh, tags: zsh }
+    - { role: jo, tags: jo }
     # ========== from source to bin ==========
-    - { role: peco           , tags: peco }
-    - { role: jq             , tags: jq }
-    - { role: docker-compose , tags: docker-compose }
-    - { role: terraform      , tags: terraform }
-    - { role: embulk         , tags: embulk }
-    - { role: sshrc          , tags: sshrc }
+    - { role: peco, tags: peco }
+    - { role: jq, tags: jq }
+    - { role: docker-compose, tags: docker-compose }
+    - { role: terraform, tags: terraform }
+    - { role: embulk, tags: embulk }
+    - { role: sshrc, tags: sshrc }
     # ========== yum ==========
-    - { role: vim8   , tags: vim8 }
-    - { role: tmux   , tags: tmux }
-    - { role: docker , tags: docker }
-    - { role: samba  , tags: samba }
-    - { role: q      , tags: q }
-    - { role: nginx  , tags: nginx }
+    - { role: vim8, tags: vim8 }
+    - { role: tmux, tags: tmux }
+    - { role: docker, tags: docker }
+    - { role: samba, tags: samba }
+    - { role: q, tags: q }
+    - { role: nginx, tags: nginx }
     # ========== pip ==========
     - { role: notofont, tags: notofont }
-    - { role: by_pip,  tags: by_pip } # cheat, mycli, awscli
+    - { role: by_pip, tags: by_pip } # cheat, mycli, awscli
 
 - hosts: localhost
   # strategy: debug
@@ -37,10 +37,8 @@
   roles:
     - { role: preconfig, tags: preconfig }
     # to bin and install languages
-    - { role: anyenv                  , tags: anyenv }
-    - { role: direnv                  , tags: direnv}
-    - { role: powerline               , tags: powerline }
-    - { role: zsh_syntax_highlighting , tags: zsh_syntax_highlighting }
-    - { role: postconfig              , tags: postconfig }
-
-
+    - { role: anyenv, tags: anyenv }
+    - { role: direnv, tags: direnv}
+    - { role: powerline, tags: powerline }
+    - { role: zsh_syntax_highlighting, tags: zsh_syntax_highlighting }
+    - { role: postconfig, tags: postconfig }
