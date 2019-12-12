@@ -31,4 +31,6 @@
     - "{{ otf_files.files }}"
 
 - name: font-cache
-  command: fc-cache -fv
+  command:
+    cmd: fc-cache -fv
+    creates: /usr/share/fonts/noto/*.otf
