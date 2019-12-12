@@ -1,13 +1,5 @@
 ---
-# - hosts: local
-  # strategy: debug
-  # vars_files:
-  #   - common_vars.yml
-  # become: yes
-  # roles:
-  #   - { role: common, tags: common }
 - hosts: local
-  # strategy: debug
   vars_files:
     - common_vars.yml
   become: no
