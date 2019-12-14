@@ -14,5 +14,6 @@
       - cheat
       - mycli
       - awscli
+      - yq
     state: present
     extra_args: --ignore-installed
