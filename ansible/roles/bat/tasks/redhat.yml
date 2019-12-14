@@ -1,0 +1,17 @@
+---
+- name: get source
+  get_url:
+    url: "{{ bat.src }}"
+    dest: /tmp/{{ bat.tgz }}
+
+- name: unarchive tar.gz
+  unarchive:
+    src: /tmp/{{ bat.tgz }}
+    dest: /tmp/
+    copy: no
+
+- name: copy to bin
+  copy:
+    remote_src: true
+    src: /tmp/{{ bat.dir }}/bat
+    dest: /usr/local/bin/bat

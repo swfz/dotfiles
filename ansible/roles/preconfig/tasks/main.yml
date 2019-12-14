@@ -29,3 +29,14 @@
     src: "{{ dotfiles.dest }}/config/peco/config.json"
     dest: "~/.config/peco/config.json"
     state: link
+
+- name: symlink bat config
+  file:
+    path: "~/.config/bat"
+    state: directory
+
+- name: symlink bat config
+  file:
+    src: "{{ dotfiles.dest }}/config/bat/config"
+    dest: "~/.config/bat/config"
+    state: link
