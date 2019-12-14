@@ -1,0 +1,9 @@
+---
+- name: get source
+  get_url:
+    url: "{{ bat.deb }}"
+    dest: /tmp/bat-{{ bat_version }}.deb
+
+- name: install bat
+  apt:
+    deb: /tmp/bat-{{ bat_version }}.deb

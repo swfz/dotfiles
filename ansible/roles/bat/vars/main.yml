@@ -1,0 +1,6 @@
+---
+bat:
+  dir: bat-v{{ bat_version }}-x86_64-unknown-linux-musl
+  tgz: bat-{{ bat_version }}.tar.gz
+  src: https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat-v{{ bat_version }}-x86_64-unknown-linux-musl.tar.gz
+  deb: https://github.com/sharkdp/bat/releases/download/v{{ bat_version }}/bat_{{ bat_version }}_amd64.deb

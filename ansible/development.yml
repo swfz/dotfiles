@@ -12,6 +12,7 @@
     - { role: jo, tags: jo }
     # ========== from source to bin ==========
     - { role: peco, tags: peco }
+    - { role: bat, tags: bat }
     - { role: jq, tags: jq }
     - { role: docker-compose, tags: docker-compose }
     - { role: terraform, tags: terraform }
