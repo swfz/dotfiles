@@ -48,13 +48,20 @@ jobs:
           ansible-playbook -i localhost, -c local mac.yml
 
   build-centos:
-    runs-on: ubuntu-latest
+    container: centos:7
     name: 'ansible playbook centos'
     steps:
       - uses: actions/checkout@master
-      - name: 'ansible playbook centos'
+      - name: install ansible
         run: |
-          docker-compose run -e CI=true centos ansible-playbook -i localhost, -c local development.yml
+          yum install -y python2-setuptools gcc python2-devel
+          easy_install pip
+          pip install ansible
+      - name: 'ansible playbook centos'
+        env:
+          CI: true
+        run: |
+          ansible-playbook -i localhost, -c local development.yml
 
   lint:
     runs-on: ubuntu-latest
