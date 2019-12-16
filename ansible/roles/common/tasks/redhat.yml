@@ -38,6 +38,7 @@
     - libgconf-2.so.4
     - GConf2
     - make
+    - libffi-devel
 
 - name: chrome
   yum:
