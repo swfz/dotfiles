@@ -8,11 +8,11 @@ envs:
   # plenv:
   #   { version: 5.26.2 }
   rbenv:
-    { version: 2.6.0 }
+    { version: 2.6.5 }
   pyenv:
-    { version: 3.6.6 }
+    { version: 3.8.1 }
   nodenv:
-    { version: 12.6.0 }
+    { version: 13.5.0 }
   goenv:
     { version: 1.12.7 }
 
@@ -37,14 +37,14 @@ vim_version: '8.1'
 vim_version_patch: '2124'
 git_version: '2.24.1'
 tmux_version: '2.8'
-peco_version: 'v0.5.3'
+peco_version: 'v0.5.4'
 zsh_version: '5.2'
 jq_version: '1.6'
 jo_version: '1.0'
 q_version: '1.7.1-1'
 docker_version: '18.09'
 docker_compose_version: '1.23.2'
-terraform_version: '0.11.11'
-embulk_version: '0.9.11'
+terraform_version: '0.12.18'
+embulk_version: '0.9.22'
 direnv_version: 'v2.20.0'
 bat_version: '0.9.0'
