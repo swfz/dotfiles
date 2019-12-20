@@ -3,42 +3,43 @@
   yum: name=epel-release state=installed
 
 - name: install packages
-  yum: name={{ item }} state=installed
-  with_items:
-    - nkf
-    - curl-devel
-    - bash-completion
-    - patch
-    - wget
-    - gcc
-    - gcc-c++
-    - bc
-    - mlocate
-    - tar
-    - unzip
-    - dos2unix
-    - unix2dos
-    - openssl-devel
-    - readline-devel
-    - the_silver_searcher
-    - lsof
-    - dstat
-    - tcpdump
-    - python-devel
-    - ctags
-    - sqlite-devel
-    - inotify-tools
-    - ansible
-    - vsftpd
-    - yum-utils
-    - device-mapper-persistent-data
-    - lvm2
-    - bzip2
-    - Xvfb
-    - libgconf-2.so.4
-    - GConf2
-    - make
-    - libffi-devel
+  yum:
+    name:
+      - nkf
+      - curl-devel
+      - bash-completion
+      - patch
+      - wget
+      - gcc
+      - gcc-c++
+      - bc
+      - mlocate
+      - tar
+      - unzip
+      - dos2unix
+      - unix2dos
+      - openssl-devel
+      - readline-devel
+      - the_silver_searcher
+      - lsof
+      - dstat
+      - tcpdump
+      - python-devel
+      - ctags
+      - sqlite-devel
+      - inotify-tools
+      - ansible
+      - vsftpd
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+      - bzip2
+      - Xvfb
+      - libgconf-2.so.4
+      - GConf2
+      - make
+      - libffi-devel
+    state: installed
 
 - name: chrome
   yum:
