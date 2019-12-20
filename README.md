@@ -5,20 +5,20 @@ dotfiles
 # install(centos)
 
 ```
-ansible-playbook -i hosts development.yml
+ansible-playbook -i hosts centos.yml
 ```
 
 ## set color
 
 ```
-ansible-playbook -i hosts development.yml --extra-vars "zsh_color=allblue" --tags color
+ansible-playbook -i hosts centos.yml --extra-vars "zsh_color=allblue" --tags color
 ```
 
 ## by role update
 
 ```
-ansible-playbook -i hosts development.yml --list-tags
-ansible-playbook -i hosts development.yml --tags apex,terraform
+ansible-playbook -i hosts centos.yml --list-tags
+ansible-playbook -i hosts centos.yml --tags apex,terraform
 ```
 
 ## ubuntu(wsl)

@@ -62,7 +62,7 @@ jobs:
           CI: true
         run: |
           cd ansible
-          ansible-playbook -i localhost, -c local development.yml
+          ansible-playbook -i localhost, -c local centos.yml
 
   lint:
     runs-on: ubuntu-latest
@@ -87,4 +87,4 @@ jobs:
           CI: true
         run: |
           cd ansible
-          ~/.local/bin/ansible-lint development.yml mac.yml ubuntu.yml
+          ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml
