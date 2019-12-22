@@ -15,7 +15,7 @@ jobs:
     name: 'ansible playbook ubuntu'
     strategy:
       matrix:
-        tag: [deploy init tool all]
+        tag: [deploy, init, tool, all]
     steps:
       - uses: actions/checkout@master
       - name: install ansible
@@ -55,7 +55,7 @@ jobs:
     name: 'ansible playbook centos'
     strategy:
       matrix:
-        tag: [deploy init tool all]
+        tag: [deploy, init, tool, all]
     steps:
       - uses: actions/checkout@master
       - name: install ansible
