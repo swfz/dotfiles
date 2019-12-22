@@ -5,29 +5,26 @@
     - common_vars.yml
   become: yes
   roles:
-    - { role: common, tags: common }
-    # ========== from source to build ==========
-    - { role: git, tags: git }
-    - { role: zsh, tags: zsh }
-    - { role: jo, tags: jo }
-    # ========== from source to bin ==========
-    - { role: peco, tags: peco }
-    - { role: bat, tags: bat }
-    - { role: jq, tags: jq }
-    - { role: docker-compose, tags: docker-compose }
-    - { role: terraform, tags: terraform }
-    - { role: embulk, tags: embulk }
-    - { role: sshrc, tags: sshrc }
-    # ========== yum ==========
-    - { role: vim8, tags: vim8 }
-    - { role: tmux, tags: tmux }
-    - { role: docker, tags: docker }
-    - { role: samba, tags: samba }
-    - { role: q, tags: q }
-    - { role: nginx, tags: nginx }
-    # ========== pip ==========
-    - { role: notofont, tags: notofont }
-    - { role: by_pip, tags: by_pip }  # cheat, mycli, awscli
+    - { role: common, tags: [common, init, tool] }
+    - { role: git, tags: [git, init, tool, deploy] }
+    - { role: chrome, tags: [chrome, tool] }
+    - { role: zsh, tags: [zsh, init] }
+    - { role: jo, tags: [jo, tool] }
+    - { role: peco, tags: [peco, init] }
+    - { role: bat, tags: [bat, tool] }
+    - { role: jq, tags: [jq, init] }
+    - { role: docker-compose, tags: [docker-compose, init] }
+    - { role: terraform, tags: [terraform, tool] }
+    - { role: embulk, tags: [embulk, tool] }
+    - { role: sshrc, tags: [sshrc, tool] }
+    - { role: vim8, tags: [vim8, init] }
+    - { role: tmux, tags: [tmux, init] }
+    - { role: docker, tags: [docker, init] }
+    - { role: samba, tags: [samba, tool] }
+    - { role: q, tags: [q, tool] }
+    - { role: nginx, tags: [nginx, tool] }
+    - { role: notofont, tags: [notofont, init] }
+    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli, awscli
 
 - hosts: localhost
   # strategy: debug
@@ -36,10 +33,10 @@
   become: no
   become_user: "{{ user }}"
   roles:
-    - { role: preconfig, tags: preconfig }
+    - { role: deploy, tags: deploy }
     # to bin and install languages
-    - { role: anyenv, tags: anyenv }
-    - { role: direnv, tags: direnv}
-    - { role: powerline, tags: powerline }
-    - { role: zsh_syntax_highlighting, tags: zsh_syntax_highlighting }
-    - { role: postconfig, tags: postconfig }
+    - { role: anyenv, tags: [anyenv, init] }
+    - { role: direnv, tags: [direnv, init]}
+    - { role: powerline, tags: [powerline, init] }
+    - { role: zsh_syntax_highlighting, tags: [zsh_syntax_highlighting, init] }
+    - { role: vim-plugins, tags: [vim-plugins, init] }
