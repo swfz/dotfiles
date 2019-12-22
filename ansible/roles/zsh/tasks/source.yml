@@ -1,4 +1,11 @@
 ---
+- name: install dependency packages
+  yum:
+    name:
+      - which
+      - ncurses-devel
+      - make
+
 - name: exist zsh
   command: which zsh
   environment:
