@@ -13,6 +13,9 @@ jobs:
   build-ubuntu:
     runs-on: ubuntu-latest
     name: 'ansible playbook ubuntu'
+    strategy:
+      matrix:
+        tag: [deploy init tool all]
     steps:
       - uses: actions/checkout@master
       - name: install ansible
@@ -29,7 +32,7 @@ jobs:
           CI: true
         run: |
           cd ansible
-          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner
+          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.tag }}"
 
   build-mac:
     runs-on: macos-latest
@@ -50,6 +53,9 @@ jobs:
     runs-on: ubuntu-latest
     container: centos:7
     name: 'ansible playbook centos'
+    strategy:
+      matrix:
+        tag: [deploy init tool all]
     steps:
       - uses: actions/checkout@master
       - name: install ansible
@@ -62,7 +68,7 @@ jobs:
           CI: true
         run: |
           cd ansible
-          ansible-playbook -i localhost, -c local centos.yml
+          ansible-playbook -i localhost, -c local centos.yml --tags "${{ matrix.tag }}"
 
   lint:
     runs-on: ubuntu-latest
