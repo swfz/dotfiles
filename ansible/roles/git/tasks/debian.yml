@@ -1,11 +1,12 @@
 ---
 - name: install apt-packages
-  apt: name={{ item }} state=present
-  with_items:
-    - make
-    - gcc
-    - zlib1g-dev
-    - gettext
-    - autoconf
-    - asciidoc
-    - libcurl4-openssl-dev
+  apt:
+    name:
+      - make
+      - gcc
+      - zlib1g-dev
+      - gettext
+      - autoconf
+      - asciidoc
+      - libcurl4-openssl-dev
+    state: present

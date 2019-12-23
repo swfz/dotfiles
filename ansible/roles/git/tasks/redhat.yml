@@ -1,8 +1,10 @@
 ---
 - name: dependencies packages
-  yum: name={{ item }}
-  with_items:
-    - perl-ExtUtils-MakeMaker
-    - zlib-devel
-    - tcl
-    - gettext
+  yum:
+    name:
+      - make
+      - perl-ExtUtils-MakeMaker
+      - zlib-devel
+      - curl-devel
+      - tcl
+      - gettext

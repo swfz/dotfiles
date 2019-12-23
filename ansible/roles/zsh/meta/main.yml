@@ -1,0 +1,3 @@
+---
+dependencies:  # noqa 701
+  - role: git

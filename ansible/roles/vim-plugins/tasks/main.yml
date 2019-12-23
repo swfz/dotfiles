@@ -1,0 +1,17 @@
+---
+- name: set vim neobundle directory
+  file:
+    path: "{{ vim.neobundle.parent_dir }}"
+    state: directory
+
+- name: set vim neobundle
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  git:
+    repo: "{{ vim.neobundle.src }}"
+    dest: "{{ vim.neobundle.parent_dir }}/{{ vim.neobundle.dest_dir }}"
+    clone: yes
+
+- name: set vim neobundle  # noqa 301
+  command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
+  ignore_errors: true

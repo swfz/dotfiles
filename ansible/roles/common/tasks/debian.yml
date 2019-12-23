@@ -1,19 +1,20 @@
 ---
 - name: install apt-packages
-  apt: name={{ item }} state=present
-  with_items:
-    - curl
-    - bash-completion
-    - gcc
-    - make
-    - tar
-    - zsh
-    - unzip
-    - dos2unix
-    - openssl
-    - ctags
-    - nkf
-    - libssl-dev
-    - libreadline-dev
-    - zlib1g-dev
-    - libffi-dev
+  apt:
+    name:
+      - curl
+      - bash-completion
+      - gcc
+      - make
+      - tar
+      - zsh
+      - unzip
+      - dos2unix
+      - openssl
+      - ctags
+      - nkf
+      - libssl-dev
+      - libreadline-dev
+      - zlib1g-dev
+      - libffi-dev
+    state: present

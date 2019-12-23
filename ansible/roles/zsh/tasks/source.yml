@@ -1,4 +1,11 @@
 ---
+- name: install dependency packages
+  yum:
+    name:
+      - which
+      - ncurses-devel
+      - make
+
 - name: exist zsh
   command: which zsh
   environment:
@@ -18,23 +25,23 @@
     exist_zsh.rc == 0
 
 - block:
-  - name: get source
-    get_url:
-      url: "{{ zsh.src }}"
-      dest: /tmp/{{ zsh.tgz }}
+    - name: get source
+      get_url:
+        url: "{{ zsh.src }}"
+        dest: /tmp/{{ zsh.tgz }}
 
-  - name: unarchive tar.gz
-    unarchive:
-      src: /tmp/{{ zsh.tgz }}
-      dest: /tmp
-      copy: no
+    - name: unarchive tar.gz
+      unarchive:
+        src: /tmp/{{ zsh.tgz }}
+        dest: /tmp
+        copy: no
 
-  - name: configure make install
-    command: chdir=/tmp/{{ zsh.dir }} {{ item }}
-    with_items:
-    - ./configure --with-tcsetpgrp
-    - make
-    - make install
+    - name: configure make install
+      command: chdir=/tmp/{{ zsh.dir }} {{ item }}
+      with_items:
+        - ./configure --with-tcsetpgrp
+        - make
+        - make install
 
   when:
     exist_zsh.rc != 0

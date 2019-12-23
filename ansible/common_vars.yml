@@ -26,6 +26,8 @@ dotfiles:
     - .tmux.conf
     - .agignore
     - .sshrc
+    - .darwin.rc
+    - .gvimrc
 
 command_dir: ~/bin
 zsh_completion_dir: /etc/zsh_completion.d

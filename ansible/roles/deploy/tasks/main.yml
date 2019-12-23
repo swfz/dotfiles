@@ -1,4 +1,46 @@
 ---
+- name: command directory
+  file:
+    path: "{{ command_dir }}"
+    state: directory
+
+- name: set git config
+  template:
+    src: config.j2
+    dest: ~/.gitconfig
+    owner: "{{ user }}"
+    mode: 0644
+
+- name: clone git repository
+  git:
+    repo: "{{ dotfiles.src.repo }}"
+    dest: "{{ dotfiles.dest }}"
+    clone: yes
+    update: yes
+    force: yes
+
+- name: symlink peco config
+  file:
+    path: "~/.config/peco"
+    state: directory
+
+- name: symlink peco config
+  file:
+    src: "{{ dotfiles.dest }}/config/peco/config.json"
+    dest: "~/.config/peco/config.json"
+    state: link
+
+- name: symlink bat config
+  file:
+    path: "~/.config/bat"
+    state: directory
+
+- name: symlink bat config
+  file:
+    src: "{{ dotfiles.dest }}/config/bat/config"
+    dest: "~/.config/bat/config"
+    state: link
+
 - name: store bin path to zshenv
   lineinfile:
     dest: ~/.zshenv
@@ -65,6 +107,12 @@
 
 # TODO tmuxのカラー設定
 # .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
+
+- name: .vim directory
+  file:
+    path: "~/.vim"
+    state: directory
+
 - name: symlink vim snippet
   file:
     src: "{{ dotfiles.dest }}/.vim/snippets"

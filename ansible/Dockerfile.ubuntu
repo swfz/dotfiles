@@ -3,6 +3,12 @@ FROM ubuntu:latest
 RUN apt update
 RUN apt install -y software-properties-common
 RUN apt-add-repository --yes --update ppa:ansible/ansible
-RUN apt install -y ansible ansible-lint yamllint
+RUN apt install -y ansible ansible-lint yamllint sudo python-pip
 
+RUN useradd -m vagrant
+RUN usermod -aG sudo vagrant
+RUN echo 'vagrant:vagrant' | chpasswd
+RUN echo 'vagrant ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+
+USER vagrant
 WORKDIR /usr/local/src/ansible

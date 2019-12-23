@@ -1,9 +1,9 @@
 ---
-- name: from source install
+- name: install zsh(redhat)
   include: source.yml
   when: "ansible_os_family == 'RedHat'"
 
-- name: install zsh
+- name: install zsh(debian)
   apt: name=zsh state=present
   when: "ansible_os_family == 'Debian'"
 
