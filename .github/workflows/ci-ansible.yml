@@ -51,7 +51,6 @@ jobs:
 
   build-centos:
     runs-on: ubuntu-latest
-    container: centos:7
     name: 'playbook centos'
     strategy:
       matrix:
@@ -67,8 +66,7 @@ jobs:
         env:
           CI: true
         run: |
-          cd ansible
-          ansible-playbook -i localhost, -c local centos.yml --tags "${{ matrix.tag }}"
+          docker-compose run centos ansible-playbook -i localhost, -c local centos.yml --tags "${{ matrix.tag }}"
 
   lint:
     runs-on: ubuntu-latest
