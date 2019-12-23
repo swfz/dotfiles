@@ -57,11 +57,6 @@ jobs:
         tag: [deploy, init, tool, all]
     steps:
       - uses: actions/checkout@master
-      - name: install ansible
-        run: |
-          yum install -y python2-setuptools gcc python2-devel
-          easy_install pip
-          pip install ansible
       - name: 'ansible playbook centos'
         env:
           CI: true
