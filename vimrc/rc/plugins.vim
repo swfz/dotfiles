@@ -84,6 +84,7 @@ NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 't9md/vim-quickhl'
 NeoBundle "slim-template/vim-slim"
 NeoBundle 'fatih/vim-go'
+NeoBundle 'mattn/vim-lsp-settings'
 
 " TypeScript
 NeoBundleLazy 'leafgarland/typescript-vim', {
