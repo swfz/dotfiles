@@ -33,7 +33,7 @@
       - yum-utils
       - device-mapper-persistent-data
       - lvm2
-      - bzip2
+      - bzip2-devel
       - Xvfb
       - libgconf-2.so.4
       - GConf2
