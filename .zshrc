@@ -111,7 +111,3 @@ export CHEATCOLORS=true
 export GOPATH=~/go
 
 # export KB_TYPE="US"
-
-if (which zprof > /dev/null 2>&1) ;then
-  zprof
-fi
