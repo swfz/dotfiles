@@ -17,4 +17,10 @@
       - libreadline-dev
       - zlib1g-dev
       - libffi-dev
+      - liblua5.3-dev
+      - autogen
+      - automake
+      - libperl-dev
+      - libbz2-dev
+      - zlib1g-dev
     state: present
