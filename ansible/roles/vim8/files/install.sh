@@ -12,6 +12,7 @@ git checkout $1
     --disable-selinux \
     --enable-luainterp \
     --enable-perlinterp \
+    --enable-pythoninterp \
     --enable-cscope \
     --enable-fontset \
     --enable-multibyte

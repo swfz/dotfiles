@@ -11,6 +11,7 @@
     - { role: peco, tags: [peco, init] }
     - { role: jq, tags: [jq, init] }
     - { role: bat, tags: [bat, tool] }
+    - { role: vim8, tags: [vim8, init] }
     - { role: notofont, tags: [notofont, init] }
     - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli, awscli
 
