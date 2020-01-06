@@ -18,6 +18,7 @@ umask 002
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
+export LC_ALL=en_US.UTF-8
 export LESS="-R -W -i -M"
 export LESSCHARSET=utf-8
 
@@ -76,7 +77,7 @@ setopt magic_equal_subst
 #command color
 source $HOME/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
-#powerline
+# powerline
 if type powerline > /dev/null 2>&1; then
   python_full_ver=$(pyenv global)
   python_minor_ver=$(pyenv global|grep -oP '\d+\.\d+')
@@ -101,6 +102,11 @@ case ${OSTYPE} in
     ;;
 esac
 
+# localrc
+if [ -f $HOME/.localrc ]; then
+  source $HOME/.localrc
+fi
+
 # enhancd
 export ENHANCD_FILTER="peco"
 if [ -f "/home/${USER}/.enhancd/zsh/enhancd.zsh" ]; then
@@ -115,3 +121,4 @@ export CHEATCOLORS=true
 export GOPATH=~/go
 
 # export KB_TYPE="US"
+
