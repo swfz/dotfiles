@@ -1,5 +1,9 @@
 umask 002
 
+if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+  export IS_WSL=1
+fi
+
 #env
 export EDITOR=vim
 export SVN_EDITOR=vim
@@ -108,3 +112,6 @@ export GOPATH=~/go
 
 # export KB_TYPE="US"
 
+if (which zprof > /dev/null 2>&1) ;then
+  zprof
+fi

@@ -138,7 +138,9 @@ function +vi-svn-extra-info() {
   hook_com[unstaged]+=`count_svn_st`
 }
 
-add-zsh-hook precmd _update_vcs_info_msg
+if [ ! -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+  add-zsh-hook precmd _update_vcs_info_msg
+fi
 #====== VCS status to RPROMPT
 
 

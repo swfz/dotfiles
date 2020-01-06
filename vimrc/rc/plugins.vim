@@ -75,15 +75,11 @@ NeoBundle 'arcticicestudio/nord-vim'
 
 
 " syntax
-" NeoBundle 'scrooloose/syntastic'
-" NeoBundle 'vim-syntastic/syntastic'
 NeoBundle 'w0rp/ale'
-NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'tpope/vim-markdown'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 't9md/vim-quickhl'
 NeoBundle "slim-template/vim-slim"
-NeoBundle 'fatih/vim-go'
 NeoBundle 'mattn/vim-lsp-settings'
 
 " TypeScript
@@ -109,8 +105,10 @@ NeoBundle 'koron/codic-vim'
 NeoBundle 'rhysd/unite-codic.vim'
 
 " markdown-preview
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
+if $IS_WSL != 1
+  NeoBundle 'kannokanno/previm'
+  NeoBundle 'tyru/open-browser.vim'
+endif
 
 " design
 NeoBundle 'kana/vim-submode'
@@ -123,10 +121,13 @@ NeoBundle 'gko/vim-coloresque'
 NeoBundle 'tsukkee/unite-tag'
 
 " powerline
-NeoBundle 'Lokaltog/powerline.git'
 
-" not using
-" NeoBundle 'itchyny/lightline.vim'
+if $IS_WSL == 1
+  NeoBundle 'itchyny/lightline.vim'
+else
+  NeoBundle 'Lokaltog/powerline.git'
+endif
+
 
 " Installation check.
 if neobundle#exists_not_installed_bundles()
