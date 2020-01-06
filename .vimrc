@@ -7,7 +7,9 @@ source ~/dotfiles/vimrc/plugins/unite.vim
 source ~/dotfiles/vimrc/plugins/complete.vim
 
 " this settings dependencies colorscheme. section
-source ~/dotfiles/vimrc/plugins/powerline.vim
+if $IS_WSL == 1
+  source ~/dotfiles/vimrc/plugins/powerline.vim
+endif
 
 " colorscheme patch
 autocmd ColorScheme * highlight IncSearch ctermfg=17 ctermbg=214
