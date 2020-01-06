@@ -7,7 +7,9 @@ source ~/dotfiles/vimrc/plugins/unite.vim
 source ~/dotfiles/vimrc/plugins/complete.vim
 
 " this settings dependencies colorscheme. section
-if $IS_WSL != 1
+if $IS_WSL == 1
+  source ~/dotfiles/vimrc/plugins/lightline.vim
+else
   source ~/dotfiles/vimrc/plugins/powerline.vim
 endif
 

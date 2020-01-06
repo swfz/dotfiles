@@ -131,3 +131,7 @@ function! MyCharCode()
 
   return "'". char ."' ". nr
 endfunction
+
+filetype plugin on
+filetype plugin indent on     " Required!
+syntax enable
