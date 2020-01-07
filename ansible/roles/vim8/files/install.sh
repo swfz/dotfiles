@@ -10,7 +10,6 @@ git checkout $1
     --enable-fail-if-missing \
     --with-features=huge \
     --disable-selinux \
-    --enable-luainterp \
     --enable-perlinterp \
     --enable-pythoninterp \
     --enable-cscope \
