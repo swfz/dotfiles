@@ -11,7 +11,6 @@ cd /tmp/vim
   --with-features=huge \
   --enable-gpm \
   --disable-selinux \
-  --enable-luainterp \
   --enable-perlinterp \
   --enable-pythoninterp \
   --enable-cscope \
