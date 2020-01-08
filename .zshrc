@@ -69,9 +69,6 @@ setopt extended_history # 履歴ファイルに時刻を記録
 setopt hist_no_store
 setopt list_types
 
-#command color
-source $HOME/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
-
 # powerline
 if type powerline > /dev/null 2>&1; then
   python_full_ver=$(pyenv global)
