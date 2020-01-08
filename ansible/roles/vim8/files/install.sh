@@ -1,21 +1,21 @@
-#!/bin/bash
+#!/bin/bash -e
 
-git clone https://github.com/vim/vim.git /tmp/vim
+$(which git) clone https://github.com/vim/vim.git /tmp/vim
 
 cd /tmp/vim
 
-git checkout $1
+$(which git) checkout $1
 
 ./configure \
-    --enable-fail-if-missing \
-    --with-features=huge \
-    --disable-selinux \
-    --enable-luainterp \
-    --enable-perlinterp \
-    --enable-pythoninterp \
-    --enable-cscope \
-    --enable-fontset \
-    --enable-multibyte
+  --enable-fail-if-missing \
+  --with-features=huge \
+  --enable-gpm \
+  --disable-selinux \
+  --enable-perlinterp \
+  --enable-pythoninterp \
+  --enable-cscope \
+  --enable-fontset \
+  --enable-multibyte
 
 make
 make install
