@@ -29,6 +29,13 @@ export LC_ALL=en_US.UTF-8
 export LESS="-R -W -i -M"
 export LESSCHARSET=utf-8
 
+# cheatsheet
+export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
+export CHEATCOLORS=true
+
+# GOPATH
+export GOPATH=~/go
+
 # complete
 autoload -Uz compinit
 compinit
@@ -112,11 +119,3 @@ if [ -f $HOME/.localrc ]; then
   source $HOME/.localrc
 fi
 
-# cheatsheet
-export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
-export CHEATCOLORS=true
-
-# GOPATH
-export GOPATH=~/go
-
-# export KB_TYPE="US"
