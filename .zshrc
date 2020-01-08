@@ -17,36 +17,32 @@ zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
 zplugin ice wait'!0'; zplugin load sindresorhus/pure
 
+# ${fg[color_name]}, ${gb[color_name]}, ${reset_color}を使えるようにする
+autoload -Uz colors
+colors
+
 # complete
 autoload -Uz compinit
 compinit
 zplugin cdreplay - q
 
-# Upper and Lower Case
+# 補完
+## Upper and Lower Case
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
-# complete option
+## complete option
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*:setopt:*' menu true select
-
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 setopt ZLE
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
 autoload -Uz is-at-least
 
-#color settings
-autoload -Uz colors
-colors
-
 # history
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt hist_ignore_dups
-setopt share_history
-setopt extended_history
-setopt hist_no_store
 
 # vim-keybind
 bindkey -e
@@ -59,13 +55,19 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 # options
-setopt auto_cd
-setopt auto_pushd
-setopt correct
-setopt list_packed
-setopt nolistbeep
+setopt auto_cd # `cd` 不要
+setopt auto_pushd # cd の履歴から補完してくれる. list by cd -[tab]
+setopt correct # typo時に確認が入る
+setopt list_packed # 補完候補を詰めて表示
+setopt nobeep # 補完候補がない場合などでビープ音を鳴らさない
+setopt magic_equal_subst # コマンドライン引数の--prefix=/usr で =移行でも補完
+setopt transient_rprompt # コマンド実行後は右promptを消す
+setopt hist_ignore_dups # 直前と同じコマンドラインはhistoryに追加しない
+setopt hist_ignore_all_dups # 重複したhistoryは追加しない
+setopt share_history # shell process間で履歴を共有
+setopt extended_history # 履歴ファイルに時刻を記録
+setopt hist_no_store
 setopt list_types
-setopt magic_equal_subst
 
 #command color
 source $HOME/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
