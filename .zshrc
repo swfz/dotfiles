@@ -1,10 +1,27 @@
 umask 002
 
+### Added by Zplugin's installer
+if [[ ! -d $HOME/.zplugin/bin ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing Zplugin…%f"
+    command mkdir -p $HOME/.zplugin
+    command git clone https://github.com/zdharma/zplugin $HOME/.zplugin/bin && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%F" || \
+        print -P "%F{160}▓▒░ The clone has failed.%F"
+fi
+source "$HOME/.zplugin/bin/zplugin.zsh"
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
+### End of Zplugin installer's chunk
+
+zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
+zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
+zplugin ice wait'!0'; zplugin load sindresorhus/pure
+
+# set environment
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
   export IS_WSL=1
 fi
 
-#env
 export EDITOR=vim
 export SVN_EDITOR=vim
 export LC_CTYPE=ja_JP.utf8
