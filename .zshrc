@@ -17,25 +17,6 @@ zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
 zplugin ice wait'!0'; zplugin load sindresorhus/pure
 
-# set environment
-if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-  export IS_WSL=1
-fi
-
-export EDITOR=vim
-export SVN_EDITOR=vim
-export LC_CTYPE=ja_JP.utf8
-export LC_ALL=en_US.UTF-8
-export LESS="-R -W -i -M"
-export LESSCHARSET=utf-8
-
-# cheatsheet
-export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
-export CHEATCOLORS=true
-
-# GOPATH
-export GOPATH=~/go
-
 # complete
 autoload -Uz compinit
 compinit
