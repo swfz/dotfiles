@@ -29,12 +29,10 @@ export LC_ALL=en_US.UTF-8
 export LESS="-R -W -i -M"
 export LESSCHARSET=utf-8
 
-# zsh completion path
-fpath=(/etc/zsh_completion.d/src $fpath)
-
 # complete
-autoload -U compinit
+autoload -Uz compinit
 compinit
+zplugin cdreplay - q
 
 # Upper and Lower Case
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
