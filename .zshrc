@@ -112,12 +112,6 @@ if [ -f $HOME/.localrc ]; then
   source $HOME/.localrc
 fi
 
-# enhancd
-export ENHANCD_FILTER="peco"
-if [ -f "/home/${USER}/.enhancd/zsh/enhancd.zsh" ]; then
-    source "/home/${USER}/.enhancd/zsh/enhancd.zsh"
-fi
-
 # cheatsheet
 export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
 export CHEATCOLORS=true
