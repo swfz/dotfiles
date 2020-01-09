@@ -22,6 +22,7 @@ autoload -Uz _zplugin
 (( ${+_comps} )) && _comps[zplugin]=_zplugin
 ### End of Zplugin installer's chunk
 
+# Zsh plugin load
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
 
@@ -84,16 +85,19 @@ setopt extended_history # 履歴ファイルに時刻を記録
 setopt hist_no_store
 setopt list_types
 
-if [ -f $HOME/.zshrc.color ]; then
-  source $HOME/.zshrc.color
-fi
-source $HOME/dotfiles/envs_version
-
 # zshディレクトリ以下の設定ファイルを読み込み
 for file in $HOME/dotfiles/zsh/*
 do
   source $file
 done
+
+# カラーテーマ読み込み
+if [ -f $HOME/.zshrc.color ]; then
+  source $HOME/.zshrc.color
+fi
+
+# TODO: plugin化
+source $HOME/dotfiles/envs_version
 
 # macの場合は追加で設定ファイルを読み込み
 case ${OSTYPE} in
@@ -106,4 +110,3 @@ esac
 if [ -f $HOME/.localrc ]; then
   source $HOME/.localrc
 fi
-
