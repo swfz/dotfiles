@@ -53,6 +53,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 setopt ZLE
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
+# version依存な設定を書くための機能
 autoload -Uz is-at-least
 
 # history
@@ -95,9 +96,6 @@ done
 if [ -f $HOME/.zshrc.color ]; then
   source $HOME/.zshrc.color
 fi
-
-# TODO: plugin化
-source $HOME/dotfiles/envs_version
 
 # macの場合は追加で設定ファイルを読み込み
 case ${OSTYPE} in

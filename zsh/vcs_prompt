@@ -1,146 +1,149 @@
+source $HOME/dotfiles/envs_version
+
 #VCS status to RPROMPT
 zstyle ':vcs_info:*' max-exports 3
-zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' enable git
+
 # misc(%m)
-zstyle ':vcs_info:*' formats '(%s)-[%b]'
-zstyle ':vcs_info:*' actionformats '(%s)-[%b]' '%m' '<!%a>'
-zstyle ':vcs_info:svn:*' formats '${VCS_CUR}(%s)${RESET}-${VCS_MOD}[%b]${RESET} ${VCS_ERR}%u${RESET}'
-zstyle ':vcs_info:svn+set-message:*' hooks svn-extra-info
+zstyle ':vcs_info:git:*' formats '(%s)-[%b]' '%c%u %m'
+zstyle ':vcs_info:git:*' actionformats '(%s)-[%b]' '%c%u %m' '<!%a>'
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr "%F{014}+%f"    # %c staged changes
+zstyle ':vcs_info:git:*' unstagedstr "%F{013}-%f"  # %c unstaged changes
 
+# formats '(%s)-[%b]' '%c%u %m' , actionformats '(%s)-[%b]' '%c%u %m' '<!%a>'
+zstyle ':vcs_info:git+set-message:*' hooks \
+                                        git-hook-begin \
+                                        git-config-user \
+                                        git-untracked \
+                                        git-push-status \
+                                        git-nomerge-branch \
+                                        git-stash-count
+function +vi-git-hook-begin() {
+    if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) != 'true' ]]; then
+        return 1
+    fi
+    return 0
+}
 
-if is-at-least 4.3.10; then
-    # git
-    zstyle ':vcs_info:git:*' formats '(%s)-[%b]' '%c%u %m'
-    zstyle ':vcs_info:git:*' actionformats '(%s)-[%b]' '%c%u %m' '<!%a>'
-    zstyle ':vcs_info:git:*' check-for-changes true
-    zstyle ':vcs_info:git:*' stagedstr "+"    # %c
-    zstyle ':vcs_info:git:*' unstagedstr "-"  # %u
-fi
-
-# hooks
-if is-at-least 4.3.11; then
-    # formats '(%s)-[%b]' '%c%u %m' , actionformats '(%s)-[%b]' '%c%u %m' '<!%a>'
-    zstyle ':vcs_info:git+set-message:*' hooks \
-                                            git-hook-begin \
-                                            git-untracked \
-                                            git-push-status \
-                                            git-nomerge-branch \
-                                            git-stash-count
-    function +vi-git-hook-begin() {
-        if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) != 'true' ]]; then
-            return 1
-        fi
+function +vi-git-untracked() {
+    if [[ "$1" != "1" ]]; then
         return 0
-    }
+    fi
 
-    function +vi-git-untracked() {
-        if [[ "$1" != "1" ]]; then
-            return 0
-        fi
+    if command git status --porcelain 2> /dev/null \
+        | awk '{print $1}' \
+        | command grep -F '??' > /dev/null 2>&1 ; then
 
-        if command git status --porcelain 2> /dev/null \
-            | awk '{print $1}' \
-            | command grep -F '??' > /dev/null 2>&1 ; then
+        # unstaged (%u)
+        hook_com[unstaged]+='%F{230}?%f'
+    fi
+}
 
-            # unstaged (%u)
-            hook_com[unstaged]+='?'
-        fi
-    }
+# masterからどのくらい遅れているか to misc(%m)
+function +vi-git-push-status() {
+    if [[ "$1" != "1" ]]; then
+        return 0
+    fi
 
-    function +vi-git-push-status() {
-        if [[ "$1" != "1" ]]; then
-            return 0
-        fi
+    if [[ "${hook_com[branch]}" != "master" ]]; then
+        return 0
+    fi
 
-        if [[ "${hook_com[branch]}" != "master" ]]; then
-            return 0
-        fi
+    local ahead
+    ahead=$(command git rev-list origin/master..master 2>/dev/null \
+        | wc -l \
+        | tr -d ' ')
 
-        local ahead
-        ahead=$(command git rev-list origin/master..master 2>/dev/null \
-            | wc -l \
-            | tr -d ' ')
+    if [[ "$ahead" -gt 0 ]]; then
+        # misc (%m)
+        hook_com[misc]+="(A${ahead})"
+    fi
+}
 
-        if [[ "$ahead" -gt 0 ]]; then
-            # misc (%m)
-            hook_com[misc]+="(p${ahead})"
-        fi
-    }
+# マージされてないコミット数 to misc(%m)
+function +vi-git-nomerge-branch() {
+    if [[ "$1" != "1" ]]; then
+        return 0
+    fi
 
-    # (mN) to misc (%m)
-    function +vi-git-nomerge-branch() {
-        if [[ "$1" != "1" ]]; then
-            return 0
-        fi
+    if [[ "${hook_com[branch]}" == "master" ]]; then
+        return 0
+    fi
 
-        if [[ "${hook_com[branch]}" == "master" ]]; then
-            return 0
-        fi
+    local nomerged
+    nomerged=$(command git rev-list master..${hook_com[branch]} 2>/dev/null | wc -l | tr -d ' ')
 
-        local nomerged
-        nomerged=$(command git rev-list master..${hook_com[branch]} 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "$nomerged" -gt 0 ]] ; then
+        # misc (%m)
+        hook_com[misc]+="(C${nomerged})"
+    fi
+}
 
-        if [[ "$nomerged" -gt 0 ]] ; then
-            # misc (%m)
-            hook_com[misc]+="(m${nomerged})"
-        fi
-    }
+# stash to misc (%m)
+function +vi-git-stash-count() {
+    if [[ "$1" != "1" ]]; then
+        return 0
+    fi
 
-    # stash  :SN to misc (%m)
-    function +vi-git-stash-count() {
-        if [[ "$1" != "1" ]]; then
-            return 0
-        fi
+    local stash
+    stash=$(command git stash list 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "${stash}" -gt 0 ]]; then
+        # misc (%m)
+        hook_com[misc]+="S${stash}"
+    fi
+}
 
-        local stash
-        stash=$(command git stash list 2>/dev/null | wc -l | tr -d ' ')
-        if [[ "${stash}" -gt 0 ]]; then
-            # misc (%m)
-            hook_com[misc]+=":S${stash}"
-        fi
-    }
-fi
+function +vi-git-config-user(){
+  if [[ "$1" != "1" ]]; then
+      return 0
+  fi
+
+  hook_com[misc]+=`git config user.name`
+}
+
+function _get_envs_versions() {
+  # default color
+  local ENV_PL="%F{081}"
+  local ENV_PY="%F{069}"
+  local ENV_RB="%F{202}"
+  local ENV_ND="%F{037}"
+  local RESET="%f"
+
+  plenv=`plenv_version`
+  rbenv=`rbenv_version`
+  ndenv=`ndenv_version`
+  nodenv=`nodenv_version`
+  pyenv=`pyenv_version`
+
+  echo "${ENV_RB}${rbenv} ${ENV_ND}${ndenv} ${ENV_ND}${nodenv} ${ENV_PY}${pyenv}${RESET}"
+}
 
 function _update_vcs_info_msg() {
-    local -a messages
-    local prompt
+  local -a messages
+  local vcs_info
 
-    LANG=en_US.UTF-8 vcs_info
+  LANG=en_US.UTF-8 vcs_info
 
-    if [[ -z ${vcs_info_msg_0_} ]]; then
-        prompt=""
-    else
-        # $vcs_info_msg_0_ , $vcs_info_msg_1_ , $vcs_info_msg_2_
-        [[ -n "$vcs_info_msg_0_" ]] && messages+=( "${VCS_CUR}${vcs_info_msg_0_}${RESET}" )
-        [[ -n "$vcs_info_msg_1_" ]] && messages+=( "${VCS_MOD}${vcs_info_msg_1_}${RESET}" )
-        [[ -n "$vcs_info_msg_2_" ]] && messages+=( "${VCS_ERR}${vcs_info_msg_2_}${RESET}" )
+  if [[ -z ${vcs_info_msg_0_} ]]; then
+      vcs_info=""
+  else
+      # $vcs_info_msg_0_ , $vcs_info_msg_1_ , $vcs_info_msg_2_
+      [[ -n "$vcs_info_msg_0_" ]] && messages+=( "${VCS_CUR}${vcs_info_msg_0_}${RESET}" )
+      [[ -n "$vcs_info_msg_1_" ]] && messages+=( "${VCS_MOD}${vcs_info_msg_1_}${RESET}" )
+      [[ -n "$vcs_info_msg_2_" ]] && messages+=( "${VCS_ERR}${vcs_info_msg_2_}${RESET}" )
 
-        #join separated space
-        prompt="${(j: :)messages}"
-    fi
-    plenv=`plenv_version`
-    rbenv=`rbenv_version`
-    ndenv=`ndenv_version`
-    nodenv=`nodenv_version`
-    pyenv=`pyenv_version`
-    RPROMPT="${ENV_PL}${plenv} ${ENV_RB}${rbenv} ${ENV_ND}${ndenv} ${ENV_ND}${nodenv} ${ENV_PY}${pyenv}${RESET} ${prompt}"
-    #RPROMPT="${ENV_PL}${plenv} ${RESET} ${prompt}"
+      #join separated space
+      vcs_info="${(j: :)messages}"
+  fi
+
+  # WSLの場合は除外
+  if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+    RPROMPT="${vcs_info}"
+  else
+    envs_info=`_get_envs_versions`
+    RPROMPT="${envs_info} ${vcs_info}"
+  fi
 }
 
-function count_svn_st() {
-  svn st | awk '{ c[$1] += 1; } END{for (k in c) {printf "%s:%s ", k, c[k]}}'
-}
-function +vi-svn-extra-info() {
-#  if [[ "$1" != "1" ]]; then
-#    return 0
-#  fi
-
-  hook_com[unstaged]+=`count_svn_st`
-}
-
-if [ ! -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-  add-zsh-hook precmd _update_vcs_info_msg
-fi
-#====== VCS status to RPROMPT
-
-
+add-zsh-hook precmd _update_vcs_info_msg
