@@ -90,7 +90,7 @@ function +vi-git-stash-count() {
   stash=$(command git stash list 2>/dev/null | wc -l | tr -d ' ')
   if [[ "${stash}" -gt 0 ]]; then
     # misc (%m)
-    hook_com[misc]+="S${stash}"
+    hook_com[misc]+="(S${stash})"
   fi
 }
 
