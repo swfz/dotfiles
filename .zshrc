@@ -25,6 +25,7 @@ autoload -Uz _zplugin
 # Zsh plugin load
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
+zplugin ice wait'!0'; zplugin load agkozak/zhooks
 
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
   zplugin ice wait'!0'; zplugin load sindresorhus/pure
