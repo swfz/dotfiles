@@ -1,5 +1,14 @@
 umask 002
 
+# powerline
+function load_powerline() {
+  if type powerline > /dev/null 2>&1; then
+    python_full_ver=$(pyenv global)
+    python_minor_ver=$(pyenv global|grep -oP '\d+\.\d+')
+    source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_minor_ver}/site-packages/powerline/bindings/zsh/powerline.zsh
+  fi
+}
+
 ### Added by Zplugin's installer
 if [[ ! -d $HOME/.zplugin/bin ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing Zplugin…%f"
@@ -15,7 +24,12 @@ autoload -Uz _zplugin
 
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
 zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
-zplugin ice wait'!0'; zplugin load sindresorhus/pure
+
+if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+  zplugin ice wait'!0'; zplugin load sindresorhus/pure
+else
+  load_powerline
+fi
 
 # ${fg[color_name]}, ${gb[color_name]}, ${reset_color}を使えるようにする
 autoload -Uz colors
@@ -34,6 +48,7 @@ zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*:setopt:*' menu true select
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
+# Zsh Line Editor
 setopt ZLE
 autoload -Uz vcs_info
 autoload -Uz add-zsh-hook
@@ -68,13 +83,6 @@ setopt share_history # shell process間で履歴を共有
 setopt extended_history # 履歴ファイルに時刻を記録
 setopt hist_no_store
 setopt list_types
-
-# powerline
-if type powerline > /dev/null 2>&1; then
-  python_full_ver=$(pyenv global)
-  python_minor_ver=$(pyenv global|grep -oP '\d+\.\d+')
-  source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_minor_ver}/site-packages/powerline/bindings/zsh/powerline.zsh
-fi
 
 if [ -f $HOME/.zshrc.color ]; then
   source $HOME/.zshrc.color
