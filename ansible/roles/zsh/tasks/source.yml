@@ -28,13 +28,10 @@
     - name: get source
       get_url:
         url: "{{ zsh.src }}"
-        dest: /tmp/{{ zsh.tgz }}
+        dest: /tmp/{{ zsh.xz }}
 
-    - name: unarchive tar.gz
-      unarchive:
-        src: /tmp/{{ zsh.tgz }}
-        dest: /tmp
-        copy: no
+    - name: unarchive tar.xz
+      command: chdir=/tmp/ tar Jxfv /tmp/{{ zsh.xz }}  # noqa 303 xzファイルは未対応のため
 
     - name: configure make install
       command: chdir=/tmp/{{ zsh.dir }} {{ item }}

@@ -1,5 +1,5 @@
 ---
 zsh:
   dir: zsh-{{ zsh_version }}
-  tgz: zsh-{{ zsh_version }}.tar.gz
-  src: http://ufpr.dl.sourceforge.net/project/zsh/zsh/{{ zsh_version }}/zsh-{{ zsh_version }}.tar.gz
+  xz: zsh-{{ zsh_version }}.tar.xz
+  src: https://downloads.sourceforge.net/project/zsh/zsh/{{ zsh_version }}/zsh-{{ zsh_version }}.tar.xz
