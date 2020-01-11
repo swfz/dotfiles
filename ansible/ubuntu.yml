@@ -26,5 +26,4 @@
     - { role: anyenv, tags: [anyenv, init] }
     # - { role: direnv, tags: [direnv, init]}
     - { role: powerline, tags: [powerline, init] }
-    - { role: zsh_syntax_highlighting, tags: [zsh_syntax_highlighting, init] }
     - { role: vim-plugins, tags: [vim-plugins, init] }

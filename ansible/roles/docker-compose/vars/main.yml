@@ -1,7 +1,3 @@
 ---
 docker_compose:
   src: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
-
-docker_compose_completion:
-  bash: https://raw.githubusercontent.com/docker/compose/{{ docker_compose_version }}/contrib/completion/bash/docker-compose
-  zsh: https://raw.githubusercontent.com/docker/compose/{{ docker_compose_version }}/contrib/completion/zsh/_docker-compose
