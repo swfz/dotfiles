@@ -44,7 +44,6 @@ use custom configuration to `~/.localrc`
 
 ## TODO
 ### ansible
-- zsh to 5.7.1 https://sourceforge.net/projects/zsh/files/zsh/
 - systemdを実行できるようにする
 - molecule
 - コメントアウトの精査
