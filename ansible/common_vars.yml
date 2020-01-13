@@ -31,5 +31,3 @@ dotfiles:
 
 command_dir: ~/bin
 execute: "$(which zsh) -lc"
-
-include: versions_vars.yml
