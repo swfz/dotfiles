@@ -30,8 +30,6 @@ dotfiles:
     - .gvimrc
 
 command_dir: ~/bin
-zsh_completion_dir: /etc/zsh_completion.d
-bash_completion_dir: /etc/bash_completion.d
 execute: "$(which zsh) -lc"
 
 include: versions_vars.yml
