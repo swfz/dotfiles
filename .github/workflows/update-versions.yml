@@ -1,0 +1,41 @@
+---
+name: update versions
+
+on:
+  push:
+    paths:
+      - 'ansible/**'
+      - '.github/workflows/update-versions.yml'
+      - '.github/workflows/bin/update-version.sh'
+  # schedule:
+  #   - cron: '0 1 * * SAT'
+
+jobs:
+  ansible-versions-update:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        role:
+          - name: peco
+            repo: peco/peco
+
+    steps:
+      - uses: actions/checkout@master
+      - name: install jq
+        run: |
+          sudo apt update
+          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+          sudo python get-pip.py
+          sudo apt install -y jq
+      - name: install yq
+        run: |
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt install -y yq
+      # - name: install gojq
+      #   run: |
+      #     curl -LO https://github.com/itchyny/gojq/releases/download/v0.7.0/gojq_v0.7.0_linux_amd64.tar.gz
+      #     tar zxvf gojq_v0.7.0_linux_amd64.tar.gz
+      #     sudo cp gojq_v0.7.0_linux_amd64/gojq /usr/local/bin/
+      - name: update versions.yml
+        run: |
+          ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }}
