@@ -3,6 +3,7 @@
   # strategy: debug
   vars_files:
     - common_vars.yml
+    - versions_vars.yml
   become: yes
   roles:
     - { role: common, tags: [common, init, tool] }
@@ -30,6 +31,7 @@
   # strategy: debug
   vars_files:
     - common_vars.yml
+    - versions_vars.yml
   become: no
   become_user: "{{ user }}"
   roles:
