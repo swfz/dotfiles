@@ -6,6 +6,9 @@ on:
     paths:
       - 'ansible/**'
       - '.github/workflows/ci-ansible.yml'
+  pull_request:
+    branches:
+      - master
   schedule:
     - cron: '0 0 * * SAT'
 
