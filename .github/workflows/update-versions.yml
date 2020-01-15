@@ -4,7 +4,7 @@ name: update versions
 on:
   push:
     paths:
-      - 'ansible/**'
+      # - 'ansible/**'
       - '.github/workflows/update-versions.yml'
       - '.github/workflows/bin/update-version.sh'
   # schedule:
@@ -18,6 +18,16 @@ jobs:
         role:
           - name: peco
             repo: peco/peco
+          - name: bat
+            repo: sharkdp/bat
+          - name: docker_compose
+            repo: docker/compose
+          - name: docker
+            repo: docker/docker-ce
+          - name: embulk
+            repo: embulk/embulk
+          - name: git
+            repo: git/git
 
     steps:
       - uses: actions/checkout@master
