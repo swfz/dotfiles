@@ -10,24 +10,52 @@ on:
   # schedule:
   #   - cron: '0 1 * * SAT'
 
+
 jobs:
   ansible-versions-update:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         role:
-          - name: peco
-            repo: peco/peco
+          # - name: peco
+          #   repo: peco/peco
+          #   type: normal
           - name: bat
             repo: sharkdp/bat
+            type: normal
           - name: docker_compose
             repo: docker/compose
-          - name: docker
-            repo: docker/docker-ce
+            type: beta-rc
+          # - name: docker
+          #   repo: docker/docker-ce
+          #   type: beta-rc
           - name: embulk
             repo: embulk/embulk
+            type: prefix
           - name: git
             repo: git/git
+            type: from-tag
+          # - name: vim
+          #   repo: vim/vim
+          #   type: from-tag
+          - name: jo
+            repo: jpmens/jo
+            type: prefix
+          - name: jq
+            repo: stedolan/jq
+            type: prefix
+          - name: q
+            repo: harelba/q
+            type: from-tag
+          # - name: terraform
+          #   repo: hashicorp/terraform
+          #   type: from-tag
+          # - name: zsh
+          #   repo: zsh-users/zsh
+          #   type: from-tag
+          - name: tmux
+            repo: tmux/tmux
+            type: prefix
 
     steps:
       - uses: actions/checkout@master
@@ -41,11 +69,6 @@ jobs:
         run: |
           sudo add-apt-repository ppa:rmescandon/yq
           sudo apt install -y yq
-      # - name: install gojq
-      #   run: |
-      #     curl -LO https://github.com/itchyny/gojq/releases/download/v0.7.0/gojq_v0.7.0_linux_amd64.tar.gz
-      #     tar zxvf gojq_v0.7.0_linux_amd64.tar.gz
-      #     sudo cp gojq_v0.7.0_linux_amd64/gojq /usr/local/bin/
       - name: update versions.yml
         run: |
-          ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }}
+          ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }} ${{ matrix.role.type }}

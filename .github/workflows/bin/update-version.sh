@@ -1,22 +1,21 @@
-#!/bin/bash
+#!/bin/bash -e
 
 # require jq yq
 # $1 peco
 # $2 peco/peco
+# $3 normal : latest-version-extract type
 
 echo $1
 echo $2
 
-# got=`cat ./ansible/versions_vars.yml | jq --yaml-input --yaml-output ".$1_version" `
 got=`yq r ./ansible/versions_vars.yml $1_version`
-latest=`curl -s https://api.github.com/repos/$2/releases | jq -r '.[]|select(contains({name: "v"}))|.name' | head -n 1`
+latest=`./.github/workflows/bin/latest-version-$3.sh $2`
 
 echo "got: $got"
 echo "latest: $latest"
 
 if [[ "$got" != "$latest" ]]; then
   echo "found ahead versions"
-  # cat ./ansible/versions_vars.yml | jq --yaml-input --yaml-output ".$1_version=\"$latest\"" > ./ansible/versions_vars.yml 2>&1
   yq w -i ./ansible/versions_vars.yml $1_version $latest
 fi
 
