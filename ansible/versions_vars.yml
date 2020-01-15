@@ -3,7 +3,7 @@ direnv_version: v2.20.0
 docker_compose_version: 1.23.2
 docker_version: "18.09"
 embulk_version: 0.9.22
-git_version: 2.24.1
+git_version: 2.25.0
 jo_version: "1.0"
 jq_version: "1.6"
 peco_version: 0.5.4
