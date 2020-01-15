@@ -1,14 +1,14 @@
 bat_version: 0.9.0
 direnv_version: v2.20.0
-docker_compose_version: 1.23.2
+docker_compose_version: 1.25.1
 docker_version: "18.09"
 embulk_version: 0.9.22
-git_version: 2.24.1
+git_version: 2.25.0
 jo_version: "1.0"
 jq_version: "1.6"
 peco_version: 0.5.4
 q_version: 1.7.1-1
-terraform_version: 0.12.18
+terraform_version: 0.12.19
 tmux_version: 3.0a
 vim_version: 8.2.0119
 zsh_version: 5.7.1
