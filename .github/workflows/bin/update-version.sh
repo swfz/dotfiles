@@ -23,10 +23,17 @@ if [[ -z "$(git status ./ansible/versions_vars.yml --porcelain)" ]]; then
   echo "$1 is latest version"
 else
   branch="versionup/$1-$latest"
-  git config --global user.email sawafuji.09@gmail.com
-  git config --global user.name swfz
-  git checkout -b ${branch}
-  git add ./ansible/versions_vars.yml
-  git commit -m "[versionup] $1 $got to $latest"
-  git push https://${GITHUB_USER_NAME}:${GITHUB_TOKEN}@github.com/swfz/dotfiles.git HEAD:${branch}
+
+  git fetch
+  if [[ -z "$(git branch -a | grep ${branch})" ]]; then
+    git config --global user.email sawafuji.09@gmail.com
+    git config --global user.name swfz
+    git checkout -b ${branch}
+    git add ./ansible/versions_vars.yml
+    git commit -m "[versionup] $1 $got to $latest"
+    git push https://${GITHUB_USER_NAME}:${GITHUB_TOKEN}@github.com/swfz/dotfiles.git HEAD:${branch}
+    # ./.github/workflows/bin/create_pr.sh ${branch}
+  else
+    echo "${branch} is exist."
+  fi
 fi

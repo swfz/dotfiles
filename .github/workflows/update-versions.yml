@@ -4,12 +4,11 @@ name: update versions
 on:
   push:
     paths:
-      # - 'ansible/**'
       - '.github/workflows/update-versions.yml'
       - '.github/workflows/bin/update-version.sh'
-  # schedule:
-  #   - cron: '0 1 * * SAT'
-
+      - '.github/workflows/bin/**'
+  schedule:
+    - cron: '0 2 * * SAT'
 
 jobs:
   ansible-versions-update:
@@ -17,27 +16,27 @@ jobs:
     strategy:
       matrix:
         role:
-          # - name: peco
-          #   repo: peco/peco
-          #   type: normal
+          - name: peco
+            repo: peco/peco
+            type: normal
           - name: bat
             repo: sharkdp/bat
             type: normal
           - name: docker_compose
             repo: docker/compose
             type: beta-rc
-          # - name: docker
-          #   repo: docker/docker-ce
-          #   type: beta-rc
+          - name: docker
+            repo: docker/docker-ce
+            type: beta-rc
           - name: embulk
             repo: embulk/embulk
             type: prefix
           - name: git
             repo: git/git
             type: from-tag
-          # - name: vim
-          #   repo: vim/vim
-          #   type: from-tag
+          - name: vim
+            repo: vim/vim
+            type: from-tag
           - name: jo
             repo: jpmens/jo
             type: prefix
@@ -47,16 +46,15 @@ jobs:
           - name: q
             repo: harelba/q
             type: from-tag
-          # - name: terraform
-          #   repo: hashicorp/terraform
-          #   type: from-tag
-          # - name: zsh
-          #   repo: zsh-users/zsh
-          #   type: from-tag
+          - name: terraform
+            repo: hashicorp/terraform
+            type: from-tag
+          - name: zsh
+            repo: zsh-users/zsh
+            type: from-tag
           - name: tmux
             repo: tmux/tmux
             type: prefix
-
     steps:
       - uses: actions/checkout@master
       - name: install jq
