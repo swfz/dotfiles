@@ -2,7 +2,7 @@ bat_version: 0.9.0
 direnv_version: v2.20.0
 docker_compose_version: 1.23.2
 docker_version: "18.09"
-embulk_version: 0.9.22
+embulk_version: v0.9.23
 git_version: 2.24.1
 jo_version: "1.0"
 jq_version: "1.6"
