@@ -25,8 +25,8 @@
     - name: install vim
       environment:
         PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
-      script: "install.sh v{{ vim_version }}.{{ vim_version_patch }}"
+      script: "install.sh v{{ vim_version }}"
   when:
     exist_vim.rc != 0
-    or ( version_in_vim is defined and version_in_vim.stdout.find(vim_version) == -1)
-    or ( patch_version_in_vim is defined and patch_version_in_vim.stdout.find(vim_version_patch) == -1)
+    or ( version_in_vim is defined and version_in_vim.stdout.find(".".join(vim_version.split('.')[0:2])) == -1)
+    or ( patch_version_in_vim is defined and patch_version_in_vim.stdout.find(vim_version.split('.')[2]) == -1)
