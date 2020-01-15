@@ -5,13 +5,11 @@ on:
   push:
     paths:
       - '.github/workflows/update-versions.yml'
-      - '.github/workflows/bin/update-version.sh'
-      - '.github/workflows/bin/**'
   schedule:
     - cron: '0 2 * * SAT'
 
 jobs:
-  ansible-versions-update:
+  versions-update:
     runs-on: ubuntu-latest
     strategy:
       matrix:

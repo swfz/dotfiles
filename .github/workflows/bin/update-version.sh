@@ -22,7 +22,7 @@ fi
 if [[ -z "$(git status ./ansible/versions_vars.yml --porcelain)" ]]; then
   echo "$1 is latest version"
 else
-  branch="versionup/$1-$latest"
+  branch="versionup/$1-to-$latest"
 
   git fetch
   if [[ -z "$(git branch -a | grep ${branch})" ]]; then
