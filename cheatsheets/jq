@@ -36,6 +36,12 @@ jq 'select(has("age"))'
 # 特定の要素を含むかチェック
 jq 'select(contains({age:20}))'
 
+# 特定の要素をまないかチェック
+jq 'select(contains({hoge:"aa"})|not)'
+
+# 複数条件
+jq 'select((contains({hoge:"aa"})|not) and (contains({hoge: "bb"})|not))'
+
 # ハッシュの生成
 jq '.[]|{a: .foo, b: bar}'
 
