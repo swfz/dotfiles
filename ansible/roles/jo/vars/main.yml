@@ -2,4 +2,4 @@
 jo:
   dir: jo-{{ jo_version }}
   tgz: jo-{{ jo_version }}.tar.gz
-  src: https://github.com/jpmens/jo/releases/download/v{{ jo_version }}/jo-{{ jo_version }}.tar.gz
+  src: https://github.com/jpmens/jo/releases/download/{{ jo_version }}/jo-{{ jo_version }}.tar.gz
