@@ -17,12 +17,10 @@ curl -XPOST \
       repositoryId: \"${REPO_ID}\"
     })
     {
-      issue {
+      pullRequest {
         id,
         title,
-        url,
-        number,
-        databaseId
+        url
       }
     }
   }"
