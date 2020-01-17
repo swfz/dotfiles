@@ -68,4 +68,3 @@ jobs:
       - name: update versions.yml
         run: |
           ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }} ${{ matrix.role.type }}
-
