@@ -32,7 +32,7 @@ else
     git add ./ansible/versions_vars.yml
     git commit -m "[versionup] $1 $got to $latest"
     git push https://${GITHUB_USER_NAME}:${GITHUB_TOKEN}@github.com/swfz/dotfiles.git HEAD:${branch}
-    # ./.github/workflows/bin/create_pr.sh ${branch}
+    ./.github/workflows/bin/create_pr.sh ${branch}
   else
     echo "${branch} is exist."
   fi
