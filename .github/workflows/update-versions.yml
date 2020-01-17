@@ -66,5 +66,7 @@ jobs:
           sudo add-apt-repository ppa:rmescandon/yq
           sudo apt install -y yq
       - name: update versions.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }} ${{ matrix.role.type }}
