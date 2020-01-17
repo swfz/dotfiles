@@ -68,6 +68,7 @@ jobs:
       - name: update versions.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_ID: ${{ secrets.REPO_ID }}
         run: |
           ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }} ${{ matrix.role.type }}
 
