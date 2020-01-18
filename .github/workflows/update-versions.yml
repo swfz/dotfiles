@@ -79,11 +79,10 @@ jobs:
             echo "found ahead versions"
             yq w -i ./ansible/versions_vars.yml ${{ matrix.role.name }}_version $latest
             branch="versionup/${{ matrix.role.name }}-to-$latest"
+            echo ::set-output name=branch::$branch
           fi
 
-          echo ::set-output name=branch::$branch
-
-      - if: steps.check.outputs.branch != ''
+      - if: steps.check.outputs.branch
         name: push to branch
         run: |
           git fetch
@@ -98,7 +97,7 @@ jobs:
             echo "${{ steps.check.outputs.branch }} is exist."
           fi
 
-      - if: steps.check.outputs.branch != ''
+      - if: steps.check.outputs.branch
         name: create pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -106,7 +105,7 @@ jobs:
         run: |
           ./.github/workflows/bin/create_pr.sh ${{ steps.check.outputs.branch }}
 
-      - if: steps.check.outputs.branch != ''
+      - if: steps.check.outputs.branch
         name: dispatch ci
         run: |
           curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
