@@ -73,4 +73,4 @@ jobs:
           ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }} ${{ matrix.role.type }}
       - name: dispatch ci
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible-ci"}' https://api.github.com/repos/${{ secrets.GITHUB_USERNAME }}/${{ github.repository }}/dispatches
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible-ci", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
