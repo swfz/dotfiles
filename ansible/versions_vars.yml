@@ -12,3 +12,4 @@ terraform_version: 0.12.19
 tmux_version: 3.0a
 vim_version: 8.2.0119
 zsh_version: 5.7.1
+_version: 1.6
