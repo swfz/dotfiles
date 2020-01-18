@@ -65,12 +65,48 @@ jobs:
         run: |
           sudo add-apt-repository ppa:rmescandon/yq
           sudo apt install -y yq
-      - name: update versions.yml
+
+      - id: check
+        name: check require update
+        run: |
+          got=`yq r ./ansible/versions_vars.yml $1_version`
+          latest=`./.github/workflows/bin/latest-version-${{ matrix.role.type }}.sh ${{ matrix.role.repo }}`
+
+          echo ::set-output name=got::$got
+          echo ::set-output name=latest::$latest
+
+          if [[ "$got" != "$latest" ]]; then
+            echo "found ahead versions"
+            yq w -i ./ansible/versions_vars.yml $1_version $latest
+            branch="versionup/${{ matrix.role.name }}-to-$latest"
+          fi
+
+          echo ::set-output name=branch::$branch
+
+      - if: steps.check.outputs.branch != ''
+        name: push to branch
+        run: |
+          git fetch
+          if [[ -z "$(git branch -a | grep ${branch})" ]]; then
+            git config --global user.email ${{ secrets.GITHUB_EMAIL }}
+            git config --global user.name ${{ secrets.GITHUB_USERNAME }}
+            git checkout -b ${{ steps.check.outputs.branch }}
+            git add ./ansible/versions_vars.yml
+            git commit -m "[versionup] ${{ matrix.role.name }} ${{ steps.check.outputs.got }} to ${{ steps.check.outputs.latest }}"
+            git push https://${GITHUB_USER_NAME}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ steps.check.outputs.branch }}
+          else
+            echo "${{ steps.check.outputs.branch }} is exist."
+          fi
+
+      - if: steps.check.outputs.branch != ''
+        name: create pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_ID: ${{ secrets.REPO_ID }}
         run: |
-          ./.github/workflows/bin/update-version.sh ${{ matrix.role.name }} ${{ matrix.role.repo }} ${{ matrix.role.type }}
-      - name: dispatch ci
+          ./.github/workflows/bin/create_pr.sh ${{ steps.check.outputs.branch }}
+
+      - if: steps.check.outputs.branch != ''
+        name: dispatch ci
         run: |
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible-ci", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
