@@ -108,7 +108,7 @@ jobs:
         run: |
           ./.github/workflows/bin/create_pr.sh ${{ steps.check.outputs.branch }}
 
-      - if: steps.check.outputs.branch && psteps.exist_branch.outputs.count == 0
+      - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
         name: dispatch ci
         run: |
           curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
