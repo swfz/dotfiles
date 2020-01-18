@@ -19,6 +19,10 @@ jobs:
         tag: [deploy, init, tool, all]
     steps:
       - uses: actions/checkout@master
+      - if: github.event.client_payload
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
         run: |
           sudo apt update
@@ -40,6 +44,10 @@ jobs:
     name: 'playbook mac'
     steps:
       - uses: actions/checkout@master
+      - if: github.event.client_payload
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
         run: |
           brew install ansible
@@ -58,6 +66,10 @@ jobs:
         tag: [deploy, init, tool, all]
     steps:
       - uses: actions/checkout@master
+      - if: github.event.client_payload
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.client_payload.ref }}
       - name: 'ansible playbook centos'
         env:
           CI: true
@@ -69,6 +81,10 @@ jobs:
     name: 'lint'
     steps:
       - uses: actions/checkout@master
+      - if: github.event.client_payload
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.client_payload.ref }}
       - name: install ansible-lint yamllint
         run: |
           sudo apt update
