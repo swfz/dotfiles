@@ -7,6 +7,7 @@ on:
       - 'ansible/**'
       - '.github/workflows/ci-ansible.yml'
   repository_dispatch:
+    types: [ansible]
   schedule:
     - cron: '0 0 * * SAT'
 
