@@ -99,7 +99,7 @@ jobs:
           git checkout -b ${{ steps.check.outputs.branch }}
           git add ./ansible/versions_vars.yml
           git commit -m "[versionup] ${{ matrix.role.name }} ${{ steps.check.outputs.got }} to ${{ steps.check.outputs.latest }}"
-          git push https://${GITHUB_USER_NAME}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ steps.check.outputs.branch }}
+          git push https://${GITHUB_USER_NAME}:${{ secrets.GITHUB_PERSONAL_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ steps.check.outputs.branch }}
 
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
         name: create pull request
@@ -109,7 +109,7 @@ jobs:
         run: |
           ./.github/workflows/bin/create_pr.sh ${{ steps.check.outputs.branch }}
 
-      - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
-        name: dispatch ci
-        run: |
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_PERSONAL_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
+      # - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
+      #   name: dispatch ci
+      #   run: |
+      #     curl -X POST -H "Authorization: token ${{ secrets.GITHUB_PERSONAL_TOKEN }}" -H "Accept: application/vnd.github.everest-preview+json" --data '{"event_type": "ansible", "client_payload": {"ref": "${{ steps.check.outputs.branch }}"}}' https://api.github.com/repos/${{ github.repository }}/dispatches
