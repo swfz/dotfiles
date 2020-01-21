@@ -90,9 +90,9 @@ jobs:
           count=`git branch -a | grep ${{ steps.check.outputs.branch }} | wc -l`
           echo ::set-output name=count::$count
 
-      # 既存ブランチがない場合は以後の処理を行う
+      # 対象バージョンがかぶっている場合（ブランチが存在する場合）は以後の処理は行わない
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
-        name: push to branch
+        name: push to new branch
         run: |
           git config --global user.email ${{ secrets.GITHUB_EMAIL }}
           git config --global user.name ${{ secrets.GITHUB_USERNAME }}
