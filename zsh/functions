@@ -89,4 +89,6 @@ function gdif(){
   git diff --color $@ | diff-so-fancy
 }
 
-
+function bookmarklet(){
+  sed -e ':loop;N;$!b loop;s/\n/ /g' -e 's/ \+/%20/g' -e 's/^/javascript:/'
+}
