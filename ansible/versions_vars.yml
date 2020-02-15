@@ -10,5 +10,5 @@ peco_version: 0.5.7
 q_version: 1.7.1-1
 terraform_version: 0.12.20
 tmux_version: 3.0a
-vim_version: 8.2.0230
+vim_version: 8.2.0259
 zsh_version: 5.7.1
