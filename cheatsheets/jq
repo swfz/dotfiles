@@ -56,3 +56,9 @@ jq -r '.TargetHealthDescriptions[]|select(.TargetHealth.State!="healthy2")|[.Tar
 
 # 特定のをnullに書き換え（ない場合もある）
 jq 'if(has(".next_cursor")) then .next_cursor|=null else . end'
+
+# キーごとに集計
+jq 'reduce .[] as $row ({}; .[$row.label] += [$row.value])| . as $tmp| keys | reduce .[] as $key ({}; .[$key] = ($tmp[$key]|add)/($tmp[$key]|length))'
+
+# キーごとの合計
+jq 'reduce .[] as $row ({}; .[$row.label] += $row.value)'
