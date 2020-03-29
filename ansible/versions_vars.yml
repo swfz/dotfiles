@@ -1,4 +1,4 @@
-bat_version: 0.12.1
+bat_version: 0.13.0
 direnv_version: v2.20.0
 docker_compose_version: 1.25.4
 docker_version: 19.03.8
