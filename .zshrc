@@ -8,27 +8,36 @@ function load_powerline() {
     source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_minor_ver}/site-packages/powerline/bindings/zsh/powerline.zsh
   fi
 }
-
-### Added by Zplugin's installer
-if [[ ! -d $HOME/.zplugin/bin ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing Zplugin…%f"
-    command mkdir -p $HOME/.zplugin
-    command git clone https://github.com/zdharma/zplugin $HOME/.zplugin/bin && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%F" || \
-        print -P "%F{160}▓▒░ The clone has failed.%F"
+### Added by Zinit's installer
+if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
+    command mkdir -p "$HOME/.zinit" && command chmod g-rwX "$HOME/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
-source "$HOME/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
-### End of Zplugin installer's chunk
+
+source "$HOME/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-bin-gem-node
+
+### End of Zinit's installer chunk
 
 # Zsh plugin load
-zplugin ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
-zplugin ice wait'!0'; zplugin load zsh-users/zsh-completions
-zplugin ice wait'!0'; zplugin load agkozak/zhooks
+zinit ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
+zinit ice wait'!0'; zplugin load zsh-users/zsh-completions
+zinit ice wait'!0'; zplugin load agkozak/zhooks
 
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-  zplugin ice wait'!0'; zplugin load sindresorhus/pure
+  zinit ice wait'!0'; zplugin load sindresorhus/pure
 else
   load_powerline
 fi
@@ -40,7 +49,7 @@ colors
 # complete
 autoload -Uz compinit
 compinit
-zplugin cdreplay - q
+zinit cdreplay - q
 
 # 補完
 ## Upper and Lower Case
@@ -109,3 +118,5 @@ esac
 if [ -f $HOME/.localrc ]; then
   source $HOME/.localrc
 fi
+
+
