@@ -38,9 +38,11 @@
       - libgconf-2.so.4
       - GConf2
       - make
+      - which
       - libffi-devel
       - lua-devel  # vim8
       - perl-ExtUtils-Embed  # vim8
+      - ImageMagick
     state: installed
 
 - name: install rpmforge

@@ -18,6 +18,7 @@
     - virtualbox
     - slack
     - licecap
+    - imagemagick
 
 - name: install with cask
   homebrew_cask:
