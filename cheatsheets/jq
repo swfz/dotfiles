@@ -39,6 +39,9 @@ jq 'select(contains({age:20}))'
 # 特定の要素をまないかチェック
 jq 'select(contains({hoge:"aa"})|not)'
 
+# 特定の要素をまないかチェック2
+jq 'select(.hoge|test("aa")|not)'
+
 # 複数条件
 jq 'select((contains({hoge:"aa"})|not) and (contains({hoge: "bb"})|not))'
 
@@ -49,7 +52,8 @@ jq '.[]|{a: .foo, b: bar}'
 jq 'sort_by(.key)'
 
 # 全行をまとめて配列にしてjqに食わせる
-jq '.[]|{a: .foo, b: bar}' | paste -s -d ',' | sed -e 's/^/\[/' -e 's/$/\]/' | jq 'sort_by(.b)'
+# jq '.[]|{a: .foo, b: bar}' | paste -s -d ',' | sed -e 's/^/\[/' -e 's/$/\]/' | jq 'sort_by(.b)'
+jq '.[]|{a: .foo, b: bar}' | jq -s 'sort_by(.b)'
 
 # CSV的な出力
 jq -r '.TargetHealthDescriptions[]|select(.TargetHealth.State!="healthy2")|[.Target.Id,.TargetHealth.State]|join(",")'
@@ -62,3 +66,4 @@ jq 'reduce .[] as $row ({}; .[$row.label] += [$row.value])| . as $tmp| keys | re
 
 # キーごとの合計
 jq 'reduce .[] as $row ({}; .[$row.label] += $row.value)'
+
