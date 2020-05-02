@@ -1,11 +1,33 @@
-#!/bin/bash
+#!/bin/bash -x 
 
-inotifywait --recursive --monitor --quiet \
-  --event MODIFY \
-  --exclude ".*\.sw[pox]|./log|./tmp|./git" \
-  ./ | while read d e f;
-do
-  echo "$d$f"
-  "$@"
-  echo '---------- END ----------'
-done
+_usage(){
+  cat <<EOS
+usage:
+  wcmd
+
+environment:
+  EXCLUDE_PATTERN: exclude watch file pattern
+EOS
+ exit 1
+}
+
+main(){
+  default_exclude_pattern=".*\.sw[pox]|./log|./tmp|./git|__pycache__/*"
+  if [[ -n "$EXCLUDE_PATTERN" ]]; then
+    exclude="$default_exclude_pattern|$EXCLUDE_PATTERN"
+  else
+    exclude=$default_exclude_pattern
+  fi
+
+  inotifywait --recursive --monitor --quiet \
+    --event MODIFY \
+    --exclude "$exclude" \
+    ./ | while read d e f;
+  do
+    echo "$d$f"
+    "$@"
+    echo '---------- END ----------'
+  done
+}
+
+main $@
