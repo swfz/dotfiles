@@ -9,6 +9,6 @@ jq_version: "1.6"
 peco_version: 0.5.7
 q_version: 1.7.1-1
 terraform_version: 0.12.24
-tmux_version: 3.1a
+tmux_version: 3.1b
 vim_version: 8.2.0676
 zsh_version: 5.8
