@@ -33,3 +33,9 @@ git stash show stash@{0}
 
 # 変更を破棄
 git stash drop stash@{0}
+
+# amend
+git commit --amend
+
+# fixup
+git commit --fixup <commitA>

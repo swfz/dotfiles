@@ -67,3 +67,5 @@ jq 'reduce .[] as $row ({}; .[$row.label] += [$row.value])| . as $tmp| keys | re
 # キーごとの合計
 jq 'reduce .[] as $row ({}; .[$row.label] += $row.value)'
 
+# 件数指定
+echo '[1,2,3,4,5,6,7,8,9,10]' | jq '[.[]|select(.%2==0)]|sort|reverse|limit(3; .[])'
