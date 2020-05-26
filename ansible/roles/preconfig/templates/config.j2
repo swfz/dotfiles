@@ -18,6 +18,9 @@
   changed = 013
   untracked = yellow
   deleted = red
+[rebase]
+  autosquash = true
+  abbreviateCommands = true
 [core]
   editor = {{ git_editor|default('vi') }}
   pager  = less -cm
@@ -28,7 +31,10 @@
   sslVerify = false
 [alias]
   a  = add
-  ci = commit
+  c = commit
+  cf = commit --fixup
+  r = rebase
+  ri = rebase -i
   co = checkout
   st = status -sb
   rv = remote -v
