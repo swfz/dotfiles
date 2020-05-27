@@ -58,6 +58,9 @@ jq '.[]|{a: .foo, b: bar}' | jq -s 'sort_by(.b)'
 # CSV的な出力
 jq -r '.TargetHealthDescriptions[]|select(.TargetHealth.State!="healthy2")|[.Target.Id,.TargetHealth.State]|join(",")'
 
+# Hash In Array To CSV
+jq -r  '(.[0]|keys_unsorted),map([.[]])[]|@csv'
+
 # 特定のをnullに書き換え（ない場合もある）
 jq 'if(has(".next_cursor")) then .next_cursor|=null else . end'
 
