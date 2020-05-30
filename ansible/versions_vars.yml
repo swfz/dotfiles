@@ -1,7 +1,7 @@
 bat_version: 0.15.1
 direnv_version: v2.20.0
 docker_compose_version: 1.25.5
-docker_version: 19.03.8
+docker_version: 19.03.10
 embulk_version: 0.10.2
 git_version: 2.26.2
 jo_version: 1.3
