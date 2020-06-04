@@ -1,4 +1,4 @@
-# datasource=git-releases depName=sharkdp/bat
+# datasource=github-releases depName=sharkdp/bat
 bat_version: 0.15.1
 
 # dummy
@@ -22,7 +22,7 @@ jo_version: 1.3
 # dummy
 jq_version: "1.6"
 
-# datasource=git-releases depName=peco/peco
+# datasource=github-releases depName=peco/peco
 peco_version: 0.5.7
 
 # dummy
