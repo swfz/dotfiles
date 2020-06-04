@@ -1,4 +1,4 @@
-# datasource=git-release depName=sharkdp/bat
+# datasource=git-releases depName=sharkdp/bat
 bat_version: 0.15.1
 
 # dummy
@@ -13,7 +13,7 @@ docker_version: 19.03.8
 # dummy
 embulk_version: 0.10.2
 
-# datasource=git-tag depName=git/git
+# datasource=git-tags depName=git/git
 git_version: 2.26.2
 
 # dummy
@@ -22,13 +22,13 @@ jo_version: 1.3
 # dummy
 jq_version: "1.6"
 
-# datasource=git-release depName=peco/peco
+# datasource=git-releases depName=peco/peco
 peco_version: 0.5.7
 
 # dummy
 q_version: 1.7.1-1
 
-# datasource=git-tag depName=hashicorp/terraform
+# datasource=git-tags depName=hashicorp/terraform
 terraform_version: 0.12.25
 
 # dummy
