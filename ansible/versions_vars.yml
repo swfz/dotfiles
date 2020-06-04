@@ -13,7 +13,7 @@ docker_version: 19.03.8
 # dummy
 embulk_version: 0.10.2
 
-# datasource=git-tags depName=git/git
+# dummy
 git_version: 2.26.2
 
 # dummy
@@ -28,7 +28,7 @@ peco_version: 0.5.7
 # dummy
 q_version: 1.7.1-1
 
-# datasource=git-tags depName=hashicorp/terraform
+# dummy
 terraform_version: 0.12.25
 
 # dummy
