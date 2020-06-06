@@ -11,9 +11,7 @@
   ignore_errors: true
 
 - name: get embulk version
-  command: embulk --version
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  shell: $(which embulk) --version
   register: version_in_embulk
   changed_when: false
   ignore_errors: true
