@@ -9,4 +9,4 @@
 
 - name: running samba
   service: name=smb state=started enabled=yes
-  when: ansible_env.has_key('CI') and ansible_env.CI != "true"
+  when: ansible_env.get('CI', None) and ansible_env.CI != "true"
