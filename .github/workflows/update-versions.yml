@@ -17,9 +17,6 @@ jobs:
           - name: peco
             repo: peco/peco
             type: normal
-          - name: bat
-            repo: sharkdp/bat
-            type: normal
           - name: docker_compose
             repo: docker/compose
             type: beta-rc
