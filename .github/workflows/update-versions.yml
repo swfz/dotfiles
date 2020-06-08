@@ -20,9 +20,6 @@ jobs:
           - name: embulk
             repo: embulk/embulk
             type: prefix
-          - name: git
-            repo: git/git
-            type: from-tag
           - name: vim
             repo: vim/vim
             type: from-tag

@@ -46,4 +46,4 @@
 
   when:
     exist_git.rc != 0
-    or ( version_in_git is defined and version_in_git.stdout.find(git_version) == -1 )
+    or ( version_in_git is defined and version_in_git.stdout.find(git_version.replace("v","")) == -1 )
