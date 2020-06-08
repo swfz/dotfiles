@@ -1,41 +1,28 @@
 # datasource=github-releases depName=sharkdp/bat
 bat_version: v0.15.1
-
 # dummy
 direnv_version: v2.20.0
-
 # dummy
 docker_compose_version: 1.25.5
-
 # dummy
 docker_version: 19.03.8
-
 # dummy
 embulk_version: 0.10.2
-
 # dummy
 git_version: 2.26.2
-
 # dummy
 jo_version: 1.3
-
 # dummy
 jq_version: "1.6"
-
 # datasource=github-releases depName=peco/peco
 peco_version: 0.5.7
-
 # dummy
 q_version: 1.7.1-1
-
 # dummy
 terraform_version: 0.12.25
-
 # dummy
 tmux_version: 3.1a
-
 # dummy
-vim_version: 8.2.0764
-
+vim_version: 8.2.0931
 # dummy
 zsh_version: 5.8
