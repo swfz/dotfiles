@@ -14,9 +14,6 @@ jobs:
     strategy:
       matrix:
         role:
-          - name: docker_compose
-            repo: docker/compose
-            type: beta-rc
           - name: docker
             repo: docker/docker-ce
             type: beta-rc

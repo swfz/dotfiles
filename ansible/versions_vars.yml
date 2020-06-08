@@ -4,7 +4,7 @@ bat_version: v0.15.1
 # dummy
 direnv_version: v2.20.0
 
-# dummy
+# datasource=github-releases depName=docker/compose
 docker_compose_version: 1.25.5
 
 # dummy
