@@ -1,5 +1,5 @@
 # datasource=github-releases depName=sharkdp/bat
-bat_version: v0.15.1
+bat_version: v0.15.4
 
 # dummy
 direnv_version: v2.20.0
