@@ -14,7 +14,7 @@ docker_version: 19.03.8
 embulk_version: 0.10.2
 
 # datasource=github-tags depName=git/git
-git_version: 2.26.2
+git_version: v2.27.0
 
 # dummy
 jo_version: 1.3
