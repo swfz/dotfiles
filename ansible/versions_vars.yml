@@ -21,7 +21,7 @@ q_version: 1.7.1-1
 # dummy
 terraform_version: 0.12.25
 # dummy
-tmux_version: 3.1a
+tmux_version: 3.2-rc
 # dummy
 vim_version: 8.2.1017
 # dummy
