@@ -23,6 +23,6 @@ terraform_version: 0.12.25
 # dummy
 tmux_version: 3.1a
 # dummy
-vim_version: 8.2.1065
+vim_version: 8.2.1288
 # dummy
 zsh_version: 5.8
