@@ -1,6 +1,13 @@
 ---
 - name: dependencies java install
   yum: name=java-1.8.0-openjdk-devel state=installed
+  when: "ansible_os_family == 'RedHat'"
+
+- name: dependencies java install
+  apt:
+    name: ['openjdk-8-jre', 'openjdk-8-jdk']
+    state: installed
+  when: "ansible_os_family == 'Debian'"
 
 - name: exist embulk
   command: which embulk
