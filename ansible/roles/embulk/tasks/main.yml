@@ -6,7 +6,7 @@
 - name: dependencies java install
   apt:
     name: ['openjdk-8-jre', 'openjdk-8-jdk']
-    state: installed
+    state: present
   when: "ansible_os_family == 'Debian'"
 
 - name: exist embulk
