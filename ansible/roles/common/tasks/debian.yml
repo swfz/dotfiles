@@ -23,4 +23,5 @@
       - libbz2-dev
       - zlib1g-dev
       - imagemagick
+      - ubuntu-wsl
     state: present
