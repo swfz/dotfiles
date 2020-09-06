@@ -14,24 +14,12 @@ jobs:
     strategy:
       matrix:
         role:
-          - name: peco
-            repo: peco/peco
-            type: normal
-          - name: bat
-            repo: sharkdp/bat
-            type: normal
-          - name: docker_compose
-            repo: docker/compose
-            type: beta-rc
           - name: docker
             repo: docker/docker-ce
             type: beta-rc
           - name: embulk
             repo: embulk/embulk
             type: prefix
-          - name: git
-            repo: git/git
-            type: from-tag
           - name: vim
             repo: vim/vim
             type: from-tag
