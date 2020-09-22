@@ -19,11 +19,16 @@
 
 - block:
   - name: install dependencies package
-    yum: name={{ item }} state=installed
-    with_items:
-    - libevent-devel
-    - ncurses-devel
-    - gcc
+    yum:
+      name: ['libevent-devel', 'ncurses-devel', 'gcc']
+      state: installed
+    when: "ansible_os_family == 'RedHat'"
+
+  - name: install dependencies package
+    apt:
+      name: ['libevent-dev', 'libncurses-dev']
+      state: present
+    when: "ansible_os_family == 'Debian'"
 
   - name: get source
     get_url:
