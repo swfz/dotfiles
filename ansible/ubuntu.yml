@@ -11,6 +11,7 @@
     - { role: zsh, tags: [zsh, init] }
     - { role: peco, tags: [peco, init] }
     - { role: jq, tags: [jq, init] }
+    - { role: tmux, tags: [tmux, init] }
     - { role: bat, tags: [bat, tool] }
     - { role: vim8, tags: [vim8, init] }
     - { role: embulk, tags: [embulk, tool] }
