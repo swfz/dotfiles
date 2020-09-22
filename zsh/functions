@@ -14,6 +14,18 @@ function cpurank() {
   ps auxwww | awk '{printf ("%s\t%d\t%s\n", $3,$2,$11)}' | sort -nr | head -$1
 }
 
+function memused() {
+  free -g | head -n 2 | tail -n 1 | awk '{print $3"/"$2}'
+}
+
+function cpus() {
+  grep 'cpu' /proc/stat | tail -n +2 | awk '{usage=($2+$4)*100/($2+$4+$5); print""; printf "%.2f", usage}'
+}
+
+function cpuused() {
+  grep 'cpu' /proc/stat | head -n 1 | awk '{usage=($2+$4)*100/($2+$4+$5); printf "%.2f", usage}'
+}
+
 function binlog() {
   mysqlbinlog --start-datetime="$2" --stop-datetime="$3" $1 | perl -e 'while(<>){ chomp; next if m!^#!; if ( m{/\*!\*/;$} ) { $p .= $_; print "$p\n"; $p="" } else { $p .= $_." "} }'
 }
