@@ -109,3 +109,14 @@ jobs:
         run: |
           cd ansible
           ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml
+
+  slack-notify:
+    if: always()
+    needs: [lint, build-centos, build-mac, build-ubuntu]
+    name: post slack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Gamesight/slack-workflow-status@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}

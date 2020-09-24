@@ -98,3 +98,14 @@ jobs:
           REPO_ID: ${{ secrets.REPO_ID }}
         run: |
           ./.github/workflows/bin/create_pr.sh ${{ steps.check.outputs.branch }}
+
+  slack-notify:
+    if: always()
+    needs: [versions-update]
+    name: post slack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Gamesight/slack-workflow-status@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
