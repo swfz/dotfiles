@@ -76,7 +76,7 @@ function peco-ps () {
   peco-p ${process_id}
 }
 zle -N peco-ps
-bindkey '^gp' peco-ps
+bindkey '^gps' peco-ps
 
 # git stのファイルを(複数)選択
 function peco-git-files () {
@@ -93,3 +93,20 @@ function peco-git-stash () {
 }
 zle -N peco-git-stash
 bindkey '^gs' peco-git-stash
+
+# gh issue のリストから選択
+function peco-gh-issue () {
+  local issues="$(gh issue list | peco | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
+  peco-p ${issues}
+}
+zle -N peco-gh-issue
+bindkey '^gi' peco-gh-issue
+
+# gh pr のリストから選択
+function peco-gh-pr () {
+  local prs="$(gh pr list | peco | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
+  peco-p ${prs}
+}
+zle -N peco-gh-pr
+bindkey '^gpr' peco-gh-pr
+
