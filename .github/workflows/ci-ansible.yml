@@ -22,9 +22,9 @@ jobs:
       matrix:
         tag: [deploy, init, tool, all]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - if: github.event.client_payload
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -47,9 +47,9 @@ jobs:
     runs-on: macos-latest
     name: 'playbook mac'
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - if: github.event.client_payload
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -69,9 +69,9 @@ jobs:
       matrix:
         tag: [deploy, init, tool, all]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - if: github.event.client_payload
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: 'ansible playbook centos'
@@ -84,10 +84,10 @@ jobs:
     runs-on: ubuntu-latest
     name: 'lint'
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
       - run: cat $GITHUB_EVENT_PATH
       - if: github.event.client_payload
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible-lint yamllint
@@ -116,7 +116,7 @@ jobs:
     name: post slack
     runs-on: ubuntu-latest
     steps:
-      - uses: Gamesight/slack-workflow-status@master
+      - uses: Gamesight/slack-workflow-status@v1.0.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
