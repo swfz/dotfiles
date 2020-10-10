@@ -11,4 +11,4 @@ sudo python get-pip.py
 pip install pexpect --user
 
 cd ansible
-ansible-playbook -i localhost, -c local ubuntu.yml
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars="user=$(whoami)"
