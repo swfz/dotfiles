@@ -1,10 +1,13 @@
 ---
-- name: install easy_install
-  yum: name=python-setuptools state=installed
+- name: download get-pip
+  get_url:
+    url: "https://bootstrap.pypa.io/get-pip.py"
+    dest: "get-pip.py"
   when: "ansible_os_family == 'RedHat'"
 
-- name: install pip
-  easy_install: name=pip state=present
+- name: execute get-pip
+  command:
+    cmd: python get-pip.py
   when: "ansible_os_family == 'RedHat'"
 
 - name: pip modules
