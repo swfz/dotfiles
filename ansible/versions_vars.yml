@@ -15,7 +15,7 @@ jo_version: 1.4
 # dummy
 jq_version: "1.6"
 # datasource=github-releases depName=peco/peco
-peco_version: 0.5.7
+peco_version: v0.5.8
 # dummy
 q_version: 1.7.1-1
 # dummy
