@@ -17,6 +17,7 @@
     - { role: docker-compose, tags: [docker-compose, init] }
     - { role: terraform, tags: [terraform, tool] }
     - { role: embulk, tags: [embulk, tool] }
+    - { role: awscli, tags: [awscli, tool] }
     # - { role: sshrc, tags: [sshrc, tool] }
     - { role: vim8, tags: [vim8, init] }
     - { role: tmux, tags: [tmux, init] }

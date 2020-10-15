@@ -1,0 +1,39 @@
+---
+- name: exist awscli v2
+  command: which aws
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: exist_awscli
+  changed_when: false
+  ignore_errors: true
+
+- name: get awscli version
+  shell: "aws --version 2>&1 | grep -oP '(?<=aws-cli\\/)\\d+\\.\\d+\\.\\d+' "
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: version_in_awscli
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_awscli.rc == 0
+
+- block:
+  - name: get zip
+    get_url:
+      url: "{{ awscli.src }}"
+      dest: "/tmp/{{ awscli.zip }}"
+
+  - name: unarchive zip
+    unarchive:
+      src: /tmp/{{ awscli.zip }}
+      dest: /tmp/
+      copy: no
+
+  - name: install
+    command:
+      cmd: ./aws/install --update
+      chdir: /tmp
+
+  when:
+    exist_awscli.rc != 0
+    or ( version_in_awscli is defined and version_in_awscli.stdout.find(awscli_version) == -1 )

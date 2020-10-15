@@ -17,6 +17,7 @@
     - { role: embulk, tags: [embulk, tool] }
     - { role: notofont, tags: [notofont, init] }
     - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli, awscli
+    - { role: awscli, tags: [awscli, tool] }
 
 - hosts: localhost
   # strategy: debug
