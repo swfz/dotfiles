@@ -1,0 +1,37 @@
+---
+- name: exist fillin
+  command: which fillin
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: exist_fillin
+  changed_when: false
+  ignore_errors: true
+
+- name: get fillin version
+  command: fillin -v
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: version_in_fillin
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_fillin.rc == 0
+
+- block:
+  - name: get source
+    get_url:
+      url: "{{ fillin.src }}"
+      dest: /tmp/{{ fillin.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ fillin.tgz }}
+      dest: /tmp/
+      copy: no
+
+  - name: move fillin
+    command: mv /tmp/{{ fillin.dir }}/fillin /usr/local/bin/fillin
+
+  when:
+    exist_fillin.rc != 0
+    or ( version_in_fillin is defined and version_in_fillin.stdout.find(fillin_version) == -1 )

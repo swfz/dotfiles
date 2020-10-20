@@ -1,0 +1,5 @@
+---
+fillin:
+  dir: fillin_{{ fillin_version }}_linux_amd64
+  tgz: fillin-{{ fillin_version }}.tar.gz
+  src: https://github.com/itchyny/fillin/releases/download/{{ fillin_version }}/fillin_{{ fillin_version }}_linux_amd64.tar.gz
