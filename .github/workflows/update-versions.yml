@@ -42,7 +42,7 @@ jobs:
             repo: tmux/tmux
             type: prefix
     steps:
-      - uses: actions/checkout@v2.3.3
+      - uses: actions/checkout@v2.3.4
       - name: install jq
         run: |
           sudo apt update
