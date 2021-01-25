@@ -13,6 +13,7 @@
     - { role: jq, tags: [jq, init] }
     - { role: tmux, tags: [tmux, init] }
     - { role: bat, tags: [bat, tool] }
+    - { role: delta, tags: [delta, tool] }
     - { role: vim8, tags: [vim8, init] }
     - { role: embulk, tags: [embulk, tool] }
     - { role: notofont, tags: [notofont, init] }

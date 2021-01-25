@@ -1,5 +1,7 @@
 # datasource=github-releases depName=sharkdp/bat
 bat_version: v0.17.1
+# datasource=github-releases depName=dandavision/delta
+delta_version: 0.5.1
 # dummy
 direnv_version: v2.20.0
 # datasource=github-releases depName=docker/compose
