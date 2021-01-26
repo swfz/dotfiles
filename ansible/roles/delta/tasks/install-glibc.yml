@@ -31,4 +31,4 @@
     - make install
 
   when:
-    version_in_glibc.stdout.find('stable release version 2.18') == -1 )
+    version_in_glibc.stdout.find('stable release version 2.18') == -1
