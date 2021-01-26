@@ -1,24 +1,34 @@
 ---
-- name: get glibc 2.18
-  get_url:
-    url: https://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz
-    dest: /tmp/glibc-2.18.tar.gz
+- name: get glibc version
+  command: /lib64/libc.so.6
+  register: version_in_glibc
+  changed_when: false
+  ignore_errors: true
 
-- name: unarchive tar.gz
-  unarchive:
-    src: /tmp/glibc-2.18.tar.gz
-    dest: /tmp/
-    copy: no
+- block:
+  - name: get glibc 2.18
+    get_url:
+      url: https://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz
+      dest: /tmp/glibc-2.18.tar.gz
 
-- name: build directory
-  file:
-    path: /tmp/glibc-2.18/build
-    state: directory
-    mode: 0755
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/glibc-2.18.tar.gz
+      dest: /tmp/
+      copy: no
 
-- name: configure make install
-  command: chdir=/tmp/glibc-2.18/build {{ item }}
-  with_items:
-  - ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
-  - make
-  - make install
+  - name: build directory
+    file:
+      path: /tmp/glibc-2.18/build
+      state: directory
+      mode: 0755
+
+  - name: configure make install
+    command: chdir=/tmp/glibc-2.18/build {{ item }}
+    with_items:
+    - ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
+    - make
+    - make install
+
+  when:
+    version_in_glibc.stdout.find('stable release version 2.18') == -1 )
