@@ -1,4 +1,8 @@
 ---
+- name: redhat tasks
+  include: install-glibc.yml
+  when: "ansible_os_family == 'RedHat'"
+
 - name: exist delta
   command: which delta
   environment:

@@ -33,9 +33,8 @@ jobs:
           sudo apt install software-properties-common
           sudo apt-add-repository --yes --update ppa:ansible/ansible
           sudo apt install ansible
-          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-          sudo python get-pip.py
-          pip install pexpect --user
+          sudo apt-get install python3-setuptools
+          python3 -m pip install pexpect --user
       - name: run ansible
         env:
           CI: true
@@ -92,11 +91,9 @@ jobs:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible-lint yamllint
         run: |
-          sudo apt update
-          curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-          sudo python get-pip.py
-          pip install ansible-lint --user
-          pip install yamllint --user
+          sudo apt-get install python3-setuptools
+          python3 -m pip install ansible-lint --user
+          python3 -m pip install yamllint --user
       - name: run yamllint
         env:
           CI: true

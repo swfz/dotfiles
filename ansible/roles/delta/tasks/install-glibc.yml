@@ -1,0 +1,23 @@
+---
+- name: get glibc 2.18
+  get_url:
+    url: https://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz
+    dest: /tmp/glibc-2.18.tar.gz
+
+- name: unarchive tar.gz
+  unarchive:
+    src: /tmp/glibc-2.18.tar.gz
+    dest: /tmp/
+    copy: no
+
+- name: build directory
+  file:
+    path: /tmp/glibc-2.18/build
+    state: directory
+
+- name: configure make install
+  command: chdir=/tmp/glibc-2.18/build {{ item }}
+  with_items:
+  - ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
+  - make
+  - make install
