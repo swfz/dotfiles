@@ -3,6 +3,7 @@
   file:
     path: "{{ command_dir }}"
     state: directory
+    mode: 0755
 
 - name: set git config
   template:
@@ -22,6 +23,7 @@
 - name: symlink peco config
   file:
     path: "~/.config/peco"
+    mode: 0744
     state: directory
 
 - name: symlink peco config
@@ -33,6 +35,7 @@
 - name: symlink bat config
   file:
     path: "~/.config/bat"
+    mode: 0755
     state: directory
 
 - name: symlink bat config
@@ -47,6 +50,7 @@
     state: present
     create: yes
     line: "{{ item }}"
+    mode: 0644
   with_items:
     - 'export PATH="$HOME/dotfiles/bin:$PATH"'
 
@@ -112,6 +116,7 @@
   file:
     path: "~/.vim"
     state: directory
+    mode: 0755
 
 - name: symlink vim snippet
   file:
