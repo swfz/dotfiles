@@ -1,15 +1,4 @@
 ---
-- name: download get-pip
-  get_url:
-    url: "https://bootstrap.pypa.io/get-pip.py"
-    dest: /tmp/get-pip.py
-  when: "ansible_os_family == 'RedHat'"
-
-- name: execute get-pip
-  command:
-    cmd: python /tmp/get-pip.py
-  when: "ansible_os_family == 'RedHat'"
-
 - name: pip modules
   pip:
     name:
