@@ -4,3 +4,4 @@ use_default_rules: true
 verbosity: 1
 skip_list:
   - '401'
+  - '106'
