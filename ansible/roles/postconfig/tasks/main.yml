@@ -5,6 +5,7 @@
     state: present
     create: yes
     line: "{{ item }}"
+    mode: 0644
   with_items:
     - 'export PATH="$HOME/dotfiles/bin:$PATH"'
 

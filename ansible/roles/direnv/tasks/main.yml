@@ -34,5 +34,6 @@
     state: present
     create: yes
     line: "{{ item }}"
+    mode: 0644
   with_items:
   - 'eval "$(direnv hook zsh)"'

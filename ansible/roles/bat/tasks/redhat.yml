@@ -13,5 +13,6 @@
 - name: copy to bin
   copy:
     remote_src: true
+    mode: 0755
     src: /tmp/{{ bat.dir }}/bat
     dest: /usr/local/bin/bat

@@ -6,6 +6,7 @@
   lineinfile:
     dest: ~/.zshenv
     state: present
+    mode: 0644
     create: yes
     line: "{{ item }}"
   with_items:
@@ -42,6 +43,7 @@
   lineinfile:
     dest: ~/.zshenv
     state: present
+    mode: 0644
     create: yes
     line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$PATH"'
   with_dict: "{{ envs }}"
@@ -50,6 +52,7 @@
   copy:
     src: nodenv-default-packages
     dest: "$HOME/.anyenv/envs/nodenv/default-packages"
+    mode: 0644
 
 - name: "exist version in every envs"
   shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"  # noqa 305
