@@ -7,7 +7,7 @@ docker_compose_version: 1.28.0
 # dummy
 docker_version: v19.03.14
 # dummy
-embulk_version: 0.10.25
+embulk_version: 0.10.26
 # datasource=github-tags depName=git/git
 git_version: v2.30.0
 # dummy
