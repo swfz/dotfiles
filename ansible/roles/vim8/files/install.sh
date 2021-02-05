@@ -12,7 +12,7 @@ $(which git) checkout $1
   --enable-gpm \
   --disable-selinux \
   --enable-perlinterp \
-  --enable-pythoninterp \
+  --enable-python3interp \
   --enable-cscope \
   --enable-fontset \
   --enable-multibyte
