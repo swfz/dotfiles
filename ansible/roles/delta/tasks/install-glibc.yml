@@ -32,4 +32,3 @@
 
   when:
     version_in_glibc.stdout.find('stable release version 2.18') == -1
-
