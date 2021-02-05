@@ -25,7 +25,7 @@
   abbreviateCommands = true
 [core]
   editor = {{ git_editor|default('vi') }}
-  pager  = less -cm
+  pager  = delta
   quotepath = false
 [url "https://"]
   insteadOf = git://
@@ -67,3 +67,18 @@
   d4 = diff HEAD~~~~
   d5 = diff HEAD~~~~~
   d10 = diff HEAD~~~~~~~~~~
+[delta]
+  syntax-theme = DarkNeon
+  side-by-side = false
+  keep-plus-minus-markers = true
+  line-numbers = false
+  plus-style = syntax 17
+  plus-non-emph-style = cyan 17
+  plus-emph-style = white 25
+  plus-empty-line-marker-style = cyan
+  minus-style = syntax 89
+  minus-non-emph-style = magenta 89
+  minus-emph-style = white 162
+  minus-empty-line-marker-style = magenta
+  hunk-header-style = ul 202
+  file-style = 82

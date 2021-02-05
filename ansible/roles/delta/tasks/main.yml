@@ -1,0 +1,41 @@
+---
+- name: redhat tasks
+  include: install-glibc.yml
+  when: "ansible_os_family == 'RedHat'"
+
+- name: exist delta
+  command: which delta
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: exist_delta
+  changed_when: false
+  ignore_errors: true
+
+- name: get delta version
+  command: delta --version
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: version_in_delta
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_delta.rc == 0
+
+- block:
+  - name: get source
+    get_url:
+      url: "{{ delta.src }}"
+      dest: /tmp/{{ delta.tgz }}
+
+  - name: unarchive tar.gz
+    unarchive:
+      src: /tmp/{{ delta.tgz }}
+      dest: /tmp/
+      copy: no
+
+  - name: move delta
+    command: mv /tmp/{{ delta.dir }}/delta /usr/local/bin/delta
+
+  when:
+    exist_delta.rc != 0
+    or ( version_in_delta is defined and version_in_delta.stdout.find(delta_version) == -1 )
