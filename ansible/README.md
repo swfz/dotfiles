@@ -1,7 +1,7 @@
 # ubuntu(localhost)
 
 ```
-ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-sudo-pass
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-become-pass
 ```
 
 # centos
