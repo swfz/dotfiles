@@ -78,3 +78,7 @@ jq 'group_by(.statusUrl)|.[]|.[0]'
 
 # 特定キーでユニーク取る(逆順ソート混ぜるver)
 jq 'group_by(.statusUrl)|.[]|sort_by(.id)|reverse|.[0]'
+
+# key valueとかをよしなにやる
+# [[{"field": "date", "value":"2021-03-01"}, {"field":"count", "value":50}],....] => {"2021-03-01": 50},{...}
+jq '.results|map({key: (.[0].value|split(" ")|.[0]), value: .[1].value})|from_entries'
