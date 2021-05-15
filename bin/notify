@@ -9,9 +9,9 @@ script that wraps a command and changes the message depending on the exit code
 
 require environment
   POWERSHELL_EXE   path of powershell.exe as seen from wsl
-    eg) /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
+    e.g.) /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
   NOTIFY_PS1       path of nitofy.ps1(notification script) as seen from Windows
-    eg) c:/Users/hoge/Desktop/notify.ps1
+    e.g.) c:/Users/hoge/Desktop/notify.ps1
 EOS
   exit 1
 }
