@@ -1,0 +1,11 @@
+#!/bin/bash
+
+display_history() {
+  eval `resize`
+  head -n $(($LINES - 1)) $HOME/.node_repl_history | bat --style='snip' --paging=never -l javascript --color=always
+}
+
+display_history
+inotifywait --monitor --quiet --event MODIFY $HOME/.node_repl_history | while read d e f; do
+  display_history
+done
