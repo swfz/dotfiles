@@ -24,4 +24,8 @@
       - zlib1g-dev
       - imagemagick
       - ubuntu-wsl
+      - gnuplot
+      - sqlite3
+      - libsqlite3-dev
+      - inotify-tools
     state: present

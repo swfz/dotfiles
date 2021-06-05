@@ -82,3 +82,10 @@ jq 'group_by(.statusUrl)|.[]|sort_by(.id)|reverse|.[0]'
 # key valueとかをよしなにやる
 # [[{"field": "date", "value":"2021-03-01"}, {"field":"count", "value":50}],....] => {"2021-03-01": 50},{...}
 jq '.results|map({key: (.[0].value|split(" ")|.[0]), value: .[1].value})|from_entries'
+
+# 複数のファイル読み込みからのリストをflatten uniqueする
+# cat file*.json => [["a","b"],["c","b"]] => ["a","b","c"]
+jq -scr 'flatten|unique'
+
+# テキストのリストを配列にして出力
+jq -ncR '[inputs]' <<< $(cat hoge.txt)
