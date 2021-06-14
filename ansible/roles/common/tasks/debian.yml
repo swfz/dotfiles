@@ -28,4 +28,5 @@
       - sqlite3
       - libsqlite3-dev
       - inotify-tools
+      - translate-shell
     state: present
