@@ -46,11 +46,12 @@
   b  = branch
   ba = branch -a
   # log
-  wc = whatchanged
-  ls = log --stat
-  lp = log -p
-  la = log --pretty=\"format:%ad %h (%an): %s\" --date=short
-  lo = log --pretty=oneline
+  wc  = whatchanged
+  ls  = log --stat --pretty="%cd"
+  lsd = log --stat
+  lp  = log -p
+  la  = log --pretty=\"format:%ad %h (%an): %s\" --date=short
+  lo  = log --pretty=oneline
   rank = shortlog -s -n --no-merges
   ltg = log --graph --date=short --pretty=format:'%Cgreen%h %cd %Cblue%cn %Creset%s'
   lta = log --graph --all --color --pretty='%x09%h %cn%x09%s %Cred%d%Creset'
