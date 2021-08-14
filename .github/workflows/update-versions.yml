@@ -52,7 +52,7 @@ jobs:
       - id: check
         name: check require update
         run: |
-          got=`yq r ./ansible/versions_vars.yml ${{ matrix.role.name }}_version`
+          got=`yq e .${{ matrix.role.name }}_version ./ansible/versions_vars.yml`
           latest=`./.github/workflows/bin/latest-version-${{ matrix.role.type }}.sh ${{ matrix.role.repo }}`
 
           echo ::set-output name=got::$got
@@ -60,7 +60,8 @@ jobs:
 
           if [[ "$got" != "$latest" ]]; then
             echo "found ahead versions"
-            yq w -i ./ansible/versions_vars.yml ${{ matrix.role.name }}_version $latest
+            yq e ".${{ matrix.role.name }}_version=\"$latest\"" ./ansible/versions_vars.yml > versions.yml
+            cp versions.yml ./ansible/versions_vars.yml
             branch="versionup/${{ matrix.role.name }}-to-$latest"
             echo ::set-output name=branch::$branch
           fi
