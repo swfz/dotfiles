@@ -47,6 +47,7 @@ jobs:
         run: |
           sudo add-apt-repository ppa:rmescandon/yq
           sudo apt install -y yq
+          yq --version
 
       - id: check
         name: check require update
