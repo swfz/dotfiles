@@ -1,0 +1,6 @@
+# PR作成 masterへマージ title bodyはcommitから補完
+gh pr create -f -B master
+
+# PR merge commit作成、merge後ブランチ削除
+gh pr merge -m -d <number>
+
