@@ -8,3 +8,9 @@
       - curl-devel
       - tcl
       - gettext
+
+- name: latest packages
+  yum:
+    name:
+      - ca-certificates
+    state: latest  # noqa package-latest
