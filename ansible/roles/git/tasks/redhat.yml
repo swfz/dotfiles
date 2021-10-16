@@ -13,4 +13,4 @@
   yum:
     name:
       - ca-certificates
-    state: latest
+    state: latest  # noqa package-latest
