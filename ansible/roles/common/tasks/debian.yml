@@ -29,4 +29,5 @@
       - libsqlite3-dev
       - inotify-tools
       - translate-shell
+      - silversearcher-ag
     state: present
