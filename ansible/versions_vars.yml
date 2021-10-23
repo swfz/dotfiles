@@ -19,7 +19,7 @@ jq_version: "1.6"
 # datasource=github-releases depName=peco/peco
 peco_version: v0.5.10
 # dummy
-q_version: 1.7.1-1
+q_version: 3.1.0-beta
 # dummy
 terraform_version: 1.0.0
 # dummy
