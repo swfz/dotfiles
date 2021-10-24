@@ -8,7 +8,6 @@
   roles:
     - { role: common, tags: [common, init, tool] }
     - { role: git, tags: [git, init, tool, deploy] }
-    - { role: chrome, tags: [chrome, tool] }
     - { role: zsh, tags: [zsh, init] }
     - { role: jo, tags: [jo, tool] }
     - { role: peco, tags: [peco, init] }
