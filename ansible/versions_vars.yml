@@ -29,6 +29,6 @@ vim_version: 8.2.3625
 # dummy
 zsh_version: 5.8
 # datasource=github-tags depName=aws/aws-cli
-awscli_version: 2.3.6
+awscli_version: 2.4.2
 # datasource=github-releases depName=itchyny/fillin
 fillin_version: v0.3.3
