@@ -55,6 +55,7 @@
   rank = shortlog -s -n --no-merges
   ltg = log --graph --date=short --pretty=format:'%Cgreen%h %cd %Cblue%cn %Creset%s'
   lta = log --graph --all --color --pretty='%x09%h %cn%x09%s %Cred%d%Creset'
+  list = log --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=short
   # diff
   dd = log -p --reverse
   df = log --stat --name-only
