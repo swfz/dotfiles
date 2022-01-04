@@ -89,6 +89,7 @@ jobs:
         env:
           CI: true
         run: |
+          docker-compose build codespace
           docker-compose run codespace sh setup.sh
 
   lint:
