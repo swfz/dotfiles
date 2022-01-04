@@ -76,6 +76,21 @@ jobs:
         run: |
           docker-compose run centos ansible-playbook -i localhost, -c local centos.yml --tags "${{ matrix.tag }}"
 
+  build-codespace:
+    runs-on: ubuntu-latest
+    name: 'playbook codespace'
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - if: github.event.client_payload
+        uses: actions/checkout@v2.4.0
+        with:
+          ref: ${{ github.event.client_payload.ref }}
+      - name: 'ansible playbook codespace'
+        env:
+          CI: true
+        run: |
+          docker-compose run codespace sh setup.sh
+
   lint:
     runs-on: ubuntu-latest
     name: 'lint'
