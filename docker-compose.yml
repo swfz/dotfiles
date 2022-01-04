@@ -31,7 +31,6 @@ services:
       context: ./ansible
       dockerfile: Dockerfile.codespace
     volumes:
-      - ./ansible:/usr/local/src/ansible
       - .:/usr/local/src/dotfiles
     tty: true
     dns:
