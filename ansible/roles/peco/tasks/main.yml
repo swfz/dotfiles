@@ -30,6 +30,7 @@
       copy: no
 
   - name: move peco
+    changed_when: true
     command: mv /tmp/{{ peco.dir }}/peco /usr/local/bin/peco
 
   when:

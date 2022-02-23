@@ -19,6 +19,7 @@
 
 - block:
   - name: download repo
+    changed_when: true
     command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
   - name: install

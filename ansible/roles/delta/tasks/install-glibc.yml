@@ -25,6 +25,7 @@
 
   - name: configure make install
     command: chdir=/tmp/glibc-2.18/build {{ item }}
+    changed_when: true
     with_items:
     - ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
     - make

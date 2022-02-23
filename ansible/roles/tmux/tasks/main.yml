@@ -42,6 +42,7 @@
       copy: no
 
   - name: configure make install
+    changed_when: true
     command: chdir=/tmp/{{ tmux.dir }} {{ item }}
     with_items:
     - ./configure
