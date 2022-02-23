@@ -15,4 +15,6 @@
 
 - name: set vim neobundle  # noqa 301
   command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
-  ignore_errors: true
+  changed_when: true
+  register: result
+  failed_when: result.rc != 0
