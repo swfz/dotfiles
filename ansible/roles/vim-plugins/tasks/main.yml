@@ -13,8 +13,7 @@
     dest: "{{ vim.neobundle.parent_dir }}/{{ vim.neobundle.dest_dir }}"
     clone: yes
 
-- name: set vim neobundle  # noqa 301
+- name: set vim neobundle  # noqa ignore-errors
   command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
   changed_when: true
-  register: result
-  failed_when: result.rc != 0
+  ignore_errors: true
