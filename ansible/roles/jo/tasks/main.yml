@@ -31,6 +31,7 @@
 
   - name: configure make install
     command: chdir=/tmp/{{ jo.dir }} {{ item }}
+    changed_when: true
     with_items:
     - ./configure
     - make

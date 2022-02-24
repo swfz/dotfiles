@@ -34,6 +34,7 @@
       copy: no
 
   - name: move delta
+    changed_when: true
     command: mv /tmp/{{ delta.dir }}/delta /usr/local/bin/delta
 
   when:

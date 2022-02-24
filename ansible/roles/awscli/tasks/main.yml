@@ -30,6 +30,7 @@
       copy: no
 
   - name: install
+    changed_when: true
     command:
       cmd: ./aws/install --update
       chdir: /tmp
