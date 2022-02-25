@@ -1,5 +1,5 @@
 ---
-- name: install diff-so-fancy # noqa 301
+- name: install diff-so-fancy # noqa no-changed-when
   command: "{{ execute }} npm install -g {{ item }}"
   with_items:
     - diff-so-fancy

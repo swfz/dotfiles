@@ -26,14 +26,14 @@
   when: not anyenv_install_dir.stat.exists
 
 - name: "exist envs"
-  shell: "{{ execute }} 'which {{ item.key }}'"  # noqa 305
+  shell: "{{ execute }} 'which {{ item.key }}'"  # noqa command-instead-of-shell
   register: exist_envs
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
 - name: "install envs"
-  shell: "{{ execute }} 'anyenv install {{ item.0 }}'"  # noqa 305
+  shell: "{{ execute }} 'anyenv install {{ item.0 }}'"  # noqa command-instead-of-shell
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
@@ -55,21 +55,21 @@
     mode: 0644
 
 - name: "exist version in every envs"
-  shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"  # noqa 305
+  shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"  # noqa command-instead-of-shell
   register: exist_version
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
 - name: "install envs version"
-  shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"  # noqa 305
+  shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"  # noqa command-instead-of-shell
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_version.results }}"
 
 - name: "exist global envs version"
-  shell: "{{ execute }} '{{ item.key }} global'"  # noqa 305
+  shell: "{{ execute }} '{{ item.key }} global'"  # noqa command-instead-of-shell
   when: item.key != "goenv"
   register: exist_global
   changed_when: false
@@ -77,7 +77,7 @@
   with_dict: "{{ envs }}"
 
 - name: "set global envs version"
-  shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"  # noqa 305
+  shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"  # noqa command-instead-of-shell
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
   with_together:
     - "{{ envs }}"

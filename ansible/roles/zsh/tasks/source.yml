@@ -31,7 +31,7 @@
         dest: /tmp/{{ zsh.xz }}
 
     - name: unarchive tar.xz
-      command: chdir=/tmp/ tar Jxfv /tmp/{{ zsh.xz }}  # noqa 303 xzファイルは未対応のため
+      command: chdir=/tmp/ tar Jxfv /tmp/{{ zsh.xz }}  # noqa command-instead-of-module xzファイルは未対応のため
       changed_when: true
 
     - name: configure make install
