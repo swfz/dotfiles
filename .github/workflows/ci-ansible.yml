@@ -22,9 +22,9 @@ jobs:
       matrix:
         tag: [deploy, init, tool, all]
     steps:
-      - uses: actions/checkout@v3.0.0
+      - uses: actions/checkout@v3.0.1
       - if: github.event.client_payload
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -43,9 +43,9 @@ jobs:
     runs-on: macos-latest
     name: 'playbook mac'
     steps:
-      - uses: actions/checkout@v3.0.0
+      - uses: actions/checkout@v3.0.1
       - if: github.event.client_payload
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -65,9 +65,9 @@ jobs:
       matrix:
         tag: [deploy, init, tool, all]
     steps:
-      - uses: actions/checkout@v3.0.0
+      - uses: actions/checkout@v3.0.1
       - if: github.event.client_payload
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: 'ansible playbook centos'
@@ -80,9 +80,9 @@ jobs:
     runs-on: ubuntu-latest
     name: 'playbook codespace'
     steps:
-      - uses: actions/checkout@v3.0.0
+      - uses: actions/checkout@v3.0.1
       - if: github.event.client_payload
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: 'ansible playbook codespace'
@@ -96,10 +96,10 @@ jobs:
     runs-on: ubuntu-latest
     name: 'lint'
     steps:
-      - uses: actions/checkout@v3.0.0
+      - uses: actions/checkout@v3.0.1
       - run: cat $GITHUB_EVENT_PATH
       - if: github.event.client_payload
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible-lint yamllint
