@@ -45,8 +45,20 @@
     state: present
     mode: 0644
     create: yes
-    line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$PATH"'
+    line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$HOME/.anyenv/envs/{{ item.key }}/bin:$PATH"'
   with_dict: "{{ envs }}"
+
+# pyenvと競合しているよう、pyenvの2022-04-30 からの差分でなにか影響のある修正がされているのかrbenvで必要な環境変数が削除されてしまっているため手動で追加
+- name: "workaround"
+  lineinfile:
+    dest: ~/.zshenv
+    state: present
+    mode: 0644
+    create: yes
+    line: '{{ item }}'
+  with_items:
+    - 'export RBENV_ROOT=$HOME/.anyenv/envs/rbenv'
+    - 'export RBENV_SHELL=zsh'
 
 - name: "nodenv default packages"
   copy:
