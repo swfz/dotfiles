@@ -1,0 +1,7 @@
+---
+dependencies:  # noqa meta-no-info
+  - role: packages
+  - role: git
+  - role: zsh
+  - role: common
+  - role: deploy

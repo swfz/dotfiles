@@ -6,21 +6,21 @@
     - versions_vars.yml
   become: yes
   roles:
-    - { role: packages, tags: [common, init, tool] }
+    - { role: packages, tags: [common, init, tool, dev] }
     - { role: common, tags: [common, init, tool] }
     - { role: git, tags: [git, deploy] }
     - { role: zsh, tags: [zsh, init] }
     - { role: peco, tags: [peco, init] }
     - { role: jq, tags: [jq, init] }
-    - { role: docker-compose, tags: [docker-compose, init] }
+    - { role: docker-compose, tags: [docker-compose, init, dev] }
     - { role: tmux, tags: [tmux, init] }
     - { role: bat, tags: [bat, tool] }
-    - { role: delta, tags: [delta, tool] }
-    - { role: vim8, tags: [vim8, init] }
+    - { role: delta, tags: [delta] }
+    - { role: vim8, tags: [vim8, vim] }
     - { role: embulk, tags: [embulk, tool] }
     - { role: terraform, tags: [terraform, tool] }
     - { role: notofont, tags: [notofont, init] }
-    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli, awscli
+    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli
     - { role: awscli, tags: [awscli, tool] }
     - { role: fillin, tags: [fillin, tool] }
 
@@ -33,7 +33,7 @@
   become_user: "{{ user }}"
   roles:
     - { role: deploy, tags: deploy }
-    - { role: anyenv, tags: [anyenv, init] }
+    - { role: anyenv, tags: anyenv }
     # - { role: direnv, tags: [direnv, init]}
     - { role: powerline, tags: [powerline, init] }
-    - { role: vim-plugins, tags: [vim-plugins, init] }
+    - { role: vim-plugins, tags: [vim-plugins, vim] }
