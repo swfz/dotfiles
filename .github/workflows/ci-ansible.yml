@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     name: 'playbook ubuntu'
     strategy:
+      fail-fast: false
       matrix:
         tag: [deploy, init, tool, delta, vim, anyenv, dev]
     steps:
@@ -62,6 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     name: 'playbook centos'
     strategy:
+      fail-fast: false
       matrix:
         tag: [deploy, init, tool, delta, vim, anyenv, dev]
     steps:
@@ -123,7 +125,7 @@ jobs:
 
   slack-notify:
     if: always()
-    needs: [lint, build-centos, build-mac, build-ubuntu]
+    needs: [lint, build-centos, build-mac, build-ubuntu, build-codespace]
     name: post slack
     runs-on: ubuntu-latest
     steps:
