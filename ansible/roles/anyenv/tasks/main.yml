@@ -76,9 +76,21 @@
 - name: "install envs version"
   shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"  # noqa command-instead-of-shell
   when: item.1.rc != 0
+  async: 600
+  poll: 0
+  register: async_status
   with_together:
     - "{{ envs }}"
     - "{{ exist_version.results }}"
+
+- name: "wait install envs version"
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  loop: "{{ async_status.results }}"
+  register: async_polling_results
+  until: async_polling_results.finished
+  retries: 60
+  delay: 10
 
 - name: "exist global envs version"
   shell: "{{ execute }} '{{ item.key }} global'"  # noqa command-instead-of-shell
