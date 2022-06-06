@@ -37,7 +37,7 @@
       dest: /tmp
       copy: no
 
-  - name: configure make install
+  - name: configure make install git
     command: chdir=/tmp/{{ git.dir }} {{ item }}
     changed_when: true
     with_items:
