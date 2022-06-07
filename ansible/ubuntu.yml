@@ -6,10 +6,10 @@
     - versions_vars.yml
   become: yes
   roles:
-    - { role: packages, tags: [common, init, tool, dev] }
-    - { role: common, tags: [common, init, tool] }
-    - { role: git, tags: [git, deploy] }
-    - { role: zsh, tags: [zsh, init] }
+    - { role: packages, tags: [common, init, tool, dev, anyenv] }
+    - { role: common, tags: [common, init, tool, anyenv] }
+    - { role: git, tags: [git, deploy, anyenv] }
+    - { role: zsh, tags: [zsh, init, anyenv] }
     - { role: peco, tags: [peco, init] }
     - { role: jq, tags: [jq, init] }
     - { role: docker-compose, tags: [docker-compose, init, dev] }
