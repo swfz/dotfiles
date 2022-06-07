@@ -24,7 +24,6 @@
       - lsof
       - dstat
       - tcpdump
-      - python-devel  # vim8
       - ctags
       - sqlite-devel
       - inotify-tools
@@ -40,8 +39,6 @@
       - make
       - which
       - libffi-devel
-      - lua-devel  # vim8
-      - perl-ExtUtils-Embed  # vim8
       - ImageMagick
     state: installed
 

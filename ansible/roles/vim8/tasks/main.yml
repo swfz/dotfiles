@@ -1,4 +1,13 @@
 ---
+- name: vim8 redhat dependencies
+  when: "ansible_os_family == 'RedHat'"
+  yum:
+    name:
+      - python-devel
+      - lua-devel
+      - perl-ExtUtils-Embed
+    state: installed
+
 - name: exist vim
   command: which vim
   register: exist_vim
