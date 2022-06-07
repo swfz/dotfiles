@@ -6,7 +6,8 @@
     - versions_vars.yml
   become: yes
   roles:
-    - { role: packages, tags: [common, init, tool, dev, anyenv] }
+    - { role: packages, tags: [common, init, tool, dev] }
+    - { role: language-dependencies, tags: [anyenv] }
     - { role: common, tags: [common, init, tool, anyenv] }
     - { role: git, tags: [git, init, tool, deploy, anyenv] }
     - { role: zsh, tags: [zsh, init, anyenv] }
