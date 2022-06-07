@@ -1,0 +1,5 @@
+---
+dependencies:  # noqa meta-no-info
+  - role: common
+  - role: packages
+  - role: git
