@@ -6,6 +6,7 @@
       - openssl-devel
       - readline-devel
       - bzip2
+      - tar
     state: present
 
 - name: anyenv dependencies package
