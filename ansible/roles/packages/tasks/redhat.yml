@@ -19,7 +19,6 @@
       - dos2unix
       - unix2dos
       - openssl-devel
-      - readline-devel
       - the_silver_searcher
       - lsof
       - dstat
@@ -32,7 +31,6 @@
       - yum-utils
       - device-mapper-persistent-data
       - lvm2
-      - bzip2
       - Xvfb
       - libgconf-2.so.4
       - GConf2

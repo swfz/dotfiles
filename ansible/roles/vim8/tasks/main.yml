@@ -10,7 +10,7 @@
       - ncurses-devel
     state: present
 
-- name: install dependencies package
+- name: vim8 install dependencies package
   when: "ansible_os_family == 'Debian'"
   apt:
     name:
