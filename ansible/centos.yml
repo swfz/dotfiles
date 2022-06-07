@@ -7,9 +7,9 @@
   become: yes
   roles:
     - { role: packages, tags: [common, init, tool, dev] }
-    - { role: common, tags: [common, init, tool] }
-    - { role: git, tags: [git, init, tool, deploy] }
-    - { role: zsh, tags: [zsh, init] }
+    - { role: common, tags: [common, init, tool, anyenv] }
+    - { role: git, tags: [git, init, tool, deploy, anyenv] }
+    - { role: zsh, tags: [zsh, init, anyenv] }
     - { role: jo, tags: [jo, tool] }
     - { role: peco, tags: [peco, init] }
     - { role: bat, tags: [bat, tool] }
