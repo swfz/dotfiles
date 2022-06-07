@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
-$(which git) clone https://github.com/vim/vim.git /tmp/vim
+$(command -v git) clone https://github.com/vim/vim.git /tmp/vim
 
 cd /tmp/vim
 
-$(which git) checkout $1
+$(command -v git) checkout $1
 
 ./configure \
   --enable-fail-if-missing \

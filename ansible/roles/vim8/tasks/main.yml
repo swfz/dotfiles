@@ -6,7 +6,17 @@
       - python-devel
       - lua-devel
       - perl-ExtUtils-Embed
-    state: installed
+      - make
+      - ncurses-devel
+    state: present
+
+- name: install dependencies package
+  when: "ansible_os_family == 'Debian'"
+  apt:
+    name:
+      - libncurses-dev
+      - libperl-dev
+    state: present
 
 - name: exist vim
   command: which vim
