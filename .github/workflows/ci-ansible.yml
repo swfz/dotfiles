@@ -8,6 +8,7 @@ on:
       - '.github/workflows/ci-ansible.yml'
   repository_dispatch:
     types: [ansible]
+  workflow_dispatch:
   pull_request:
     branches:
       - master
@@ -15,13 +16,27 @@ on:
     - cron: '0 0 * * SAT'
 
 jobs:
+  set-tags-matrix:
+    runs-on: ubuntu-latest
+    name: 'set tags matrix'
+    outputs:
+      tags: ${{ steps.set-matrix.outputs.result }}
+    steps:
+      - uses: actions/github-script@v3
+        id: set-matrix
+        with:
+          script: |
+            const eventName = context.eventName;
+            const tags = ['deploy', 'init', 'tool', 'delta', 'vim', 'anyenv', 'dev'];
+            return (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...tags, 'all'] : tags;
+
   build-ubuntu:
     runs-on: ubuntu-latest
     name: 'playbook ubuntu'
     strategy:
       fail-fast: false
       matrix:
-        tag: [deploy, init, tool, delta, vim, anyenv, dev]
+        tag: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
     steps:
       - uses: actions/checkout@v3.0.2
       - if: github.event.client_payload
@@ -65,7 +80,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [deploy, init, tool, delta, vim, anyenv, dev]
+        tag: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
     steps:
       - uses: actions/checkout@v3.0.2
       - if: github.event.client_payload
