@@ -1,4 +1,23 @@
 ---
+- name: vim8 redhat dependencies
+  when: "ansible_os_family == 'RedHat'"
+  yum:
+    name:
+      - python-devel
+      - lua-devel
+      - perl-ExtUtils-Embed
+      - make
+      - ncurses-devel
+    state: present
+
+- name: vim8 install dependencies package
+  when: "ansible_os_family == 'Debian'"
+  apt:
+    name:
+      - libncurses-dev
+      - libperl-dev
+    state: present
+
 - name: exist vim
   command: which vim
   register: exist_vim

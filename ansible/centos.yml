@@ -6,29 +6,30 @@
     - versions_vars.yml
   become: yes
   roles:
-    - { role: packages, tags: [common, init, tool] }
-    - { role: common, tags: [common, init, tool] }
-    - { role: git, tags: [git, init, tool, deploy] }
-    - { role: zsh, tags: [zsh, init] }
+    - { role: packages, tags: [common, init, tool, dev] }
+    - { role: language-dependencies, tags: [anyenv] }
+    - { role: common, tags: [common, init, tool, anyenv] }
+    - { role: git, tags: [git, init, tool, deploy, anyenv] }
+    - { role: zsh, tags: [zsh, init, anyenv] }
     - { role: jo, tags: [jo, tool] }
     - { role: peco, tags: [peco, init] }
     - { role: bat, tags: [bat, tool] }
-    - { role: delta, tags: [delta, tool] }
+    - { role: delta, tags: [delta] }
     - { role: jq, tags: [jq, init] }
-    - { role: docker-compose, tags: [docker-compose, init] }
+    - { role: docker-compose, tags: [docker-compose, dev] }
     - { role: terraform, tags: [terraform, tool] }
     - { role: embulk, tags: [embulk, tool] }
     - { role: awscli, tags: [awscli, tool] }
     - { role: fillin, tags: [fillin, tool] }
     # - { role: sshrc, tags: [sshrc, tool] }
-    - { role: vim8, tags: [vim8, init] }
+    - { role: vim8, tags: [vim8, vim] }
     - { role: tmux, tags: [tmux, init] }
-    - { role: docker, tags: [docker, init] }
+    - { role: docker, tags: [docker, dev] }
     - { role: samba, tags: [samba, tool] }
     - { role: q, tags: [q, tool] }
-    - { role: nginx, tags: [nginx, tool] }
+    - { role: nginx, tags: [nginx, dev] }
     - { role: notofont, tags: [notofont, init] }
-    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli, awscli
+    - { role: by_pip, tags: [by_pip, tool] }  # cheat, mycli
 
 - hosts: localhost
   # strategy: debug
@@ -40,7 +41,7 @@
   roles:
     - { role: deploy, tags: deploy }
     # to bin and install languages
-    - { role: anyenv, tags: [anyenv, init] }
+    - { role: anyenv, tags: anyenv }
     # - { role: direnv, tags: [direnv, init]}
     - { role: powerline, tags: [powerline, init] }
-    - { role: vim-plugins, tags: [vim-plugins, init] }
+    - { role: vim-plugins, tags: [vim-plugins, vim] }

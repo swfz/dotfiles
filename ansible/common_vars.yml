@@ -30,4 +30,4 @@ dotfiles:
     - .gvimrc
 
 command_dir: ~/bin
-execute: "$(which zsh) -lc"
+execute: "$(command -v zsh) -lc"

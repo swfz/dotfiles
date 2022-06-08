@@ -26,7 +26,7 @@
   when: not anyenv_install_dir.stat.exists
 
 - name: "exist envs"
-  shell: "{{ execute }} 'which {{ item.key }}'"  # noqa command-instead-of-shell
+  shell: "{{ execute }} 'command -v {{ item.key }}'"  # noqa command-instead-of-shell
   register: exist_envs
   changed_when: false
   ignore_errors: true
