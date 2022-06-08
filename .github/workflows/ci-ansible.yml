@@ -31,6 +31,7 @@ jobs:
             return (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...tags, 'all'] : tags;
 
   build-ubuntu:
+    needs: set-tags-matrix
     runs-on: ubuntu-latest
     name: 'playbook ubuntu'
     strategy:
@@ -75,6 +76,7 @@ jobs:
           ansible-playbook -i localhost, -c local mac.yml
 
   build-centos:
+    needs: set-tags-matrix
     runs-on: ubuntu-latest
     name: 'playbook centos'
     strategy:
