@@ -22,7 +22,7 @@ jobs:
     outputs:
       tags: ${{ steps.set-matrix.outputs.result }}
     steps:
-      - uses: actions/github-script@v3
+      - uses: actions/github-script@v6
         id: set-matrix
         with:
           script: |
