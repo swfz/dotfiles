@@ -85,12 +85,21 @@ jobs:
           git commit -m "[versionup] ${{ matrix.role.name }} ${{ steps.check.outputs.got }} to ${{ steps.check.outputs.latest }}"
           git push https://${GITHUB_USER_NAME}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:${{ steps.check.outputs.branch }}
 
+      - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
+        name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1.5
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          repository: swfz/dotfiles
+
       # personal tokenを使っているのはPR作ったらprに紐づくworkflowを発火させたいため
       # GITHUB_TOKENだと権限が足りない
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
         name: create pull request
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_PERSONAL_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           REPO_ID: ${{ secrets.REPO_ID }}
         run: |
           ./.github/workflows/bin/create_pr.sh ${{ steps.check.outputs.branch }}
