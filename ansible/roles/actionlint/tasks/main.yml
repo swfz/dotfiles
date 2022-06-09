@@ -1,6 +1,6 @@
 ---
 - name: exist actionlint
-  command: command -v actionlint
+  shell: command -v actionlint
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: exist_actionlint
