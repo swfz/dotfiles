@@ -14,6 +14,7 @@
     - { role: delta, tags: [delta, tool] }
     - { role: notofont, tags: [notofont, init] }
     - { role: awscli, tags: [awscli, tool] }
+    - { role: actionlint, tags: [actionlint, tool] }
 
 - hosts: localhost
   # strategy: debug
