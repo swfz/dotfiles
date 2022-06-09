@@ -30,6 +30,7 @@
     - { role: nginx, tags: [nginx, dev] }
     - { role: notofont, tags: [notofont, init] }
     - { role: by_pip, tags: [by_pip, tool] }  # cheat, mycli
+    - { role: actionlint, tags: [actionlint, tool] }
 
 - hosts: localhost
   # strategy: debug

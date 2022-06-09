@@ -32,3 +32,5 @@ zsh_version: "5.9"
 awscli_version: 2.7.7
 # datasource=github-releases depName=itchyny/fillin
 fillin_version: v0.3.3
+# datasource=github-releases depName=rhysd/actionlint
+actionlint_version: 1.6.13
