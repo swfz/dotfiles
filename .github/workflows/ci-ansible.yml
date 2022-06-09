@@ -138,7 +138,7 @@ jobs:
         run: |
           cd ansible
           ~/.local/bin/ansible-lint --version
-          ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml
+          ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml codespace.yml
 
   slack-notify:
     if: always()
