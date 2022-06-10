@@ -12,7 +12,7 @@
     owner: "{{ user }}"
     mode: 0644
 
-- name: clone git repository
+- name: clone dotfiles repository
   git:
     repo: "{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
@@ -129,3 +129,12 @@
     src: "{{ dotfiles.dest }}/.sshrc.d"
     dest: ~/.sshrc.d
     state: link
+
+# git-hooksのセットアップ
+- name: clone git-hooks repository
+  git:
+    repo: "{{ git_hooks.src.repo }}"
+    dest: "{{ git_hooks.dest }}"
+    clone: yes
+    update: yes
+    force: yes
