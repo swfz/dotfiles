@@ -28,6 +28,10 @@ dotfiles:
     - .sshrc
     - .darwin.rc
     - .gvimrc
+git_hooks:
+  src:
+    repo: http://github.com/swfz/git-hooks.git
+  dest: ~/git-hooks
 
 command_dir: ~/bin
 execute: "$(command -v zsh) -lc"
