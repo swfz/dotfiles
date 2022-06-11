@@ -8,7 +8,7 @@
   ignore_errors: true
 
 - name: get reviewdog version
-  shell: "reviewdog --version"
+  command: "reviewdog --version"
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: version_in_reviewdog
