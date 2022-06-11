@@ -1,0 +1,45 @@
+---
+- name: exist reviewdog  # noqa command-instead-of-shell
+  shell: command -v reviewdog
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: exist_reviewdog
+  changed_when: false
+  ignore_errors: true
+
+- name: get reviewdog version
+  shell: "reviewdog --version"
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  register: version_in_reviewdog
+  changed_when: false
+  ignore_errors: true
+  when:
+    exist_reviewdog.rc == 0
+
+- block:
+  - name: get tar.gz
+    get_url:
+      url: "{{ reviewdog.src.darwin }}"
+      dest: "/tmp/{{ reviewdog.tgz }}"
+    when: "ansible_os_family == 'Darwin'"
+
+  - name: get tar.gz
+    get_url:
+      url: "{{ reviewdog.src.linux }}"
+      dest: "/tmp/{{ reviewdog.tgz }}"
+    when: "ansible_os_family != 'Darwin'"
+
+  - name: unarchive zip
+    unarchive:
+      src: /tmp/{{ reviewdog.tgz }}
+      dest: /tmp/
+      copy: no
+
+  - name: install
+    changed_when: true
+    command: mv /tmp/reviewdog /usr/local/bin/reviewdog
+
+  when:
+    exist_reviewdog.rc != 0
+    or ( version_in_reviewdog is defined and version_in_reviewdog.stdout.find(reviewdog_version) == -1 )
