@@ -1,5 +1,6 @@
-# tmux pane作成時に最後に実行したsshコマンドを実行するためのフック
 autoload -Uz add-zsh-hook
+
+# tmux pane作成時に最後に実行したsshコマンドを実行するためのフック
 function tmux_ssh_preexec() {
   local command=$1
   if [[ "$command" = *ssh* ]]; then
@@ -7,3 +8,16 @@ function tmux_ssh_preexec() {
   fi
 }
 add-zsh-hook preexec tmux_ssh_preexec
+
+# gitのglobal hookとlocal hookを共存させるためのフック
+# Source: https://github.com/azu/git-hooks
+function preexec_git_global_hooks() {
+  inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+  if [ "$inside_git_repo" ]; then
+      githooksDir=$(git rev-parse --show-toplevel)"/.husky"
+      if [ -d "${githooksDir}" ]; then
+        git config --local core.hooksPath "~/git-hooks/hooks"
+      fi;
+  fi
+}
+add-zsh-hook preexec preexec_git_global_hooks
