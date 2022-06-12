@@ -9,3 +9,4 @@
     - { role: brew, tags: brew }
     - { role: anyenv, tags: anyenv }
     - { role: actionlint, tags: actionlint}
+    - { role: reviewdog, tags: reviewdog }

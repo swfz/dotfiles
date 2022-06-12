@@ -15,6 +15,7 @@
     - { role: notofont, tags: [notofont, init] }
     - { role: awscli, tags: [awscli, tool] }
     - { role: actionlint, tags: [actionlint, tool] }
+    - { role: reviewdog, tags: [reviewdog, tool] }
 
 - hosts: localhost
   # strategy: debug

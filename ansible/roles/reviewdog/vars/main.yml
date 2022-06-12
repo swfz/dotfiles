@@ -1,0 +1,6 @@
+---
+reviewdog:
+  src:
+    linux: https://github.com/reviewdog/reviewdog/releases/download/{{ reviewdog_version }}/reviewdog_{{ reviewdog_version.replace("v", "") }}_Linux_x86_64.tar.gz
+    darwin: https://github.com/reviewdog/reviewdog/releases/download/{{ reviewdog_version }}/reviewdog_{{ reviewdog_version.replace("v", "") }}_Darwin_x86_64.tar.gz
+  tgz: reviewdog_{{ reviewdog_version }}.tar.gz
