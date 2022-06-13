@@ -10,7 +10,7 @@ function tmux_ssh_preexec() {
 add-zsh-hook preexec tmux_ssh_preexec
 
 # gitのglobal hookとlocal hookを共存させるためのフック
-# Source: https://github.com/azu/git-hooks
+# Source: https://github.com/swfz/git-hooks
 function preexec_git_global_hooks() {
   inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
   if [ "$inside_git_repo" ]; then
