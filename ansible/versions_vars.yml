@@ -25,7 +25,7 @@ terraform_version: 1.1.7
 # dummy
 tmux_version: 3.2a
 # dummy
-vim_version: 9.0.0057
+vim_version: 9.0.0107
 # dummy
 zsh_version: "5.9"
 # datasource=github-tags depName=aws/aws-cli
