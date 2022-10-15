@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:8
 
 RUN yum install -y epel-release
 RUN yum install -y python-pip python3 python3-pip python3-devel policycoreutils selinux-policy-targeted sudo gcc
