@@ -1,5 +1,18 @@
 # Changelog
 
+## [v1.0.1](https://github.com/swfz/dotfiles/compare/v1.0.0...v1.0.1) - 2022-10-30
+- chore(deps): update tibdex/github-app-token action to v1.7 by @renovate in https://github.com/swfz/dotfiles/pull/627
+- versionup/vim-to-9.0.0777 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/631
+- chore(deps): update dependency docker/compose to v2.12.0 by @renovate in https://github.com/swfz/dotfiles/pull/633
+- chore(deps): update dependency git/git to v2.38.1 by @renovate in https://github.com/swfz/dotfiles/pull/632
+- chore(deps): update dependency aws/aws-cli to v2.8.5 by @renovate in https://github.com/swfz/dotfiles/pull/634
+- chore(deps): update dependency docker/compose to v2.12.2 by @renovate in https://github.com/swfz/dotfiles/pull/635
+- versionup/vim-to-9.0.0814 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/637
+- versionup/terraform-to-1.3.3 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/636
+- versionup/vim-to-9.0.0814436e5d395fd629c8d33b5cf7b373aad007f16851 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/639
+- chore(deps): update dependency aws/aws-cli to v2.8.7 by @renovate in https://github.com/swfz/dotfiles/pull/638
+- versionup/embulk-to-0.10.37 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/640
+
 ## [v0.0.1](https://github.com/swfz/dotfiles/commits/v0.0.1) - 2022-10-16
 - ansibleが実行できるかのテスト by @swfz in https://github.com/swfz/dotfiles/pull/1
 - ansibleの実行が通るまで by @swfz in https://github.com/swfz/dotfiles/pull/2
