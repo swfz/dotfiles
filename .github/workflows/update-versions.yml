@@ -56,15 +56,15 @@ jobs:
           got=`yq e .${{ matrix.role.name }}_version ./ansible/versions_vars.yml`
           latest=`./.github/workflows/bin/latest-version-${{ matrix.role.type }}.sh ${{ matrix.role.repo }}`
 
-          echo ::set-output name=got::$got
-          echo ::set-output name=latest::$latest
+          echo "got=$got" >> $GITHUB_OUTPUT
+          echo "latest=$latest" >> $GITHUB_OUTPUT
 
           if [[ "$got" != "$latest" ]]; then
             echo "found ahead versions"
             yq e ".${{ matrix.role.name }}_version=\"$latest\"" ./ansible/versions_vars.yml > versions.yml
             cp versions.yml ./ansible/versions_vars.yml
             branch="versionup/${{ matrix.role.name }}-to-$latest"
-            echo ::set-output name=branch::$branch
+            echo "branch=$branch" >> $GITHUB_OUTPUT
           fi
 
       - if: steps.check.outputs.branch
@@ -73,7 +73,7 @@ jobs:
         run: |
           git fetch
           count=`git branch -a | grep ${{ steps.check.outputs.branch }} | wc -l`
-          echo ::set-output name=count::$count
+          echo "count=$count" >> $GITHUB_OUTPUT
 
       # 対象バージョンがかぶっている場合（ブランチが存在する場合）は以後の処理は行わない
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
