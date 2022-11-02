@@ -4,6 +4,12 @@
 ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-become-pass
 ```
 
+# codespace
+
+```
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-become-pass
+```
+
 # centos
 
 ```
