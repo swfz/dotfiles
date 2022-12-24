@@ -1,5 +1,31 @@
 # Changelog
 
+## [v1.0.2](https://github.com/swfz/dotfiles/compare/v1.0.1...v1.0.2) - 2022-12-24
+- versionup/vim-to-9.0.0827 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/645
+- chore(deps): update dependency aws/aws-cli to v2.8.9 by @renovate in https://github.com/swfz/dotfiles/pull/646
+- versionup/jo-to-1.9 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/647
+- versionup/vim-to-9.0.0834 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/650
+- chore(deps): update dependency rhysd/actionlint to v1.6.22 by @renovate in https://github.com/swfz/dotfiles/pull/642
+- chore(deps): update dependency aws/aws-cli to v2.8.10 by @renovate in https://github.com/swfz/dotfiles/pull/651
+- versionup/vim-to-9.0.0861 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/654
+- chore(deps): update dependency aws/aws-cli to v2.8.12 by @renovate in https://github.com/swfz/dotfiles/pull/652
+- chore(deps): update dependency aws/aws-cli to v2.8.13 by @renovate in https://github.com/swfz/dotfiles/pull/655
+- chore(deps): update dependency aws/aws-cli to v2.9.0 by @renovate in https://github.com/swfz/dotfiles/pull/656
+- chore(deps): update dependency aws/aws-cli to v2.9.1 by @renovate in https://github.com/swfz/dotfiles/pull/659
+- versionup/vim-to-9.0.0950 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/660
+- chore(deps): update dependency aws/aws-cli to v2.9.2 by @renovate in https://github.com/swfz/dotfiles/pull/661
+- chore(deps): update dependency aws/aws-cli to v2.9.3 by @renovate in https://github.com/swfz/dotfiles/pull/662
+- versionup/vim-to-9.0.1062 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/675
+- chore(deps): update actions/checkout action to v3.2.0 by @renovate in https://github.com/swfz/dotfiles/pull/670
+- chore(deps): update dependency git/git to v2.39.0 by @renovate in https://github.com/swfz/dotfiles/pull/669
+- chore(deps): update dependency docker/compose to v2.14.1 by @renovate in https://github.com/swfz/dotfiles/pull/658
+- chore(deps): update dependency aws/aws-cli to v2.9.7 by @renovate in https://github.com/swfz/dotfiles/pull/663
+- versionup/embulk-to-0.10.41 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/673
+- chore(deps): update dependency aws/aws-cli to v2.9.8 by @renovate in https://github.com/swfz/dotfiles/pull/677
+- versionup/vim-to-9.0.1065 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/676
+- chore(deps): update dependency docker/compose to v2.14.2 by @renovate in https://github.com/swfz/dotfiles/pull/678
+- chore(deps): update dependency aws/aws-cli to v2.9.10 by @renovate in https://github.com/swfz/dotfiles/pull/679
+
 ## [v1.0.1](https://github.com/swfz/dotfiles/compare/v1.0.0...v1.0.1) - 2022-10-30
 - chore(deps): update tibdex/github-app-token action to v1.7 by @renovate in https://github.com/swfz/dotfiles/pull/627
 - versionup/vim-to-9.0.0777 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/631
