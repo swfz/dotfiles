@@ -27,7 +27,7 @@ tmux_version: 3.2a
 # dummy
 vim_version: 9.0.1062
 # dummy
-zsh_version: "5.9"
+zsh_version: ""
 # datasource=github-tags depName=aws/aws-cli
 awscli_version: 2.9.8
 # datasource=github-releases depName=itchyny/fillin
