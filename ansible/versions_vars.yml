@@ -7,7 +7,7 @@ direnv_version: v2.20.0
 # datasource=github-releases depName=docker/compose
 docker_compose_version: v2.14.2
 # dummy
-docker_version: v19.03.14
+docker_version: ""
 # dummy
 embulk_version: 0.10.41
 # datasource=github-tags depName=git/git
