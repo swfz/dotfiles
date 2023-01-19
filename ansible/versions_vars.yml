@@ -33,6 +33,6 @@ awscli_version: 2.9.15
 # datasource=github-releases depName=itchyny/fillin
 fillin_version: v0.3.3
 # datasource=github-releases depName=rhysd/actionlint
-actionlint_version: v1.6.22
+actionlint_version: v1.6.23
 # datasource=github-releases depName=reviewdog/reviewdog
 reviewdog_version: v0.14.1
