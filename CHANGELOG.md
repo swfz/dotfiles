@@ -1,5 +1,23 @@
 # Changelog
 
+## [v1.0.3](https://github.com/swfz/dotfiles/compare/v1.0.2...v1.0.3) - 2023-01-20
+- chore(deps): update dependency aws/aws-cli to v2.9.11 by @renovate in https://github.com/swfz/dotfiles/pull/682
+- versionup/vim-to-9.0.1117 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/685
+- chore(deps): update dependency aws/aws-cli to v2.9.12 by @renovate in https://github.com/swfz/dotfiles/pull/684
+- chore(deps): update dependency aws/aws-cli to v2.9.13 by @renovate in https://github.com/swfz/dotfiles/pull/691
+- chore(deps): update actions/checkout action to v3.3.0 by @renovate in https://github.com/swfz/dotfiles/pull/688
+- chore(deps): update dependency docker/compose to v2.15.0 by @renovate in https://github.com/swfz/dotfiles/pull/687
+- versionup/vim-to-9.0.1149 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/689
+- versionup/vim-to-9.0.1153 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/694
+- chore(deps): update gamesight/slack-workflow-status action to v1.2.0 by @renovate in https://github.com/swfz/dotfiles/pull/697
+- chore(deps): update dependency docker/compose to v2.15.1 by @renovate in https://github.com/swfz/dotfiles/pull/695
+- chore(deps): update dependency aws/aws-cli to v2.9.14 by @renovate in https://github.com/swfz/dotfiles/pull/696
+- versionup/vim-to-9.0.1186 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/699
+- chore(deps): update dependency aws/aws-cli to v2.9.15 by @renovate in https://github.com/swfz/dotfiles/pull/700
+- versionup/vim-to-9.0.1194 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/701
+- chore(deps): update dependency git/git to v2.39.1 by @renovate in https://github.com/swfz/dotfiles/pull/702
+- chore(deps): update dependency aws/aws-cli to v2.9.16 by @renovate in https://github.com/swfz/dotfiles/pull/703
+
 ## [v1.0.2](https://github.com/swfz/dotfiles/compare/v1.0.1...v1.0.2) - 2022-12-24
 - versionup/vim-to-9.0.0827 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/645
 - chore(deps): update dependency aws/aws-cli to v2.8.9 by @renovate in https://github.com/swfz/dotfiles/pull/646
