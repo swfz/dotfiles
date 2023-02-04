@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.0.4](https://github.com/swfz/dotfiles/compare/v1.0.3...v1.0.4) - 2023-02-04
+- versionup/vim-to-9.0.1224 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/706
+- chore(deps): update dependency rhysd/actionlint to v1.6.23 by @renovate in https://github.com/swfz/dotfiles/pull/704
+- versionup/vim-to-9.0.1247 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/712
+- chore(deps): update tibdex/github-app-token action to v1.8 by @renovate in https://github.com/swfz/dotfiles/pull/710
+- chore(deps): update dependency aws/aws-cli to v2.9.18 by @renovate in https://github.com/swfz/dotfiles/pull/709
+- chore(deps): update dependency aws/aws-cli to v2.9.19 by @renovate in https://github.com/swfz/dotfiles/pull/714
+- versionup/vim-to-9.0.1276 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/717
+- chore(deps): update dependency aws/aws-cli to v2.9.21 by @renovate in https://github.com/swfz/dotfiles/pull/716
+
 ## [v1.0.3](https://github.com/swfz/dotfiles/compare/v1.0.2...v1.0.3) - 2023-01-20
 - chore(deps): update dependency aws/aws-cli to v2.9.11 by @renovate in https://github.com/swfz/dotfiles/pull/682
 - versionup/vim-to-9.0.1117 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/685
