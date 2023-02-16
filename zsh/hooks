@@ -14,7 +14,7 @@ add-zsh-hook preexec tmux_ssh_preexec
 function preexec_git_global_hooks() {
   inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
   if [ "$inside_git_repo" ]; then
-      githooksDir=$(git rev-parse --show-toplevel)"/.husky"
+      githooksDir=$(git rev-parse --show-toplevel)"/"$(git config --local core.hooksPath)
       if [ -d "${githooksDir}" ]; then
         git config --local core.hooksPath "~/git-hooks/hooks"
       fi;
