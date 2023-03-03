@@ -19,6 +19,8 @@
 
 - block:
   - name: get source
+    become: yes
+    become_user: root
     get_url:
       url: "{{ direnv.src }}"
       dest: /usr/local/bin/direnv
