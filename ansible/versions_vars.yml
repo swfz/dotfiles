@@ -2,8 +2,8 @@
 bat_version: v0.22.1
 # datasource=github-releases depName=dandavision/delta
 delta_version: 0.5.1
-# dummy
-direnv_version: v2.20.0
+# datasource=github-releases depName=direnv/direnv
+direnv_version: v2.32.2
 # datasource=github-releases depName=docker/compose
 docker_compose_version: v2.16.0
 # dummy
