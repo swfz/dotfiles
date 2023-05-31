@@ -5,7 +5,7 @@ delta_version: 0.5.1
 # datasource=github-releases depName=direnv/direnv
 direnv_version: v2.32.3
 # datasource=github-releases depName=docker/compose
-docker_compose_version: v2.17.3
+docker_compose_version: v2.18.1
 # dummy
 docker_version: v19.03.14
 # dummy
