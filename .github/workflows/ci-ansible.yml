@@ -141,6 +141,7 @@ jobs:
           CI: true
         run: |
           cd ansible
+          python3 --version
           ~/.local/bin/ansible-lint --version
           ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml codespace.yml
 
