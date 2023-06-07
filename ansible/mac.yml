@@ -3,10 +3,10 @@
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: no
+  become: false
   become_user: "{{ user }}"
   roles:
     - { role: brew, tags: brew }
     - { role: anyenv, tags: anyenv }
-    - { role: actionlint, tags: actionlint}
+    - { role: actionlint, tags: actionlint }
     - { role: reviewdog, tags: reviewdog }

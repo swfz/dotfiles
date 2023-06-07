@@ -1,29 +1,26 @@
 ---
-- name: exist docker_compose
-  command: which docker-compose
+- name: Exist docker_compose
+  ansible.builtin.command: which docker-compose
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_docker_compose
   changed_when: false
   ignore_errors: true
 
-- name: get docker_compose version
-  command: docker-compose --version
+- name: Get docker_compose version
+  ansible.builtin.command: docker-compose --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_docker_compose
   changed_when: false
   ignore_errors: true
-  when:
-    exist_docker_compose.rc == 0
+  when: exist_docker_compose.rc == 0
 
 - block:
-  - name: get source
-    get_url:
-      url: "{{ docker_compose.src }}"
-      dest: /usr/local/bin/docker-compose
-      mode: 0755
+    - name: Get source
+      ansible.builtin.get_url:
+        url: "{{ docker_compose.src }}"
+        dest: /usr/local/bin/docker-compose
+        mode: "0755"
 
-  when:
-    exist_docker_compose.rc != 0
-    or ( version_in_docker_compose is defined and version_in_docker_compose.stdout.find(docker_compose_version) == -1 )
+  when: exist_docker_compose.rc != 0 or ( version_in_docker_compose is defined and version_in_docker_compose.stdout.find(docker_compose_version) == -1 )

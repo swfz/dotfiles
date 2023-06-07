@@ -1,11 +1,11 @@
 ---
-- name: install repository
-  yum:
+- name: Install repository
+  ansible.builtin.yum:
     name: "{{ nginx.repo }}"
     state: installed
 
-- name: install nginx
-  yum:
+- name: Install nginx
+  ansible.builtin.yum:
     name: nginx
     state: installed
-    disable_gpg_check: yes
+    disable_gpg_check: true

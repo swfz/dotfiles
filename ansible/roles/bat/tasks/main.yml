@@ -1,31 +1,28 @@
 ---
-- name: exist bat
-  command: which bat
+- name: Exist bat
+  ansible.builtin.command: which bat
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_bat
   changed_when: false
   ignore_errors: true
 
-- name: get bat version
-  command: bat --version
+- name: Get bat version
+  ansible.builtin.command: bat --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_bat
   changed_when: false
   ignore_errors: true
-  when:
-    exist_bat.rc == 0
+  when: exist_bat.rc == 0
 
 - block:
-  - name: debian tasks
-    include: debian.yml
-    when: "ansible_os_family == 'Debian'"
+    - name: Debian tasks
+      ansible.builtin.include_tasks: debian.yml
+      when: ansible_os_family == 'Debian'
 
-  - name: redhat install tasks
-    include: redhat.yml
-    when: "ansible_os_family == 'RedHat'"
+    - name: Redhat install tasks
+      ansible.builtin.include_tasks: redhat.yml
+      when: ansible_os_family == 'RedHat'
 
-  when:
-    exist_bat.rc != 0
-    or ( version_in_bat is defined and version_in_bat.stdout.find(bat_version) == -1 )
+  when: exist_bat.rc != 0 or ( version_in_bat is defined and version_in_bat.stdout.find(bat_version) == -1 )

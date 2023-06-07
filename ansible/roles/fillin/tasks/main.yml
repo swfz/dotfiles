@@ -1,38 +1,34 @@
 ---
-- name: exist fillin
-  command: which fillin
+- name: Exist fillin
+  ansible.builtin.command: which fillin
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_fillin
   changed_when: false
   ignore_errors: true
 
-- name: get fillin version
-  command: fillin -v
+- name: Get fillin version
+  ansible.builtin.command: fillin -v
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_fillin
   changed_when: false
   ignore_errors: true
-  when:
-    exist_fillin.rc == 0
+  when: exist_fillin.rc == 0
 
 - block:
-  - name: get source
-    get_url:
-      url: "{{ fillin.src }}"
-      dest: /tmp/{{ fillin.tgz }}
+    - name: Get source
+      ansible.builtin.get_url:
+        url: "{{ fillin.src }}"
+        dest: /tmp/{{ fillin.tgz }}
 
-  - name: unarchive tar.gz
-    unarchive:
-      src: /tmp/{{ fillin.tgz }}
-      dest: /tmp/
-      copy: no
+    - name: Unarchive tar.gz
+      ansible.builtin.unarchive:
+        src: /tmp/{{ fillin.tgz }}
+        dest: /tmp/
+        copy: false
 
-  - name: move fillin
-    changed_when: true
-    command: mv /tmp/{{ fillin.dir }}/fillin /usr/local/bin/fillin
-
-  when:
-    exist_fillin.rc != 0
-    or ( version_in_fillin is defined and version_in_fillin.stdout.find(fillin_version) == -1 )
+    - name: Move fillin
+      changed_when: true
+      ansible.builtin.command: mv /tmp/{{ fillin.dir }}/fillin /usr/local/bin/fillin
+  when: exist_fillin.rc != 0 or ( version_in_fillin is defined and version_in_fillin.stdout.find(fillin_version) == -1 )

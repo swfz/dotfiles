@@ -1,7 +1,7 @@
 ---
-- name: anyenv redhat dependencies
-  when: "ansible_os_family == 'RedHat'"
-  yum:
+- name: Anyenv redhat dependencies
+  when: ansible_os_family == 'RedHat'
+  ansible.builtin.yum:
     name:
       - openssl-devel
       - readline-devel
@@ -9,10 +9,10 @@
       - tar
     state: present
 
-- name: anyenv dependencies package
-  when: "ansible_os_family == 'Debian'"
+- name: Anyenv dependencies package
+  when: ansible_os_family == 'Debian'
   become: true
-  apt:
+  ansible.builtin.apt:
     name:
       - libssl-dev
       - libreadline-dev

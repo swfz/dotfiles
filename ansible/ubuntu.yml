@@ -4,7 +4,7 @@
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: yes
+  become: true
   roles:
     - { role: packages, tags: [common, init, tool, dev] }
     - { role: language-dependencies, tags: [anyenv] }
@@ -21,7 +21,7 @@
     - { role: embulk, tags: [embulk, tool] }
     - { role: terraform, tags: [terraform, tool] }
     - { role: notofont, tags: [notofont, init] }
-    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli
+    - { role: by_pip, tags: [by_pip, init] } # cheat, mycli
     - { role: awscli, tags: [awscli, tool] }
     - { role: fillin, tags: [fillin, tool] }
     - { role: actionlint, tags: [actionlint, tool] }
@@ -32,11 +32,11 @@
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: no
+  become: false
   become_user: "{{ user }}"
   roles:
     - { role: deploy, tags: deploy }
     - { role: anyenv, tags: anyenv }
-    - { role: direnv, tags: [direnv, init]}
+    - { role: direnv, tags: [direnv, init] }
     - { role: powerline, tags: [powerline, init] }
     - { role: vim-plugins, tags: [vim-plugins, vim] }

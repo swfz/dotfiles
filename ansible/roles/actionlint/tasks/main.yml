@@ -1,45 +1,41 @@
 ---
-- name: exist actionlint  # noqa command-instead-of-shell
-  shell: command -v actionlint
+- name: Exist actionlint # noqa command-instead-of-shell
+  ansible.builtin.shell: command -v actionlint
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_actionlint
   changed_when: false
   ignore_errors: true
 
-- name: get actionlint version
-  shell: "actionlint --version | head -n 1"
+- name: Get actionlint version
+  ansible.builtin.shell: actionlint --version | head -n 1
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_actionlint
   changed_when: false
   ignore_errors: true
-  when:
-    exist_actionlint.rc == 0
+  when: exist_actionlint.rc == 0
 
 - block:
-  - name: get tar.gz
-    get_url:
-      url: "{{ actionlint.src.darwin }}"
-      dest: "/tmp/{{ actionlint.tgz }}"
-    when: "ansible_os_family == 'Darwin'"
+    - name: Get tar.gz
+      ansible.builtin.get_url:
+        url: "{{ actionlint.src.darwin }}"
+        dest: /tmp/{{ actionlint.tgz }}
+      when: ansible_os_family == 'Darwin'
 
-  - name: get tar.gz
-    get_url:
-      url: "{{ actionlint.src.linux }}"
-      dest: "/tmp/{{ actionlint.tgz }}"
-    when: "ansible_os_family != 'Darwin'"
+    - name: Get tar.gz
+      ansible.builtin.get_url:
+        url: "{{ actionlint.src.linux }}"
+        dest: /tmp/{{ actionlint.tgz }}
+      when: ansible_os_family != 'Darwin'
 
-  - name: unarchive zip
-    unarchive:
-      src: /tmp/{{ actionlint.tgz }}
-      dest: /tmp/
-      copy: no
+    - name: Unarchive zip
+      ansible.builtin.unarchive:
+        src: /tmp/{{ actionlint.tgz }}
+        dest: /tmp/
+        copy: false
 
-  - name: install
-    changed_when: true
-    command: mv /tmp/actionlint /usr/local/bin/actionlint
-
-  when:
-    exist_actionlint.rc != 0
-    or ( version_in_actionlint is defined and version_in_actionlint.stdout.find(actionlint_version) == -1 )
+    - name: Install
+      changed_when: true
+      ansible.builtin.command: mv /tmp/actionlint /usr/local/bin/actionlint
+  when: exist_actionlint.rc != 0 or ( version_in_actionlint is defined and version_in_actionlint.stdout.find(actionlint_version) == -1 )

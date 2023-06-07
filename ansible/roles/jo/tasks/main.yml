@@ -1,42 +1,39 @@
 ---
-- name: exist jo
-  command: which jo
+- name: Exist jo
+  ansible.builtin.command: which jo
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_jo
   changed_when: false
   ignore_errors: true
 
-- name: get jo version
-  command: jo -v
+- name: Get jo version
+  ansible.builtin.command: jo -v
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_jo
   changed_when: false
   ignore_errors: true
-  when:
-    exist_jo.rc == 0
+  when: exist_jo.rc == 0
 
 - block:
-  - name: get source
-    get_url:
-      url: "{{ jo.src }}"
-      dest: /tmp/{{ jo.tgz }}
+    - name: Get source
+      ansible.builtin.get_url:
+        url: "{{ jo.src }}"
+        dest: /tmp/{{ jo.tgz }}
 
-  - name: unarchive tar.gz
-    unarchive:
-      src: /tmp/{{ jo.tgz }}
-      dest: /tmp
-      copy: no
+    - name: Unarchive tar.gz
+      ansible.builtin.unarchive:
+        src: /tmp/{{ jo.tgz }}
+        dest: /tmp
+        copy: false
 
-  - name: configure make install jo
-    command: chdir=/tmp/{{ jo.dir }} {{ item }}
-    changed_when: true
-    with_items:
-    - ./configure
-    - make
-    - make install
+    - name: Configure make install jo
+      ansible.builtin.command: chdir=/tmp/{{ jo.dir }} {{ item }}
+      changed_when: true
+      with_items:
+        - ./configure
+        - make
+        - make install
 
-  when:
-    exist_jo.rc != 0
-    or ( version_in_jo is defined and version_in_jo.stdout.find(jo_version) == -1 )
+  when: exist_jo.rc != 0 or ( version_in_jo is defined and version_in_jo.stdout.find(jo_version) == -1 )

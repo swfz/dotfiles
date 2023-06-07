@@ -1,6 +1,6 @@
 ---
-- name: dependencies packages
-  yum:
+- name: Dependencies packages
+  ansible.builtin.yum:
     name:
       - make
       - perl-ExtUtils-MakeMaker
@@ -9,8 +9,8 @@
       - tcl
       - gettext
 
-- name: latest packages
-  yum:
+- name: Latest packages
+  ansible.builtin.yum:
     name:
       - ca-certificates
-    state: latest  # noqa package-latest
+    state: latest # noqa package-latest

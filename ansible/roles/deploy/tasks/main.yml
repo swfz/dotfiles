@@ -1,140 +1,140 @@
 ---
-- name: command directory
-  file:
+- name: Command directory
+  ansible.builtin.file:
     path: "{{ command_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
-- name: set git config
-  template:
+- name: Set git config
+  ansible.builtin.template:
     src: config.j2
     dest: ~/.gitconfig
     owner: "{{ user }}"
-    mode: 0644
+    mode: "0644"
 
-- name: clone dotfiles repository
-  git:
+- name: Clone dotfiles repository
+  ansible.builtin.git:
     repo: "{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
-    clone: yes
-    update: yes
-    force: yes
+    clone: true
+    update: true
+    force: true
 
-- name: symlink peco config
-  file:
-    path: "~/.config/peco"
+- name: Symlink peco config
+  ansible.builtin.file:
+    path: ~/.config/peco
     state: directory
-    mode: 0755
+    mode: "0755"
 
-- name: symlink peco config
-  file:
+- name: Symlink peco config
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/config/peco/config.json"
-    dest: "~/.config/peco/config.json"
+    dest: ~/.config/peco/config.json
     state: link
 
-- name: symlink bat config
-  file:
-    path: "~/.config/bat"
+- name: Symlink bat config
+  ansible.builtin.file:
+    path: ~/.config/bat
     state: directory
-    mode: 0755
+    mode: "0755"
 
-- name: symlink bat config
-  file:
+- name: Symlink bat config
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/config/bat/config"
-    dest: "~/.config/bat/config"
+    dest: ~/.config/bat/config
     state: link
 
-- name: store bin path to zshenv
-  lineinfile:
+- name: Store bin path to zshenv
+  ansible.builtin.lineinfile:
     dest: ~/.zshenv
     state: present
-    create: yes
+    create: true
     line: "{{ item }}"
-    mode: 0644
+    mode: "0644"
   with_items:
-    - 'export PATH="$HOME/dotfiles/bin:$PATH"'
+    - export PATH="$HOME/dotfiles/bin:$PATH"
 
-- name: symlink dotfiles
-  file:
+- name: Symlink dotfiles
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/{{ item }}"
-    dest: "~/{{ item }}"
+    dest: ~/{{ item }}
     state: link
   with_items: "{{ dotfiles.files }}"
 
-- name: symlink base color
-  file:
+- name: Symlink base color
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/powerline_theme/base_colorscheme_{{ base_color }}.json"
     dest: "{{ link.base.target_dir }}/{{ link.base.target_file }}"
     state: link
-    force: yes
+    force: true
   when: base_color is defined
   tags:
     - color
 
-- name: symlink zsh color
-  file:
+- name: Symlink zsh color
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
-    dest: "~/.zshrc.color"
+    dest: ~/.zshrc.color
     state: link
-    force: yes
+    force: true
   when: zsh_color is defined
   tags:
     - color
 
-- name: symlink zsh color for powerline(custom)
-  file:
+- name: Symlink zsh color for powerline(custom)
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/powerline_theme/shell_colorscheme_{{ zsh_color }}.json"
     dest: "{{ link.zsh.target_dir }}/{{ link.zsh.target_file }}"
     state: link
-    force: yes
+    force: true
   when: zsh_color is defined and zsh_color != 'solarized'
   tags:
     - color
 
-- name: symlink zsh color for powerline(solarized)
-  file:
+- name: Symlink zsh color for powerline(solarized)
+  ansible.builtin.file:
     src: "{{ link.zsh.target_dir }}/solarized.json"
     dest: "{{ link.zsh.target_dir }}/{{ link.zsh.target_file }}"
     state: link
-    force: yes
+    force: true
   when: zsh_color is defined and zsh_color == 'solarized'
   tags:
     - color
 
-- name: symlink tmux powerline config
-  file:
+- name: Symlink tmux powerline config
+  ansible.builtin.file:
     src: "{{ link.tmux.basedir }}/{{ item }}"
-    dest: "~/.tmux-{{ item }}"
+    dest: ~/.tmux-{{ item }}
     state: link
-    force: yes
+    force: true
   with_items: "{{ link.tmux.files }}"
 
 # TODO tmuxのカラー設定
 # .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
 
 - name: .vim directory
-  file:
-    path: "~/.vim"
+  ansible.builtin.file:
+    path: ~/.vim
     state: directory
-    mode: 0755
+    mode: "0755"
 
-- name: symlink vim snippet
-  file:
+- name: Symlink vim snippet
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/.vim/snippets"
     dest: ~/.vim/snippets
     state: link
 
-- name: symlink sshrc.d
-  file:
+- name: Symlink sshrc.d
+  ansible.builtin.file:
     src: "{{ dotfiles.dest }}/.sshrc.d"
     dest: ~/.sshrc.d
     state: link
 
 # git-hooksのセットアップ
-- name: clone git-hooks repository
-  git:
+- name: Clone git-hooks repository
+  ansible.builtin.git:
     repo: "{{ git_hooks.src.repo }}"
     dest: "{{ git_hooks.dest }}"
-    clone: yes
-    update: yes
-    force: yes
+    clone: true
+    update: true
+    force: true

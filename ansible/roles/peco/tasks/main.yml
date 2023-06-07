@@ -1,38 +1,34 @@
 ---
-- name: exist peco
-  command: which peco
+- name: Exist peco
+  ansible.builtin.command: which peco
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_peco
   changed_when: false
   ignore_errors: true
 
-- name: get peco version
-  command: peco --version
+- name: Get peco version
+  ansible.builtin.command: peco --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_peco
   changed_when: false
   ignore_errors: true
-  when:
-    exist_peco.rc == 0
+  when: exist_peco.rc == 0
 
 - block:
-  - name: peco get source
-    get_url:
-      url: "{{ peco.url }}"
-      dest: /tmp/{{ peco.tgz }}
+    - name: Peco get source
+      ansible.builtin.get_url:
+        url: "{{ peco.url }}"
+        dest: /tmp/{{ peco.tgz }}
 
-  - name: unarchive tar.gz
-    unarchive:
-      src: /tmp/{{ peco.tgz }}
-      dest: /tmp/
-      copy: no
+    - name: Unarchive tar.gz
+      ansible.builtin.unarchive:
+        src: /tmp/{{ peco.tgz }}
+        dest: /tmp/
+        copy: false
 
-  - name: move peco
-    changed_when: true
-    command: mv /tmp/{{ peco.dir }}/peco /usr/local/bin/peco
-
-  when:
-    exist_peco.rc != 0
-    or ( version_in_peco is defined and version_in_peco.stderr.find(peco_version) == -1 )
+    - name: Move peco
+      changed_when: true
+      ansible.builtin.command: mv /tmp/{{ peco.dir }}/peco /usr/local/bin/peco
+  when: exist_peco.rc != 0 or ( version_in_peco is defined and version_in_peco.stderr.find(peco_version) == -1 )

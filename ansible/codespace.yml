@@ -4,7 +4,7 @@
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: yes
+  become: true
   roles:
     - { role: common, tags: [common, init, tool] }
     - { role: peco, tags: [peco, init] }
@@ -22,7 +22,7 @@
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: no
+  become: false
   become_user: "{{ user }}"
   roles:
     - { role: deploy, tags: deploy }
