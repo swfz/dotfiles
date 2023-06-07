@@ -21,7 +21,7 @@
   ansible.builtin.expect:
     command: "{{ ansible_env.HOME }}/.anyenv/libexec/anyenv install --init"
     responses:
-      .*Do you want to checkout.*: true
+      '.*Do you want to checkout.*': y
   when: not anyenv_install_dir.stat.exists
 
 - name: Exist envs
