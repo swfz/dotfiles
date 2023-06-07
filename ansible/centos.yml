@@ -19,7 +19,6 @@
     - { role: jq, tags: [jq, init] }
     - { role: docker-compose, tags: [docker-compose, dev] }
     - { role: terraform, tags: [terraform, tool] }
-    - { role: embulk, tags: [embulk, tool] }
     - { role: awscli, tags: [awscli, tool] }
     - { role: fillin, tags: [fillin, tool] }
     # - { role: sshrc, tags: [sshrc, tool] }
