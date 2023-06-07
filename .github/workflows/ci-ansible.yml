@@ -129,7 +129,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install python3-setuptools
-          python3 -m pip install ansible ansible-lint==5.4.0  yamllint --user
+          python3 -m pip install ansible ansible-lint  yamllint --user
       - name: run yamllint
         env:
           CI: true
