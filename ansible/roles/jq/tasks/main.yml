@@ -1,29 +1,26 @@
 ---
-- name: exist jq
-  command: which jq
+- name: Exist jq
+  ansible.builtin.command: which jq
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_jq
   changed_when: false
   ignore_errors: true
 
-- name: get jq version
-  command: jq --version
+- name: Get jq version
+  ansible.builtin.command: jq --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_jq
   changed_when: false
   ignore_errors: true
-  when:
-    exist_jq.rc == 0
+  when: exist_jq.rc == 0
 
 - block:
-    - name: get source
-      get_url:
+    - name: Get source
+      ansible.builtin.get_url:
         url: "{{ jq.src }}"
         dest: /usr/local/bin/jq
-        mode: 0755
+        mode: "0755"
 
-  when:
-    exist_jq.rc != 0
-    or ( version_in_jq is defined and version_in_jq.stdout.find(jq_version) == -1 )
+  when: exist_jq.rc != 0 or ( version_in_jq is defined and version_in_jq.stdout.find(jq_version) == -1 )

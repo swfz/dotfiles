@@ -1,24 +1,24 @@
 ---
-- name: install zsh(redhat)
-  include: source.yml
-  when: "ansible_os_family == 'RedHat'"
+- name: Install zsh(redhat)
+  ansible.builtin.include_tasks: source.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: install zsh(debian)
-  apt: name=zsh state=present
-  when: "ansible_os_family == 'Debian'"
+- name: Install zsh(debian)
+  ansible.builtin.apt: name=zsh state=present
+  when: ansible_os_family == 'Debian'
 
-- name: zsh_path
-  command: which zsh
+- name: Zsh_path
+  ansible.builtin.command: which zsh
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: zsh_path
   changed_when: false
 
-- name: add shells
-  lineinfile:
+- name: Add shells
+  ansible.builtin.lineinfile:
     dest: /etc/shells
     state: present
     line: "{{ zsh_path.stdout }}"
 
-- name: change shell in {{ user }}
-  user: name={{ user }} shell={{ zsh_path.stdout }}
+- name: Change shell in {{ user }}
+  ansible.builtin.user: name={{ user }} shell={{ zsh_path.stdout }}

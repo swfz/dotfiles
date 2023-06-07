@@ -1,19 +1,19 @@
 ---
-- name: set vim neobundle directory
-  file:
+- name: Set vim neobundle directory
+  ansible.builtin.file:
     path: "{{ vim.neobundle.parent_dir }}"
     state: directory
-    mode: 0755
+    mode: "0755"
 
-- name: set vim neobundle
+- name: Set vim neobundle
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
-  git:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  ansible.builtin.git:
     repo: "{{ vim.neobundle.src }}"
     dest: "{{ vim.neobundle.parent_dir }}/{{ vim.neobundle.dest_dir }}"
-    clone: yes
+    clone: true
 
-- name: set vim neobundle  # noqa ignore-errors
-  command: "sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim"
+- name: Set vim neobundle # noqa ignore-errors
+  ansible.builtin.command: sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim
   changed_when: true
   ignore_errors: true

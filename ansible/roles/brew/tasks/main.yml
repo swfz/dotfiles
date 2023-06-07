@@ -1,6 +1,6 @@
 ---
-- name: install with brew
-  homebrew:
+- name: Install with brew
+  community.general.homebrew:
     name: "{{ item }}"
     state: installed
   with_items:
@@ -20,8 +20,8 @@
     - licecap
     - imagemagick
 
-- name: install with cask
-  homebrew_cask:
+- name: Install with cask
+  community.general.homebrew_cask:
     name: "{{ item }}"
     state: installed
   with_items:

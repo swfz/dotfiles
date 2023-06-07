@@ -1,40 +1,37 @@
 ---
-- name: exist awscli v2
-  command: which aws
+- name: Exist awscli v2
+  ansible.builtin.command: which aws
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_awscli
   changed_when: false
   ignore_errors: true
 
-- name: get awscli version
-  shell: "aws --version 2>&1 | grep -oP '(?<=aws-cli\\/)\\d+\\.\\d+\\.\\d+' "
+- name: Get awscli version
+  ansible.builtin.shell: "aws --version 2>&1 | grep -oP '(?<=aws-cli\\/)\\d+\\.\\d+\\.\\d+' "
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_awscli
   changed_when: false
   ignore_errors: true
-  when:
-    exist_awscli.rc == 0
+  when: exist_awscli.rc == 0
 
 - block:
-  - name: get zip
-    get_url:
-      url: "{{ awscli.src }}"
-      dest: "/tmp/{{ awscli.zip }}"
+    - name: Get zip
+      ansible.builtin.get_url:
+        url: "{{ awscli.src }}"
+        dest: /tmp/{{ awscli.zip }}
 
-  - name: unarchive zip
-    unarchive:
-      src: /tmp/{{ awscli.zip }}
-      dest: /tmp/
-      copy: no
+    - name: Unarchive zip
+      ansible.builtin.unarchive:
+        src: /tmp/{{ awscli.zip }}
+        dest: /tmp/
+        copy: false
 
-  - name: install
-    changed_when: true
-    command:
-      cmd: ./aws/install --update
-      chdir: /tmp
+    - name: Install
+      changed_when: true
+      ansible.builtin.command:
+        cmd: ./aws/install --update
+        chdir: /tmp
 
-  when:
-    exist_awscli.rc != 0
-    or ( version_in_awscli is defined and version_in_awscli.stdout.find(awscli_version) == -1 )
+  when: exist_awscli.rc != 0 or ( version_in_awscli is defined and version_in_awscli.stdout.find(awscli_version) == -1 )

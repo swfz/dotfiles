@@ -1,54 +1,51 @@
 ---
-- name: exist tmux
-  command: which tmux
+- name: Exist tmux
+  ansible.builtin.command: which tmux
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_tmux
   changed_when: false
   ignore_errors: true
 
-- name: get tmux version
-  command: tmux -V
+- name: Get tmux version
+  ansible.builtin.command: tmux -V
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_tmux
   changed_when: false
   ignore_errors: true
-  when:
-    exist_tmux.rc == 0
+  when: exist_tmux.rc == 0
 
 - block:
-  - name: install dependencies package
-    yum:
-      name: ['libevent-devel', 'ncurses-devel', 'gcc']
-      state: installed
-    when: "ansible_os_family == 'RedHat'"
+    - name: Install dependencies package
+      ansible.builtin.yum:
+        name: [libevent-devel, ncurses-devel, gcc]
+        state: installed
+      when: ansible_os_family == 'RedHat'
 
-  - name: install dependencies package
-    apt:
-      name: ['libevent-dev', 'libncurses-dev']
-      state: present
-    when: "ansible_os_family == 'Debian'"
+    - name: Install dependencies package
+      ansible.builtin.apt:
+        name: [libevent-dev, libncurses-dev]
+        state: present
+      when: ansible_os_family == 'Debian'
 
-  - name: get source
-    get_url:
-      url: "{{ tmux.src }}"
-      dest: /tmp/{{ tmux.tgz }}
+    - name: Get source
+      ansible.builtin.get_url:
+        url: "{{ tmux.src }}"
+        dest: /tmp/{{ tmux.tgz }}
 
-  - name: unarchive tar.gz
-    unarchive:
-      src: /tmp/{{ tmux.tgz }}
-      dest: /tmp
-      copy: no
+    - name: Unarchive tar.gz
+      ansible.builtin.unarchive:
+        src: /tmp/{{ tmux.tgz }}
+        dest: /tmp
+        copy: false
 
-  - name: configure make install tmux
-    changed_when: true
-    command: chdir=/tmp/{{ tmux.dir }} {{ item }}
-    with_items:
-    - ./configure
-    - make
-    - make install
+    - name: Configure make install tmux
+      changed_when: true
+      ansible.builtin.command: chdir=/tmp/{{ tmux.dir }} {{ item }}
+      with_items:
+        - ./configure
+        - make
+        - make install
 
-  when:
-    exist_tmux.rc != 0
-    or ( version_in_tmux is defined and version_in_tmux.stdout.find(tmux_version) == -1 )
+  when: exist_tmux.rc != 0 or ( version_in_tmux is defined and version_in_tmux.stdout.find(tmux_version) == -1 )

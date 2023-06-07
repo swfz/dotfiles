@@ -1,10 +1,11 @@
 ---
-- hosts: localhost
+- name: Play for Codespace(root)
+  hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: yes
+  become: true
   roles:
     - { role: common, tags: [common, init, tool] }
     - { role: peco, tags: [peco, init] }
@@ -17,12 +18,13 @@
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
 
-- hosts: localhost
+- name: Play for Codespace(User)
+  hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
     - versions_vars.yml
-  become: no
+  become: false
   become_user: "{{ user }}"
   roles:
     - { role: deploy, tags: deploy }

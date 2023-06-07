@@ -1,95 +1,94 @@
 ---
-- name: install anyenv
-  git: repo="{{ anyenv.url }}" dest=~/.anyenv
-
-- name: store anyenv profile to zshenv
-  lineinfile:
+- name: Install anyenv
+  ansible.builtin.git: repo="{{ anyenv.url }}" dest=~/.anyenv
+- name: Store anyenv profile to zshenv
+  ansible.builtin.lineinfile:
     dest: ~/.zshenv
     state: present
-    mode: 0644
-    create: yes
+    mode: "0644"
+    create: true
     line: "{{ item }}"
   with_items:
-    - 'export PATH="$HOME/.anyenv/bin:$PATH"'
-    - 'eval "$(anyenv init - zsh)"'
+    - export PATH="$HOME/.anyenv/bin:$PATH"
+    - eval "$(anyenv init - zsh)"
 
-- name: check init
-  stat:
+- name: Check init
+  ansible.builtin.stat:
     path: "{{ ansible_env.HOME }}/.config/anyenv/anyenv-install"
   register: anyenv_install_dir
 
-- name: init
-  expect:
+- name: Init
+  ansible.builtin.expect:
     command: "{{ ansible_env.HOME }}/.anyenv/libexec/anyenv install --init"
     responses:
       '.*Do you want to checkout.*': y
   when: not anyenv_install_dir.stat.exists
 
-- name: "exist envs"
-  shell: "{{ execute }} 'command -v {{ item.key }}'"  # noqa command-instead-of-shell
+- name: Exist envs
+  ansible.builtin.shell: "{{ execute }} 'command -v {{ item.key }}'"
   register: exist_envs
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: "install envs"
-  shell: "{{ execute }} 'anyenv install {{ item.0 }}'"  # noqa command-instead-of-shell
+- name: Install envs
+  ansible.builtin.shell: "{{ execute }} 'anyenv install {{ item.0 }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_envs.results }}"
 
-- name: "store envs path to zshenv"
-  lineinfile:
+- name: Store envs path to zshenv
+  ansible.builtin.lineinfile:
     dest: ~/.zshenv
     state: present
-    mode: 0644
-    create: yes
-    line: 'export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$HOME/.anyenv/envs/{{ item.key }}/bin:$PATH"'
+    mode: "0644"
+    create: true
+    line: export PATH="$HOME/.anyenv/envs/{{ item.key }}/shims:$HOME/.anyenv/envs/{{ item.key }}/bin:$PATH"
   with_dict: "{{ envs }}"
 
 # pyenvと競合しているよう、pyenvの2022-04-30 からの差分でなにか影響のある修正がされているのかrbenvで必要な環境変数が削除されてしまっているため手動で追加
-- name: "workaround"
-  lineinfile:
+- name: Workaround
+  ansible.builtin.lineinfile:
     dest: ~/.zshenv
     state: present
-    mode: 0644
-    create: yes
-    line: '{{ item }}'
+    mode: "0644"
+    create: true
+    line: "{{ item }}"
   with_items:
-    - 'export RBENV_ROOT=$HOME/.anyenv/envs/rbenv'
-    - 'export RBENV_SHELL=zsh'
+    - export RBENV_ROOT=$HOME/.anyenv/envs/rbenv
+    - export RBENV_SHELL=zsh
 
-- name: "nodenv default packages"
-  copy:
+- name: Nodenv default packages
+  ansible.builtin.copy:
     src: nodenv-default-packages
-    dest: "$HOME/.anyenv/envs/nodenv/default-packages"
-    mode: 0644
+    dest: $HOME/.anyenv/envs/nodenv/default-packages
+    mode: "0644"
 
-- name: "exist version in every envs"
-  shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"  # noqa command-instead-of-shell
+- name: Exist version in every envs
+  ansible.builtin.shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"
   register: exist_version
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: "install envs version"
-  shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"  # noqa command-instead-of-shell
+- name: Install envs version
+  ansible.builtin.shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
     - "{{ exist_version.results }}"
 
-- name: "exist global envs version"
-  shell: "{{ execute }} '{{ item.key }} global'"  # noqa command-instead-of-shell
+- name: Exist global envs version
+  ansible.builtin.shell: "{{ execute }} '{{ item.key }} global'"
   when: item.key != "goenv"
   register: exist_global
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: "set global envs version"
-  shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"  # noqa command-instead-of-shell
+- name: Set global envs version
+  ansible.builtin.shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
   with_together:
     - "{{ envs }}"

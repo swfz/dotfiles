@@ -1,9 +1,8 @@
 ---
-- name: install epel-release
-  yum: name=epel-release state=installed
-
-- name: install packages
-  yum:
+- name: Install epel-release
+  ansible.builtin.yum: name=epel-release state=installed
+- name: Install packages
+  ansible.builtin.yum:
     name:
       - nkf
       - curl-devel
@@ -40,21 +39,21 @@
       - ImageMagick
     state: installed
 
-- name: install rpmforge
-  yum_repository:
+- name: Install rpmforge
+  ansible.builtin.yum_repository:
     name: rpmforge
     description: RPMforge YUM repo
     file: external_repos
     baseurl: http://apt.sw.be/redhat/el{{ ansible_distribution_major_version }}/en/$basearch/rpmforge
     mirrorlist: http://mirrorlist.repoforge.org/el{{ ansible_distribution_major_version }}/mirrors-rpmforge
-    enabled: no
+    enabled: false
 
-- name: set timezone to Asia/Tokyo
-  file:
+- name: Set timezone to Asia/Tokyo
+  ansible.builtin.file:
     src: /usr/share/zoneinfo/Japan
     dest: /etc/localtime
     state: link
 
-- name: disable SELinux
-  selinux: state=disabled
+- name: Disable SELinux
+  ansible.posix.selinux: state=disabled
   when: ansible_env.get('CI', None) and ansible_env.CI != "true"

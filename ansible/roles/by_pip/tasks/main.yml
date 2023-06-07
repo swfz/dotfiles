@@ -1,6 +1,6 @@
 ---
-- name: pip modules
-  pip:
+- name: Pip modules
+  ansible.builtin.pip:
     name:
       - pexpect
       - cheat

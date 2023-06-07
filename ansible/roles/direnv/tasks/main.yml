@@ -1,41 +1,38 @@
 ---
-- name: exist direnv
-  command: which direnv
+- name: Exist direnv
+  ansible.builtin.command: which direnv
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_direnv
   changed_when: false
   ignore_errors: true
 
-- name: get direnv version
-  command: direnv --version
+- name: Get direnv version
+  ansible.builtin.command: direnv --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_direnv
   changed_when: false
   ignore_errors: true
-  when:
-    exist_direnv.rc == 0
+  when: exist_direnv.rc == 0
 
 - block:
-  - name: get source
-    become: yes
-    become_user: root
-    get_url:
-      url: "{{ direnv.src }}"
-      dest: /usr/local/bin/direnv
-      mode: 0755
+    - name: Get source
+      become: true
+      become_user: root
+      ansible.builtin.get_url:
+        url: "{{ direnv.src }}"
+        dest: /usr/local/bin/direnv
+        mode: "0755"
 
-  when:
-    exist_direnv.rc != 0
-    or ( version_in_direnv is defined and version_in_direnv.stdout.find(direnv_version) == -1 )
+  when: exist_direnv.rc != 0 or ( version_in_direnv is defined and version_in_direnv.stdout.find(direnv_version) == -1 )
 
-- name: store direnv hook to zshenv
-  lineinfile:
+- name: Store direnv hook to zshenv
+  ansible.builtin.lineinfile:
     dest: ~/.zshenv
     state: present
-    create: yes
+    create: true
     line: "{{ item }}"
-    mode: 0644
+    mode: "0644"
   with_items:
-  - 'eval "$(direnv hook zsh)"'
+    - eval "$(direnv hook zsh)"

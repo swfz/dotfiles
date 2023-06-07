@@ -1,18 +1,18 @@
 ---
-- name: get source
-  get_url:
+- name: Get source
+  ansible.builtin.get_url:
     url: "{{ bat.src }}"
     dest: /tmp/{{ bat.tgz }}
 
-- name: unarchive tar.gz
-  unarchive:
+- name: Unarchive tar.gz
+  ansible.builtin.unarchive:
     src: /tmp/{{ bat.tgz }}
     dest: /tmp/
-    copy: no
+    copy: false
 
-- name: copy to bin
-  copy:
+- name: Copy to bin
+  ansible.builtin.copy:
     remote_src: true
-    mode: 0755
+    mode: "0755"
     src: /tmp/{{ bat.dir }}/bat
     dest: /usr/local/bin/bat

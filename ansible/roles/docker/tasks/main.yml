@@ -1,39 +1,35 @@
 ---
-- name: exist docker
-  command: which docker
+- name: Exist docker
+  ansible.builtin.command: which docker
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_docker
   changed_when: false
   ignore_errors: true
 
-- name: get docker version
-  command: docker --version
+- name: Get docker version
+  ansible.builtin.command: docker --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_docker
   changed_when: false
   ignore_errors: true
-  when:
-    exist_docker.rc == 0
+  when: exist_docker.rc == 0
 
 - block:
-  - name: download repo
-    changed_when: true
-    command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    - name: Download repo
+      changed_when: true
+      ansible.builtin.command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    - name: Install
+      ansible.builtin.yum:
+        name: docker-ce
+        state: installed
 
-  - name: install
-    yum:
-      name: docker-ce
-      state: installed
+    - name: Docker start and enabled
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+      when: ansible_env.get('CI', None) and ansible_env.CI != "true"
 
-  - name: docker start and enabled
-    service:
-      name: docker
-      state: started
-      enabled: yes
-    when: ansible_env.get('CI', None) and ansible_env.CI != "true"
-
-  when:
-    exist_docker.rc != 0
-    or ( version_in_docker is defined and version_in_docker.stdout.find(docker_version) == -1 )
+  when: exist_docker.rc != 0 or ( version_in_docker is defined and version_in_docker.stdout.find(docker_version) == -1 )

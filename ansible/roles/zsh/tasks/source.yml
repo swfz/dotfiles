@@ -1,47 +1,44 @@
 ---
-- name: install dependency packages
-  yum:
+- name: Install dependency packages
+  ansible.builtin.yum:
     name:
       - which
       - ncurses-devel
       - make
 
-- name: exist zsh
-  command: which zsh
+- name: Exist zsh
+  ansible.builtin.command: which zsh
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: exist_zsh
   changed_when: false
   ignore_errors: true
 
-- name: get zsh version
-  command: zsh --version
+- name: Get zsh version
+  ansible.builtin.command: zsh --version
   environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: version_in_zsh
   changed_when: false
   ignore_errors: true
-  when:
-    exist_zsh.rc == 0
+  when: exist_zsh.rc == 0
 
 - block:
-    - name: get source
-      get_url:
+    - name: Get source
+      ansible.builtin.get_url:
         url: "{{ zsh.src }}"
         dest: /tmp/{{ zsh.xz }}
 
-    - name: unarchive tar.xz
-      command: chdir=/tmp/ tar Jxfv /tmp/{{ zsh.xz }}  # noqa command-instead-of-module xzファイルは未対応のため
+    - name: Unarchive tar.xz
+      ansible.builtin.command: chdir=/tmp/ tar Jxfv /tmp/{{ zsh.xz }}
       changed_when: true
 
-    - name: configure make install zsh
-      command: chdir=/tmp/{{ zsh.dir }} {{ item }}
+    - name: Configure make install zsh
+      ansible.builtin.command: chdir=/tmp/{{ zsh.dir }} {{ item }}
       changed_when: true
       with_items:
         - ./configure --with-tcsetpgrp
         - make
         - make install
 
-  when:
-    exist_zsh.rc != 0
-    or ( version_in_zsh is defined and version_in_zsh.stdout.find(zsh_version) == -1 )
+  when: exist_zsh.rc != 0 or ( version_in_zsh is defined and version_in_zsh.stdout.find(zsh_version) == -1 )

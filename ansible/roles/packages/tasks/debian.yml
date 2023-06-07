@@ -1,6 +1,6 @@
 ---
-- name: install apt-packages
-  apt:
+- name: Install apt-packages
+  ansible.builtin.apt:
     name:
       - curl
       - bash-completion
