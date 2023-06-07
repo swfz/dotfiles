@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Play for Ubuntu(root)
+  hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
@@ -27,7 +28,8 @@
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
 
-- hosts: localhost
+- name: Play for Ubuntu(User)
+  hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml

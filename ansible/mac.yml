@@ -1,5 +1,6 @@
 ---
-- hosts: local
+- name: Play for Mac
+  hosts: local
   vars_files:
     - common_vars.yml
     - versions_vars.yml

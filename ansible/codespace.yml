@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Play for Codespace(root)
+  hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
@@ -17,7 +18,8 @@
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
 
-- hosts: localhost
+- name: Play for Codespace(User)
+  hosts: localhost
   # strategy: debug
   vars_files:
     - common_vars.yml
