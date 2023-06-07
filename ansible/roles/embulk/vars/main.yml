@@ -1,4 +1,0 @@
----
-embulk:
-  # src: http://dl.embulk.org/embulk-latest.jar
-  src: https://github.com/embulk/embulk/releases/download/v{{ embulk_version }}/embulk-{{ embulk_version }}.jar
