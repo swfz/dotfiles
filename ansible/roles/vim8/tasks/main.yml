@@ -38,7 +38,8 @@
   ignore_errors: true
   when: vim8_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Install vim
       environment:
         PATH: /usr/local/bin:{{ ansible_env.PATH }}

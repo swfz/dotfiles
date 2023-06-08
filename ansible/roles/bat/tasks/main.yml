@@ -16,7 +16,8 @@
   ignore_errors: true
   when: bat_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Debian tasks
       ansible.builtin.include_tasks: debian.yml
       when: ansible_os_family == 'Debian'

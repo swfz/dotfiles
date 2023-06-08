@@ -16,7 +16,8 @@
   ignore_errors: true
   when: actionlint_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Get tar.gz
       ansible.builtin.get_url:
         url: "{{ actionlint.src.darwin }}"

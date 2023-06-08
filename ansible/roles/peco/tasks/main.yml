@@ -16,7 +16,8 @@
   ignore_errors: true
   when: peco_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Peco get source
       ansible.builtin.get_url:
         url: "{{ peco.url }}"
