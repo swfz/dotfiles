@@ -29,7 +29,7 @@
     - { role: q, tags: [q, tool] }
     - { role: nginx, tags: [nginx, dev] }
     - { role: notofont, tags: [notofont, init] }
-    - { role: by_pip, tags: [by_pip, tool] } # cheat, mycli
+    - { role: by_pip, tags: [by_pip, tool] }  # cheat, mycli
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
 

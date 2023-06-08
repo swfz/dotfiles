@@ -15,7 +15,7 @@
   changed_when: false
   ignore_errors: true
 
-- name: Get git version # noqa command-instead-of-module
+- name: Get git version  # noqa command-instead-of-module
   ansible.builtin.command: git --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
