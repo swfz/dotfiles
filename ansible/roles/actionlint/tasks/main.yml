@@ -1,5 +1,5 @@
 ---
-- name: Exist actionlint # noqa command-instead-of-shell
+- name: Exist actionlint  # noqa command-instead-of-shell
   ansible.builtin.shell: command -v actionlint
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}

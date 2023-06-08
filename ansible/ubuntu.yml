@@ -21,7 +21,7 @@
     - { role: vim8, tags: [vim8, vim] }
     - { role: terraform, tags: [terraform, tool] }
     - { role: notofont, tags: [notofont, init] }
-    - { role: by_pip, tags: [by_pip, init] } # cheat, mycli
+    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli
     - { role: awscli, tags: [awscli, tool] }
     - { role: fillin, tags: [fillin, tool] }
     - { role: actionlint, tags: [actionlint, tool] }

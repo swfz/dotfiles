@@ -1,12 +1,9 @@
-centos.yml yaml[comments]
 roles/actionlint/tasks/main.yml var-naming[no-role-prefix]
-roles/actionlint/tasks/main.yml yaml[comments]
 roles/actionlint/tasks/main.yml var-naming[no-role-prefix]
 roles/actionlint/tasks/main.yml key-order[task]
 roles/actionlint/tasks/main.yml name[missing]
 roles/actionlint/tasks/main.yml risky-file-permissions
 roles/actionlint/tasks/main.yml risky-file-permissions
-roles/anyenv/meta/main.yml yaml[comments]
 roles/anyenv/tasks/main.yml no-free-form
 roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/anyenv/tasks/main.yml var-naming[no-role-prefix]
@@ -30,7 +27,6 @@ roles/bat/tasks/main.yml var-naming[no-role-prefix]
 roles/bat/tasks/main.yml key-order[task]
 roles/bat/tasks/main.yml name[missing]
 roles/bat/tasks/redhat.yml risky-file-permissions
-roles/delta/meta/main.yml yaml[comments]
 roles/delta/tasks/install-glibc.yml var-naming[no-role-prefix]
 roles/delta/tasks/install-glibc.yml key-order[task]
 roles/delta/tasks/install-glibc.yml name[missing]
@@ -63,12 +59,10 @@ roles/fillin/tasks/main.yml name[missing]
 roles/fillin/tasks/main.yml risky-file-permissions
 roles/git/tasks/main.yml var-naming[no-role-prefix]
 roles/git/tasks/main.yml var-naming[no-role-prefix]
-roles/git/tasks/main.yml yaml[comments]
 roles/git/tasks/main.yml key-order[task]
 roles/git/tasks/main.yml name[missing]
 roles/git/tasks/main.yml risky-file-permissions
 roles/git/tasks/main.yml no-free-form
-roles/git/tasks/redhat.yml yaml[comments]
 roles/git/vars/main.yml jinja[spacing]
 roles/jo/tasks/main.yml var-naming[no-role-prefix]
 roles/jo/tasks/main.yml var-naming[no-role-prefix]
@@ -91,10 +85,8 @@ roles/peco/tasks/main.yml name[missing]
 roles/peco/tasks/main.yml risky-file-permissions
 roles/powerline/tasks/main.yml no-free-form
 roles/powerline/tasks/main.yml command-instead-of-shell
-roles/powerline/tasks/main.yml yaml[comments]
 roles/q/tasks/main.yml no-free-form
 roles/reviewdog/tasks/main.yml var-naming[no-role-prefix]
-roles/reviewdog/tasks/main.yml yaml[comments]
 roles/reviewdog/tasks/main.yml var-naming[no-role-prefix]
 roles/reviewdog/tasks/main.yml key-order[task]
 roles/reviewdog/tasks/main.yml name[missing]
@@ -115,15 +107,11 @@ roles/tmux/tasks/main.yml key-order[task]
 roles/tmux/tasks/main.yml name[missing]
 roles/tmux/tasks/main.yml risky-file-permissions
 roles/tmux/tasks/main.yml no-free-form
-roles/vim-plugins/meta/main.yml yaml[comments]
-roles/vim-plugins/tasks/main.yml yaml[comments]
-roles/vim8/meta/main.yml yaml[comments]
 roles/vim8/tasks/main.yml var-naming[no-role-prefix]
 roles/vim8/tasks/main.yml var-naming[no-role-prefix]
 roles/vim8/tasks/main.yml var-naming[no-role-prefix]
 roles/vim8/tasks/main.yml key-order[task]
 roles/vim8/tasks/main.yml name[missing]
-roles/zsh/meta/main.yml yaml[comments]
 roles/zsh/tasks/main.yml no-free-form
 roles/zsh/tasks/main.yml no-free-form
 roles/zsh/tasks/source.yml var-naming[no-role-prefix]
@@ -134,4 +122,3 @@ roles/zsh/tasks/source.yml risky-file-permissions
 roles/zsh/tasks/source.yml command-instead-of-module
 roles/zsh/tasks/source.yml no-free-form
 roles/zsh/tasks/source.yml no-free-form
-ubuntu.yml yaml[comments]

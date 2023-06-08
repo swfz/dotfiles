@@ -13,4 +13,4 @@
   ansible.builtin.yum:
     name:
       - ca-certificates
-    state: latest # noqa package-latest
+    state: latest  # noqa package-latest

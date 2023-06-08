@@ -1,5 +1,5 @@
 ---
-- name: Exist reviewdog # noqa command-instead-of-shell
+- name: Exist reviewdog  # noqa command-instead-of-shell
   ansible.builtin.shell: command -v reviewdog
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
