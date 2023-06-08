@@ -3,7 +3,7 @@
   ansible.builtin.command: which fillin
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_fillin
+  register: fillin_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: fillin -v
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_fillin
+  register: fillin_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_fillin.rc == 0
+  when: fillin_exist.rc == 0
 
 - block:
     - name: Get source
@@ -31,4 +31,4 @@
     - name: Move fillin
       changed_when: true
       ansible.builtin.command: mv /tmp/{{ fillin.dir }}/fillin /usr/local/bin/fillin
-  when: exist_fillin.rc != 0 or ( version_in_fillin is defined and version_in_fillin.stdout.find(fillin_version) == -1 )
+  when: fillin_exist.rc != 0 or ( fillin_current_version is defined and fillin_current_version.stdout.find(fillin_version) == -1 )

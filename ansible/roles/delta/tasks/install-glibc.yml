@@ -1,7 +1,7 @@
 ---
 - name: Get glibc version
   ansible.builtin.command: /lib64/libc.so.6
-  register: version_in_glibc
+  register: glibc_current_version
   changed_when: false
   ignore_errors: true
 
@@ -31,4 +31,4 @@
         - make
         - make install
 
-  when: version_in_glibc.stdout.find('stable release version 2.18') == -1
+  when: glibc_current_version.stdout.find('stable release version 2.18') == -1

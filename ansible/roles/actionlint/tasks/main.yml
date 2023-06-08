@@ -3,7 +3,7 @@
   ansible.builtin.shell: command -v actionlint
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_actionlint
+  register: actionlint_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.shell: actionlint --version | head -n 1
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_actionlint
+  register: actionlint_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_actionlint.rc == 0
+  when: actionlint_exist.rc == 0
 
 - block:
     - name: Get tar.gz
@@ -38,4 +38,4 @@
     - name: Install
       changed_when: true
       ansible.builtin.command: mv /tmp/actionlint /usr/local/bin/actionlint
-  when: exist_actionlint.rc != 0 or ( version_in_actionlint is defined and version_in_actionlint.stdout.find(actionlint_version) == -1 )
+  when: actionlint_exist.rc != 0 or ( actionlint_current_version is defined and actionlint_current_version.stdout.find(actionlint_version) == -1 )

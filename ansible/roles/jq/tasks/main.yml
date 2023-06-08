@@ -3,7 +3,7 @@
   ansible.builtin.command: which jq
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_jq
+  register: jq_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: jq --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_jq
+  register: jq_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_jq.rc == 0
+  when: jq_exist.rc == 0
 
 - block:
     - name: Get source
@@ -23,4 +23,4 @@
         dest: /usr/local/bin/jq
         mode: "0755"
 
-  when: exist_jq.rc != 0 or ( version_in_jq is defined and version_in_jq.stdout.find(jq_version) == -1 )
+  when: jq_exist.rc != 0 or ( jq_current_version is defined and jq_current_version.stdout.find(jq_version) == -1 )

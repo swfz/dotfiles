@@ -3,7 +3,7 @@
   ansible.builtin.command: which docker
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_docker
+  register: docker_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: docker --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_docker
+  register: docker_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_docker.rc == 0
+  when: docker_exist.rc == 0
 
 - block:
     - name: Download repo
@@ -32,4 +32,4 @@
         enabled: true
       when: ansible_env.get('CI', None) and ansible_env.CI != "true"
 
-  when: exist_docker.rc != 0 or ( version_in_docker is defined and version_in_docker.stdout.find(docker_version) == -1 )
+  when: docker_exist.rc != 0 or ( docker_current_version is defined and docker_current_version.stdout.find(docker_version) == -1 )

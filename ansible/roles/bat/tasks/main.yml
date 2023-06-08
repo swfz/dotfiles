@@ -3,7 +3,7 @@
   ansible.builtin.command: which bat
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_bat
+  register: bat_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: bat --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_bat
+  register: bat_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_bat.rc == 0
+  when: bat_exist.rc == 0
 
 - block:
     - name: Debian tasks
@@ -25,4 +25,4 @@
       ansible.builtin.include_tasks: redhat.yml
       when: ansible_os_family == 'RedHat'
 
-  when: exist_bat.rc != 0 or ( version_in_bat is defined and version_in_bat.stdout.find(bat_version) == -1 )
+  when: bat_exist.rc != 0 or ( bat_current_version is defined and bat_current_version.stdout.find(bat_version) == -1 )

@@ -3,7 +3,7 @@
   ansible.builtin.command: which aws
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_awscli
+  register: awscli_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.shell: "aws --version 2>&1 | grep -oP '(?<=aws-cli\\/)\\d+\\.\\d+\\.\\d+' "
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_awscli
+  register: awscli_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_awscli.rc == 0
+  when: awscli_exist.rc == 0
 
 - block:
     - name: Get zip
@@ -34,4 +34,4 @@
         cmd: ./aws/install --update
         chdir: /tmp
 
-  when: exist_awscli.rc != 0 or ( version_in_awscli is defined and version_in_awscli.stdout.find(awscli_version) == -1 )
+  when: awscli_exist.rc != 0 or ( awscli_current_version is defined and awscli_current_version.stdout.find(awscli_version) == -1 )

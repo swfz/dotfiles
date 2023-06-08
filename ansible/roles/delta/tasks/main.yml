@@ -7,7 +7,7 @@
   ansible.builtin.command: which delta
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_delta
+  register: delta_exist
   changed_when: false
   ignore_errors: true
 
@@ -15,10 +15,10 @@
   ansible.builtin.command: delta --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_delta
+  register: delta_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_delta.rc == 0
+  when: delta_exist.rc == 0
 
 - block:
     - name: Get source
@@ -35,4 +35,4 @@
     - name: Move delta
       changed_when: true
       ansible.builtin.command: mv /tmp/{{ delta.dir }}/delta /usr/local/bin/delta
-  when: exist_delta.rc != 0 or ( version_in_delta is defined and version_in_delta.stdout.find(delta_version) == -1 )
+  when: delta_exist.rc != 0 or ( delta_current_version is defined and delta_current_version.stdout.find(delta_version) == -1 )

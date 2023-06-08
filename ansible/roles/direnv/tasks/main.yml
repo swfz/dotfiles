@@ -3,7 +3,7 @@
   ansible.builtin.command: which direnv
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_direnv
+  register: direnv_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: direnv --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_direnv
+  register: direnv_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_direnv.rc == 0
+  when: direnv_exist.rc == 0
 
 - block:
     - name: Get source
@@ -25,7 +25,7 @@
         dest: /usr/local/bin/direnv
         mode: "0755"
 
-  when: exist_direnv.rc != 0 or ( version_in_direnv is defined and version_in_direnv.stdout.find(direnv_version) == -1 )
+  when: direnv_exist.rc != 0 or ( direnv_current_version is defined and direnv_current_version.stdout.find(direnv_version) == -1 )
 
 - name: Store direnv hook to zshenv
   ansible.builtin.lineinfile:

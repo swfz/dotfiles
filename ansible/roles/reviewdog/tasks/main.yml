@@ -3,7 +3,7 @@
   ansible.builtin.shell: command -v reviewdog
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_reviewdog
+  register: reviewdog_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: reviewdog --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_reviewdog
+  register: reviewdog_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_reviewdog.rc == 0
+  when: reviewdog_exist.rc == 0
 
 - block:
     - name: Get tar.gz
@@ -38,4 +38,4 @@
     - name: Install
       changed_when: true
       ansible.builtin.command: mv /tmp/reviewdog /usr/local/bin/reviewdog
-  when: exist_reviewdog.rc != 0 or ( version_in_reviewdog is defined and version_in_reviewdog.stdout.find(reviewdog_version) == -1 )
+  when: reviewdog_exist.rc != 0 or ( reviewdog_current_version is defined and reviewdog_current_version.stdout.find(reviewdog_version) == -1 )
