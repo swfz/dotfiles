@@ -10,7 +10,7 @@
   ansible.builtin.command: which zsh
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_zsh
+  register: zsh_exist
   changed_when: false
   ignore_errors: true
 
@@ -18,10 +18,10 @@
   ansible.builtin.command: zsh --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_zsh
+  register: zsh_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_zsh.rc == 0
+  when: zsh_exist.rc == 0
 
 - block:
     - name: Get source
@@ -41,4 +41,4 @@
         - make
         - make install
 
-  when: exist_zsh.rc != 0 or ( version_in_zsh is defined and version_in_zsh.stdout.find(zsh_version) == -1 )
+  when: zsh_exist.rc != 0 or ( zsh_current_version is defined and zsh_current_version.stdout.find(zsh_version) == -1 )

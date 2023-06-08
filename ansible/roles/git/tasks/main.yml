@@ -11,7 +11,7 @@
   ansible.builtin.command: which git
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_git
+  register: git_exist
   changed_when: false
   ignore_errors: true
 
@@ -19,10 +19,10 @@
   ansible.builtin.command: git --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_git
+  register: git_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_git.rc == 0
+  when: git_exist.rc == 0
 
 - block:
     - name: Get source
@@ -44,4 +44,4 @@
         - make
         - make install
 
-  when: exist_git.rc != 0 or ( version_in_git is defined and version_in_git.stdout.find(git_version.replace("v","")) == -1 )
+  when: git_exist.rc != 0 or ( git_current_version is defined and git_current_version.stdout.find(git_version.replace("v","")) == -1 )

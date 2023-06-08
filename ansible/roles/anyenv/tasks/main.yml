@@ -26,7 +26,7 @@
 
 - name: Exist envs
   ansible.builtin.shell: "{{ execute }} 'command -v {{ item.key }}'"
-  register: exist_envs
+  register: anyenv_envs_exist
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
@@ -36,7 +36,7 @@
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
-    - "{{ exist_envs.results }}"
+    - "{{ anyenv_envs_exist.results }}"
 
 - name: Store envs path to zshenv
   ansible.builtin.lineinfile:
@@ -67,7 +67,7 @@
 
 - name: Exist version in every envs
   ansible.builtin.shell: "{{ execute }} '{{ item.key }} versions | grep {{ item.value.version }}'"
-  register: exist_version
+  register: anyenv_version_exist
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
@@ -77,12 +77,12 @@
   when: item.1.rc != 0
   with_together:
     - "{{ envs }}"
-    - "{{ exist_version.results }}"
+    - "{{ anyenv_version_exist.results }}"
 
 - name: Exist global envs version
   ansible.builtin.shell: "{{ execute }} '{{ item.key }} global'"
   when: item.key != "goenv"
-  register: exist_global
+  register: anyenv_global_exist
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
@@ -92,4 +92,4 @@
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
   with_together:
     - "{{ envs }}"
-    - "{{ exist_global.results }}"
+    - "{{ anyenv_global_exist.results }}"

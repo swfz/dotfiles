@@ -3,7 +3,7 @@
   ansible.builtin.command: which docker-compose
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_docker_compose
+  register: docker_compose_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: docker-compose --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_docker_compose
+  register: docker_compose_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_docker_compose.rc == 0
+  when: docker_compose_exist.rc == 0
 
 - block:
     - name: Get source
@@ -23,4 +23,4 @@
         dest: /usr/local/bin/docker-compose
         mode: "0755"
 
-  when: exist_docker_compose.rc != 0 or ( version_in_docker_compose is defined and version_in_docker_compose.stdout.find(docker_compose_version) == -1 )
+  when: docker_compose_exist.rc != 0 or ( docker_compose_current_version is defined and docker_compose_current_version.stdout.find(docker_compose_version) == -1 )

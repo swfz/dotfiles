@@ -3,7 +3,7 @@
   ansible.builtin.command: which terraform
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_terraform
+  register: terraform_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.shell: terraform version | grep Terraform
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_terraform
+  register: terraform_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_terraform.rc == 0
+  when: terraform_exist.rc == 0
 
 - block:
     - name: Get zip
@@ -28,4 +28,4 @@
         dest: /usr/local/bin/
         copy: false
 
-  when: exist_terraform.rc != 0 or ( version_in_terraform is defined and version_in_terraform.stdout.find(terraform_version) == -1 )
+  when: terraform_exist.rc != 0 or ( terraform_current_version is defined and terraform_current_version.stdout.find(terraform_version) == -1 )

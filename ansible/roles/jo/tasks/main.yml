@@ -3,7 +3,7 @@
   ansible.builtin.command: which jo
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_jo
+  register: jo_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: jo -v
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_jo
+  register: jo_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_jo.rc == 0
+  when: jo_exist.rc == 0
 
 - block:
     - name: Get source
@@ -36,4 +36,4 @@
         - make
         - make install
 
-  when: exist_jo.rc != 0 or ( version_in_jo is defined and version_in_jo.stdout.find(jo_version) == -1 )
+  when: jo_exist.rc != 0 or ( jo_current_version is defined and jo_current_version.stdout.find(jo_version) == -1 )

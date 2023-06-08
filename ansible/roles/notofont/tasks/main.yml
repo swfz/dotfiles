@@ -22,14 +22,14 @@
   ansible.builtin.find:
     paths: /usr/share/fonts/noto/
     patterns: "*.otf"
-  register: otf_files
+  register: notofont_otf_files
 
 - name: Change permission
   ansible.builtin.file:
     path: "{{ item.path }}"
     mode: "0644"
   with_items:
-    - "{{ otf_files.files }}"
+    - "{{ notofont_otf_files.files }}"
 
 - name: Font-cache
   ansible.builtin.command:

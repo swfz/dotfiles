@@ -3,7 +3,7 @@
   ansible.builtin.command: which tmux
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_tmux
+  register: tmux_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: tmux -V
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_tmux
+  register: tmux_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_tmux.rc == 0
+  when: tmux_exist.rc == 0
 
 - block:
     - name: Install dependencies package
@@ -48,4 +48,4 @@
         - make
         - make install
 
-  when: exist_tmux.rc != 0 or ( version_in_tmux is defined and version_in_tmux.stdout.find(tmux_version) == -1 )
+  when: tmux_exist.rc != 0 or ( tmux_current_version is defined and tmux_current_version.stdout.find(tmux_version) == -1 )

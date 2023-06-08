@@ -3,7 +3,7 @@
   ansible.builtin.command: which peco
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: exist_peco
+  register: peco_exist
   changed_when: false
   ignore_errors: true
 
@@ -11,10 +11,10 @@
   ansible.builtin.command: peco --version
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  register: version_in_peco
+  register: peco_current_version
   changed_when: false
   ignore_errors: true
-  when: exist_peco.rc == 0
+  when: peco_exist.rc == 0
 
 - block:
     - name: Peco get source
@@ -31,4 +31,4 @@
     - name: Move peco
       changed_when: true
       ansible.builtin.command: mv /tmp/{{ peco.dir }}/peco /usr/local/bin/peco
-  when: exist_peco.rc != 0 or ( version_in_peco is defined and version_in_peco.stderr.find(peco_version) == -1 )
+  when: peco_exist.rc != 0 or ( peco_current_version is defined and peco_current_version.stderr.find(peco_version) == -1 )
