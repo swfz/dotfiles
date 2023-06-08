@@ -5,7 +5,8 @@
   changed_when: false
   ignore_errors: true
 
-- block:
+- name: Check and install
+  block:
     - name: Get glibc 2.18
       ansible.builtin.get_url:
         url: https://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz

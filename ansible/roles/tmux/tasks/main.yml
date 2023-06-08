@@ -16,7 +16,8 @@
   ignore_errors: true
   when: tmux_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Install dependencies package
       ansible.builtin.yum:
         name: [libevent-devel, ncurses-devel, gcc]

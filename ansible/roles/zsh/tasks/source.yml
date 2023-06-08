@@ -23,7 +23,8 @@
   ignore_errors: true
   when: zsh_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Get source
       ansible.builtin.get_url:
         url: "{{ zsh.src }}"

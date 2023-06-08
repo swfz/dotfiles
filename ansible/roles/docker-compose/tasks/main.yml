@@ -16,7 +16,8 @@
   ignore_errors: true
   when: docker_compose_exist.rc == 0
 
-- block:
+- name: Check and install
+  block:
     - name: Get source
       ansible.builtin.get_url:
         url: "{{ docker_compose.src }}"
