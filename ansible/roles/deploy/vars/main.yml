@@ -1,8 +1,8 @@
 ---
 git:
-  username: "{{ git_username|default('vagrant')}}"
-  usermail: "{{ git_usermail|default('vagrant@example.com')}}"
-powerline_dir: ~/.anyenv/envs/pyenv/versions/{{ envs.pyenv.version }}/lib/python{{ envs.pyenv.version.rsplit('.',1).pop(0) }}/site-packages/powerline
+  username: "{{ git_username | default('vagrant') }}"
+  usermail: "{{ git_usermail | default('vagrant@example.com') }}"
+powerline_dir: ~/.anyenv/envs/pyenv/versions/{{ envs.pyenv.version }}/lib/python{{ envs.pyenv.version.rsplit('.', 1).pop(0) }}/site-packages/powerline
 link:
   base:
     target_dir: "{{ powerline_dir }}/config_files/colorschemes"

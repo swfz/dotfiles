@@ -4,10 +4,6 @@ roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/delta/tasks/install-glibc.yml var-naming[no-role-prefix]
-roles/deploy/vars/main.yml jinja[spacing]
-roles/deploy/vars/main.yml jinja[spacing]
-roles/deploy/vars/main.yml jinja[spacing]
 roles/docker-compose/tasks/main.yml var-naming[no-role-prefix]
 roles/docker-compose/tasks/main.yml var-naming[no-role-prefix]
-roles/git/vars/main.yml jinja[spacing]
 roles/powerline/tasks/main.yml command-instead-of-shell
