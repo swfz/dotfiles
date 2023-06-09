@@ -3,6 +3,7 @@
   ansible.builtin.get_url:
     url: "{{ bat.deb }}"
     dest: /tmp/bat-{{ bat_version }}.deb
+    mode: 0600
 
 - name: Install bat
   ansible.builtin.apt:

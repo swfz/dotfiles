@@ -23,12 +23,14 @@
       ansible.builtin.get_url:
         url: "{{ actionlint.src.darwin }}"
         dest: /tmp/{{ actionlint.tgz }}
+        mode: 0600
       when: ansible_os_family == 'Darwin'
 
     - name: Get tar.gz
       ansible.builtin.get_url:
         url: "{{ actionlint.src.linux }}"
         dest: /tmp/{{ actionlint.tgz }}
+        mode: 0600
       when: ansible_os_family != 'Darwin'
 
     - name: Unarchive zip

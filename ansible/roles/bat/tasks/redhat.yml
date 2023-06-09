@@ -3,6 +3,7 @@
   ansible.builtin.get_url:
     url: "{{ bat.src }}"
     dest: /tmp/{{ bat.tgz }}
+    mode: 0600
 
 - name: Unarchive tar.gz
   ansible.builtin.unarchive:

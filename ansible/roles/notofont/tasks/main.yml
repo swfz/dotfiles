@@ -11,6 +11,7 @@
   ansible.builtin.get_url:
     url: "{{ notofont.src }}"
     dest: /tmp/{{ notofont.zip }}
+    mode: 0600
 
 - name: Unarchive zip
   ansible.builtin.unarchive:
