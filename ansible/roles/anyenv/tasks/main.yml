@@ -36,6 +36,7 @@
 - name: Install envs
   ansible.builtin.shell: "{{ execute }} 'anyenv install {{ item.0 }}'"
   when: item.1.rc != 0
+  changed_when: true
   with_together:
     - "{{ envs }}"
     - "{{ anyenv_envs_exist.results }}"
@@ -77,6 +78,7 @@
 - name: Install envs version
   ansible.builtin.shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
   when: item.1.rc != 0
+  changed_when: true
   with_together:
     - "{{ envs }}"
     - "{{ anyenv_version_exist.results }}"
@@ -92,6 +94,7 @@
 - name: Set global envs version
   ansible.builtin.shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
+  changed_when: true
   with_together:
     - "{{ envs }}"
     - "{{ anyenv_global_exist.results }}"
