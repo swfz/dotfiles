@@ -2,7 +2,7 @@
 - name: Upgrade pip
   ansible.builtin.pip:
     name: pip
-- name: Install powerline  # noqa no-changed-when
+- name: Install powerline  # noqa no-changed-when noqa command-instead-of-shell
   # FIXME not idempotency because install login user. but not loaded zshenv via pip module
   # pip: name="{{ item }}" state=present editable=false
   ansible.builtin.shell: "{{ execute }} pip install {{ item }}"
