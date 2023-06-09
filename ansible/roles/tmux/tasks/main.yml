@@ -45,7 +45,9 @@
 
     - name: Configure make install tmux
       changed_when: true
-      ansible.builtin.command: chdir=/tmp/{{ tmux.dir }} {{ item }}
+      ansible.builtin.command:
+        chdir: /tmp/{{ tmux.dir }}
+        cmd: "{{ item }}"
       with_items:
         - ./configure
         - make

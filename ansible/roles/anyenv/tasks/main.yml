@@ -1,6 +1,8 @@
 ---
 - name: Install anyenv
-  ansible.builtin.git: repo="{{ anyenv.url }}" dest=~/.anyenv
+  ansible.builtin.git:
+    repo: "{{ anyenv.url }}"
+    dest: ~/.anyenv
 - name: Store anyenv profile to zshenv
   ansible.builtin.lineinfile:
     dest: ~/.zshenv

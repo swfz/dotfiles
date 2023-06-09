@@ -40,7 +40,9 @@
         copy: false
 
     - name: Configure make install git
-      ansible.builtin.command: chdir=/tmp/{{ git.dir }} {{ item }}
+      ansible.builtin.command:
+        chdir: /tmp/{{ git.dir }}
+        cmd: "{{ item }}"
       changed_when: true
       with_items:
         - ./configure

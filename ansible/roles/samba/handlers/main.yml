@@ -1,4 +1,6 @@
 ---
 - name: Restart samba
-  ansible.builtin.service: name=smb state=restarted
+  ansible.builtin.service:
+    name: smb
+    state: restarted
   when: ansible_env.get('CI', None) and ansible_env.CI != "true"
