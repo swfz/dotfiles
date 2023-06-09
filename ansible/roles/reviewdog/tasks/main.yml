@@ -23,12 +23,14 @@
       ansible.builtin.get_url:
         url: "{{ reviewdog.src.darwin }}"
         dest: /tmp/{{ reviewdog.tgz }}
+        mode: 0600
       when: ansible_os_family == 'Darwin'
 
     - name: Get tar.gz
       ansible.builtin.get_url:
         url: "{{ reviewdog.src.linux }}"
         dest: /tmp/{{ reviewdog.tgz }}
+        mode: 0600
       when: ansible_os_family != 'Darwin'
 
     - name: Unarchive zip

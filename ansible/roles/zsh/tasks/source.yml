@@ -30,6 +30,7 @@
       ansible.builtin.get_url:
         url: "{{ zsh.src }}"
         dest: /tmp/{{ zsh.xz }}
+        mode: 0600
 
     - name: Unarchive tar.xz
       ansible.builtin.command: chdir=/tmp/ tar Jxfv /tmp/{{ zsh.xz }}

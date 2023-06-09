@@ -35,6 +35,7 @@
       ansible.builtin.get_url:
         url: "{{ tmux.src }}"
         dest: /tmp/{{ tmux.tgz }}
+        mode: 0600
 
     - name: Unarchive tar.gz
       ansible.builtin.unarchive:

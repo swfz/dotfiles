@@ -12,6 +12,7 @@
       ansible.builtin.get_url:
         url: https://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.gz
         dest: /tmp/glibc-2.18.tar.gz
+        mode: 0600
 
     - name: Unarchive tar.gz
       ansible.builtin.unarchive:

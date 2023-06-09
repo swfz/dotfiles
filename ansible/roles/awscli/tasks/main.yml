@@ -23,6 +23,7 @@
       ansible.builtin.get_url:
         url: "{{ awscli.src }}"
         dest: /tmp/{{ awscli.zip }}
+        mode: 0600
 
     - name: Unarchive zip
       ansible.builtin.unarchive:
