@@ -30,7 +30,7 @@
       ansible.builtin.get_url:
         url: "{{ zsh.src }}"
         dest: /tmp/{{ zsh.xz }}
-        mode: 0600
+        mode: 0644
 
     - name: Unarchive tar.xz
       ansible.builtin.unarchive:
