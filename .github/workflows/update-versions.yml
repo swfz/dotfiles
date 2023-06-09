@@ -18,9 +18,6 @@ jobs:
           - name: docker
             repo: docker/docker-ce
             type: beta-rc
-          - name: embulk
-            repo: embulk/embulk
-            type: prefix
           - name: vim
             repo: vim/vim
             type: from-tag
