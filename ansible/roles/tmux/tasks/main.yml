@@ -17,6 +17,7 @@
   when: tmux_exist.rc == 0
 
 - name: Check and install
+  when: tmux_exist.rc != 0 or ( tmux_current_version is defined and tmux_current_version.stdout.find(tmux_version) == -1 )
   block:
     - name: Install dependencies package
       ansible.builtin.yum:
@@ -48,5 +49,3 @@
         - ./configure
         - make
         - make install
-
-  when: tmux_exist.rc != 0 or ( tmux_current_version is defined and tmux_current_version.stdout.find(tmux_version) == -1 )

@@ -39,10 +39,9 @@
   when: vim8_exist.rc == 0
 
 - name: Check and install
+  when: vim8_exist.rc != 0 or ( vim8_current_version is defined and vim8_current_version.stdout.find(".".join(vim_version.split('.')[0:2])) == -1) or ( vim8_patch_current_version is defined and vim8_patch_current_version.stdout.find(vim_version.split('.')[2]) == -1)
   block:
     - name: Install vim
       environment:
         PATH: /usr/local/bin:{{ ansible_env.PATH }}
       ansible.builtin.script: install.sh v{{ vim_version }}
-  when: vim8_exist.rc != 0 or ( vim8_current_version is defined and vim8_current_version.stdout.find(".".join(vim_version.split('.')[0:2])) == -1) or ( vim8_patch_current_version is
-    defined and vim8_patch_current_version.stdout.find(vim_version.split('.')[2]) == -1)

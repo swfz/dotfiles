@@ -24,6 +24,7 @@
   when: zsh_exist.rc == 0
 
 - name: Check and install
+  when: zsh_exist.rc != 0 or ( zsh_current_version is defined and zsh_current_version.stdout.find(zsh_version) == -1 )
   block:
     - name: Get source
       ansible.builtin.get_url:
@@ -41,5 +42,3 @@
         - ./configure --with-tcsetpgrp
         - make
         - make install
-
-  when: zsh_exist.rc != 0 or ( zsh_current_version is defined and zsh_current_version.stdout.find(zsh_version) == -1 )

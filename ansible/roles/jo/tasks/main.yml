@@ -17,6 +17,7 @@
   when: jo_exist.rc == 0
 
 - name: Check and install
+  when: jo_exist.rc != 0 or ( jo_current_version is defined and jo_current_version.stdout.find(jo_version) == -1 )
   block:
     - name: Get source
       ansible.builtin.get_url:
@@ -36,5 +37,3 @@
         - ./configure
         - make
         - make install
-
-  when: jo_exist.rc != 0 or ( jo_current_version is defined and jo_current_version.stdout.find(jo_version) == -1 )

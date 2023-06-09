@@ -17,6 +17,7 @@
   when: peco_exist.rc == 0
 
 - name: Check and install
+  when: peco_exist.rc != 0 or ( peco_current_version is defined and peco_current_version.stderr.find(peco_version) == -1 )
   block:
     - name: Peco get source
       ansible.builtin.get_url:
@@ -32,4 +33,3 @@
     - name: Move peco
       changed_when: true
       ansible.builtin.command: mv /tmp/{{ peco.dir }}/peco /usr/local/bin/peco
-  when: peco_exist.rc != 0 or ( peco_current_version is defined and peco_current_version.stderr.find(peco_version) == -1 )

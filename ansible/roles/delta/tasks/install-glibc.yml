@@ -6,6 +6,7 @@
   ignore_errors: true
 
 - name: Check and install
+  when: glibc_current_version.stdout.find('stable release version 2.18') == -1
   block:
     - name: Get glibc 2.18
       ansible.builtin.get_url:
@@ -31,5 +32,3 @@
         - ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin
         - make
         - make install
-
-  when: glibc_current_version.stdout.find('stable release version 2.18') == -1

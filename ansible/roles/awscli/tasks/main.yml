@@ -17,6 +17,7 @@
   when: awscli_exist.rc == 0
 
 - name: Check and install
+  when: awscli_exist.rc != 0 or ( awscli_current_version is defined and awscli_current_version.stdout.find(awscli_version) == -1 )
   block:
     - name: Get zip
       ansible.builtin.get_url:
@@ -34,5 +35,3 @@
       ansible.builtin.command:
         cmd: ./aws/install --update
         chdir: /tmp
-
-  when: awscli_exist.rc != 0 or ( awscli_current_version is defined and awscli_current_version.stdout.find(awscli_version) == -1 )

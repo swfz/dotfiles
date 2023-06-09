@@ -25,6 +25,7 @@
   when: git_exist.rc == 0
 
 - name: Check and install
+  when: git_exist.rc != 0 or ( git_current_version is defined and git_current_version.stdout.find(git_version.replace("v","")) == -1 )
   block:
     - name: Get source
       ansible.builtin.get_url:
@@ -44,5 +45,3 @@
         - ./configure
         - make
         - make install
-
-  when: git_exist.rc != 0 or ( git_current_version is defined and git_current_version.stdout.find(git_version.replace("v","")) == -1 )

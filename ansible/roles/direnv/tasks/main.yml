@@ -17,6 +17,7 @@
   when: direnv_exist.rc == 0
 
 - name: Check and install
+  when: direnv_exist.rc != 0 or ( direnv_current_version is defined and direnv_current_version.stdout.find(direnv_version) == -1 )
   block:
     - name: Get source
       become: true
@@ -25,8 +26,6 @@
         url: "{{ direnv.src }}"
         dest: /usr/local/bin/direnv
         mode: "0755"
-
-  when: direnv_exist.rc != 0 or ( direnv_current_version is defined and direnv_current_version.stdout.find(direnv_version) == -1 )
 
 - name: Store direnv hook to zshenv
   ansible.builtin.lineinfile:
