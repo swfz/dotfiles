@@ -32,7 +32,9 @@
         copy: false
 
     - name: Configure make install jo
-      ansible.builtin.command: chdir=/tmp/{{ jo.dir }} {{ item }}
+      ansible.builtin.command:
+        chdir: /tmp/{{ jo.dir }}
+        cmd: "{{ item }}"
       changed_when: true
       with_items:
         - ./configure

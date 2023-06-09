@@ -4,7 +4,9 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Install zsh(debian)
-  ansible.builtin.apt: name=zsh state=present
+  ansible.builtin.apt:
+    name: zsh
+    state: present
   when: ansible_os_family == 'Debian'
 
 - name: Zsh_path
@@ -21,4 +23,6 @@
     line: "{{ zsh_path.stdout }}"
 
 - name: Change shell in {{ user }}
-  ansible.builtin.user: name={{ user }} shell={{ zsh_path.stdout }}
+  ansible.builtin.user:
+    name: "{{ user }}"
+    shell: "{{ zsh_path.stdout }}"
