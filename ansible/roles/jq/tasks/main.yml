@@ -17,11 +17,10 @@
   when: jq_exist.rc == 0
 
 - name: Check and install
+  when: jq_exist.rc != 0 or ( jq_current_version is defined and jq_current_version.stdout.find(jq_version) == -1 )
   block:
     - name: Get source
       ansible.builtin.get_url:
         url: "{{ jq.src }}"
         dest: /usr/local/bin/jq
         mode: "0755"
-
-  when: jq_exist.rc != 0 or ( jq_current_version is defined and jq_current_version.stdout.find(jq_version) == -1 )

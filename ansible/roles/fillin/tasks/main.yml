@@ -17,6 +17,7 @@
   when: fillin_exist.rc == 0
 
 - name: Check and install
+  when: fillin_exist.rc != 0 or ( fillin_current_version is defined and fillin_current_version.stdout.find(fillin_version) == -1 )
   block:
     - name: Get source
       ansible.builtin.get_url:
@@ -32,4 +33,3 @@
     - name: Move fillin
       changed_when: true
       ansible.builtin.command: mv /tmp/{{ fillin.dir }}/fillin /usr/local/bin/fillin
-  when: fillin_exist.rc != 0 or ( fillin_current_version is defined and fillin_current_version.stdout.find(fillin_version) == -1 )

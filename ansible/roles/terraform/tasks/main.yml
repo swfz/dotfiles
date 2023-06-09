@@ -17,6 +17,7 @@
   when: terraform_exist.rc == 0
 
 - name: Check and install
+  when: terraform_exist.rc != 0 or ( terraform_current_version is defined and terraform_current_version.stdout.find(terraform_version) == -1 )
   block:
     - name: Get zip
       ansible.builtin.get_url:
@@ -28,5 +29,3 @@
         src: /tmp/{{ terraform.zip }}
         dest: /usr/local/bin/
         copy: false
-
-  when: terraform_exist.rc != 0 or ( terraform_current_version is defined and terraform_current_version.stdout.find(terraform_version) == -1 )

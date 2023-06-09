@@ -17,11 +17,10 @@
   when: docker_compose_exist.rc == 0
 
 - name: Check and install
+  when: docker_compose_exist.rc != 0 or ( docker_compose_current_version is defined and docker_compose_current_version.stdout.find(docker_compose_version) == -1 )
   block:
     - name: Get source
       ansible.builtin.get_url:
         url: "{{ docker_compose.src }}"
         dest: /usr/local/bin/docker-compose
         mode: "0755"
-
-  when: docker_compose_exist.rc != 0 or ( docker_compose_current_version is defined and docker_compose_current_version.stdout.find(docker_compose_version) == -1 )

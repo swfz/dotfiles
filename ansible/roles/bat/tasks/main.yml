@@ -17,6 +17,7 @@
   when: bat_exist.rc == 0
 
 - name: Check and install
+  when: bat_exist.rc != 0 or ( bat_current_version is defined and bat_current_version.stdout.find(bat_version) == -1 )
   block:
     - name: Debian tasks
       ansible.builtin.include_tasks: debian.yml
@@ -25,5 +26,3 @@
     - name: Redhat install tasks
       ansible.builtin.include_tasks: redhat.yml
       when: ansible_os_family == 'RedHat'
-
-  when: bat_exist.rc != 0 or ( bat_current_version is defined and bat_current_version.stdout.find(bat_version) == -1 )

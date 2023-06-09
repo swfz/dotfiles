@@ -17,6 +17,7 @@
   when: actionlint_exist.rc == 0
 
 - name: Check and install
+  when: actionlint_exist.rc != 0 or ( actionlint_current_version is defined and actionlint_current_version.stdout.find(actionlint_version) == -1 )
   block:
     - name: Get tar.gz
       ansible.builtin.get_url:
@@ -39,4 +40,3 @@
     - name: Install
       changed_when: true
       ansible.builtin.command: mv /tmp/actionlint /usr/local/bin/actionlint
-  when: actionlint_exist.rc != 0 or ( actionlint_current_version is defined and actionlint_current_version.stdout.find(actionlint_version) == -1 )

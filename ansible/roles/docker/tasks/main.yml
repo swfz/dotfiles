@@ -17,6 +17,7 @@
   when: docker_exist.rc == 0
 
 - name: Check and install
+  when: docker_exist.rc != 0 or ( docker_current_version is defined and docker_current_version.stdout.find(docker_version) == -1 )
   block:
     - name: Download repo
       changed_when: true
@@ -32,5 +33,3 @@
         state: started
         enabled: true
       when: ansible_env.get('CI', None) and ansible_env.CI != "true"
-
-  when: docker_exist.rc != 0 or ( docker_current_version is defined and docker_current_version.stdout.find(docker_version) == -1 )

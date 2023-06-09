@@ -17,6 +17,7 @@
   when: reviewdog_exist.rc == 0
 
 - name: Check and install
+  when: reviewdog_exist.rc != 0 or ( reviewdog_current_version is defined and reviewdog_current_version.stdout.find(reviewdog_version) == -1 )
   block:
     - name: Get tar.gz
       ansible.builtin.get_url:
@@ -39,4 +40,3 @@
     - name: Install
       changed_when: true
       ansible.builtin.command: mv /tmp/reviewdog /usr/local/bin/reviewdog
-  when: reviewdog_exist.rc != 0 or ( reviewdog_current_version is defined and reviewdog_current_version.stdout.find(reviewdog_version) == -1 )
