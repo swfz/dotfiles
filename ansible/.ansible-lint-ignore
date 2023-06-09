@@ -1,11 +1,8 @@
 roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/anyenv/tasks/main.yml command-instead-of-shell
-roles/anyenv/tasks/main.yml no-changed-when
-roles/anyenv/tasks/main.yml command-instead-of-shell
-roles/anyenv/tasks/main.yml no-changed-when
 roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/anyenv/tasks/main.yml command-instead-of-shell
-roles/anyenv/tasks/main.yml no-changed-when
+roles/anyenv/tasks/main.yml command-instead-of-shell
 roles/delta/tasks/install-glibc.yml var-naming[no-role-prefix]
 roles/deploy/vars/main.yml jinja[spacing]
 roles/deploy/vars/main.yml jinja[spacing]
