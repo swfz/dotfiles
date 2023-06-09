@@ -33,9 +33,9 @@
         mode: 0600
 
     - name: Unarchive tar.xz
-      ansible.builtin.command:
-        chdir: /tmp/
-        cmd: tar Jxfv /tmp/{{ zsh.xz }}
+      ansible.builtin.unarchive:
+        src: /tmp/{{ zsh.xz }}
+        dest: /tmp/
       changed_when: true
 
     - name: Configure make install zsh
