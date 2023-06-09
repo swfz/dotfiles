@@ -11,4 +11,3 @@ roles/docker-compose/tasks/main.yml var-naming[no-role-prefix]
 roles/docker-compose/tasks/main.yml var-naming[no-role-prefix]
 roles/git/vars/main.yml jinja[spacing]
 roles/powerline/tasks/main.yml command-instead-of-shell
-roles/zsh/tasks/source.yml command-instead-of-module
