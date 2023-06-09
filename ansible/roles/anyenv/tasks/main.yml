@@ -26,14 +26,14 @@
       '.*Do you want to checkout.*': y
   when: not anyenv_install_dir.stat.exists
 
-- name: Exist envs
+- name: Exist envs  # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ execute }} 'command -v {{ item.key }}'"
   register: anyenv_envs_exist
   changed_when: false
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: Install envs
+- name: Install envs  # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ execute }} 'anyenv install {{ item.0 }}'"
   when: item.1.rc != 0
   changed_when: true
@@ -75,7 +75,7 @@
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: Install envs version
+- name: Install envs version  # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ execute }} '{{ item.0 }} install {{ envs[item.0].version }}'"
   when: item.1.rc != 0
   changed_when: true
@@ -83,7 +83,7 @@
     - "{{ envs }}"
     - "{{ anyenv_version_exist.results }}"
 
-- name: Exist global envs version
+- name: Exist global envs version  # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ execute }} '{{ item.key }} global'"
   when: item.key != "goenv"
   register: anyenv_global_exist
@@ -91,7 +91,7 @@
   ignore_errors: true
   with_dict: "{{ envs }}"
 
-- name: Set global envs version
+- name: Set global envs version  # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ execute }} '{{ item.0 }} global {{ envs[item.0].version }}'"
   when: item.1.stdout is defined and item.1.stdout.find(envs[item.0].version) == -1 and item.0 != 'goenv'
   changed_when: true
