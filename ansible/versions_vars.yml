@@ -19,7 +19,7 @@ peco_version: v0.5.11
 # dummy
 q_version: 1.7.1-1
 # dummy
-terraform_version: 1.5.3
+terraform_version: 1.6.0-alpha20230719
 # dummy
 tmux_version: 3.2a
 # dummy
