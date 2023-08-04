@@ -104,3 +104,8 @@ function gdif(){
 function bookmarklet(){
   sed -e ':loop;N;$!b loop;s/\n/ /g' -e 's/ \+/%20/g' -e 's/^/javascript:/'
 }
+
+# Git log list
+function gll(){
+  git log $(git merge-base $(git for-each-ref --format='%(refname:short)' refs/heads | grep --color=no -P 'main|master') $(git branch --show-current))..$(git branch --show-current) --pretty="format:%h %s"
+}
