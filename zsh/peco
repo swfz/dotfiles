@@ -110,3 +110,11 @@ function peco-gh-pr () {
 zle -N peco-gh-pr
 bindkey '^gpr' peco-gh-pr
 
+# gh run のリストからIDを選択
+function peco-gh-run () {
+  local runs="$(gh run list | peco | awk -F'[ ]' 'BEGIN{FS="\t"}{print $7}')"
+  peco-p ${runs}
+}
+zle -N peco-gh-run
+bindkey '^gr' peco-gh-run
+
