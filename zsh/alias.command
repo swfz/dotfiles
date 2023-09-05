@@ -81,3 +81,6 @@ alias dktop="sudo -E docker top"
 # tmux
 alias tmcp="xargs -0 tmux set-buffer"
 
+# pnpm
+alias pn="pnpm"
+
