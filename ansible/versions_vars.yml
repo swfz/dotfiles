@@ -12,7 +12,7 @@ docker_version: v19.03.14
 git_version: v2.42.0
 # dummy
 jo_version: "1.9"
-# dummy
+# datasource=github-releases depName=jqlang/jq
 jq_version: "1.6"
 # datasource=github-releases depName=peco/peco
 peco_version: v0.5.11
