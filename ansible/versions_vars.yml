@@ -13,7 +13,7 @@ git_version: v2.42.0
 # dummy
 jo_version: "1.9"
 # datasource=github-releases depName=jqlang/jq
-jq_version: "1.6"
+jq_version: "jq-1.6"
 # datasource=github-releases depName=peco/peco
 peco_version: v0.5.11
 # dummy
