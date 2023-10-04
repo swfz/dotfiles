@@ -145,6 +145,13 @@ jobs:
           ~/.local/bin/ansible-lint --version
           ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml codespace.yml
 
+  action-timeline:
+    if: always()
+    runs-on: ubuntu-latest
+    needs: [lint, build-centos, build-mac, build-ubuntu, build-codespace]
+    steps:
+      - uses: Kesin11/actions-timeline@v1.0.0
+
   slack-notify:
     if: always()
     needs: [lint, build-centos, build-mac, build-ubuntu, build-codespace]
