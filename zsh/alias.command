@@ -18,7 +18,7 @@ alias srv="svn revert"
 #git
 alias gst="git status"
 alias gba="git branch -a"
-alias gci="git commit"
+alias gc="git commit"
 alias gpush="git push"
 alias gpull="git pull"
 alias gsstash="git stash"

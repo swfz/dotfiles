@@ -1,11 +1,15 @@
 [user]
   name = {{ git.username|default('vagrant') }}
   email = {{ git.usermail|default('vagrant@example.com') }}
+[pull]
+  rebase = false
 [color]
   ui = true
 [color "diff"]
   old = 013
   new = 014
+  meta = 220
+  frag = 245
   whitespace = "red reverse"
   compactionHeuristic = true
 [color "diff-hightlight"]
@@ -20,7 +24,7 @@
   deleted = red
 [core]
   editor = {{ git_editor|default('vi') }}
-  pager  = less -cm
+  pager  = delta
   quotepath = false
   hooksPath = ~/git-hooks/hooks
 [url "https://"]
@@ -28,13 +32,18 @@
 [http]
   sslVerify = false
 [alias]
-  a  = add
-  ci = commit
+  a = add
+  c = commit
   co = checkout
+  r = restore
+  s = switch
   st = status -sb
   rv = remote -v
   rso = remote show origin
   f  = fetch -p
+  p  = push
+  pfwl = push --force-with-lease
+  pf = push -f
   # branch
   b  = branch
   ba = branch -a
@@ -47,6 +56,7 @@
   rank = shortlog -s -n --no-merges
   ltg = log --graph --date=short --pretty=format:'%Cgreen%h %cd %Cblue%cn %Creset%s'
   lta = log --graph --all --color --pretty='%x09%h %cn%x09%s %Cred%d%Creset'
+  list = log --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --date=short
   # diff
   dd = log -p --reverse
   df = log --stat --name-only
@@ -60,3 +70,18 @@
   d4 = diff HEAD~~~~
   d5 = diff HEAD~~~~~
   d10 = diff HEAD~~~~~~~~~~
+[delta]
+  syntax-theme = DarkNeon
+  side-by-side = false
+  keep-plus-minus-markers = true
+  line-numbers = false
+  plus-style = syntax 17
+  plus-non-emph-style = cyan 17
+  plus-emph-style = white 25
+  plus-empty-line-marker-style = cyan
+  minus-style = syntax 89
+  minus-non-emph-style = magenta 89
+  minus-emph-style = white 162
+  minus-empty-line-marker-style = magenta
+  hunk-header-style = ul 202
+  file-style = 82
