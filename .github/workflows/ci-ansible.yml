@@ -79,26 +79,6 @@ jobs:
           cd ansible
           ansible-playbook -i localhost, -c local mac.yml
 
-  build-centos:
-    needs: set-tags-matrix
-    runs-on: ubuntu-latest
-    name: 'playbook centos'
-    strategy:
-      fail-fast: false
-      matrix:
-        tag: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
-    steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-      - if: github.event.client_payload
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-        with:
-          ref: ${{ github.event.client_payload.ref }}
-      - name: 'ansible playbook centos'
-        env:
-          CI: true
-        run: |
-          docker-compose run centos ansible-playbook -i localhost, -c local centos.yml --tags "${{ matrix.tag }}"
-
   build-codespace:
     runs-on: ubuntu-latest
     name: 'playbook codespace'
@@ -143,18 +123,18 @@ jobs:
           cd ansible
           python3 --version
           ~/.local/bin/ansible-lint --version
-          ~/.local/bin/ansible-lint centos.yml mac.yml ubuntu.yml codespace.yml
+          ~/.local/bin/ansible-lint mac.yml ubuntu.yml codespace.yml
 
   action-timeline:
     if: always()
     runs-on: ubuntu-latest
-    needs: [lint, build-centos, build-mac, build-ubuntu, build-codespace]
+    needs: [lint, build-mac, build-ubuntu, build-codespace]
     steps:
       - uses: Kesin11/actions-timeline@v1.0.0
 
   slack-notify:
     if: always()
-    needs: [lint, build-centos, build-mac, build-ubuntu, build-codespace]
+    needs: [lint, build-mac, build-ubuntu, build-codespace]
     name: post slack
     runs-on: ubuntu-latest
     steps:
