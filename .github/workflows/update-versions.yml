@@ -24,9 +24,6 @@ jobs:
           - name: jo
             repo: jpmens/jo
             type: prefix
-          - name: jq
-            repo: stedolan/jq
-            type: prefix
           - name: q
             repo: harelba/q
             type: from-tag
