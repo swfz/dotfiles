@@ -7,18 +7,13 @@ ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --
 # codespace
 
 ```
-ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-become-pass
-```
-
-# centos
-
-```
-ansible-playbook -i hosts development.yml
+ansible-playbook -i localhost, -c local codespace.yml --extra-vars "user='hoge'" --ask-become-pass
 ```
 
 # use tag
 
 ```
+ansible-playbook -i hosts -c local development.yml --list-tags
 ansible-playbook -i hosts -c local development.yml --tags "git"
 ```
 
