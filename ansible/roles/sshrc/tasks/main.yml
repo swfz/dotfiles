@@ -1,6 +1,0 @@
----
-- name: get source
-  get_url:
-    url: "{{ sshrc.src }}"
-    dest: /usr/local/bin/sshrc
-    mode: 0755
