@@ -1,4 +1,0 @@
----
-nginx:
-  repo: http://nginx.org/packages/centos/{{ ansible_distribution_major_version }}/noarch/RPMS/nginx-release-centos-{{ ansible_distribution_major_version }}-0.el{{
-    ansible_distribution_major_version }}.ngx.noarch.rpm
