@@ -83,11 +83,12 @@ jobs:
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
         name: Generate token
         id: generate_token
-        uses: tibdex/github-app-token@v1.9
+        uses: actions/create-github-app-token@v1.5.0
         with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
-          repository: swfz/dotfiles
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: swfz
+          repositories: dotfiles
 
       # personal tokenを使っているのはPR作ったらprに紐づくworkflowを発火させたいため
       # GITHUB_TOKENだと権限が足りない
