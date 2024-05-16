@@ -37,7 +37,7 @@ jobs:
             repo: tmux/tmux
             type: prefix
     steps:
-      - uses: actions/checkout@v4.1.5
+      - uses: actions/checkout@v4.1.6
       - name: install yq
         run: |
           sudo add-apt-repository ppa:rmescandon/yq
