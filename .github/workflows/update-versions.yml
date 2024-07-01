@@ -83,7 +83,7 @@ jobs:
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
         name: Generate token
         id: generate_token
-        uses: actions/create-github-app-token@v1.10.2
+        uses: actions/create-github-app-token@v1.10.3
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
