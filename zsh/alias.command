@@ -56,6 +56,8 @@ alias GC="grep --color=always"
 # ltsv to json from fluentd
 alias ltoj="awk -F\"\\t\" '{print \$3}'"
 alias jqless="jq '.' -C | less -R"
+# json array to csv [{a:1,...},{....}] to csv
+alias jtoc="jq -r '(.[0]|to_entries|map(.key)),(.[]|[.[]])|@csv'"
 # for twitter
 alias twjq="jq --unbuffered -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }'"
 alias twjqless="jq --unbuffered -C '{start: .started, end: .finished, req_method: .payload.request.method, req_path: .payload.request.path, req_body: .payload.request.body, res_code: .payload.response.code, res_body: .payload.response.body|fromjson }' | less -R "
