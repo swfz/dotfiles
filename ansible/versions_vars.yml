@@ -9,7 +9,7 @@ docker_compose_version: v2.29.1
 # dummy
 docker_version: v19.03.14
 # datasource=github-tags depName=git/git
-git_version: v2.45.2
+git_version: v2.46.0
 # dummy
 jo_version: "1.9"
 # datasource=github-releases depName=jqlang/jq
