@@ -92,8 +92,8 @@ jobs:
         env:
           CI: true
         run: |
-          docker-compose build codespace
-          docker-compose run codespace sh setup.sh
+          docker compose build codespace
+          docker compose run codespace sh setup.sh
 
   lint:
     runs-on: ubuntu-latest
