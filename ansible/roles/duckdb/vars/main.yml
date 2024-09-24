@@ -1,0 +1,5 @@
+---
+duckdb:
+  src:
+    linux: https://github.com/duckdb/duckdb/releases/download/{{ duckdb_version }}/duckdb_cli-linux-amd64.zip
+  zip: duckdb_{{ duckdb_version }}.zip

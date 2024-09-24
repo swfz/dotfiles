@@ -34,3 +34,6 @@ fillin_version: v0.3.3
 actionlint_version: v1.7.2
 # datasource=github-releases depName=reviewdog/reviewdog
 reviewdog_version: v0.20.2
+# datasource=github-releases depName=duckdb/duckdb
+duckdb_version: v1.1.1
+
