@@ -1,0 +1,36 @@
+---
+- name: Exist duckdb  # noqa command-instead-of-shell
+  ansible.builtin.shell: command -v duckdb
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: duckdb_exist
+  changed_when: false
+  ignore_errors: true
+
+- name: Get duckdb version
+  ansible.builtin.shell: duckdb --version | head -n 1 | awk '{print $1}'
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: duckdb_current_version
+  changed_when: false
+  ignore_errors: true
+  when: duckdb_exist.rc == 0
+
+- name: Check and install
+  when: duckdb_exist.rc != 0 or ( duckdb_current_version is defined and duckdb_current_version.stdout.find(duckdb_version) == -1 )
+  block:
+    - name: Get zip
+      ansible.builtin.get_url:
+        url: "{{ duckdb.src.linux }}"
+        dest: /tmp/{{ duckdb.zip }}
+        mode: 0600
+
+    - name: Unarchive zip
+      ansible.builtin.unarchive:
+        src: /tmp/{{ duckdb.zip }}
+        dest: /tmp/
+        copy: false
+
+    - name: Install
+      changed_when: true
+      ansible.builtin.command: mv /tmp/duckdb /usr/local/bin/duckdb

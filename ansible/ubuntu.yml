@@ -26,6 +26,7 @@
     - { role: fillin, tags: [fillin, tool] }
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
+    - { role: duckdb, tags: [duckdb, tool] }
 
 - name: Play for Ubuntu(User)
   hosts: localhost
