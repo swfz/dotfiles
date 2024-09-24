@@ -16,39 +16,29 @@
   ignore_errors: true
   when: tmux_exist.rc == 0
 
-- name: Check and install
-  when: tmux_exist.rc != 0 or ( tmux_current_version is defined and tmux_current_version.stdout.find(tmux_version) == -1 )
-  block:
-    - name: Install dependencies package
-      ansible.builtin.yum:
-        name: [libevent-devel, ncurses-devel, gcc]
-        state: installed
-      when: ansible_os_family == 'RedHat'
+- name: Install dependencies package
+  ansible.builtin.apt:
+    name: [bison, libevent-dev, libncurses-dev]
+    state: present
 
-    - name: Install dependencies package
-      ansible.builtin.apt:
-        name: [libevent-dev, libncurses-dev]
-        state: present
-      when: ansible_os_family == 'Debian'
+- name: Get source
+  ansible.builtin.get_url:
+    url: "{{ tmux.src }}"
+    dest: /tmp/{{ tmux.tgz }}
+    mode: 0600
 
-    - name: Get source
-      ansible.builtin.get_url:
-        url: "{{ tmux.src }}"
-        dest: /tmp/{{ tmux.tgz }}
-        mode: 0600
+- name: Unarchive tar.gz
+  ansible.builtin.unarchive:
+    src: /tmp/{{ tmux.tgz }}
+    dest: /tmp
+    copy: false
 
-    - name: Unarchive tar.gz
-      ansible.builtin.unarchive:
-        src: /tmp/{{ tmux.tgz }}
-        dest: /tmp
-        copy: false
-
-    - name: Configure make install tmux
-      changed_when: true
-      ansible.builtin.command:
-        chdir: /tmp/{{ tmux.dir }}
-        cmd: "{{ item }}"
-      with_items:
-        - ./configure
-        - make
-        - make install
+- name: Configure make install tmux
+  changed_when: true
+  ansible.builtin.command:
+    chdir: /tmp/{{ tmux.dir }}
+    cmd: "{{ item }}"
+  with_items:
+    - ./configure
+    - make
+    - make install
