@@ -3,6 +3,10 @@
   email = {{ git.usermail|default('vagrant@example.com') }}
 [pull]
   rebase = false
+[rebase]
+  autosquash = true
+  abbreviateCommands = true
+  autostash = true
 [color]
   ui = true
 [color "diff"]
