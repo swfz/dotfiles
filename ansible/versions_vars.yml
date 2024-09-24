@@ -27,7 +27,7 @@ vim_version: 9.1.0738
 # dummy
 zsh_version: "5.9"
 # datasource=github-tags depName=aws/aws-cli
-awscli_version: 2.17.56
+awscli_version: 2.17.57
 # datasource=github-releases depName=itchyny/fillin
 fillin_version: v0.3.3
 # datasource=github-releases depName=rhysd/actionlint
