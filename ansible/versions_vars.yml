@@ -1,6 +1,6 @@
 # datasource=github-releases depName=sharkdp/bat
 bat_version: v0.24.0
-# datasource=github-releases depName=dandavision/delta
+# datasource=github-releases depName=dandavison/delta
 delta_version: 0.5.1
 # datasource=github-releases depName=direnv/direnv
 direnv_version: v2.34.0
