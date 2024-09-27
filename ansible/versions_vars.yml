@@ -21,7 +21,7 @@ q_version: 3.1.7
 # dummy
 terraform_version: 1.7.1
 # dummy
-tmux_version: 3.2a
+tmux_version: "3.5"
 # dummy
 vim_version: 9.1.0738
 # dummy
@@ -36,4 +36,3 @@ actionlint_version: v1.7.2
 reviewdog_version: v0.20.2
 # datasource=github-releases depName=duckdb/duckdb
 duckdb_version: v1.1.1
-
