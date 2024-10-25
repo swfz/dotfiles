@@ -1,5 +1,5 @@
 ---
-- name: Exist agg # noqa command-instead-of-shell
+- name: Exist agg  # noqa command-instead-of-shell
   ansible.builtin.shell: command -v agg
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
@@ -16,11 +16,9 @@
   ignore_errors: true
   when: agg_exist.rc == 0
 
-- name: Check and install
-  when: agg_exist.rc != 0 or ( agg_current_version is defined and agg_current_version.stdout.find(agg_version) == -1 )
-  block:
-    - name: Get bin
-      ansible.builtin.get_url:
-        url: "{{ agg.src.linux }}"
-        dest: /usr/local/bin/agg
-        mode: "0755"
+- name: Install
+  when: agg_exist.rc != 0 or ( agg_current_version is defined and agg_current_version.stdout.find(agg_version) == -1 agg_version)
+  ansible.builtin.get_url:
+    url: "{{ agg.src.linux }}"
+    dest: /usr/local/bin/agg
+    mode: "0755"
