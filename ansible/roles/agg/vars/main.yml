@@ -1,0 +1,4 @@
+---
+agg:
+  src:
+    linux: https://github.com/asciinema/agg/releases/download/{{ agg_version }}/agg-x86_64-unknown-linux-musl
