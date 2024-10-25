@@ -30,4 +30,7 @@
       - inotify-tools
       - translate-shell
       - silversearcher-ag
+      - colorized-logs
+      - crudini
+      - asciinema
     state: present

@@ -19,6 +19,7 @@
     - slack
     - licecap
     - imagemagick
+    - asciinema
 
 - name: Install with cask
   community.general.homebrew_cask:
