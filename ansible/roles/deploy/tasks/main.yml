@@ -1,9 +1,11 @@
 ---
+# 環境変数CIがそもそも存在しないか、設定されていてもtrueではない
 - name: Set git repo prefix(git)
   set_fact:
     repo_prefix: 'git@github.com:'
-  when: ansible_env.get('CI', None) and ansible_env.CI != "true"
+  when: ansible_env.get('CI', True) or ansible_env.CI != "true"
 
+# CI環境
 - name: Set git repo prefix(https)
   set_fact:
     repo_prefix: http://github.com/
