@@ -1,4 +1,14 @@
 ---
+- name: Set git repo prefix(git)
+  set_fact:
+    repo_prefix: 'git@github.com:'
+  when: ansible_env.get('CI', None) and ansible_env.CI != "true"
+
+- name: Set git repo prefix(https)
+  set_fact:
+    repo_prefix: http://github.com/
+  when: ansible_env.get('CI', None) and ansible_env.CI == "true"
+
 - name: Command directory
   ansible.builtin.file:
     path: "{{ command_dir }}"
@@ -14,7 +24,7 @@
 
 - name: Clone dotfiles repository
   ansible.builtin.git:
-    repo: "{{ dotfiles.src.repo }}"
+    repo: "{{ repo_prefix }}{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
     clone: true
     update: true
@@ -140,7 +150,7 @@
 # git-hooksのセットアップ
 - name: Clone git-hooks repository
   ansible.builtin.git:
-    repo: "{{ git_hooks.src.repo }}"
+    repo: "{{ repo_prefix }}{{ git_hooks.src.repo }}"
     dest: "{{ git_hooks.dest }}"
     clone: true
     update: true
