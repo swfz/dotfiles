@@ -1,4 +1,16 @@
 ---
+# 環境変数CIがそもそも存在しないか、設定されていてもtrueではない
+- name: Set git repo prefix(git)
+  ansible.builtin.set_fact:
+    repo_prefix: 'git@github.com:'
+  when: ansible_env.get('CI', True) or ansible_env.CI != "true"
+
+# CI環境
+- name: Set git repo prefix(https)
+  ansible.builtin.set_fact:
+    repo_prefix: https://github.com/
+  when: ansible_env.get('CI', None) and ansible_env.CI == "true"
+
 - name: Command directory
   ansible.builtin.file:
     path: "{{ command_dir }}"
@@ -14,7 +26,7 @@
 
 - name: Clone dotfiles repository
   ansible.builtin.git:
-    repo: "{{ dotfiles.src.repo }}"
+    repo: "{{ repo_prefix }}{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
     clone: true
     update: true
@@ -44,6 +56,12 @@
     dest: ~/.config/bat/config
     state: link
 
+- name: Symlink mise config
+  ansible.builtin.file:
+    src: "{{ dotfiles.dest }}/config/mise/config.toml"
+    dest: ~/.config/mise/config.toml
+    state: link
+
 - name: Store bin path to zshenv
   ansible.builtin.lineinfile:
     dest: ~/.zshenv
@@ -53,6 +71,7 @@
     mode: "0644"
   with_items:
     - export PATH="$HOME/dotfiles/bin:$PATH"
+    - export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 - name: Symlink dotfiles
   ansible.builtin.file:
@@ -133,7 +152,7 @@
 # git-hooksのセットアップ
 - name: Clone git-hooks repository
   ansible.builtin.git:
-    repo: "{{ git_hooks.src.repo }}"
+    repo: "{{ repo_prefix }}{{ git_hooks.src.repo }}"
     dest: "{{ git_hooks.dest }}"
     clone: true
     update: true

@@ -18,7 +18,7 @@ envs:
 
 dotfiles:
   src:
-    repo: http://github.com/swfz/dotfiles.git
+    repo: swfz/dotfiles.git
   dest: ~/dotfiles
   files:
     - .zshrc
@@ -30,7 +30,7 @@ dotfiles:
     - .gvimrc
 git_hooks:
   src:
-    repo: http://github.com/swfz/git-hooks.git
+    repo: swfz/git-hooks.git
   dest: ~/git-hooks
 
 command_dir: ~/bin
