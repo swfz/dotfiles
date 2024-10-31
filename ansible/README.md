@@ -1,13 +1,13 @@
 # ubuntu(localhost)
 
 ```
-ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-become-pass
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)'" --ask-become-pass
 ```
 
 # codespace
 
 ```
-ansible-playbook -i localhost, -c local codespace.yml --extra-vars "user='hoge'" --ask-become-pass
+ansible-playbook -i localhost, -c local codespace.yml --extra-vars "user='$(whoami)'" --ask-become-pass
 ```
 
 # use tag

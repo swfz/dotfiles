@@ -6,7 +6,7 @@ dotfiles
 ## install
 
 ```
-ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='hoge'" --ask-become-pass
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)'" --ask-become-pass
 ```
 
 see [ansible](/ansible/README.md) for more information.
