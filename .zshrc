@@ -124,3 +124,4 @@ if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
   alias open=wslview
 fi
 
+eval "$(mise activate zsh)"

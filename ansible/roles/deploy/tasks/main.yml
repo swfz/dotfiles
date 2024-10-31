@@ -44,6 +44,12 @@
     dest: ~/.config/bat/config
     state: link
 
+- name: Symlink mise config
+  ansible.builtin.file:
+    src: "{{ dotfiles.dest }}/config/mise/config"
+    dest: ~/.config/mise/config.toml
+    state: link
+
 - name: Store bin path to zshenv
   ansible.builtin.lineinfile:
     dest: ~/.zshenv
@@ -53,6 +59,7 @@
     mode: "0644"
   with_items:
     - export PATH="$HOME/dotfiles/bin:$PATH"
+    - export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 - name: Symlink dotfiles
   ansible.builtin.file:
