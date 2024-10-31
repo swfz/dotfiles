@@ -46,7 +46,7 @@
 
 - name: Symlink mise config
   ansible.builtin.file:
-    src: "{{ dotfiles.dest }}/config/mise/config"
+    src: "{{ dotfiles.dest }}/config/mise/config.toml"
     dest: ~/.config/mise/config.toml
     state: link
 
