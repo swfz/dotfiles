@@ -3,7 +3,7 @@
 - name: Set git repo prefix(git)
   ansible.builtin.set_fact:
     repo_prefix: 'git@github.com:'
-  when: ansible_env.get('CI', True) or ansible_env.CI != "true"
+  when: ansible_env.get('CI', True) or (ansible_env.get('CI', None) and ansible_env.CI != "true")
 
 # CI環境
 - name: Set git repo prefix(https)

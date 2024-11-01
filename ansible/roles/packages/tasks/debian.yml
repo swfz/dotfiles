@@ -11,8 +11,7 @@
       - unzip
       - dos2unix
       - openssl
-      # TODO 一旦除外、エラー対応して戻す
-      # - ctags
+      - universal-ctags
       - nkf
       - libssl-dev
       - zlib1g-dev

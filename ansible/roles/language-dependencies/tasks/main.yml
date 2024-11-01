@@ -16,4 +16,5 @@
     name:
       - libssl-dev
       - libreadline-dev
+      - libyaml-dev
     state: present
