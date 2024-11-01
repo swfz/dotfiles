@@ -1,2 +1,10 @@
 [tools]
 node = '20.18.0'
+ruby = '3.3.5'
+gcloud = 'latest'
+awscli = '2.18.18'
+deno = 'latest'
+jq = '1.7.1'
+bat = '0.24.0'
+delta = '0.18.2'
+terraform = '1.7.1'
