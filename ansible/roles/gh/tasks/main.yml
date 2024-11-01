@@ -1,0 +1,30 @@
+---
+- name: Exist gh
+  ansible.builtin.command: which gh
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: gh_exist
+  changed_when: false
+  ignore_errors: true
+
+- name: Get gh version
+  ansible.builtin.command: gh --version | tail -n 1 | awk -F"/" '{print $NF}'
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: gh_current_version
+  changed_when: false
+  ignore_errors: true
+  when: gh_exist.rc == 0
+
+- name: Check and install
+  when: gh_exist.rc != 0 or ( gh_current_version is defined and gh_current_version.stdout.find(gh_version) == -1 )
+  block:
+    - name: Get source
+      ansible.builtin.get_url:
+        url: "{{ gh.deb }}"
+        dest: /tmp/gh-{{ gh_version }}.deb
+        mode: 0600
+
+    - name: Install gh
+      ansible.builtin.apt:
+        deb: /tmp/gh-{{ gh_version }}.deb
