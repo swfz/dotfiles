@@ -1,0 +1,3 @@
+---
+gh:
+  deb: https://github.com/cli/cli/releases/download/{{ gh_version }}/gh_{{ gh_version.replace("v", "") }}_linux_amd64.deb
