@@ -28,6 +28,7 @@
     - { role: reviewdog, tags: [reviewdog, tool] }
     - { role: duckdb, tags: [duckdb, tool] }
     - { role: agg, tags: [agg, tool] }
+    - { role: gh, tags: [gh, tool] }
 
 - name: Play for Ubuntu(User)
   hosts: localhost
