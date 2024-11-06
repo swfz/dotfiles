@@ -1,0 +1,25 @@
+---
+- name: Exist chrome
+  ansible.builtin.command: which google-chrome
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: chrome_exist
+  changed_when: false
+  ignore_errors: true
+
+- name: Chrome gpg key
+  ansible.builtin.get_url:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+    dest: /usr/share/keyrings/googlechrom-keyring.asc
+
+- name: Chrome Chrome repository
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrom-keyring.asc] http://dl.google.com/linux/chrome/deb/ stable main
+    filename: google-chrome
+    state: present
+
+- name: Install chrome
+  ansible.builtin.apt:
+    name:
+      - google-chrome-stable
+    state: latest
