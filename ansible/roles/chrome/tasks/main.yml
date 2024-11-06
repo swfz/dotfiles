@@ -10,12 +10,12 @@
 - name: Chrome gpg key
   ansible.builtin.get_url:
     url: https://dl.google.com/linux/linux_signing_key.pub
-    dest: /usr/share/keyrings/googlechrom-keyring.asc
-    mode: 0600
+    dest: /usr/share/keyrings/google-linux-keyring.gpg
+    mode: '0644'
 
-- name: Chrome Chrome repository
+- name: Chrome repository
   ansible.builtin.apt_repository:
-    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrom-keyring.asc] http://dl.google.com/linux/chrome/deb/ stable main
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main
     filename: google-chrome
     state: present
 
