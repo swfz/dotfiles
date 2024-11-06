@@ -43,3 +43,4 @@
     - { role: direnv, tags: [direnv, init] }
     - { role: powerline, tags: [powerline, init] }
     - { role: vim-plugins, tags: [vim-plugins, vim] }
+    - { role: gh-ext, tags: [gh-ext, gh, tool] }
