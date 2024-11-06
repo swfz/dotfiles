@@ -1,9 +1,9 @@
-FROM ubuntu:latest
+FROM ubuntu:noble
 
 RUN apt update
 RUN apt install -y software-properties-common
 RUN apt-add-repository --yes --update ppa:ansible/ansible
-RUN apt install -y ansible ansible-lint yamllint sudo python-pip
+RUN apt install -y ansible ansible-lint yamllint sudo python3-pip
 
 RUN useradd -m vagrant
 RUN usermod -aG sudo vagrant
