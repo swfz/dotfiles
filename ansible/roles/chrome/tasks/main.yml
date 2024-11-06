@@ -19,6 +19,10 @@
     filename: google-chrome
     state: present
 
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
 - name: Install chrome
   ansible.builtin.apt:
     name:
