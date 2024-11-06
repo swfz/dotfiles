@@ -20,6 +20,16 @@
       - automake
       - libperl-dev
       - libbz2-dev
+      - libgdbm-dev
+      - libgdbm-compat-dev
+      - liblzma-dev
+      - xz-utils
+      - libncurses5-dev
+      - libreadline6-dev
+      - lzma
+      - lzma-dev
+      - tk-dev
+      - uuid-dev
       - zlib1g-dev
       - imagemagick
       - ubuntu-wsl
@@ -32,4 +42,5 @@
       - colorized-logs
       - crudini
       - asciinema
+      - libasound2t64
     state: present
