@@ -1,0 +1,21 @@
+---
+- name: Exist chrome
+  ansible.builtin.command: which google-chrome
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: chrome_exist
+  changed_when: false
+  ignore_errors: true
+
+- name: Install
+  when: chrome_exist.rc != 0
+  block:
+    - name: Download deb
+      ansible.builtin.get_url:
+        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dest: /tmp/google-chrome-stable_current_amd64.deb
+        mode: 0600
+
+    - name: Install chrome
+      ansible.builtin.apt:
+        deb: /tmp//google-chrome-stable_current_amd64.deb

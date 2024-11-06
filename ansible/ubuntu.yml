@@ -28,6 +28,7 @@
     - { role: duckdb, tags: [duckdb, tool] }
     - { role: agg, tags: [agg, tool] }
     - { role: gh, tags: [gh, tool] }
+    - { role: chrome, tags: [chrome, init]}
 
 - name: Play for Ubuntu(User)
   hosts: localhost
@@ -43,3 +44,4 @@
     - { role: direnv, tags: [direnv, init] }
     - { role: powerline, tags: [powerline, init] }
     - { role: vim-plugins, tags: [vim-plugins, vim] }
+    # - { role: gh-ext, tags: [gh-ext, gh, tool] } # execution after gh auth login

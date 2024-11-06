@@ -1,0 +1,10 @@
+---
+- name: Install GitHub CLI Extension
+  ansible.builtin.command: gh ext install {{ item }}
+  with_items:
+    - yusukebe/gh-markdown-preview
+    - swfz/gh-ap
+    - swfz/gh-annotations
+    - github/gh-copilot
+    - kawarimidoll/gh-graph
+  changed_when: true
