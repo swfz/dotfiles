@@ -15,6 +15,15 @@
   ansible.builtin.apt:
     name:
       - libssl-dev
-      - libreadline-dev
       - libyaml-dev
+      - libgdbm-dev
+      - libgdbm-compat-dev
+      - liblzma-dev
+      - xz-utils
+      - libncurses5-dev
+      - libreadline6-dev
+      - lzma
+      - lzma-dev
+      - tk-dev
+      - uuid-dev
     state: present
