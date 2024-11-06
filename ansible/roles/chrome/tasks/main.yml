@@ -11,6 +11,7 @@
   ansible.builtin.get_url:
     url: https://dl.google.com/linux/linux_signing_key.pub
     dest: /usr/share/keyrings/googlechrom-keyring.asc
+    mode: 0600
 
 - name: Chrome Chrome repository
   ansible.builtin.apt_repository:
@@ -22,4 +23,4 @@
   ansible.builtin.apt:
     name:
       - google-chrome-stable
-    state: latest
+    state: present
