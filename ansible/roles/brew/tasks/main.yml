@@ -6,9 +6,6 @@
   with_items:
     - peco
     - nkf
-    - jq
-    - bat
-    - awscli
     - coreutils
     - binutils
     - findutils
