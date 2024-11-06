@@ -7,24 +7,15 @@
   changed_when: false
   ignore_errors: true
 
-- name: Chrome gpg key
-  ansible.builtin.get_url:
-    url: https://dl.google.com/linux/linux_signing_key.pub
-    dest: /usr/share/keyrings/google-linux-keyring.gpg
-    mode: '0644'
+- name: Install
+  when: chrome_exist.rc != 0
+  block:
+    - name: 
+      ansible.builtin.get_url:
+        url: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        dest: /tmp/google-chrome-stable_current_amd64.deb
+        mode: 0600
 
-- name: Chrome repository
-  ansible.builtin.apt_repository:
-    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main
-    filename: google-chrome
-    state: present
-
-- name: Update apt cache
-  ansible.builtin.apt:
-    update_cache: yes
-
-- name: Install chrome
-  ansible.builtin.apt:
-    name:
-      - google-chrome-stable
-    state: present
+    - name: Install chrome
+      ansible.builtin.apt:
+        deb: /tmp//google-chrome-stable_current_amd64.deb
