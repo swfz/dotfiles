@@ -3,10 +3,6 @@
   ansible.builtin.include_tasks: debian.yml
   when: ansible_os_family == 'Debian'
 
-- name: Redhat tasks
-  ansible.builtin.include_tasks: redhat.yml
-  when: ansible_os_family == 'RedHat'
-
 - name: Exist git
   ansible.builtin.command: which git
   environment:
