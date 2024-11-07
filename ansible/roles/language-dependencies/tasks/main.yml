@@ -1,14 +1,4 @@
 ---
-- name: Language dependencies in RedHat
-  when: ansible_os_family == 'RedHat'
-  ansible.builtin.yum:
-    name:
-      - openssl-devel
-      - readline-devel
-      - bzip2
-      - tar
-    state: present
-
 - name: Language dependencies in Debian
   when: ansible_os_family == 'Debian'
   become: true
