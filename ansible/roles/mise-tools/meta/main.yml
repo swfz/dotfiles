@@ -1,4 +1,3 @@
 ---
 dependencies:  # noqa meta-no-info
   - role: deploy
-  - role: mise-tools

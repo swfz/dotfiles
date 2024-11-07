@@ -15,20 +15,11 @@ jobs:
     strategy:
       matrix:
         role:
-          - name: docker
-            repo: docker/docker-ce
-            type: beta-rc
-          - name: vim
-            repo: vim/vim
-            type: from-tag
           - name: jo
             repo: jpmens/jo
             type: prefix
           - name: q
             repo: harelba/q
-            type: from-tag
-          - name: terraform
-            repo: hashicorp/terraform
             type: from-tag
           - name: zsh
             repo: zsh-users/zsh

@@ -31,7 +31,7 @@ jobs:
         with:
           script: |
             const eventName = context.eventName;
-            const tags = ['deploy', 'init', 'tool', 'delta', 'vim'];
+            const tags = ['deploy', 'init', 'tool', 'mise'];
             return (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...tags, 'all'] : tags;
 
   build-ubuntu:

@@ -1,0 +1,26 @@
+---
+- name: Exist mise
+  ansible.builtin.command: which mise
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: mise_exist
+  changed_when: false
+  ignore_errors: true
+
+- name: Get mise version
+  ansible.builtin.command: mise -v | awk '{print "v"$1}'
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: mise_current_version
+  changed_when: false
+  ignore_errors: true
+  when: mise_exist.rc == 0
+
+- name: Check and install
+  when: mise_exist.rc != 0 or ( mise_current_version is defined and mise_current_version.stdout.find(mise_version) == -1 )
+  block:
+    - name: Install
+      ansible.builtin.get_url:
+        url: "{{ mise[ansible_os_family] }}"
+        dest: /usr/local/bin/mise
+        mode: "0755"
