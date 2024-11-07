@@ -44,15 +44,15 @@ jobs:
     steps:
       - uses: actions/github-script@v7.0.1
         id: set-matrix
+        env:
+          TOOLS_CHUNKS: ${{ vars.TOOLS_CHUNKS }}
         with:
           script: |
             const eventName = context.eventName;
             const targetTags = ['deploy', 'init', 'tool', 'mise'];
             const tags = (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...targetTags, 'all'] : targetTags;
-            console.log(tags);
             const tools = ${{ needs.set-mise-tools.outputs.list }};
-            console.log(tools);
-            const chunks = 3;
+            const chunks = process.env.TOOLS_CHUNKS || 3;
             const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks)));
             return tags.map(tag => {
               if (tag === "mise") {
