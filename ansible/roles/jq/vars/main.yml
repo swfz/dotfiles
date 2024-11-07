@@ -1,3 +1,0 @@
----
-jq:
-  src: https://github.com/jqlang/jq/releases/download/{{ jq_version }}/jq-linux64

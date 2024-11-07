@@ -1,8 +1,35 @@
 ---
-- name: Debian tasks
-  ansible.builtin.include_tasks: debian.yml
-  when: ansible_os_family == 'Debian'
-
-- name: Redhat tasks
-  ansible.builtin.include_tasks: redhat.yml
-  when: ansible_os_family == 'RedHat'
+- name: Install apt-packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - bash-completion
+      - gcc
+      - make
+      - tar
+      - zsh
+      - xclip
+      - unzip
+      - dos2unix
+      - openssl
+      - universal-ctags
+      - nkf
+      - zlib1g-dev
+      - libffi-dev
+      - autogen
+      - automake
+      - libperl-dev
+      - libbz2-dev
+      - imagemagick
+      - ubuntu-wsl
+      - gnuplot
+      - sqlite3
+      - libsqlite3-dev
+      - inotify-tools
+      - translate-shell
+      - silversearcher-ag
+      - colorized-logs
+      - crudini
+      - asciinema
+      - libasound2t64
+    state: present

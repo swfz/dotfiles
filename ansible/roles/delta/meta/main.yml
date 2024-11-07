@@ -1,4 +1,0 @@
----
-dependencies:  # noqa meta-no-info
-  - role: common
-  - role: git

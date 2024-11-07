@@ -1,3 +1,0 @@
----
-# docker_version: "{{ docker_v|default('1.10.3')}}"
-docker_version: 1.9.0

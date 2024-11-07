@@ -13,7 +13,7 @@
     dest: "{{ vim.neobundle.parent_dir }}/{{ vim.neobundle.dest_dir }}"
     clone: true
 
-- name: Set vim neobundle  # noqa ignore-errors
-  ansible.builtin.command: sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim
+- name: Set vim neobundle  # noqa ignore-errors command-instead-of-shell
+  ansible.builtin.shell: "{{ execute }} 'sh {{ dotfiles.dest }}/neobundle {{ dotfiles.dest }}/vimrc/rc/plugins.vim'"
   changed_when: true
   ignore_errors: true

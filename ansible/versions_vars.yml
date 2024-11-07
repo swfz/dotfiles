@@ -1,33 +1,15 @@
-# datasource=github-releases depName=sharkdp/bat
-bat_version: v0.24.0
-# datasource=github-releases depName=dandavison/delta
-delta_version: 0.18.2
 # datasource=github-releases depName=direnv/direnv
 direnv_version: v2.35.0
-# datasource=github-releases depName=docker/compose
-docker_compose_version: v2.29.7
-# dummy
-docker_version: v19.03.14
 # datasource=github-tags depName=git/git
 git_version: v2.47.0
 # dummy
 jo_version: "1.9"
-# datasource=github-releases depName=jqlang/jq
-jq_version: "jq-1.6"
-# datasource=github-releases depName=peco/peco
-peco_version: v0.5.11
 # dummy
 q_version: 3.1.7
 # dummy
-terraform_version: 1.7.1
-# dummy
 tmux_version: "3.5"
 # dummy
-vim_version: 9.1.0813
-# dummy
 zsh_version: "5.9"
-# datasource=github-tags depName=aws/aws-cli
-awscli_version: 2.18.14
 # datasource=github-releases depName=itchyny/fillin
 fillin_version: v0.3.3
 # datasource=github-releases depName=rhysd/actionlint

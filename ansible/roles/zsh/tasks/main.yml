@@ -1,9 +1,5 @@
 ---
-- name: Install zsh(redhat)
-  ansible.builtin.include_tasks: source.yml
-  when: ansible_os_family == 'RedHat'
-
-- name: Install zsh(debian)
+- name: Install zsh
   ansible.builtin.apt:
     name: zsh
     state: present
