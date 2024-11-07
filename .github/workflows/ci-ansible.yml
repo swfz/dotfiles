@@ -20,7 +20,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  set-mise-tools:
+    runs-on: ubuntu-latest
+    name: 'set mise tools list'
+    outputs:
+      list: ${{ steps.set-mise-tools.outputs.list }}
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - name: set json
+        id: set-mise-tools
+        run: |
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
+          MISE_TOOL_LIST=$(yq -o json -I=0 '.tools|keys' config/mise/config.toml)
+          echo "list=$MISE_TOOL_LIST" >> "$GITHUB_OUTPUT"
+ 
   set-tags-matrix:
+    needs: set-mise-tools
     runs-on: ubuntu-latest
     name: 'set tags matrix'
     outputs:
@@ -28,11 +44,22 @@ jobs:
     steps:
       - uses: actions/github-script@v7.0.1
         id: set-matrix
+        env:
+          TOOLS_CHUNKS: ${{ vars.TOOLS_CHUNKS }}
         with:
           script: |
             const eventName = context.eventName;
-            const tags = ['deploy', 'init', 'tool', 'mise'];
-            return (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...tags, 'all'] : tags;
+            const targetTags = ['deploy', 'init', 'tool', 'mise'];
+            const tags = (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...targetTags, 'all'] : targetTags;
+            const tools = ${{ needs.set-mise-tools.outputs.list }};
+            const chunks = process.env.TOOLS_CHUNKS || 3;
+            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks)));
+            return tags.map(tag => {
+              if (tag === "mise") {
+                return chunkedTools.map(tool => ({tag, tools: tool.join(" ")}));
+              }
+              return {tag, tools: ''};
+            }).flat();
 
   build-ubuntu:
     needs: set-tags-matrix
@@ -41,7 +68,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
+        row: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
     steps:
       - uses: actions/checkout@v4.2.2
       - if: github.event.client_payload
@@ -56,9 +83,10 @@ jobs:
       - name: run ansible
         env:
           CI: true
+          TOOLS: ${{ matrix.row.tools }}
         run: |
           cd ansible
-          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.tag }}"
+          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.row.tag }}"
 
   build-mac:
     runs-on: macos-latest
