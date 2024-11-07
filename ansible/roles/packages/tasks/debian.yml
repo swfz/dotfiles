@@ -8,12 +8,12 @@
       - make
       - tar
       - zsh
+      - xclip
       - unzip
       - dos2unix
       - openssl
       - universal-ctags
       - nkf
-      - libssl-dev
       - zlib1g-dev
       - libffi-dev
       - autogen
