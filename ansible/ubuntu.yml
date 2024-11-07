@@ -12,20 +12,19 @@
     - { role: common, tags: [common, init, tool] }
     - { role: git, tags: [git, deploy] }
     - { role: zsh, tags: [zsh, deploy, init, mise] }
-    - { role: peco, tags: [peco, init] }
     - { role: tmux, tags: [tmux, init] }
     # - { role: vim8, tags: [vim8, vim] }
     - { role: notofont, tags: [notofont, init] }
-    - { role: by_pip, tags: [by_pip, init] }  # cheat, mycli
+    - { role: by_pip, tags: [by_pip, tool] }  # cheat, mycli
     - { role: fillin, tags: [fillin, tool] }
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
     - { role: duckdb, tags: [duckdb, tool] }
     - { role: agg, tags: [agg, tool] }
     - { role: gh, tags: [gh, tool] }
-    - { role: chrome, tags: [chrome, init]}
-    - { role: wslu, tags: [wslu, init]}
-    - { role: mise, tags: [mise, init]}
+    - { role: chrome, tags: [chrome, tool]}
+    - { role: wslu, tags: [wslu, tool]}
+    - { role: mise, tags: [mise, tool]}
 
 - name: Play for Ubuntu(User)
   hosts: localhost
@@ -39,6 +38,6 @@
     - { role: deploy, tags: deploy }
     - { role: direnv, tags: [direnv, init] }
     - { role: powerline, tags: [powerline, init] }
-    - { role: mise-tools, tags: [mise-tools, mise, init]}
-    - { role: vim-plugins, tags: [vim-plugins] }
+    - { role: mise-tools, tags: [mise-tools, mise]}
+    - { role: vim-plugins, tags: [vim-plugins, mise] }
     # - { role: gh-ext, tags: [gh-ext, gh, tool] } # execution after gh auth login
