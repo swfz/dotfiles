@@ -1,0 +1,5 @@
+---
+- name: Install global tools
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  ansible.builtin.shell: "{{ execute }} 'mise -y i'"

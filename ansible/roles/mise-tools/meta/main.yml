@@ -1,0 +1,5 @@
+---
+dependencies:  # noqa meta-no-info
+  - role: deploy
+  - role: language-dependencies
+    become: true
