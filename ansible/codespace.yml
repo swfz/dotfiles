@@ -8,7 +8,6 @@
   become: true
   roles:
     - { role: common, tags: [common, init, tool] }
-    - { role: peco, tags: [peco, init] }
     - { role: tmux, tags: [tmux, init] }
     - { role: notofont, tags: [notofont, init] }
     - { role: actionlint, tags: [actionlint, tool] }
