@@ -1,5 +1,5 @@
 ---
-- name: Anyenv redhat dependencies
+- name: Language dependencies in RedHat
   when: ansible_os_family == 'RedHat'
   ansible.builtin.yum:
     name:
@@ -9,7 +9,7 @@
       - tar
     state: present
 
-- name: Anyenv dependencies package
+- name: Language dependencies in Debian
   when: ansible_os_family == 'Debian'
   become: true
   ansible.builtin.apt:
