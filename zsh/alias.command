@@ -67,11 +67,11 @@ alias url="perl -Xnpe '$|=1; s/\\?/\\n/g; s/&/\\n/g; s/=/:\\t/g' | nkf -u --url-
 alias uni="perl -Xpne 's/\\\u([0-9a-fA-F]{4})/chr(hex($1))/eg'"
 
 # docker-compose
-alias dkc="sudo -E $(which docker-compose)"
-alias dkce="sudo -E $(which docker-compose) exec"
-alias dkcps="sudo -E $(which docker-compose) ps"
-alias dkclogs="sudo -E $(which docker-compose) logs"
-alias dkctop="sudo -E $(which docker-compose) top"
+alias dkc="sudo -E $(which docker) compose"
+alias dkce="sudo -E $(which docker) comopse exec"
+alias dkcps="sudo -E $(which docker) compose ps"
+alias dkclogs="sudo -E $(which docker) compose logs"
+alias dkctop="sudo -E $(which docker) compose top"
 
 # docker
 alias dk="sudo -E docker"
