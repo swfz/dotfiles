@@ -30,8 +30,8 @@ jobs:
       - name: set json
         id: set-mise-tools
         run: |
-          wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
-          chmod +x /usr/bin/yq
+          sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+          sudo chmod +x /usr/bin/yq
           MISE_TOOL_LIST=$(yq -o json -I=0 '.tools|keys' config/mise/config.toml)
           echo "list=$MISE_TOOL_LIST" >> "$GITHUB_OUTPUT"
  
