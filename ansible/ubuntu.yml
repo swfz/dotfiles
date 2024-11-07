@@ -24,6 +24,7 @@
     - { role: agg, tags: [agg, tool] }
     - { role: gh, tags: [gh, tool] }
     - { role: chrome, tags: [chrome, init]}
+    - { role: wslu, tags: [wslu, init]}
 
 - name: Play for Ubuntu(User)
   hosts: localhost

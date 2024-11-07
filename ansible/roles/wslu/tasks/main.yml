@@ -1,0 +1,19 @@
+---
+- name: Exist wslu
+  ansible.builtin.command: which wslview
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+  register: wslu_exist
+  changed_when: false
+  ignore_errors: true
+
+# apt repositroryには最新バージョンしか存在しない
+- name: Add wslu PPA Repository
+  ansible.builtin.apt_repository:
+    repo: ppa:wslutilities/wslu
+
+- name: Install wslu
+  ansible.builtin.apt:
+    name:
+      - wslu
+    state: present
