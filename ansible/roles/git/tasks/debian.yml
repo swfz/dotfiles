@@ -9,4 +9,5 @@
       - autoconf
       - asciidoc
       - libcurl4-openssl-dev
+    update_cache: yes
     state: present
