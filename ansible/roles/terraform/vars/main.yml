@@ -1,4 +1,0 @@
----
-terraform:
-  src: https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_linux_amd64.zip
-  zip: terraform_{{ terraform_version }}_linux_amd64.zip

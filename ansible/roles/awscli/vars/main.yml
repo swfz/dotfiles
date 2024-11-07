@@ -1,4 +1,0 @@
----
-awscli:
-  src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64-{{ awscli_version }}.zip
-  zip: awscli-{{ awscli_version }}.zip

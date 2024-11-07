@@ -1,3 +1,0 @@
----
-docker_compose:
-  src: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
