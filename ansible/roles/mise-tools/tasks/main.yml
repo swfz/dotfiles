@@ -2,7 +2,7 @@
 - name: Check mise tools  # noqa command-instead-of-shell
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  ansible.builtin.shell: "{{ execute }} 'mise ls'"
+  ansible.builtin.shell: "{{ execute }} 'mise config get'"
   changed_when: true
   register: hoge
 
