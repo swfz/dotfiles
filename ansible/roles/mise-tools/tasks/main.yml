@@ -2,5 +2,5 @@
 - name: Install global tools  # noqa command-instead-of-shell
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
-  ansible.builtin.shell: "{{ execute }} 'mise -y i {{ ansible_env.TOOLS }}'"
+  ansible.builtin.shell: "{{ execute }} 'mise -y i {{ ansible_env.get('TOOLS', '') }}'"
   changed_when: true
