@@ -24,6 +24,25 @@
     owner: "{{ user }}"
     mode: "0644"
 
+- name: Check repository directory exists
+  ansible.builtin.stat:
+    path: "{{ dotfiles.dest }}"
+  register: dotfiles_dir
+
+- name: Check unstaged changes  # noqa command-instead-of-module
+  ansible.builtin.command:
+    cmd: git diff --exit-code
+    chdir: "{{ dotfiles.dest }}"
+  register: repo_changed
+  ignore_errors: true
+  changed_when: repo_changed.rc != 0
+  when: dotfiles_dir.stat.exists
+
+- name: Stash Changes  # noqa command-instead-of-module
+  ansible.builtin.command: git stash
+  when: repo_changed is defined and repo_changed.rc is defined and repo_changed.rc != 0
+  changed_when: true
+
 - name: Clone dotfiles repository
   ansible.builtin.git:
     repo: "{{ repo_prefix }}{{ dotfiles.src.repo }}"
@@ -31,6 +50,11 @@
     clone: true
     update: true
     force: true
+
+- name: Pop stash changes  # noqa command-instead-of-module
+  ansible.builtin.command: git stash pop
+  when: repo_changed is defined and repo_changed.rc is defined and repo_changed.rc != 0
+  changed_when: true
 
 - name: Symlink peco config
   ansible.builtin.file:
