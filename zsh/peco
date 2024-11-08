@@ -118,3 +118,19 @@ function peco-gh-run () {
 zle -N peco-gh-run
 bindkey '^gr' peco-gh-run
 
+# READMEから選択
+function peco-file-line () {
+  local line="$(cat README.md | peco)"
+  peco-p ${line}
+}
+zle -N peco-file-line
+bindkey '^gm' peco-file-line
+
+# aliasから選択
+function peco-alias () {
+  local cmd="$(alias | peco | awk -F'[=]' '{print $1}')"
+  peco-p ${cmd}
+}
+zle -N peco-alias
+bindkey '^ga' peco-alias
+

@@ -86,3 +86,6 @@ alias tmcp="xargs -0 tmux set-buffer"
 # pnpm
 alias pn="pnpm"
 
+# xclip Copy without escape sequences
+alias xcp="sed 's/\x1b\[[0-9;]*m//g' | xclip -sel c -r"
+
