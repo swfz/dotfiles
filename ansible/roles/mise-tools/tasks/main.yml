@@ -4,6 +4,11 @@
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
   ansible.builtin.shell: "{{ execute }} 'mise ls'"
   changed_when: true
+  register: hoge
+
+- name: debug
+  debug:
+    msg: "{{ hoge }}"
 
 - name: Install global tools  # noqa command-instead-of-shell
   environment:
