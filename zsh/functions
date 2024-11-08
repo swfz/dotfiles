@@ -107,5 +107,5 @@ function bookmarklet(){
 
 # Git log list
 function gll(){
-  git log --reverse $(git merge-base $(git for-each-ref --format='%(refname:short)' refs/heads | grep --color=no -P 'main|master') $(git branch --show-current))..$(git branch --show-current) --pretty="format:%h %s"
+  git log --reverse $(git merge-base $(git for-each-ref --format='%(refname:short)' refs/heads | grep --color=no -P '^main$|^master$') $(git branch --show-current))..$(git branch --show-current) --pretty="format:%h %s"
 }
