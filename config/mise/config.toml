@@ -13,4 +13,11 @@ pipx = 'latest'
 act = 'latest'
 vim = 'latest'
 peco = 'latest'
+yq = 'latest'
+fillin = 'latest'
 "npm:zx" = 'latest'
+"pipx:mycli" = 'latest'
+"pipx:cheat" = 'latest'
+
+[settings]
+experimental = true

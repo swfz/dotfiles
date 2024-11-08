@@ -16,4 +16,5 @@
       - lzma-dev
       - tk-dev
       - uuid-dev
+      - python3.12-venv
     state: present
