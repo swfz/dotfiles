@@ -2,7 +2,7 @@
 node = '20.18.0'
 ruby = '3.3.5'
 gcloud = 'latest'
-awscli = '2.18.18'
+awscli = '2.19.4'
 deno = 'latest'
 jq = '1.7.1'
 bat = '0.24.0'
