@@ -9,7 +9,7 @@ function peco-select-history() {
     BUFFER=$(\history -n 1 | \
         eval $tac | \
         peco --query "$LBUFFER" | \
-        tr -d '\\n')
+        sed s'/ \\\\n/ /g')
     CURSOR=$#BUFFER
     zle clear-screen
 }
