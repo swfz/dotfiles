@@ -15,9 +15,11 @@ vim = 'latest'
 peco = 'latest'
 yq = 'latest'
 fillin = 'latest'
+bun = 'latest'
 "npm:zx" = 'latest'
 "pipx:mycli" = 'latest'
 "pipx:cheat" = 'latest'
+"pipx:mkdocs" = 'latest'
 
 [settings]
 experimental = true
