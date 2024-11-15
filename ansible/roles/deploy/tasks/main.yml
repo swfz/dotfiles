@@ -92,6 +92,12 @@
     dest: ~/.config/mise/config.toml
     state: link
 
+- name: Symlink starship config
+  ansible.builtin.file:
+    src: "{{ dotfiles.dest }}/config/starship/starship.toml"
+    dest: ~/.config/starship.toml
+    state: link
+
 - name: Store bin path to zshenv
   ansible.builtin.lineinfile:
     dest: ~/.zshenv
