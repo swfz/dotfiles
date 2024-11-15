@@ -1,13 +1,5 @@
 umask 002
 
-# powerline
-function load_powerline() {
-  if type powerline > /dev/null 2>&1; then
-    python_full_ver=$(pyenv global)
-    python_minor_ver=$(pyenv global|grep -oP '\d+\.\d+')
-    source $HOME/.anyenv/envs/pyenv/versions/${python_full_ver}/lib/python${python_minor_ver}/site-packages/powerline/bindings/zsh/powerline.zsh
-  fi
-}
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
     print -P "%F{33}▓▒░ %F{220}Installing DHARMA Initiative Plugin Manager (zdharma/zinit)…%f"
@@ -36,10 +28,15 @@ zinit ice wait'!0'; zplugin load zsh-users/zsh-syntax-highlighting
 zinit ice wait'!0'; zplugin load zsh-users/zsh-completions
 zinit ice wait'!0'; zplugin load agkozak/zhooks
 
+zinit ice as"command" from"gh-r" \
+          atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
+          atpull"%atclone" src"init.zsh"
+zinit light starship/starship
+
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-  zinit ice wait'!0'; zplugin load sindresorhus/pure
+  zinit ice wait'!0'; zplugin load starship/starship
 else
-  load_powerline
+  :
 fi
 
 # ${fg[color_name]}, ${gb[color_name]}, ${reset_color}を使えるようにする
@@ -101,11 +98,6 @@ do
   source $file
 done
 
-# カラーテーマ読み込み
-if [ -f $HOME/.zshrc.color ]; then
-  source $HOME/.zshrc.color
-fi
-
 # macの場合は追加で設定ファイルを読み込み
 case ${OSTYPE} in
   darwin*)
@@ -125,3 +117,4 @@ if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
 fi
 
 eval "$(mise activate zsh)"
+
