@@ -29,11 +29,10 @@ color_red = '#cc241d'
 color_yellow = '#d79921'
 
 [palettes.custom]
-color_fg0 = '#d3c6aa'
-color_bg1 = '#14205D'
-color_bg2 = '#313962'
-color_bg3 = '#4F5367'
-color_bg4 = '#6C6C6C'
+color_fg0 = '#eeeeee'
+color_bg1 = '#2d005f'
+color_bg2 = '#78005f'
+color_bg3 = '#626262'
 color_blue = '#3a6ab3'
 color_aqua = '#8bb8f5'
 color_green = '#3ff1b0'
@@ -41,6 +40,7 @@ color_orange = '#f13f5b'
 color_purple = '#9f68c9'
 color_red = '#b22b6b'
 color_yellow = '#f3c13f'
+color_accent = '#d33682'
 
 [os]
 disabled = false
@@ -89,7 +89,7 @@ truncation_symbol = "…/"
 "Developer" = "󰲋 "
 
 [git_branch]
-symbol = ""
+symbol = "[](fg:color_accent bg:color_bg2)"
 style = "bg:color_aqua"
 format = '[[ $symbol $branch ](fg:color_fg0 bg:color_bg2)]($style)'
 
@@ -102,7 +102,7 @@ disabled = false
 
 [nodejs]
 symbol = ""
-style = "bg:#3c873a"
+style = "fg:#3c873a"
 format = '[ $symbol( $version) ]($style)'
 
 [rust]
@@ -112,22 +112,17 @@ format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [golang]
 symbol = ""
-style = "bg:#29beb0"
+style = "fg:#29beb0"
 format = '[ $symbol( $version) ]($style)'
-
-[php]
-symbol = ""
-style = "bg:color_blue"
-format = '[[ $symbol( $version) ](fg:color_fg0 bg:color_blue)]($style)'
 
 [python]
 symbol = ""
-style = "bg:#306998"
+style = "fg:#306998"
 format = '[ $symbol( $version) ]($style)'
 
 [ruby]
 symbol = ""
-style = "bg:#820c02"
+style = "fg:#a91401"
 format = '[ $symbol( $version) ]($style)'
 
 [docker_context]
@@ -146,12 +141,12 @@ disabled = false
 
 [character]
 disabled = false
-success_symbol = '[❯](bold fg:color_green)'
-error_symbol = '[❯](bold fg:color_red)'
-vimcmd_symbol = '[❯](bold fg:color_green)'
-vimcmd_replace_one_symbol = '[❯](bold fg:color_purple)'
-vimcmd_replace_symbol = '[❯](bold fg:color_purple)'
-vimcmd_visual_symbol = '[❯](bold fg:color_yellow)'
+success_symbol = '[❯](bold fg:green)'
+error_symbol = '[❯](bold fg:red)'
+vimcmd_symbol = '[❯](bold fg:green)'
+vimcmd_replace_one_symbol = '[❯](bold fg:purple)'
+vimcmd_replace_symbol = '[❯](bold fg:purple)'
+vimcmd_visual_symbol = '[❯](bold fg:yellow)'
 
 [status]
 symbol = ' '
@@ -162,5 +157,4 @@ map_symbol = false
 [cmd_duration]
 format = '[$duration]($style)'
 min_time = 1000
-
 
