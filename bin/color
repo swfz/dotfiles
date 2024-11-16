@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for color in "$@"; do
+  r=$(printf '%d' 0x${color:1:2})
+  g=$(printf '%d' 0x${color:3:2})
+  b=$(printf '%d' 0x${color:5:2})
+  echo -e "\e[48;2;${r};${g};${b}m      \e[0m $color"
+done
+
