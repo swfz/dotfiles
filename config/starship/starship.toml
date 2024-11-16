@@ -30,9 +30,9 @@ color_yellow = '#d79921'
 
 [palettes.custom]
 color_fg0 = '#eeeeee'
-color_bg1 = '#2d005f'
-color_bg2 = '#78005f'
-color_bg3 = '#626262'
+color_bg1 = '#003366'
+color_bg2 = '#00509E'
+color_bg3 = '#0074D9'
 color_blue = '#3a6ab3'
 color_aqua = '#8bb8f5'
 color_green = '#3ff1b0'
