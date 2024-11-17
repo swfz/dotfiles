@@ -40,7 +40,7 @@ autoload -Uz colors
 colors
 
 # complete
-# autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit
 zinit cdreplay - q
 
 # 補完
