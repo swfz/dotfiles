@@ -17,6 +17,7 @@
     - licecap
     - imagemagick
     - asciinema
+    - agg
 
 - name: Install with cask
   community.general.homebrew_cask:

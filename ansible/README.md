@@ -4,6 +4,10 @@
 ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)'" --ask-become-pass
 ```
 
+```
+ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)'" --ask-become-pass --tags deploy
+```
+
 # codespace
 
 ```

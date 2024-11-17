@@ -95,7 +95,7 @@ format = '[[ $symbol $branch ](fg:color_fg0 bg:color_bg2)]($style)'
 
 [git_status]
 style = "bg:color_aqua"
-format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_bg2)]($style)'
+format = '[[($all_status$ahead_behind )](fg:color_accent bg:color_bg2)]($style)'
 
 [git_metrics]
 disabled = false
