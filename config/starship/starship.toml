@@ -3,7 +3,8 @@
 format = """
 [░▒▓](bg:color_fg0 fg:color_bg1)\
 $directory\
-[](fg:color_bg1 bg:color_bg2)\
+[](fg:color_bg1 bg:color_bg3)\
+[](fg:color_bg3 bg:color_bg1)\
 $git_branch\
 $git_status\
 [](fg:color_bg2 bg:color_bg3)\
@@ -14,7 +15,7 @@ $status\
 $cmd_duration\
 $line_break$character"""
 
-palette = 'custom'
+palette = 'custom_wsl'
 
 [palettes.gruvbox_dark]
 color_fg0 = '#fbf1c7'
@@ -41,6 +42,20 @@ color_purple = '#9f68c9'
 color_red = '#b22b6b'
 color_yellow = '#f3c13f'
 color_accent = '#d33682'
+
+[palettes.custom_wsl]
+color_fg0 = '#eeeeee'
+color_bg1 = '#00005f'
+color_bg2 = '#090cb5'
+color_bg3 = '#0074D9'
+color_blue = '#3a6ab3'
+color_aqua = '#8bb8f5'
+color_green = '#3ff1b0'
+color_orange = '#f13f5b'
+color_purple = '#9f68c9'
+color_red = '#b22b6b'
+color_yellow = '#f3c13f'
+color_accent = '#d700d7'
 
 [os]
 disabled = false
@@ -89,13 +104,13 @@ truncation_symbol = "…/"
 "Developer" = "󰲋 "
 
 [git_branch]
-symbol = "[](fg:color_accent bg:color_bg2)"
+symbol = "[](fg:color_accent bg:color_bg1)"
 style = "bg:color_aqua"
-format = '[[ $symbol $branch ](fg:color_fg0 bg:color_bg2)]($style)'
+format = '[[ $symbol $branch ](fg:color_fg0 bg:color_bg1)]($style)'
 
 [git_status]
 style = "bg:color_aqua"
-format = '[[($all_status$ahead_behind )](fg:color_accent bg:color_bg2)]($style)'
+format = '[[($all_status$ahead_behind )](fg:color_accent bg:color_bg1)]($style)'
 
 [git_metrics]
 disabled = false
