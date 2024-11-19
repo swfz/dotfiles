@@ -14,7 +14,7 @@
     - { role: zsh, tags: [zsh, deploy, init, mise] }
     - { role: tmux, tags: [tmux, init] }
     # - { role: vim8, tags: [vim8, vim] }
-    - { role: notofont, tags: [notofont, init] }
+    - { role: fonts, tags: [fonts, init] }
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
     - { role: duckdb, tags: [duckdb, tool] }
