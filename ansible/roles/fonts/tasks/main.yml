@@ -1,38 +1,28 @@
 ---
 - name: Directory
   ansible.builtin.file:
-    path: /usr/share/fonts/noto
+    path: /usr/share/fonts/{{ item.key }}
     state: directory
     owner: root
     group: root
     mode: "0755"
+  with_dict: "{{ fonts }}"
 
 - name: Get zip
   ansible.builtin.get_url:
-    url: "{{ notofont.src }}"
-    dest: /tmp/{{ notofont.zip }}
+    url: "{{ item.value.src }}"
+    dest: /tmp/{{ item.value.zip }}
     mode: 0600
+  with_dict: "{{ fonts }}"
 
 - name: Unarchive zip
   ansible.builtin.unarchive:
-    src: /tmp/{{ notofont.zip }}
-    dest: /usr/share/fonts/noto/
+    src: /tmp/{{ item.value.zip }}
+    dest: /usr/share/fonts/{{ item.key }}/
     copy: false
-
-- name: Change permission file list
-  ansible.builtin.find:
-    paths: /usr/share/fonts/noto/
-    patterns: "*.otf"
-  register: notofont_otf_files
-
-- name: Change permission
-  ansible.builtin.file:
-    path: "{{ item.path }}"
-    mode: "0644"
-  with_items:
-    - "{{ notofont_otf_files.files }}"
+  with_dict: "{{ fonts }}"
 
 - name: Font-cache
   ansible.builtin.command:
     cmd: fc-cache -fv
-    creates: /usr/share/fonts/noto/*.otf
+  changed_when: true
