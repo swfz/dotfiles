@@ -9,7 +9,7 @@
   roles:
     - { role: common, tags: [common, init, tool] }
     - { role: tmux, tags: [tmux, init] }
-    - { role: notofont, tags: [notofont, init] }
+    - { role: fonts, tags: [fonts, init] }
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
 

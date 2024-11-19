@@ -1,0 +1,11 @@
+---
+fonts:
+  notofont:
+    src: https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+    zip: NotoSansCJKjp-hinted.zip
+  jetbrainsmono_nerdfont:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip
+    zip: JetBrainsMono.zip
+  departuremono_nerdfont:
+    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/DepartureMono.zip
+    zip: DepartureMono.zip
