@@ -22,7 +22,7 @@
     - { role: gh, tags: [gh, tool] }
     - { role: chrome, tags: [chrome, tool]}
     - { role: wslu, tags: [wslu, tool]}
-    - { role: mise, tags: [mise, tool]}
+    - { role: mise, tags: [mise, tool, mise_i]}
 
 - name: Play for Ubuntu(User)
   hosts: localhost
