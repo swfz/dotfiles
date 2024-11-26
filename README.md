@@ -1,6 +1,6 @@
 dotfiles
 
-![](https://github.com/swfz/dotfiles/workflows/ansible/badge.svg)
+![](https://github.com/swfz/dotfiles/actions/workflows/ci-ansible.yml/badge.svg)
 
 
 ## install
