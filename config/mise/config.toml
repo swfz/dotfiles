@@ -21,10 +21,12 @@ eza = 'latest'
 ubi = 'latest'
 vivid = 'latest'
 "npm:zx" = 'latest'
+"npm:opencommit" = 'latest'
 "pipx:mycli" = 'latest'
 "pipx:cheat" = 'latest'
 "pipx:mkdocs" = 'latest'
 ollama = 'latest'
+rust = 'latest'
 
 [settings]
 experimental = true
