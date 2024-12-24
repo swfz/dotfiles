@@ -25,6 +25,7 @@ vivid = 'latest'
 "pipx:mycli" = 'latest'
 "pipx:cheat" = 'latest'
 "pipx:mkdocs" = 'latest'
+"pipx:jc" = 'latest'
 ollama = 'latest'
 rust = 'latest'
 
