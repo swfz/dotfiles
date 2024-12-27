@@ -33,8 +33,6 @@ zinit ice as"command" from"gh-r" \
           atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 
-zinit ice wait'!0'; zplugin load starship/starship
-
 # ${fg[color_name]}, ${gb[color_name]}, ${reset_color}を使えるようにする
 autoload -Uz colors
 colors
