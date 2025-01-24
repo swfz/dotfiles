@@ -21,4 +21,4 @@ agg_version: v1.5.0
 # datasource=github-releases depName=cli/cli
 gh_version: v2.65.0
 # datasource=github-releases depName=jdx/mise
-mise_version: v2024.11.37
+mise_version: v2025.1.13
