@@ -1,7 +1,7 @@
 [tools]
 node = '22.13.1'
 ruby = '3.3.5'
-go = '1.23.3'
+go = '1.24.0'
 gcloud = 'latest'
 awscli = '2.24.2'
 deno = 'latest'
