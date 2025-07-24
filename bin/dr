@@ -1,0 +1,127 @@
+#!/bin/bash
+set -euo pipefail
+
+# This script assumes it is run from the root of a dataform project.
+
+# --- Arguments ---
+readonly output_format="${1:-json}" # Optional: json, csv, etc.
+
+# --- Project Setup ---
+# Get the absolute path of the current directory to use as a unique project ID
+readonly project_dir=$(realpath .)
+
+# Check if required commands are installed
+for cmd in dataform jq bq peco vd stat find sort xargs sha256sum printf realpath awk git; do
+  if ! command -v "$cmd" &> /dev/null; then
+    echo "Error: command not found: $cmd" >&2
+    exit 1
+  fi
+done
+
+# Check if inside a git repository
+is_git_repo=false
+if [ -d ".git" ]; then
+    is_git_repo=true
+fi
+
+# --- Cache settings ---
+# Use a global cache directory to avoid polluting the project directory
+readonly global_cache_root="$HOME/.cache/generic_dataform_runner"
+# Create a unique cache dir for each project based on its absolute path's hash
+readonly project_hash=$(echo -n "$project_dir" | sha256sum | cut -d' ' -f1)
+readonly cache_dir="${global_cache_root}/${project_hash}"
+readonly compiled_filename="${cache_dir}/df-compile-result.json"
+readonly hash_filename="${cache_dir}/definitions.hash"
+mkdir -p "$cache_dir"
+
+
+# --- Main ---
+# Create a temporary directory to store intermediate files
+readonly tmp_dir=$(mktemp -d)
+# Clean up the temporary directory on exit
+trap 'rm -rf -- "$tmp_dir"' EXIT
+
+readonly query_filename="${tmp_dir}/df-query.sql"
+# Store the result in the system's temp dir, not the project dir
+readonly result_filename="/tmp/df-query-result.${output_format}"
+
+# --- Compile Logic ---
+# Calculate the current hash of the definitions directory
+readonly definitions_dir="$project_dir/definitions"
+current_hash=$(find "$definitions_dir" -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+# Read the stored hash, suppressing errors if the file doesn't exist
+stored_hash=$(cat "$hash_filename" 2>/dev/null || true)
+
+if [ "$current_hash" != "$stored_hash" ] || [ ! -f "$compiled_filename" ]; then
+  echo "Changes detected in 'definitions/'. Re-running 'dataform compile'..."
+  # dataform compile runs in the current directory by default
+  dataform compile --json > "$compiled_filename"
+  # Update the hash file on successful compilation
+  echo "$current_hash" > "$hash_filename"
+else
+  echo "No changes in 'definitions/'. Using cached compilation result."
+fi
+
+
+echo "Extracting table names with last modified dates and git status..."
+
+# Generate a sorted list of tables for peco
+table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view")) | "\(.fileName)\t\(.target.name)"' "$compiled_filename" |
+  while IFS=$'\t' read -r file name || [ -n "$file" ]; do
+    # Skip empty lines
+    [ -z "$file" ] && continue
+    full_file_path="$project_dir/$file"
+
+    # Get git status for the file
+    git_status="--"
+    if [ "$is_git_repo" = true ]; then
+        status_output=$(git status --short -- "$full_file_path" | awk '{print $1}')
+        if [ -n "$status_output" ]; then
+            git_status=$status_output
+        fi
+    fi
+
+    timestamp=$(stat -c %Y "$full_file_path")
+    mod_date=$(date -d "@$timestamp" '+%Y-%m-%d %H:%M:%S')
+    # Format: timestamp, git_status, mod_date, name
+    printf "%s\t%s\t%s\t%s\n" "$timestamp" "$git_status" "$mod_date" "$name"
+  done |
+  sort -rn |
+  cut -f2-
+)
+
+
+if [ -z "$table_list" ]; then
+    echo "No tables found in the compiled project." >&2
+    exit 1
+fi
+
+# Let the user select a table using peco.
+selected_line=$(echo -e "$table_list" | peco || true)
+
+
+if [ -z "$selected_line" ]; then
+    echo "No table selected. Exiting." >&2
+    exit 1
+fi
+
+# Extract just the table name (now the 3rd field) from the selected line
+readonly target_name=$(echo "$selected_line" | awk -F'\t' '{print $3}')
+
+echo "Extracting the query for '${target_name}'..."
+jq --arg n "$target_name" -r '.tables|.[]|select(.target.name==$n)|.query' "$compiled_filename" > "$query_filename"
+
+if [ ! -s "$query_filename" ]; then
+    echo "Error: Could not find a table with the name '${target_name}' in the compiled project." >&2
+    exit 1
+fi
+
+echo "Executing the query with BigQuery..."
+bq query --nouse_legacy_sql --format="$output_format" < "$query_filename" > "$result_filename"
+
+echo
+echo "The query results are stored in $result_filename"
+echo "Opening the result with visidata..."
+
+# Open the result file with vd
+vd "$result_filename"
