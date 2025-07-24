@@ -85,8 +85,8 @@ table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") o
 
     timestamp=$(stat -c %Y "$full_file_path")
     mod_date=$(date -d "@$timestamp" '+%Y-%m-%d %H:%M:%S')
-    # Format: timestamp, git_status, mod_date, name
-    printf "%s\t%s\t%s\t%s\n" "$timestamp" "$git_status" "$mod_date" "$name"
+    # Format: timestamp, git_status, name, mod_date, file (with fixed-width for alignment)
+    printf "%s\t%-3s\t%-40s\t%-20s\t%s\n" "$timestamp" "$git_status" "$name" "$mod_date" "$file"
   done |
   sort -rn |
   cut -f2-
@@ -107,8 +107,8 @@ if [ -z "$selected_line" ]; then
     exit 1
 fi
 
-# Extract just the table name from the selected line
-readonly target_name=$(echo "$selected_line" | awk -F'\t' '{print $3}')
+# Extract just the table name from the selected line and trim whitespace
+readonly target_name=$(echo "$selected_line" | awk -F'\t' '{print $2}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
 
 echo "Extracting the query for '${target_name}'..."
 jq --arg n "$target_name" -r '.tables|.[]|select(.target.name==$n)|.query' "$compiled_filename" > "$query_filename"
