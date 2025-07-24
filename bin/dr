@@ -4,7 +4,8 @@ set -euo pipefail
 # This script assumes it is run from the root of a dataform project.
 
 # --- Arguments ---
-readonly output_format="${1:-json}" # Optional: json, csv, etc.
+readonly subcommand="${1:-run}" # Optional: run, view
+readonly output_format="${2:-json}" # Optional: json, csv, etc.
 
 # --- Project Setup ---
 # Get the absolute path of the current directory to use as a unique project ID
@@ -42,8 +43,6 @@ readonly tmp_dir=$(mktemp -d)
 trap 'rm -rf -- "$tmp_dir"' EXIT
 
 readonly query_filename="${tmp_dir}/df-query.sql"
-# Store the result in the system's temp dir, not the project dir
-readonly result_filename="/tmp/df-query-result.${output_format}"
 
 # --- Compile Logic ---
 # Calculate the current hash of the definitions directory
@@ -66,7 +65,7 @@ fi
 echo "Extracting table names with last modified dates and git status..."
 
 # Generate a sorted list of tables for peco
-table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view")) | "\(.fileName)\t\(.target.name)"' "$compiled_filename" |
+table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") or (.type == "incremental")) | "\(.fileName)\t\(.target.name)"' "$compiled_filename" |
   while IFS=$'\t' read -r file name || [ -n "$file" ]; do
     # Skip empty lines
     [ -z "$file" ] && continue
@@ -105,7 +104,7 @@ if [ -z "$selected_line" ]; then
     exit 1
 fi
 
-# Extract just the table name (now the 3rd field) from the selected line
+# Extract just the table name from the selected line
 readonly target_name=$(echo "$selected_line" | awk -F'\t' '{print $3}')
 
 echo "Extracting the query for '${target_name}'..."
@@ -116,12 +115,52 @@ if [ ! -s "$query_filename" ]; then
     exit 1
 fi
 
-echo "Executing the query with BigQuery..."
-bq query --nouse_legacy_sql --format="$output_format" < "$query_filename" > "$result_filename"
+case "$subcommand" in
+    "run")
+        # Store the result in the system's temp dir, named by the target table
+        readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
 
-echo
-echo "The query results are stored in $result_filename"
-echo "Opening the result with visidata..."
+        echo "Executing the query with BigQuery..."
+        bq query --nouse_legacy_sql --format="$output_format" < "$query_filename" > "$result_filename"
 
-# Open the result file with vd
-vd "$result_filename"
+        echo
+        echo "The query results are stored in $result_filename"
+        echo "Opening the result with visidata..."
+        vd "$result_filename"
+        ;;
+    "view")
+        # Define the result filename based on the target table name
+        readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
+
+        echo "Attempting to open previous query results for '${target_name}' with visidata..."
+        if [ -f "$result_filename" ]; then
+            echo "Opening $result_filename with visidata..."
+            vd "$result_filename"
+        else
+            echo "Error: No previous query results found for '${target_name}' at $result_filename." >&2
+            echo "Please run 'dr run' for this table first to generate the results." >&2
+            exit 1
+        fi
+        ;;
+    "help")
+        echo "Usage: dr [subcommand] [output_format]"
+        echo ""
+        echo "Subcommands:"
+        echo "  run (default) : Compiles the Dataform project, allows selecting a table, executes the query with BigQuery, and opens the results with visidata."
+        echo "  view          : Compiles the Dataform project, allows selecting a table, and opens previously generated query results with visidata (skips BigQuery execution)."
+        echo "  help          : Displays this help message."
+        echo ""
+        echo "Arguments:"
+        echo "  output_format : Optional. The format for BigQuery results (e.g., json, csv). Defaults to json."
+        echo ""
+        echo "Examples:"
+        echo "  dr            # Runs with default 'run' subcommand and 'json' output format."
+        echo "  dr run csv    # Runs with 'run' subcommand and 'csv' output format."
+        echo "  dr view       # Views previously generated results."
+        echo "  dr help       # Displays this help message."
+        ;;
+    *)
+        echo "Error: Unknown subcommand '$subcommand'. Use 'run', 'view', or 'help'." >&2
+        exit 1
+        ;;
+esac
