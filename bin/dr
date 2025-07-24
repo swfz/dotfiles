@@ -1,0 +1,169 @@
+#!/bin/bash
+set -euo pipefail
+
+# This script assumes it is run from the root of a dataform project.
+
+# --- Arguments ---
+readonly subcommand="${1:-run}" # Optional: run, view
+readonly output_format="${2:-json}" # Optional: json, csv, etc.
+
+# --- Interactive Filter Tool ---
+readonly INTERACTIVE_FILTER_TOOL="${INTERACTIVE_FILTER_TOOL:-peco}"
+
+# --- Project Setup ---
+# Get the absolute path of the current directory to use as a unique project ID
+readonly project_dir=$(realpath .)
+
+# Check if required commands are installed
+for cmd in dataform jq bq vd stat find sort xargs sha256sum printf realpath awk git "$INTERACTIVE_FILTER_TOOL"; do
+  if ! command -v "$cmd" &> /dev/null; then
+    echo "Error: command not found: $cmd" >&2
+    exit 1
+  fi
+done
+
+# Check if inside a git repository
+is_git_repo=false
+if [ -d ".git" ]; then
+    is_git_repo=true
+fi
+
+# --- Cache settings ---
+# Use a global cache directory to avoid polluting the project directory
+readonly global_cache_root="$HOME/.cache/generic_dataform_runner"
+# Create a unique cache dir for each project based on its absolute path's hash
+readonly project_hash=$(echo -n "$project_dir" | sha256sum | cut -d' ' -f1)
+readonly cache_dir="${global_cache_root}/${project_hash}"
+readonly compiled_filename="${cache_dir}/df-compile-result.json"
+readonly hash_filename="${cache_dir}/definitions.hash"
+mkdir -p "$cache_dir"
+
+
+# --- Main ---
+# Create a temporary directory to store intermediate files
+readonly tmp_dir=$(mktemp -d)
+# Clean up the temporary directory on exit
+trap 'rm -rf -- "$tmp_dir"' EXIT
+
+readonly query_filename="${tmp_dir}/df-query.sql"
+
+# --- Compile Logic ---
+# Calculate the current hash of the definitions directory
+readonly definitions_dir="$project_dir/definitions"
+current_hash=$(find "$definitions_dir" -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+# Read the stored hash, suppressing errors if the file doesn't exist
+stored_hash=$(cat "$hash_filename" 2>/dev/null || true)
+
+if [ "$current_hash" != "$stored_hash" ] || [ ! -f "$compiled_filename" ]; then
+  echo "Changes detected in 'definitions/'. Re-running 'dataform compile'..."
+  # dataform compile runs in the current directory by default
+  dataform compile --json > "$compiled_filename"
+  # Update the hash file on successful compilation
+  echo "$current_hash" > "$hash_filename"
+else
+  echo "No changes in 'definitions/'. Using cached compilation result."
+fi
+
+
+echo "Extracting table names with last modified dates and git status..."
+
+# Generate a sorted list of tables for peco
+table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") or (.type == "incremental")) | "\(.fileName)\t\(.target.name)"' "$compiled_filename" |
+  while IFS=$'\t' read -r file name || [ -n "$file" ]; do
+    # Skip empty lines
+    [ -z "$file" ] && continue
+    full_file_path="$project_dir/$file"
+
+    # Get git status for the file
+    git_status="--"
+    if [ "$is_git_repo" = true ]; then
+        status_output=$(git status --short -- "$full_file_path" | awk '{print $1}')
+        if [ -n "$status_output" ]; then
+            git_status=$status_output
+        fi
+    fi
+
+    timestamp=$(stat -c %Y "$full_file_path")
+    mod_date=$(date -d "@$timestamp" '+%Y-%m-%d %H:%M:%S')
+    # Format: timestamp, git_status, name, mod_date, file (with fixed-width for alignment)
+    printf "%s\t%-3s\t%-40s\t%-20s\t%s\n" "$timestamp" "$git_status" "$name" "$mod_date" "$file"
+  done |
+  sort -rn |
+  cut -f2-
+)
+
+
+if [ -z "$table_list" ]; then
+    echo "No tables found in the compiled project." >&2
+    exit 1
+fi
+
+# Let the user select a table using the interactive filter tool.
+selected_line=$(echo -e "$table_list" | "$INTERACTIVE_FILTER_TOOL" || true)
+
+
+if [ -z "$selected_line" ]; then
+    echo "No table selected. Exiting." >&2
+    exit 1
+fi
+
+# Extract just the table name from the selected line and trim whitespace
+readonly target_name=$(echo "$selected_line" | awk -F'\t' '{print $2}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+echo "Extracting the query for '${target_name}'..."
+jq --arg n "$target_name" -r '.tables|.[]|select(.target.name==$n)|.query' "$compiled_filename" > "$query_filename"
+
+if [ ! -s "$query_filename" ]; then
+    echo "Error: Could not find a table with the name '${target_name}' in the compiled project." >&2
+    exit 1
+fi
+
+case "$subcommand" in
+    "run")
+        # Store the result in the system's temp dir, named by the target table
+        readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
+
+        echo "Executing the query with BigQuery..."
+        bq query --nouse_legacy_sql --format="$output_format" < "$query_filename" > "$result_filename"
+
+        echo
+        echo "The query results are stored in $result_filename"
+        echo "Opening the result with visidata..."
+        vd "$result_filename"
+        ;;
+    "view")
+        # Define the result filename based on the target table name
+        readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
+
+        echo "Attempting to open previous query results for '${target_name}' with visidata..."
+        if [ -f "$result_filename" ]; then
+            echo "Opening $result_filename with visidata..."
+            vd "$result_filename"
+        else
+            echo "Error: No previous query results found for '${target_name}' at $result_filename." >&2
+            echo "Please run 'dr run' for this table first to generate the results." >&2
+            exit 1
+        fi
+        ;;
+    "help")
+        echo "Usage: dr [subcommand] [output_format]"
+        echo ""
+        echo "Subcommands:"
+        echo "  run (default) : Compiles the Dataform project, allows selecting a table, executes the query with BigQuery, and opens the results with visidata."
+        echo "  view          : Compiles the Dataform project, allows selecting a table, and opens previously generated query results with visidata (skips BigQuery execution)."
+        echo "  help          : Displays this help message."
+        echo ""
+        echo "Arguments:"
+        echo "  output_format : Optional. The format for BigQuery results (e.g., json, csv). Defaults to json."
+        echo ""
+        echo "Examples:"
+        echo "  dr            # Runs with default 'run' subcommand and 'json' output format."
+        echo "  dr run csv    # Runs with 'run' subcommand and 'csv' output format."
+        echo "  dr view       # Views previously generated results."
+        echo "  dr help       # Displays this help message."
+        ;;
+    *)
+        echo "Error: Unknown subcommand '$subcommand'. Use 'run', 'view', or 'help'." >&2
+        exit 1
+        ;;
+esac
