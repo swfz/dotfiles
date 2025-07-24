@@ -7,12 +7,15 @@ set -euo pipefail
 readonly subcommand="${1:-run}" # Optional: run, view
 readonly output_format="${2:-json}" # Optional: json, csv, etc.
 
+# --- Interactive Filter Tool ---
+readonly INTERACTIVE_FILTER_TOOL="${INTERACTIVE_FILTER_TOOL:-peco}"
+
 # --- Project Setup ---
 # Get the absolute path of the current directory to use as a unique project ID
 readonly project_dir=$(realpath .)
 
 # Check if required commands are installed
-for cmd in dataform jq bq peco vd stat find sort xargs sha256sum printf realpath awk git; do
+for cmd in dataform jq bq vd stat find sort xargs sha256sum printf realpath awk git "$INTERACTIVE_FILTER_TOOL"; do
   if ! command -v "$cmd" &> /dev/null; then
     echo "Error: command not found: $cmd" >&2
     exit 1
@@ -95,8 +98,8 @@ if [ -z "$table_list" ]; then
     exit 1
 fi
 
-# Let the user select a table using peco.
-selected_line=$(echo -e "$table_list" | peco || true)
+# Let the user select a table using the interactive filter tool.
+selected_line=$(echo -e "$table_list" | "$INTERACTIVE_FILTER_TOOL" || true)
 
 
 if [ -z "$selected_line" ]; then
