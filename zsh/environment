@@ -17,3 +17,5 @@ export CHEATCOLORS=true
 # GOPATH
 export GOPATH=~/go
 
+# PATH
+export PATH="$HOME/.local/bin:$PATH"
