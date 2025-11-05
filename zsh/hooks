@@ -21,3 +21,29 @@ function preexec_git_global_hooks() {
   fi
 }
 add-zsh-hook preexec preexec_git_global_hooks
+
+_current_gh_user_state="swfz"
+
+function check_gh_auth_on_cd() {
+  local expected_user="swfz" # default user
+  local email
+
+  # 「もし.gitがあり && git configが成功し && EmailがWork用」なら
+  # 期待するユーザーをWork用に上書きする
+  if [ -e ".git" ] && \
+     email=$(git config user.email 2>/dev/null) && \
+     [ "$email" = "$WORK_EMAIL" ]; then
+
+    expected_user="$WORK_GH_USER"
+  fi
+
+  # 期待するユーザーが現在の状態と異なる場合のみ、switchを実行
+  if [[ "$_current_gh_user_state" != "$expected_user" ]]; then
+    # echo "Switching gh auth to $expected_user" # for debug
+    if gh auth switch --user "$expected_user"; then
+      _current_gh_user_state="$expected_user" # 成功した場合のみ状態を更新
+    fi
+  fi
+}
+add-zsh-hook chpwd check_gh_auth_on_cd
+
