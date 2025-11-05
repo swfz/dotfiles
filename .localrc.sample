@@ -1,0 +1,10 @@
+export KB_TYPE="US"
+
+# for notification to host(win)
+export POWERSHELL_EXE=/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
+export NOTIFY_PS1=c:/Users/UserName/notify.ps1
+
+# for gh switch
+export WORK_EMAIL='hoge.fuga@example.com'
+export WORK_GH_USER='work-github-user-name'
+

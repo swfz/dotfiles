@@ -5,8 +5,8 @@ fi
 
 export EDITOR=vim
 export SVN_EDITOR=vim
-export LC_CTYPE=ja_JP.utf8
-export LC_ALL=en_US.UTF-8
+export LC_CTYPE=C.utf8
+export LC_ALL=C.utf8
 export LESS="-R -W -i -M"
 export LESSCHARSET=utf-8
 
