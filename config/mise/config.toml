@@ -25,6 +25,8 @@ ripgrep = 'latest'
 fzf = 'latest'
 "npm:zx" = 'latest'
 "npm:opencommit" = 'latest'
+"npm:pnpm" = 'latest'
+"npm:yarn" = 'latest'
 "pipx:mycli" = 'latest'
 "pipx:cheat" = 'latest'
 "pipx:mkdocs" = 'latest'
@@ -35,3 +37,4 @@ rust = 'latest'
 
 [settings]
 experimental = true
+
