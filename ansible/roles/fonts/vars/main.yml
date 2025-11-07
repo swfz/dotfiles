@@ -1,5 +1,5 @@
 ---
-fonts:
+fonts:  # noqa var-naming[no-role-prefix]
   notofont:
     src: https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
     zip: NotoSansCJKjp-hinted.zip

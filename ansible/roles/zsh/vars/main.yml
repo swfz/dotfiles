@@ -1,5 +1,5 @@
 ---
-zsh:
+zsh:  # noqa var-naming[no-role-prefix]
   dir: zsh-{{ zsh_version }}
   xz: zsh-{{ zsh_version }}.tar.xz
   src: https://downloads.sourceforge.net/project/zsh/zsh/{{ zsh_version }}/zsh-{{ zsh_version }}.tar.xz

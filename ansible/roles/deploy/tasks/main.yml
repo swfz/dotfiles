@@ -1,12 +1,12 @@
 ---
 # 環境変数CIがそもそも存在しないか、設定されていてもtrueではない
-- name: Set git repo prefix(git)
+- name: Set git repo prefix(git)  # noqa var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     repo_prefix: 'git@github.com:'
   when: ansible_env.get('CI', True) or (ansible_env.get('CI', None) and ansible_env.CI != "true")
 
 # CI環境
-- name: Set git repo prefix(https)
+- name: Set git repo prefix(https)  # noqa var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     repo_prefix: https://github.com/
   when: ansible_env.get('CI', None) and ansible_env.CI == "true"
@@ -24,12 +24,12 @@
     owner: "{{ user }}"
     mode: "0644"
 
-- name: Check repository directory exists
+- name: Check repository directory exists  # noqa var-naming[no-role-prefix]
   ansible.builtin.stat:
     path: "{{ dotfiles.dest }}"
   register: dotfiles_dir
 
-- name: Check unstaged changes  # noqa command-instead-of-module
+- name: Check unstaged changes  # noqa command-instead-of-module var-naming[no-role-prefix]
   ansible.builtin.command:
     cmd: git diff --exit-code
     chdir: "{{ dotfiles.dest }}"

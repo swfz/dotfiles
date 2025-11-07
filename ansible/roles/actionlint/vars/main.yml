@@ -1,5 +1,5 @@
 ---
-actionlint:
+actionlint:  # noqa var-naming[no-role-prefix]
   src:
     linux: https://github.com/rhysd/actionlint/releases/download/{{ actionlint_version }}/actionlint_{{ actionlint_version.replace("v", "") }}_linux_amd64.tar.gz
     darwin: https://github.com/rhysd/actionlint/releases/download/{{ actionlint_version }}/actionlint_{{ actionlint_version.replace("v", "") }}_darwin_amd64.tar.gz
