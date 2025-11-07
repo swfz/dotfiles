@@ -1,6 +1,7 @@
 # set environment
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
   export IS_WSL=1
+  export BROWSER=/usr/bin/wslview
 fi
 
 export EDITOR=vim
