@@ -107,21 +107,21 @@ jobs:
           cd ansible
           ansible-playbook -i localhost, -c local mac.yml
 
-  build-codespace:
-    runs-on: ubuntu-latest
-    name: 'playbook codespace'
-    steps:
-      - uses: actions/checkout@v4.2.2
-      - if: github.event.client_payload
-        uses: actions/checkout@v4.2.2
-        with:
-          ref: ${{ github.event.client_payload.ref }}
-      - name: 'ansible playbook codespace'
-        env:
-          CI: true
-        run: |
-          docker compose build codespace
-          docker compose run -e CI=true codespace sh setup.sh
+  # build-codespace:
+  #   runs-on: ubuntu-latest
+  #   name: 'playbook codespace'
+  #   steps:
+  #     - uses: actions/checkout@v4.2.2
+  #     - if: github.event.client_payload
+  #       uses: actions/checkout@v4.2.2
+  #       with:
+  #         ref: ${{ github.event.client_payload.ref }}
+  #     - name: 'ansible playbook codespace'
+  #       env:
+  #         CI: true
+  #       run: |
+  #         docker compose build codespace
+  #         docker compose run -e CI=true codespace sh setup.sh
 
   lint:
     runs-on: ubuntu-latest
