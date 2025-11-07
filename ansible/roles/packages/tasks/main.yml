@@ -32,4 +32,6 @@
       - crudini
       - asciinema
       - libasound2t64
+      - net-tools
+      - tree
     state: present
