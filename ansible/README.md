@@ -23,7 +23,14 @@ ansible-playbook -i hosts -c local development.yml --tags "git"
 
 ## use docker example
 
+- ansible
+
 ```
 sudo docker-compose run --rm centos ansible-playbook -i localhost, -c local ubuntu.yml --tags awscli
+```
+- lint
+
+```
+sudo docker compose run --rm ubuntu uv run ansible-lint
 ```
 

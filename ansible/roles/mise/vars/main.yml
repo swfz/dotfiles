@@ -1,4 +1,4 @@
 ---
-mise:
+mise:  # noqa var-naming[no-role-prefix]
   Debian: https://github.com/jdx/mise/releases/download/{{ mise_version }}/mise-{{ mise_version }}-linux-x64
   Darwin: https://github.com/jdx/mise/releases/download/{{ mise_version }}/mise-{{ mise_version }}-macos-x64

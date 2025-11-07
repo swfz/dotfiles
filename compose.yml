@@ -4,7 +4,7 @@ services:
       context: ./ansible
       dockerfile: Dockerfile.ubuntu
     volumes:
-      - ./ansible:/usr/local/src/ansible
+      - ./ansible:/app
     tty: true
     dns:
       - 8.8.8.8
@@ -14,7 +14,7 @@ services:
       - SYS_ADMIN
     security_opt:
       - seccomp:unconfined
-    command: "python"
+    command: "python3"
   codespace:
     build:
       context: ./ansible

@@ -1,5 +1,5 @@
 ---
-git:
+git:  # noqa var-naming[no-role-prefix]
   dir: git-{{ git_version.replace("v", "") }}
   tgz: git-{{ git_version.replace("v", "") }}.tar.gz
   src: https://www.kernel.org/pub/software/scm/git/git-{{ git_version.replace("v", "") }}.tar.gz

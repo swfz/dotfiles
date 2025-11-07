@@ -1,14 +1,15 @@
 FROM ubuntu:noble
 
-RUN apt update
-RUN apt install -y software-properties-common
-RUN apt-add-repository --yes --update ppa:ansible/ansible
-RUN apt install -y ansible ansible-lint yamllint sudo python3-pip
+RUN apt-get update \
+    export DEBIAN_FRONTEND=noninteractive \
+    apt-get install -y software-properties-common gpg-agent curl sudo tzdata \
+    add-apt-repository ppa:deadsnakes/ppa -y \
+    apt-get update \
+    apt-get install -y python3.12 python3.12-venv \
+    curl -LsSf https://astral.sh/uv/install.sh | sh \
+    mv ~/.local/bin/uv /usr/local/bin/uv \
+    uv venv --python python3.12 \
+    uv pip install --no-cache ansible ansible-lint
 
-RUN useradd -m vagrant
-RUN usermod -aG sudo vagrant
-RUN echo 'vagrant:vagrant' | chpasswd
-RUN echo 'vagrant ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+WORKDIR /app
 
-USER vagrant
-WORKDIR /usr/local/src/ansible
