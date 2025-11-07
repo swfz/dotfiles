@@ -1,5 +1,0 @@
----
-- name: Install q
-  ansible.builtin.yum:
-    name: "{{ q.src }}"
-    state: installed
