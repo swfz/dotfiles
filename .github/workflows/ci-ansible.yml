@@ -34,7 +34,7 @@ jobs:
           sudo chmod +x /usr/bin/yq
           MISE_TOOL_LIST=$(yq -o json -I=0 '.tools|keys' config/mise/config.toml)
           echo "list=$MISE_TOOL_LIST" >> "$GITHUB_OUTPUT"
- 
+
   set-tags-matrix:
     needs: set-mise-tools
     runs-on: ubuntu-latest
@@ -140,7 +140,7 @@ jobs:
           activate-environment: "false"
       - name: install ansible-lint yamllint
         run: |
-          uv pip install --no-cache ansible ansible-lint
+          uv pip install --no-cache ansible ansible-lint --system
       - name: yamllint
         env:
           CI: true
