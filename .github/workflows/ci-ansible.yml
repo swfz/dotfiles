@@ -161,7 +161,7 @@ jobs:
     # needs: [lint, build-mac, build-ubuntu, build-codespace]
     needs: [lint, build-mac, build-ubuntu]
     steps:
-      - uses: Kesin11/actions-timeline@v2.2.3
+      - uses: Kesin11/actions-timeline@v2.2.5
 
   slack-notify:
     if: always()
