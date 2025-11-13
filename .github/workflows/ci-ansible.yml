@@ -42,7 +42,7 @@ jobs:
     outputs:
       tags: ${{ steps.set-matrix.outputs.result }}
     steps:
-      - uses: actions/github-script@v7.0.1
+      - uses: actions/github-script@v7.1.0
         id: set-matrix
         env:
           TOOLS_CHUNKS: ${{ vars.TOOLS_CHUNKS }}
@@ -134,7 +134,7 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v7.1.2
+        uses: astral-sh/setup-uv@v7.1.3
         with:
           python-version: 3.12
       - name: install ansible-lint yamllint
