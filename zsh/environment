@@ -1,5 +1,5 @@
 # set environment
-if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
+if [ -f /proc/sys/fs/binfmt_misc/WSLInterop-late ]; then
   export IS_WSL=1
   export BROWSER=/usr/bin/wslview
 fi
