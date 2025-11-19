@@ -1,5 +1,5 @@
 # datasource=github-releases depName=direnv/direnv
-direnv_version: v2.35.0
+direnv_version: v2.37.1
 # datasource=github-tags depName=git/git
 git_version: v2.52.0
 # dummy
