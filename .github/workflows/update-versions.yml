@@ -18,9 +18,6 @@ jobs:
           - name: jo
             repo: jpmens/jo
             type: prefix
-          - name: q
-            repo: harelba/q
-            type: from-tag
           - name: zsh
             repo: zsh-users/zsh
             type: from-tag
