@@ -22,28 +22,38 @@ function preexec_git_global_hooks() {
 }
 add-zsh-hook preexec preexec_git_global_hooks
 
-_current_gh_user_state="swfz"
+# ghコマンドのユーザーをディレクトリによって自動切り替えするためのフック
+GH_USER_FILE="/tmp/gh_active_user.txt"
+echo $DEFAULT_GH_USER > $GH_USER_FILE
 
-function check_gh_auth_on_cd() {
-  local expected_user="swfz" # default user
-  local email
+function switch_gh_user() {
+  expected_user=$DEFAULT_GH_USER
+  current_user=$(cat $GH_USER_FILE)
 
   # 「もし.gitがあり && git configが成功し && EmailがWork用」なら
   # 期待するユーザーをWork用に上書きする
   if git rev-parse --is-inside-work-tree > /dev/null 2>&1 && \
-     email=$(git config user.email 2>/dev/null) && \
-     [ "$email" = "$WORK_EMAIL" ]; then
+    email=$(git config user.email 2>/dev/null) && \
+    [ "$email" = "$WORK_EMAIL" ]; then
 
     expected_user="$WORK_GH_USER"
   fi
 
   # 期待するユーザーが現在の状態と異なる場合のみ、switchを実行
-  if [[ "$_current_gh_user_state" != "$expected_user" ]]; then
-    # echo "Switching gh auth to $expected_user" # for debug
+  if [[ "$current_user" != "$expected_user" ]]; then
     if gh auth switch --user "$expected_user"; then
-      _current_gh_user_state="$expected_user" # 成功した場合のみ状態を更新
+      echo $expected_user > $GH_USER_FILE # 成功した場合のみ状態を更新
     fi
   fi
 }
-add-zsh-hook chpwd check_gh_auth_on_cd
+add-zsh-hook chpwd switch_gh_user
+
+# 何も入力しなかったときにもgh_switch_userを発火
+# ターミナル等が変わった際への対応
+function call_switch_gh_user() {
+  if [[ $BUFFER = "" ]]; then
+    switch_gh_user
+  fi
+}
+add-zsh-hook precmd call_switch_gh_user
 
