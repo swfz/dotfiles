@@ -104,11 +104,5 @@ if [ -f $HOME/.localrc ]; then
   source $HOME/.localrc
 fi
 
-# WSLのUbuntu用設定
-if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ]; then
-  export BROWSER=wslview
-  alias open=wslview
-fi
-
 eval "$(mise activate zsh)"
 
