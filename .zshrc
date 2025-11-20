@@ -106,3 +106,6 @@ fi
 
 eval "$(mise activate zsh)"
 
+# command version check for yaml and local
+sh $HOME/dotfiles/bin/check_version.sh
+
