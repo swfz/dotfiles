@@ -91,3 +91,15 @@ if !has('gui_running')
     autocmd VimEnter,ColorScheme * highlight NonText ctermbg=none
   augroup END
 endif
+
+" colorscheme settings ------------------------------------
+" default colorscheme
+colorscheme lucario
+
+" markdown specific colorscheme
+augroup markdown_colorscheme
+  autocmd!
+  autocmd FileType markdown colorscheme solarized | set background=dark
+  autocmd BufLeave *.md,*.markdown colorscheme lucario
+augroup END
+" -----------------------------------------------------
