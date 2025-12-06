@@ -1,140 +1,139 @@
-" neobundle
-set nocompatible               " Be iMproved
-filetype off                   " Required!
-
-if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+" vim-plug
+" Auto-install vim-plug if not present
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+call plug#begin('~/.vim/plugged')
 
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
+" ============================================
+" Complete and Format
+" ============================================
+Plug 'kana/vim-surround'
+Plug 'vim-scripts/AutoClose'
+Plug 'Shougo/neocomplcache'
+Plug 'vim-scripts/smartchr'
+Plug 'vim-scripts/Align'
+Plug 'vim-scripts/SQLUtilities'
+Plug 'tyru/caw.vim'
+Plug 'AndrewRadev/linediff.vim'
+Plug 'mattn/emmet-vim'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'LeafCage/yankround.vim'
+Plug 'tpope/vim-speeddating'
 
-" plugins
-" complete and format
-NeoBundle 'kana/vim-surround'
-NeoBundle 'vim-scripts/AutoClose'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle "smartchr"
-NeoBundle 'vim-scripts/Align'
-NeoBundle 'vim-scripts/SQLUtilities'
-NeoBundle 'tyru/caw.vim.git'
-NeoBundle 'AndrewRadev/linediff.vim'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'LeafCage/yankround.vim'
-NeoBundle 'tpope/vim-speeddating'
+" ============================================
+" Filer and Navigation
+" ============================================
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/vimfiler', { 'on': ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'] }
+Plug 'Shougo/unite.vim'
+Plug 'wesleyche/SrcExpl'
+Plug 'vim-scripts/taglist.vim'
+Plug 'h1mesuke/unite-outline'
+Plug 'thinca/vim-ref'
 
-" filer move
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimfiler'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'wesleyche/SrcExpl'
-NeoBundle 'vim-scripts/taglist.vim'
-NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'thinca/vim-ref'
+" ============================================
+" Shell and Execution
+" ============================================
+Plug 'thinca/vim-quickrun', { 'on': 'QuickRun' }
+Plug 'Shougo/vimshell.vim', { 'on': ['VimShell', 'VimShellPop'] }
+Plug 'rking/ag.vim'
+Plug 'benmills/vimux', { 'on': ['VimuxRunCommand', 'VimuxPromptCommand'] }
 
-" shell
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'Shougo/vimshell.vim'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'benmills/vimux'
+" vimproc (required by unite.vim, vimfiler, vimshell)
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 
-" colorscheme
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'vim-scripts/Lucius'
-NeoBundle 'vim-scripts/Zenburn'
-NeoBundle 'croaker/mustang-vim'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'jeffreyiacono/vim-colors-wombat'
-NeoBundle 'jpo/vim-railscasts-theme'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'vim-scripts/rdark'
-NeoBundle 'mrkn/mrkn256.vim'
-NeoBundle 'ChasingLogic/ChasingLogic-colorscheme-vim'
-NeoBundle 'raphamorim/lucario'
-NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle 'therubymug/vim-pyte'
-NeoBundle 'Blevs/vim-dzo'
-NeoBundle 'bcicen/vim-vice'
-NeoBundle 'jacoborus/tender.vim'
-NeoBundle 'arcticicestudio/nord-vim'
+" ============================================
+" Colorschemes
+" ============================================
+Plug 'nanotech/jellybeans.vim'
+Plug 'vim-scripts/Lucius'
+Plug 'vim-scripts/Zenburn'
+Plug 'croaker/mustang-vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'jeffreyiacono/vim-colors-wombat'
+Plug 'jpo/vim-railscasts-theme'
+Plug 'tomasr/molokai'
+Plug 'w0ng/vim-hybrid'
+Plug 'vim-scripts/rdark'
+Plug 'mrkn/mrkn256.vim'
+Plug 'ChasingLogic/ChasingLogic-colorscheme-vim'
+Plug 'raphamorim/lucario'
+Plug 'ujihisa/unite-colorscheme'
+Plug 'therubymug/vim-pyte'
+Plug 'Blevs/vim-dzo'
+Plug 'bcicen/vim-vice'
+Plug 'jacoborus/tender.vim'
+Plug 'arcticicestudio/nord-vim'
 
+" ============================================
+" Syntax and Linting
+" ============================================
+Plug 'dense-analysis/ale'
+Plug 'tpope/vim-markdown'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 't9md/vim-quickhl'
+Plug 'slim-template/vim-slim'
+Plug 'mattn/vim-lsp-settings'
 
-" syntax
-NeoBundle 'w0rp/ale'
-NeoBundle 'tpope/vim-markdown'
-NeoBundle 'kien/rainbow_parentheses.vim'
-NeoBundle 't9md/vim-quickhl'
-NeoBundle "slim-template/vim-slim"
-NeoBundle 'mattn/vim-lsp-settings'
-
+" ============================================
 " TypeScript
-NeoBundleLazy 'leafgarland/typescript-vim', {
-      \ 'autoload' : {
-      \   'filetypes' : ['typescript'] }
-      \}
-NeoBundleLazy 'jason0x43/vim-js-indent', {
-      \ 'autoload' : {
-      \   'filetypes' : ['javascript', 'typescript', 'html'],
-      \}}
+" ============================================
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'jason0x43/vim-js-indent', { 'for': ['javascript', 'typescript', 'html'] }
 let g:js_indent_typescript = 1
-NeoBundle 'Quramy/tsuquyomi'
+Plug 'Quramy/tsuquyomi'
 
+" ============================================
+" Git Integration
+" ============================================
+Plug 'gregsexton/gitv', { 'on': 'Gitv' }
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/vcscommand.vim'
 
-" git
-NeoBundle 'gregsexton/gitv'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'vim-scripts/vcscommand.vim'
+" ============================================
+" API and Translation
+" ============================================
+Plug 'koron/codic-vim'
+Plug 'rhysd/unite-codic.vim'
 
-" api
-NeoBundle 'koron/codic-vim'
-NeoBundle 'rhysd/unite-codic.vim'
-
-" markdown-preview
+" ============================================
+" Markdown Preview
+" ============================================
 if $IS_WSL != 1
-  NeoBundle 'kannokanno/previm'
-  NeoBundle 'tyru/open-browser.vim'
+  Plug 'kannokanno/previm'
+  Plug 'tyru/open-browser.vim'
 endif
 
-" design
-NeoBundle 'kana/vim-submode'
-NeoBundle "Yggdroot/indentLine"
-" NeoBundle 'nathanaelkane/vim-indent-guides'
+" ============================================
+" UI and Design
+" ============================================
+Plug 'kana/vim-submode'
+Plug 'Yggdroot/indentLine'
+" Plug 'nathanaelkane/vim-indent-guides'
 
-" other
-NeoBundle 'hotchpotch/perldoc-vim'
-NeoBundle 'gko/vim-coloresque'
-NeoBundle 'tsukkee/unite-tag'
+" ============================================
+" Other Utilities
+" ============================================
+Plug 'hotchpotch/perldoc-vim'
+Plug 'gko/vim-coloresque'
+Plug 'tsukkee/unite-tag'
 
-" powerline
-
+" ============================================
+" Statusline
+" ============================================
 if $IS_WSL == 1
-  NeoBundle 'itchyny/lightline.vim'
+  Plug 'itchyny/lightline.vim'
 else
-  NeoBundle 'Lokaltog/powerline.git'
+  Plug 'Lokaltog/powerline', { 'rtp': 'powerline/bindings/vim' }
 endif
 
+call plug#end()
 
-" Installation check.
-if neobundle#exists_not_installed_bundles()
-  echomsg 'Not installed bundles : ' .
-        \ string(neobundle#get_not_installed_bundle_names())
-  echomsg 'Please execute ":NeoBundleInstall" command.'
-  "finish
-endif
-
-call neobundle#end()
+" Required for plugin functionality
+filetype plugin indent on
