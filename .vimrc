@@ -17,7 +17,8 @@ endif
 autocmd ColorScheme * highlight IncSearch ctermfg=17 ctermbg=214
 autocmd ColorScheme * highlight Search ctermfg=17 ctermbg=214
 
-colorscheme lucario
+set background=dark
+colorscheme solarized
 " colorscheme lucius
 " LuciusBlack
 " hi Normal ctermbg=NONE

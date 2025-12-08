@@ -93,13 +93,6 @@ if !has('gui_running')
 endif
 
 " colorscheme settings ------------------------------------
-" default colorscheme
-colorscheme lucario
-
-" markdown specific colorscheme
-augroup markdown_colorscheme
-  autocmd!
-  autocmd FileType markdown colorscheme solarized | set background=dark
-  autocmd BufLeave *.md,*.markdown colorscheme lucario
-augroup END
+" Removed: Markdown-specific colorscheme switching
+" Now using solarized dark globally (set in .vimrc)
 " -----------------------------------------------------
