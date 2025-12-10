@@ -1,4 +1,8 @@
 #!/bin/bash
+# カメラとマイクの使用状況をモニターし利用中は会議中ランプをONにするためのセットアップスクリプト
+# 前提
+#   WSL環境でsystemdを利用
+#   Switchbot（デバイスはプラグミニ）のAPIを叩いてON/OFFをコントロール
 
 set -e
 
@@ -19,7 +23,7 @@ if [ ! -f "$SWITCHBOT_FILE" ]; then
     echo "⚠️  WARNING: Token file not found at $SWITCHBOT_FILE"
     echo "   Creating directory..."
     mkdir -p "$SWITCHBOT_DIR"
-    echo "   Please create 'token.env' with SWITCHBOT_SWITCHBOT and SWITCHBOT_SECRET and SWITCHBOT_DEVICE_ID manually."
+    echo "   Please create 'api.env' with SWITCHBOT_SWITCHBOT and SWITCHBOT_SECRET and SWITCHBOT_DEVICE_ID manually."
 else
     echo "✅ Switchbot file found."
 fi

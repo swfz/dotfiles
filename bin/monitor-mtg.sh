@@ -1,11 +1,17 @@
 #!/bin/bash
 
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
 # 監視間隔（秒）
-INTERVAL=5
 REG_EXE="/mnt/c/Windows/System32/reg.exe"
 BASE_KEY="HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore"
 
-export PATH="$HOME/.local/share/mise/shims:$PATH"
+INTERVAL=5
+LAST_STATE=""
+
+log() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+}
 
 check_device() {
     local device=$1
@@ -24,22 +30,26 @@ while true; do
     CAM_APP=$(check_device "webcam")
     MIC_APP=$(check_device "microphone")
 
-    # 状態判定
-    if [ -n "$CAM_APP" ]; then
-        STATUS="VIDEO_MEETING"
-        APP="$CAM_APP"
-        ruby ~/dotfiles/bin/swithbot.rb on
-    elif [ -n "$MIC_APP" ]; then
-        STATUS="AUDIO_HUDDLE"
-        APP="$MIC_APP"
-        ruby ~/dotfiles/bin/swithbot.rb on
+    if [ -n "$CAM_APP" ] || [ -n "$MIC_APP" ]; then
+        TARGET_STATE="on"
+        ACTIVE_APP="${CAM_APP}${MIC_APP}"
     else
-        STATUS="IDLE"
-        APP=""
-        ruby ~/dotfiles/bin/swithbot.rb off
+        TARGET_STATE="off"
+        ACTIVE_APP=""
     fi
 
-    echo "[$(date)] Status: $STATUS (App: $APP)"
+    if [ "$TARGET_STATE" != "$LAST_STATE" ]; then
+        if [ "$TARGET_STATE" == "on" ]; then
+            log "Status Change: OFF -> ON (Active App: $ACTIVE_APP)"
+            ruby ~/dotfiles/bin/swithbot.rb on
+        else
+            log "Status Change: ON -> OFF (Idle)"
+            ruby ~/dotfiles/bin/swithbot.rb off
+        fi
+
+        LAST_STATE="$TARGET_STATE"
+    fi
 
     sleep $INTERVAL
 done
+
