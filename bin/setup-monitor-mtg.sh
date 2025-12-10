@@ -19,7 +19,7 @@ if [ ! -f "$SWITCHBOT_FILE" ]; then
     echo "⚠️  WARNING: Token file not found at $SWITCHBOT_FILE"
     echo "   Creating directory..."
     mkdir -p "$SWITCHBOT_DIR"
-    echo "   Please create 'token.env' with SWITCHBOT_SWITCHBOT and SWITCHBOT_SECRET and SWITCHBOT_DEVICE_ID manually."
+    echo "   Please create 'api.env' with SWITCHBOT_SWITCHBOT and SWITCHBOT_SECRET and SWITCHBOT_DEVICE_ID manually."
 else
     echo "✅ Switchbot file found."
 fi
