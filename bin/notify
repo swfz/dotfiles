@@ -3,9 +3,9 @@
 _usage(){
 cat << EOS
 usage:
-  ./notify command [option...]
+  ./notify title prompt
 
-script that wraps a command and changes the message depending on the exit code
+script notification to windows from wsl
 
 require environment
   POWERSHELL_EXE   path of powershell.exe as seen from wsl
@@ -27,18 +27,33 @@ if [ -z ${NOTIFY_PS1} ]; then
   _usage
 fi
 
-if [ -z "$*" ]; then
-  _usage
+DEFAULT_TITLE="WSL Notification"
+DEFAULT_MESSAGE="Task Completed"
+
+PIPE_INPUT=""
+
+if [ -p /dev/stdin ]; then
+  PIPE_INPUT=$(cat)
 fi
 
-$*
-
-exit_code=$?
-
-if [ ${exit_code} -eq 0 ]; then
-  result='Success'
+if [ -n "$PIPE_INPUT" ]; then
+  # Usage: echo "Done" | notify "title text"
+  TITLE="${1:-$DEFAULT_TITLE}"
+  MESSAGE="$PIPE_INPUT"
 else
-  result='Failed'
+  # Usage: notify "title text" "message"
+  # Usage: notify "message"
+  if [ $# -eq 1 ]; then
+    TITLE="$DEFAULT_TITLE"
+    MESSAGE="$1"
+  else
+    TITLE="${1:-$DEFAULT_TITLE}"
+    MESSAGE="${2:-$DEFAULT_MESSAGE}"
+  fi
 fi
 
-${POWERSHELL_EXE} -Sta -NoProfile -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File ${NOTIFY_PS1} "$*" "${result}"
+CLEAN_MESSAGE=$(echo "$MESSAGE" | tr '\n' ' ' | sed 's/"/\\"/g')
+CLEAN_TITLE=$(echo "$TITLE" | sed 's/"/\\"/g')
+
+${POWERSHELL_EXE} -Sta -NoProfile -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File ${NOTIFY_PS1} -Title ${CLEAN_TITLE} -Prompt ${CLEAN_MESSAGE}
+
