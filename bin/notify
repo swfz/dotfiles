@@ -55,5 +55,7 @@ fi
 CLEAN_MESSAGE=$(echo "$MESSAGE" | tr '\n' ' ' | sed 's/"/\\"/g')
 CLEAN_TITLE=$(echo "$TITLE" | sed 's/"/\\"/g')
 
-${POWERSHELL_EXE} -Sta -NoProfile -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File ${NOTIFY_PS1} -Title ${CLEAN_TITLE} -Prompt ${CLEAN_MESSAGE}
+echo "$CLEAN_TITLE : $CLEAN_MESSAGE" >> /tmp/notify-log.txt
+
+${POWERSHELL_EXE} -Sta -NoProfile -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File ${NOTIFY_PS1} -Title "${CLEAN_TITLE}" -Prompt "${CLEAN_MESSAGE}"
 
