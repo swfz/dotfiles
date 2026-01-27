@@ -11,7 +11,7 @@ tmux_version: "3.5"
 # dummy
 zsh_version: "5.9"
 # datasource=github-releases depName=rhysd/actionlint
-actionlint_version: v1.7.9
+actionlint_version: v1.7.10
 # datasource=github-releases depName=reviewdog/reviewdog
 reviewdog_version: v0.21.0
 # datasource=github-releases depName=duckdb/duckdb
