@@ -9,6 +9,9 @@ BASE_KEY="HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager
 INTERVAL=5
 LAST_STATE=""
 
+# 除外するアプリのパターン（Windows音声入力など）
+EXCLUDE_APPS="MicrosoftWindows.Client.CBS"
+
 log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
 }
@@ -21,7 +24,7 @@ check_device() {
             n=split(path, a, "\\");
             print a[n]
         }
-    '
+    ' | grep -v "$EXCLUDE_APPS"
 }
 
 echo "Monitoring started..."
