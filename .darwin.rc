@@ -1,4 +1,4 @@
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-alias xargs=/usr/local/bin/gxargs
-alias find=/usr/local/bin/gfind
-alias date=/usr/local/bin/gdate
+alias xargs=/opt/homebrew/bin/gxargs
+alias find=/opt/homebrew/bin/gfind
+alias date=/opt/homebrew/bin/gdate
+alias grep=/opt/homebrew/bin/ggrep
