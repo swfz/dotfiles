@@ -20,6 +20,8 @@ set laststatus=2
 set t_Co=256
 set incsearch
 set hlsearch
+set autoread
+autocmd FocusGained,BufEnter * checktime
 
 syntax on
 
