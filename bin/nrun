@@ -5,29 +5,12 @@
 _usage(){
 cat << EOS
 usage:
-  ./nrun command [option...]
+  nrun command [option...]
 
-script that wraps a command and changes the message depending on the exit code
-
-require environment
-  POWERSHELL_EXE   path of powershell.exe as seen from wsl
-    e.g.) /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
-  NOTIFY_PS1       path of nitofy.ps1(notification script) as seen from Windows
-    e.g.) c:/Users/hoge/Desktop/notify.ps1
+script that wraps a command and sends a notification depending on the exit code
 EOS
   exit 1
 }
-
-
-if [ -z ${POWERSHELL_EXE} ]; then
-  echo 'require environment variable POWERSHELL_EXE that contains powershell.exe path.'
-  _usage
-fi
-
-if [ -z ${NOTIFY_PS1} ]; then
-  echo 'require environment variable NOTIFY_PS1 that contains notify.ps2 path.'
-  _usage
-fi
 
 if [ -z "$*" ]; then
   _usage
@@ -44,4 +27,3 @@ else
 fi
 
 notify "$*" "${result}"
-
