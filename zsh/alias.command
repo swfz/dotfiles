@@ -1,8 +1,10 @@
 #alias
 alias ll="ls -l"
 alias lls="ll --sort=size"
-alias l="eza --icons --git"
-alias la="eza -al --icons --git"
+alias l="eza --icons"
+alias la="eza -al --icons"
+alias laa="eza -al --icons -h -U -m -u --time-style relative --total-size"
+
 alias lle="ll --sort=extension"
 alias llt="ll -t"
 alias grep="grep --color=always --line-buffered"
