@@ -59,7 +59,7 @@ function peco-p() {
 
 # git branchを選択
 function peco-git-branch () {
-  local selected_branch_name="$(git branch -a | fzf-popup | tr -d ' ' | tr -d '*')"
+  local selected_branch_name="$(git branch -a --color=always | fzf-popup | sed 's/\x1b\[[0-9;]*m//g' | tr -d ' ' | tr -d '*')"
   case "$selected_branch_name" in
     *-\>* )
       selected_branch_name="$(echo ${selected_branch_name} | perl -ne 's/^.*->(.*?)\/(.*)$/\2/;print')";;
@@ -73,7 +73,7 @@ bindkey '^gb' peco-git-branch
 
 # commit hashを選択
 function peco-git-hash () {
-  local git_hash="$(git log --oneline --branches --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s' | fzf-popup --ansi | awk '{print $1}')"
+  local git_hash="$(git log --oneline --branches --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s' | fzf-popup | awk '{print $1}')"
   peco-p ${git_hash}
 }
 zle -N peco-git-hash
@@ -97,7 +97,7 @@ bindkey '^gf' peco-git-files
 
 # git sash のリストから選択
 function peco-git-stash () {
-  local stash="$(git stash list | fzf-popup | awk -F'[ :]' '{print $1}')"
+  local stash="$(git stash list --color=always | fzf-popup | awk -F'[ :]' '{print $1}')"
   peco-p ${stash}
 }
 zle -N peco-git-stash

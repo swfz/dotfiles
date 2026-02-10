@@ -16,7 +16,7 @@ export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
 export CHEATCOLORS=true
 
 # fzf
-export FZF_DEFAULT_OPTS="--layout=reverse --marker="✓" --color 'bg+:#264f78,fg+:#ffffff,hl:#e2a618,hl+:#e2a618,selected-bg:#666666,selected-fg:#ffffff,gutter:#282c34,marker:#87ff00'"
+export FZF_DEFAULT_OPTS="--ansi --layout=reverse --marker="✓" --color 'bg+:#264f78,fg+:#ffffff,hl:#e2a618,hl+:#e2a618,selected-bg:#666666,selected-fg:#ffffff,gutter:#282c34,marker:#87ff00'"
 
 # GOPATH
 export GOPATH=~/go
