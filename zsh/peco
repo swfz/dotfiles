@@ -18,7 +18,7 @@ function peco-select-history() {
     fi
     selected=$(\history -n 1 | \
         eval $tac | \
-        fzf-popup --query "$LBUFFER" | \
+        fzf-popup --query "$LBUFFER" --preview 'echo {} | sed "s/ \\\\n/\\n/g" | bat --color=always -l sh --style=plain' --preview-window down,30%,wrap | \
         sed s'/ \\\\n/ /g')
     BUFFER=$(echo "${selected}")
     zle redisplay
