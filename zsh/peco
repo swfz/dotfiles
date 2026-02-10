@@ -89,7 +89,7 @@ bindkey '^gps' peco-ps
 
 # git stのファイルを(複数)選択
 function peco-git-files () {
-  local git_files="$(git status -sb | fzf-popup --multi --bind 'ctrl-s:toggle+down' | awk 'BEGIN {ORS=" "}; {print $2}')"
+  local git_files="$(git status -sb | fzf-popup --multi --bind 'ctrl-s:toggle+down' --preview '[[ {1} == "??" ]] && bat --color=always --style=numbers {2} || git diff {2} | delta -s -w $FZF_PREVIEW_COLUMNS' --preview-window right,65% --bind 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up' | awk 'BEGIN {ORS=" "}; {print $2}')"
   peco-p ${git_files}
 }
 zle -N peco-git-files
