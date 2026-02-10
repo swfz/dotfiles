@@ -1,3 +1,13 @@
+# fzf-popup: fzfをtmux popupで実行するヘルパー
+# Usage: echo "data" | fzf-popup [fzf_options...]
+function fzf-popup() {
+  if [[ -n "$TMUX" ]]; then
+    fzf --tmux center,80%,80% "$@"
+  else
+    fzf "$@"
+  fi
+}
+
 # peco
 function peco-select-history() {
     local tac
@@ -8,7 +18,7 @@ function peco-select-history() {
     fi
     selected=$(\history -n 1 | \
         eval $tac | \
-        peco --query "$LBUFFER" | \
+        fzf-popup --query "$LBUFFER" | \
         sed s'/ \\\\n/ /g')
     BUFFER=$(echo "${selected}")
     zle redisplay
@@ -18,28 +28,24 @@ function peco-select-history() {
 zle -N peco-select-history
 bindkey '^r' peco-select-history
 
-function agvim () {
-  vim $(ag $@ | peco --query "$LBUFFER" | awk -F : '{print "-c " $2 " " $1}')
-}
-
 function csp () {
   unset CHEATCOLORS
-  BUFFER=$( cheat $1 | grep -v '^#' | peco --query "$LBUFFER" )
+  BUFFER=$( cheat $1 | grep -v '^#' | fzf-popup --query "$LBUFFER" )
   print -z "$BUFFER"
   export CHEATCOLORS=true
 }
 
 function tvi () {
-  vim $( tree --charset=o -f $1 | peco | tr -d '\||`|-' )
+  vim $( tree --charset=o -f $1 | fzf-popup | tr -d '\||`|-' )
 }
 
 function aliasp () {
-  BUFFER=$(alias | peco --query "$LBUFFER" | awk -F"=" '{print $1}')
+  BUFFER=$(alias | fzf-popup --query "$LBUFFER" | awk -F"=" '{print $1}')
   print -z "$BUFFER"
 }
 
 function ssh-peco () {
-  ssh $(grep --color=no 'Host ' ~/.ssh/config | peco | awk '{print $2}')
+  ssh $(grep --color=no 'Host ' ~/.ssh/config | fzf-popup | awk '{print $2}')
 }
 
 function peco-p() {
@@ -53,7 +59,7 @@ function peco-p() {
 
 # git branchを選択
 function peco-git-branch () {
-  local selected_branch_name="$(git branch -a | peco | tr -d ' ' | tr -d '*')"
+  local selected_branch_name="$(git branch -a | fzf-popup | tr -d ' ' | tr -d '*')"
   case "$selected_branch_name" in
     *-\>* )
       selected_branch_name="$(echo ${selected_branch_name} | perl -ne 's/^.*->(.*?)\/(.*)$/\2/;print')";;
@@ -67,7 +73,7 @@ bindkey '^gb' peco-git-branch
 
 # commit hashを選択
 function peco-git-hash () {
-  local git_hash="$(git log --oneline --branches --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s' | peco | awk '{print $1}')"
+  local git_hash="$(git log --oneline --branches --pretty='format:%C(yellow)%h %C(green)%cd %C(blue)%an%C(red)%d %C(reset)%s' | fzf-popup --ansi | awk '{print $1}')"
   peco-p ${git_hash}
 }
 zle -N peco-git-hash
@@ -75,7 +81,7 @@ bindkey '^gh' peco-git-hash
 
 # プロセスIDを取得
 function peco-ps () {
-  local process_id="$(ps auxf | peco | awk 'BEGIN {ORS=" "}; {print $2}')"
+  local process_id="$(ps auxf | fzf-popup --multi --bind 'ctrl-s:toggle+down' | awk 'BEGIN {ORS=" "}; {print $2}')"
   peco-p ${process_id}
 }
 zle -N peco-ps
@@ -83,7 +89,7 @@ bindkey '^gps' peco-ps
 
 # git stのファイルを(複数)選択
 function peco-git-files () {
-  local git_files="$(git status -sb | peco | awk 'BEGIN {ORS=" "}; {print $2}')"
+  local git_files="$(git status -sb | fzf-popup --multi --bind 'ctrl-s:toggle+down' | awk 'BEGIN {ORS=" "}; {print $2}')"
   peco-p ${git_files}
 }
 zle -N peco-git-files
@@ -91,7 +97,7 @@ bindkey '^gf' peco-git-files
 
 # git sash のリストから選択
 function peco-git-stash () {
-  local stash="$(git stash list | peco | awk -F'[ :]' '{print $1}')"
+  local stash="$(git stash list | fzf-popup | awk -F'[ :]' '{print $1}')"
   peco-p ${stash}
 }
 zle -N peco-git-stash
@@ -99,7 +105,7 @@ bindkey '^gs' peco-git-stash
 
 # gh issue のリストから選択
 function peco-gh-issue () {
-  local issues="$(gh issue list | peco | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
+  local issues="$(gh issue list | fzf-popup | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
   peco-p ${issues}
 }
 zle -N peco-gh-issue
@@ -107,7 +113,7 @@ bindkey '^gi' peco-gh-issue
 
 # gh pr のリストから選択
 function peco-gh-pr () {
-  local prs="$(gh pr list | peco | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
+  local prs="$(gh pr list | fzf-popup | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
   peco-p ${prs}
 }
 zle -N peco-gh-pr
@@ -115,7 +121,7 @@ bindkey '^gpr' peco-gh-pr
 
 # gh run のリストからIDを選択
 function peco-gh-run () {
-  local runs="$(gh run list --limit 200 | peco | awk -F'[ ]' 'BEGIN{FS="\t"}{print $7}')"
+  local runs="$(gh run list --limit 200 | fzf-popup | awk -F'[ ]' 'BEGIN{FS="\t"}{print $7}')"
   peco-p ${runs}
 }
 zle -N peco-gh-run
@@ -123,7 +129,7 @@ bindkey '^gr' peco-gh-run
 
 # READMEから選択
 function peco-file-line () {
-  local line="$(cat README.md | peco)"
+  local line="$(cat README.md | fzf-popup)"
   peco-p ${line}
 }
 zle -N peco-file-line
@@ -131,7 +137,7 @@ bindkey '^gm' peco-file-line
 
 # aliasから選択
 function peco-alias () {
-  local cmd="$(alias | peco | awk -F'[=]' '{print $1}')"
+  local cmd="$(alias | fzf-popup | awk -F'[=]' '{print $1}')"
   peco-p ${cmd}
 }
 zle -N peco-alias

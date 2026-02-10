@@ -15,6 +15,9 @@ export LESSCHARSET=utf-8
 export DEFAULT_CHEAT_DIR=~/dotfiles/cheatsheets
 export CHEATCOLORS=true
 
+# fzf
+export FZF_DEFAULT_OPTS="--layout=reverse --color 'bg+:#264f78,fg+:#ffffff,selected-bg:#1e3a5f,selected-fg:#ffffff'"
+
 # GOPATH
 export GOPATH=~/go
 
