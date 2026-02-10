@@ -1,33 +1,44 @@
 #!/bin/bash
 
+OS_TYPE="$(uname -s)"
+
 _usage(){
 cat << EOS
 usage:
-  ./notify title prompt
+  notify title message
+  notify message
+  echo "message" | notify title
 
-script notification to windows from wsl
+send desktop notifications (supports macOS and WSL)
 
-require environment
+on WSL, requires environment variables:
   POWERSHELL_EXE   path of powershell.exe as seen from wsl
-    e.g.) /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
-  NOTIFY_PS1       path of nitofy.ps1(notification script) as seen from Windows
-    e.g.) c:/Users/hoge/Desktop/notify.ps1
+  NOTIFY_PS1       path of notify.ps1(notification script) as seen from Windows
+
+on macOS, no additional configuration is needed.
 EOS
   exit 1
 }
 
-
-if [ -z ${POWERSHELL_EXE} ]; then
-  echo 'require environment variable POWERSHELL_EXE that contains powershell.exe path.'
-  _usage
+if [ "$OS_TYPE" = "Linux" ]; then
+  if [ -z "${POWERSHELL_EXE}" ]; then
+    echo 'require environment variable POWERSHELL_EXE that contains powershell.exe path.'
+    _usage
+  fi
+  if [ -z "${NOTIFY_PS1}" ]; then
+    echo 'require environment variable NOTIFY_PS1 that contains notify.ps1 path.'
+    _usage
+  fi
+elif [ "$OS_TYPE" != "Darwin" ]; then
+  echo "unsupported platform: $OS_TYPE"
+  exit 1
 fi
 
-if [ -z ${NOTIFY_PS1} ]; then
-  echo 'require environment variable NOTIFY_PS1 that contains notify.ps2 path.'
-  _usage
+if [ "$OS_TYPE" = "Darwin" ]; then
+  DEFAULT_TITLE="Notification"
+else
+  DEFAULT_TITLE="WSL Notification"
 fi
-
-DEFAULT_TITLE="WSL Notification"
 DEFAULT_MESSAGE="Task Completed"
 
 PIPE_INPUT=""
@@ -57,5 +68,8 @@ CLEAN_TITLE=$(echo "$TITLE" | sed 's/"/\\"/g')
 
 echo "$CLEAN_TITLE : $CLEAN_MESSAGE" >> /tmp/notify-log.txt
 
-${POWERSHELL_EXE} -Sta -NoProfile -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File ${NOTIFY_PS1} -Title "${CLEAN_TITLE}" -Prompt "${CLEAN_MESSAGE}"
-
+if [ "$OS_TYPE" = "Darwin" ]; then
+  osascript -e "display notification \"${CLEAN_MESSAGE}\" with title \"${CLEAN_TITLE}\" sound name \"default\""
+else
+  ${POWERSHELL_EXE} -Sta -NoProfile -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File ${NOTIFY_PS1} -Title "${CLEAN_TITLE}" -Prompt "${CLEAN_MESSAGE}"
+fi

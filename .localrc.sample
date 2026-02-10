@@ -1,6 +1,6 @@
 export KB_TYPE="US"
 
-# for notification to host(win)
+# for notification to host(win) -- only needed on WSL
 export POWERSHELL_EXE=/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
 export NOTIFY_PS1=c:/Users/UserName/notify.ps1
 
