@@ -15,7 +15,7 @@ actionlint_version: v1.7.10
 # datasource=github-releases depName=reviewdog/reviewdog
 reviewdog_version: v0.21.0
 # datasource=github-releases depName=duckdb/duckdb
-duckdb_version: v1.4.3
+duckdb_version: v1.4.4
 # datasource=github-releases depName=asciinema/agg
 agg_version: v1.7.0
 # datasource=github-releases depName=cli/cli
