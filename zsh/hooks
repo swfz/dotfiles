@@ -48,6 +48,14 @@ function switch_gh_user() {
 }
 add-zsh-hook chpwd switch_gh_user
 
+# tmuxのウィンドウ名をカレントディレクトリ名にする
+function tmux_rename_window_to_cwd() {
+  if [[ -n "$TMUX" ]]; then
+    tmux rename-window "$(basename "$PWD")"
+  fi
+}
+add-zsh-hook chpwd tmux_rename_window_to_cwd
+
 # 何も入力しなかったときにもgh_switch_userを発火
 # ターミナル等が変わった際への対応
 function call_switch_gh_user() {
