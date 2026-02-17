@@ -48,10 +48,12 @@ function switch_gh_user() {
 }
 add-zsh-hook chpwd switch_gh_user
 
-# tmuxのウィンドウ名をカレントディレクトリ名にする
+# tmuxのウィンドウ名をgitリポジトリのルートディレクトリ名にする
 function tmux_rename_window_to_cwd() {
   if [[ -n "$TMUX" ]]; then
-    tmux rename-window "$(basename "$PWD")"
+    local git_root
+    git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+    tmux rename-window "$(basename "${git_root:-$PWD}")"
   fi
 }
 add-zsh-hook chpwd tmux_rename_window_to_cwd

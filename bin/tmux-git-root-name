@@ -1,0 +1,5 @@
+#!/bin/sh
+dir="${1:-.}"
+cd "$dir" 2>/dev/null || dir="."
+r=$(git rev-parse --show-toplevel 2>/dev/null)
+basename "${r:-$dir}"
