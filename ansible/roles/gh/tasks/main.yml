@@ -7,8 +7,8 @@
   changed_when: false
   ignore_errors: true
 
-- name: Get gh version
-  ansible.builtin.command: gh --version | tail -n 1 | awk -F"/" '{print $NF}'
+- name: Get gh version  # noqa command-instead-of-shell
+  ansible.builtin.shell: gh --version | tail -n 1 | awk -F"/" '{print $NF}'
   environment:
     PATH: /usr/local/bin:{{ ansible_env.PATH }}
   register: gh_current_version
@@ -28,3 +28,4 @@
     - name: Install gh
       ansible.builtin.apt:
         deb: /tmp/gh-{{ gh_version }}.deb
+        allow_downgrade: true
