@@ -1,0 +1,237 @@
+#!/bin/bash
+set -euo pipefail
+
+CONFIG_DIR="${HOME}/.config/tmux-layout"
+
+usage() {
+  echo "Usage: tms [layout-name]"
+  echo ""
+  echo "Save the current tmux window's pane layout to a YAML config file."
+  echo "If layout-name is omitted, uses the current directory name."
+  echo "Config files are stored in ${CONFIG_DIR}/<layout-name>.yml"
+  exit 1
+}
+
+if [[ $# -gt 1 ]]; then
+  usage
+fi
+
+layout_name="${1:-$(basename "$PWD")}"
+config_file="${CONFIG_DIR}/${layout_name}.yml"
+
+if [[ -z "${TMUX:-}" ]]; then
+  echo "Error: Not inside a tmux session" >&2
+  exit 1
+fi
+
+mkdir -p "$CONFIG_DIR"
+
+# ペイン情報を配列に格納
+declare -a PANE_LEFT PANE_TOP PANE_WIDTH PANE_HEIGHT
+pane_count=0
+
+while IFS=$'\t' read -r left top width height; do
+  PANE_LEFT[$pane_count]=$left
+  PANE_TOP[$pane_count]=$top
+  PANE_WIDTH[$pane_count]=$width
+  PANE_HEIGHT[$pane_count]=$height
+  pane_count=$((pane_count + 1))
+done < <(tmux list-panes -F '#{pane_left}	#{pane_top}	#{pane_width}	#{pane_height}')
+
+if [[ "$pane_count" -eq 1 ]]; then
+  echo '{"command":""}' | yq -P '.' > "$config_file"
+  echo "Saved layout to ${config_file} (1 pane)"
+  echo "Edit the file to add a command."
+  exit 0
+fi
+
+# ペインの位置情報から分割ツリーをJSON形式で構築
+build_tree() {
+  local -a indices=($1)
+  local count=${#indices[@]}
+
+  if [[ $count -eq 1 ]]; then
+    echo '{"command":""}'
+    return
+  fi
+
+  # 水平分割（左右）を試す: 全ての有効な分割線を探す
+  local -a right_edges=()
+  for idx in "${indices[@]}"; do
+    right_edges+=($((PANE_LEFT[$idx] + PANE_WIDTH[$idx])))
+  done
+  local -a unique_right=($(printf '%s\n' "${right_edges[@]}" | sort -nu))
+  local max_right=${unique_right[${#unique_right[@]}-1]}
+
+  # 有効な分割線を全て収集
+  local -a h_dividers=()
+  for divider in "${unique_right[@]}"; do
+    (( divider >= max_right )) && continue
+    local valid=true
+    for idx in "${indices[@]}"; do
+      local pl=${PANE_LEFT[$idx]}
+      local pr=$((pl + PANE_WIDTH[$idx]))
+      if (( pl < divider && pr > divider )); then
+        valid=false
+        break
+      fi
+    done
+    [[ "$valid" == "true" ]] && h_dividers+=("$divider")
+  done
+
+  if [[ ${#h_dividers[@]} -gt 0 ]]; then
+    # 分割線でペインをグループ分け
+    # 分割線の間にあるペインをまとめる
+    local -a all_dividers=(0 "${h_dividers[@]}" "$((max_right + 1))")
+    local group_count=$((${#all_dividers[@]} - 1))
+    local -a group_list=()   # スペース区切りのインデックス群
+    local -a group_widths=()
+    local total_w=0
+
+    for ((g = 0; g < group_count; g++)); do
+      local d_left=${all_dividers[$g]}
+      local d_right=${all_dividers[$((g + 1))]}
+      local -a group=()
+      local gw=0
+      for idx in "${indices[@]}"; do
+        local pl=${PANE_LEFT[$idx]}
+        local pr=$((pl + PANE_WIDTH[$idx]))
+        if (( pl >= d_left && pr <= d_right )); then
+          group+=("$idx")
+          (( PANE_WIDTH[$idx] > gw )) && gw=${PANE_WIDTH[$idx]}
+        fi
+      done
+      [[ ${#group[@]} -eq 0 ]] && continue
+      group_list+=("${group[*]}")
+      group_widths+=("$gw")
+      total_w=$((total_w + gw))
+    done
+
+    if [[ ${#group_list[@]} -ge 2 ]]; then
+      local json='{"direction":"horizontal","panes":['
+      local pct_sum=0
+      for ((g = 0; g < ${#group_list[@]}; g++)); do
+        local pct
+        if ((g == ${#group_list[@]} - 1)); then
+          pct=$((100 - pct_sum))
+        else
+          pct=$((group_widths[$g] * 100 / total_w))
+          pct_sum=$((pct_sum + pct))
+        fi
+        local child_json
+        child_json=$(build_tree "${group_list[$g]}")
+        child_json=$(echo "$child_json" | jq --arg w "${pct}%" '{width: $w} + .')
+        (( g > 0 )) && json="${json},"
+        json="${json}${child_json}"
+      done
+      echo "${json}]}"
+      return
+    fi
+  fi
+
+  # 垂直分割（上下）を試す: 全ての有効な分割線を探す
+  local -a bottom_edges=()
+  for idx in "${indices[@]}"; do
+    bottom_edges+=($((PANE_TOP[$idx] + PANE_HEIGHT[$idx])))
+  done
+  local -a unique_bottom=($(printf '%s\n' "${bottom_edges[@]}" | sort -nu))
+  local max_bottom=${unique_bottom[${#unique_bottom[@]}-1]}
+
+  local -a v_dividers=()
+  for divider in "${unique_bottom[@]}"; do
+    (( divider >= max_bottom )) && continue
+    local valid=true
+    for idx in "${indices[@]}"; do
+      local pt=${PANE_TOP[$idx]}
+      local pb=$((pt + PANE_HEIGHT[$idx]))
+      if (( pt < divider && pb > divider )); then
+        valid=false
+        break
+      fi
+    done
+    [[ "$valid" == "true" ]] && v_dividers+=("$divider")
+  done
+
+  if [[ ${#v_dividers[@]} -gt 0 ]]; then
+    local -a all_dividers=(0 "${v_dividers[@]}" "$((max_bottom + 1))")
+    local group_count=$((${#all_dividers[@]} - 1))
+    local -a group_list=()
+    local -a group_heights=()
+    local total_h=0
+
+    for ((g = 0; g < group_count; g++)); do
+      local d_top=${all_dividers[$g]}
+      local d_bottom=${all_dividers[$((g + 1))]}
+      local -a group=()
+      local gh=0
+      for idx in "${indices[@]}"; do
+        local pt=${PANE_TOP[$idx]}
+        local pb=$((pt + PANE_HEIGHT[$idx]))
+        if (( pt >= d_top && pb <= d_bottom )); then
+          group+=("$idx")
+          (( PANE_HEIGHT[$idx] > gh )) && gh=${PANE_HEIGHT[$idx]}
+        fi
+      done
+      [[ ${#group[@]} -eq 0 ]] && continue
+      group_list+=("${group[*]}")
+      group_heights+=("$gh")
+      total_h=$((total_h + gh))
+    done
+
+    if [[ ${#group_list[@]} -ge 2 ]]; then
+      local json='{"direction":"vertical","panes":['
+      local pct_sum=0
+      for ((g = 0; g < ${#group_list[@]}; g++)); do
+        local pct
+        if ((g == ${#group_list[@]} - 1)); then
+          pct=$((100 - pct_sum))
+        else
+          pct=$((group_heights[$g] * 100 / total_h))
+          pct_sum=$((pct_sum + pct))
+        fi
+        local child_json
+        child_json=$(build_tree "${group_list[$g]}")
+        child_json=$(echo "$child_json" | jq --arg h "${pct}%" '{height: $h} + .')
+        (( g > 0 )) && json="${json},"
+        json="${json}${child_json}"
+      done
+      echo "${json}]}"
+      return
+    fi
+  fi
+
+  echo '{"command":""}'
+}
+
+# 既存の設定ファイルからコマンドを保持
+old_cmds_json="[]"
+if [[ -f "$config_file" ]]; then
+  old_cmds_json=$(yq -o=json '[.. | select(kind == "map" and has("command")) | .command]' "$config_file")
+fi
+
+# 全ペインのインデックスリストを作成
+all_indices=""
+for ((i = 0; i < pane_count; i++)); do
+  [[ -n "$all_indices" ]] && all_indices="${all_indices} "
+  all_indices="${all_indices}${i}"
+done
+
+json=$(build_tree "$all_indices")
+
+# 既存コマンドをマージ（ペイン順序で対応付け）
+json=$(echo "$json" | jq --argjson cmds "$old_cmds_json" '
+  [path(.. | select(type == "object" and has("command")))] as $paths |
+  reduce range($paths | length) as $i (
+    .;
+    if $i < ($cmds | length) and $cmds[$i] != "" then
+      setpath($paths[$i] + ["command"]; $cmds[$i])
+    else
+      .
+    end
+  )
+')
+
+echo "$json" | yq -P '.' > "$config_file"
+
+echo "Saved layout to ${config_file} (${pane_count} panes)"
+echo "Edit the file to add commands for each pane."

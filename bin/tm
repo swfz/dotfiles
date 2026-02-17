@@ -1,0 +1,122 @@
+#!/bin/bash
+set -euo pipefail
+
+CONFIG_DIR="${HOME}/.config/tmux-layout"
+
+usage() {
+  echo "Usage: tm [layout-name]"
+  echo ""
+  echo "Apply a tmux pane layout to the current window."
+  echo "If layout-name is omitted, uses the current directory name."
+  echo "Config files are stored in ${CONFIG_DIR}/<layout-name>.yml"
+  exit 1
+}
+
+if [[ $# -gt 1 ]]; then
+  usage
+fi
+
+layout_name="${1:-$(basename "$PWD")}"
+config_file="${CONFIG_DIR}/${layout_name}.yml"
+
+if [[ ! -f "$config_file" ]]; then
+  echo "Error: Layout file not found: ${config_file}" >&2
+  exit 1
+fi
+
+if [[ -z "${TMUX:-}" ]]; then
+  echo "Error: Not inside a tmux session" >&2
+  exit 1
+fi
+
+current_path=$(tmux display-message -p '#{pane_current_path}')
+
+apply_node() {
+  local pane_id=$1
+  local yq_path=$2
+
+  local direction
+  direction=$(yq -r "${yq_path}.direction // \"\"" "$config_file")
+
+  if [[ -z "$direction" || "$direction" == "null" ]]; then
+    local command
+    command=$(yq -r "${yq_path}.command // \"\"" "$config_file")
+    if [[ -n "$command" ]]; then
+      tmux send-keys -t "$pane_id" "$command" Enter
+    fi
+    return
+  fi
+
+  local child_count
+  child_count=$(yq "${yq_path}.panes | length" "$config_file")
+
+  local flag
+  if [[ "$direction" == "horizontal" ]]; then
+    flag="-h"
+  else
+    flag="-v"
+  fi
+
+  # 現在のペインサイズを取得
+  local pane_total
+  if [[ "$flag" == "-h" ]]; then
+    pane_total=$(tmux display-message -t "$pane_id" -p '#{pane_width}')
+  else
+    pane_total=$(tmux display-message -t "$pane_id" -p '#{pane_height}')
+  fi
+
+  # directionに応じてwidth/heightを読む
+  local size_key
+  if [[ "$direction" == "horizontal" ]]; then
+    size_key="width"
+  else
+    size_key="height"
+  fi
+
+  # サイズを収集
+  local -a sizes=()
+  local total=0
+  for ((i = 0; i < child_count; i++)); do
+    local size_str
+    size_str=$(yq -r "${yq_path}.panes[${i}].${size_key} // ${yq_path}.panes[${i}].size // \"50%\"" "$config_file")
+    local size=${size_str%\%}
+    sizes+=("$size")
+    total=$((total + size))
+  done
+
+  # セパレータを除いた利用可能サイズから各ペインの絶対サイズを計算
+  local available=$((pane_total - (child_count - 1)))
+  local -a abs_sizes=()
+  local abs_used=0
+  for ((i = 0; i < child_count; i++)); do
+    if ((i == child_count - 1)); then
+      abs_sizes[$i]=$((available - abs_used))
+    else
+      abs_sizes[$i]=$((available * sizes[i] / total))
+      abs_used=$((abs_used + abs_sizes[$i]))
+    fi
+    # 最小サイズを保証
+    (( abs_sizes[$i] < 2 )) && abs_sizes[$i]=2
+  done
+
+  # 後ろから順にペインを分割
+  local -a child_pane_ids=()
+  child_pane_ids[0]=$pane_id
+
+  for ((i = child_count - 1; i >= 1; i--)); do
+    local new_pane
+    new_pane=$(tmux split-window "$flag" -t "$pane_id" -l "${abs_sizes[$i]}" -c "$current_path" -P -F '#{pane_id}')
+    child_pane_ids[$i]=$new_pane
+  done
+
+  # 各子ノードを再帰処理
+  for ((i = 0; i < child_count; i++)); do
+    apply_node "${child_pane_ids[$i]}" "${yq_path}.panes[${i}]"
+  done
+}
+
+current_pane=$(tmux display-message -p '#{pane_id}')
+apply_node "$current_pane" ""
+
+# 最初のペインを選択
+tmux select-pane -t "$current_pane"
