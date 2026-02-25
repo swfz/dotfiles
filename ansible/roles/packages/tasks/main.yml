@@ -34,4 +34,6 @@
       - libasound2t64
       - net-tools
       - tree
+      - bubblewrap
+      - socat
     state: present
