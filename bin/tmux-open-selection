@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+pane_path="${1:-.}"
+target_pane="${2:-}"
+
+selection="$(cat /tmp/tmux-open-selection)"
+
+# trim whitespace
+selection="$(echo "$selection" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+
+if [[ -z "$selection" ]]; then
+  tmux display-message "No selection"
+  exit 0
+fi
+
+# URL: open in browser
+if [[ "$selection" =~ ^https?:// ]] || [[ "$selection" =~ ^www\. ]]; then
+  if [[ "$(uname)" == "Darwin" ]]; then
+    open "$selection"
+  else
+    xdg-open "$selection"
+  fi
+  exit 0
+fi
+
+# File: extract path and optional line number
+file="$selection"
+line=""
+
+if [[ "$selection" =~ ^(.+):([0-9]+)$ ]]; then
+  file="${BASH_REMATCH[1]}"
+  line="${BASH_REMATCH[2]}"
+fi
+
+# Resolve relative paths from pane's current directory
+if [[ "$file" != /* ]]; then
+  file="${pane_path}/${file}"
+fi
+
+if [[ -f "$file" ]]; then
+  editor="${EDITOR:-vim}"
+  escaped_file="$(printf '%q' "$file")"
+
+  if [[ -n "$line" ]]; then
+    cmd="$editor +$line $escaped_file"
+  else
+    cmd="$editor $escaped_file"
+  fi
+
+  if [[ -n "$target_pane" ]]; then
+    tmux send-keys -t ":.${target_pane}" "$cmd" Enter
+  else
+    tmux new-window "$cmd"
+  fi
+  exit 0
+fi
+
+tmux display-message "Not a URL or existing file: $selection"
