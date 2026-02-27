@@ -36,7 +36,14 @@ fzf = 'latest'
 "pipx:visidata" = 'latest'
 ollama = 'latest'
 rust = 'latest'
+ghq = "1.8.0"
+"go:github.com/dlvhdr/diffnav" = 'latest'
+sqlite = 'latest'
 
 [settings]
 experimental = true
+
+[env]
+GOOGLE_APPLICATION_CREDENTIALS="{{env.HOME}}/.config/gcloud/private_adc.json"
+CLOUDSDK_PYTHON="{{env.HOME}}/.local/share/mise/installs/python/3.12.12/bin/python3"
 
