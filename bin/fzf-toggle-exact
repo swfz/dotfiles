@@ -1,0 +1,18 @@
+#!/bin/sh
+# fzf-toggle-exact: fuzzy/exact マッチングをトグル
+# fzf の transform アクションから呼ばれる
+# $FZF_PROMPT でモード判定し、change-query/change-prompt アクションを出力
+
+if [ "$FZF_PROMPT" = "exact> " ]; then
+  # exact → fuzzy: 各単語から ' プレフィックスを除去
+  new_q=$(printf '%s' "$FZF_QUERY" | sed "s/^'//; s/ '/ /g")
+  printf 'change-prompt(> )\n'
+  printf 'change-query(%s)\n' "$new_q"
+  printf 'search(%s)\n' "$new_q"
+else
+  # fuzzy → exact: 各単語に ' プレフィックスを付与
+  new_q=$(printf '%s' "$FZF_QUERY" | sed "s/^/'/; s/ / '/g")
+  printf 'change-prompt(exact> )\n'
+  printf 'change-query(%s)\n' "$new_q"
+  printf 'search(%s)\n' "$new_q"
+fi
