@@ -120,14 +120,14 @@ readonly target_full="${target_db}.${target_schema}.${target_name}"
 run_deps_with_bq() {
     local root_name="$1"
 
-    # Extract dependency map and table metadata as TSV (one dep per line)
-    # Format: name\tdep_name
+    # Extract dependency map using schema.name as key to avoid cross-schema name collisions
+    # Format: schema.name\tdep_schema.dep_name
     local dep_edges
-    dep_edges=$(jq -r '.tables[]|. as $t|.dependencyTargets[]?.name|"\($t.target.name)\t\(.)"' "$compiled_filename")
+    dep_edges=$(jq -r '.tables[]|. as $t|.dependencyTargets[]?|"\($t.target.schema).\($t.target.name)\t\(.schema).\(.name)"' "$compiled_filename")
 
-    # Extract table metadata: name\ttype\tdatabase\tschema
+    # Extract table metadata: schema.name\ttype\tdatabase\tschema\tname
     local table_meta
-    table_meta=$(jq -r '.tables[]|"\(.target.name)\t\(.type)\t\(.target.database)\t\(.target.schema)"' "$compiled_filename")
+    table_meta=$(jq -r '.tables[]|"\(.target.schema).\(.target.name)\t\(.type)\t\(.target.database)\t\(.target.schema)\t\(.target.name)"' "$compiled_filename")
 
     # Topological sort via recursive DFS post-order in bash (bash 3 compatible)
     _topo_visited=""
@@ -156,23 +156,26 @@ run_deps_with_bq() {
     done <<< "$_topo_result"
 
     # Materialize each dep in topological order (skip the target itself)
-    for dep_name in "${_result[@]}"; do
-        [ "$dep_name" = "$root_name" ] && continue
+    for dep_key in "${_result[@]}"; do
+        [ "$dep_key" = "$root_name" ] && continue
 
         local dep_info
-        dep_info=$(echo "$table_meta" | awk -F'\t' -v n="$dep_name" '$1==n{print}' | head -1)
+        dep_info=$(echo "$table_meta" | awk -F'\t' -v n="$dep_key" '$1==n{print}' | head -1)
         [ -z "$dep_info" ] && continue  # external dependency, skip
 
-        local dep_type dep_db dep_schema dep_query
+        local dep_type dep_db dep_schema dep_name dep_query
         dep_type=$(echo "$dep_info" | awk -F'\t' '{print $2}')
         dep_db=$(echo "$dep_info" | awk -F'\t' '{print $3}')
         dep_schema=$(echo "$dep_info" | awk -F'\t' '{print $4}')
-        dep_query=$(jq -r --arg n "$dep_name" '.tables[]|select(.target.name==$n)|.query' "$compiled_filename")
+        dep_name=$(echo "$dep_info" | awk -F'\t' '{print $5}')
+        dep_query=$(jq -r --arg s "$dep_schema" --arg n "$dep_name" \
+            '.tables[]|select(.target.schema==$s and .target.name==$n)|.query' "$compiled_filename")
 
         echo "Materializing [${dep_type}] ${dep_schema}.${dep_name}..."
         case "$dep_type" in
             "view")
-                bq mk --force --project_id="$dep_db" --use_legacy_sql=false --view="$dep_query" "${dep_schema}.${dep_name}"
+                bq rm -f --project_id="$dep_db" "${dep_schema}.${dep_name}" 2>/dev/null || true
+                bq mk --project_id="$dep_db" --use_legacy_sql=false --view="$dep_query" "${dep_schema}.${dep_name}"
                 ;;
             "table"|"incremental")
                 echo "$dep_query" | bq query --nouse_legacy_sql \
@@ -188,7 +191,7 @@ case "$subcommand" in
         readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
 
         echo "Materializing dependencies for '${target_name}' using bq..."
-        run_deps_with_bq "$target_name"
+        run_deps_with_bq "${target_schema}.${target_name}"
 
         echo "Executing query for '${target_name}'..."
         jq --arg n "$target_name" -r '.tables[]|select(.target.name==$n)|.query' "$compiled_filename" |
