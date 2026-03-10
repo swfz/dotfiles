@@ -68,8 +68,8 @@ fi
 echo "Extracting table names with last modified dates and git status..."
 
 # Generate a sorted list of tables for fzf
-table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") or (.type == "incremental")) | "\(.fileName)\t\(.target.name)"' "$compiled_filename" |
-  while IFS=$'\t' read -r file name || [ -n "$file" ]; do
+table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") or (.type == "incremental")) | "\(.fileName)\t\(.target.database)\t\(.target.schema)\t\(.target.name)"' "$compiled_filename" |
+  while IFS=$'\t' read -r file db schema name || [ -n "$file" ]; do
     # Skip empty lines
     [ -z "$file" ] && continue
     full_file_path="$project_dir/$file"
@@ -85,8 +85,8 @@ table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") o
 
     timestamp=$(stat -c %Y "$full_file_path")
     mod_date=$(date -d "@$timestamp" '+%Y-%m-%d %H:%M:%S')
-    # Format: timestamp, git_status, name, mod_date, file (with fixed-width for alignment)
-    printf "%s\t%-3s\t%-40s\t%-20s\t%s\n" "$timestamp" "$git_status" "$name" "$mod_date" "$file"
+    # Format: timestamp, git_status, name, db, schema, mod_date, file (with fixed-width for alignment)
+    printf "%s\t%-3s\t%-40s\t%-20s\t%-20s\t%-20s\t%s\n" "$timestamp" "$git_status" "$name" "$db" "$schema" "$mod_date" "$file"
   done |
   sort -rn |
   cut -f2-
@@ -100,7 +100,7 @@ fi
 
 # Let the user select a table using the interactive filter tool.
 if [ "$INTERACTIVE_FILTER_TOOL" = "fzf" ]; then
-    selected_line=$(echo -e "$table_list" | fzf --delimiter='\t' --with-nth=1,2,4 || true)
+    selected_line=$(echo -e "$table_list" | fzf --delimiter='\t' --with-nth=1,2,3,5 || true)
 else
     selected_line=$(echo -e "$table_list" | "$INTERACTIVE_FILTER_TOOL" || true)
 fi
@@ -111,29 +111,113 @@ if [ -z "$selected_line" ]; then
     exit 1
 fi
 
-# Extract just the table name from the selected line and trim whitespace
+# Extract table name, database, schema from the selected line
 readonly target_name=$(echo "$selected_line" | awk -F'\t' '{print $2}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+readonly target_db=$(echo "$selected_line" | awk -F'\t' '{print $3}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+readonly target_schema=$(echo "$selected_line" | awk -F'\t' '{print $4}' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+readonly target_full="${target_db}.${target_schema}.${target_name}"
 
-echo "Extracting the query for '${target_name}'..."
-jq --arg n "$target_name" -r '.tables|.[]|select(.target.name==$n)|.query' "$compiled_filename" > "$query_filename"
+run_deps_with_bq() {
+    local root_name="$1"
 
-if [ ! -s "$query_filename" ]; then
-    echo "Error: Could not find a table with the name '${target_name}' in the compiled project." >&2
-    exit 1
-fi
+    # Extract dependency map and table metadata as TSV (one dep per line)
+    # Format: name\tdep_name
+    local dep_edges
+    dep_edges=$(jq -r '.tables[]|. as $t|.dependencyTargets[]?.name|"\($t.target.name)\t\(.)"' "$compiled_filename")
+
+    # Extract table metadata: name\ttype\tdatabase\tschema
+    local table_meta
+    table_meta=$(jq -r '.tables[]|"\(.target.name)\t\(.type)\t\(.target.database)\t\(.target.schema)"' "$compiled_filename")
+
+    # Topological sort via recursive DFS post-order in bash (bash 3 compatible)
+    _topo_visited=""
+    _topo_result=""
+
+    _dfs() {
+        local name="$1"
+        # Check if already visited
+        echo "$_topo_visited" | grep -qxF "$name" && return
+        _topo_visited="${_topo_visited}"$'\n'"${name}"
+        # Visit each direct dependency first
+        while IFS= read -r dep; do
+            [ -z "$dep" ] && continue
+            _dfs "$dep"
+        done < <(echo "$dep_edges" | awk -F'\t' -v n="$name" '$1==n{print $2}')
+        _topo_result="${_topo_result}"$'\n'"${name}"
+    }
+
+    _dfs "$root_name"
+
+    # Convert result string to array
+    local _result=()
+    while IFS= read -r line; do
+        [ -z "$line" ] && continue
+        _result+=("$line")
+    done <<< "$_topo_result"
+
+    # Materialize each dep in topological order (skip the target itself)
+    for dep_name in "${_result[@]}"; do
+        [ "$dep_name" = "$root_name" ] && continue
+
+        local dep_info
+        dep_info=$(echo "$table_meta" | awk -F'\t' -v n="$dep_name" '$1==n{print}' | head -1)
+        [ -z "$dep_info" ] && continue  # external dependency, skip
+
+        local dep_type dep_db dep_schema dep_query
+        dep_type=$(echo "$dep_info" | awk -F'\t' '{print $2}')
+        dep_db=$(echo "$dep_info" | awk -F'\t' '{print $3}')
+        dep_schema=$(echo "$dep_info" | awk -F'\t' '{print $4}')
+        dep_query=$(jq -r --arg n "$dep_name" '.tables[]|select(.target.name==$n)|.query' "$compiled_filename")
+
+        echo "Materializing [${dep_type}] ${dep_schema}.${dep_name}..."
+        case "$dep_type" in
+            "view")
+                bq mk --force --project_id="$dep_db" --use_legacy_sql=false --view="$dep_query" "${dep_schema}.${dep_name}"
+                ;;
+            "table"|"incremental")
+                echo "$dep_query" | bq query --nouse_legacy_sql \
+                    --destination_table="${dep_db}:${dep_schema}.${dep_name}" --replace
+                ;;
+        esac
+    done
+}
 
 case "$subcommand" in
     "run")
         # Store the result in the system's temp dir, named by the target table
         readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
 
-        echo "Executing the query with BigQuery..."
-        bq query --nouse_legacy_sql --format="$output_format" < "$query_filename" > "$result_filename"
+        echo "Materializing dependencies for '${target_name}' using bq..."
+        run_deps_with_bq "$target_name"
+
+        echo "Executing query for '${target_name}'..."
+        jq --arg n "$target_name" -r '.tables[]|select(.target.name==$n)|.query' "$compiled_filename" |
+            bq query --nouse_legacy_sql --format="$output_format" > "$result_filename" || true
 
         echo
         echo "The query results are stored in $result_filename"
         echo "Opening the result with visidata..."
-        vd "$result_filename"
+        vd "$result_filename" || true
+        ;;
+    "query")
+        # Run the extracted SQL directly without dependency resolution (legacy behavior)
+        readonly result_filename="/tmp/df-query-result-${target_name}.${output_format}"
+
+        echo "Extracting the query for '${target_name}'..."
+        jq --arg n "$target_name" -r '.tables|.[]|select(.target.name==$n)|.query' "$compiled_filename" > "$query_filename"
+
+        if [ ! -s "$query_filename" ]; then
+            echo "Error: Could not find a table with the name '${target_name}' in the compiled project." >&2
+            exit 1
+        fi
+
+        echo "Executing the query with BigQuery..."
+        bq query --nouse_legacy_sql --format="$output_format" < "$query_filename" > "$result_filename" || true
+
+        echo
+        echo "The query results are stored in $result_filename"
+        echo "Opening the result with visidata..."
+        vd "$result_filename" || true
         ;;
     "view")
         # Define the result filename based on the target table name
@@ -142,7 +226,7 @@ case "$subcommand" in
         echo "Attempting to open previous query results for '${target_name}' with visidata..."
         if [ -f "$result_filename" ]; then
             echo "Opening $result_filename with visidata..."
-            vd "$result_filename"
+            vd "$result_filename" || true
         else
             echo "Error: No previous query results found for '${target_name}' at $result_filename." >&2
             echo "Please run 'dr run' for this table first to generate the results." >&2
@@ -153,8 +237,9 @@ case "$subcommand" in
         echo "Usage: dr [subcommand] [output_format]"
         echo ""
         echo "Subcommands:"
-        echo "  run (default) : Compiles the Dataform project, allows selecting a table, executes the query with BigQuery, and opens the results with visidata."
-        echo "  view          : Compiles the Dataform project, allows selecting a table, and opens previously generated query results with visidata (skips BigQuery execution)."
+        echo "  run (default) : Runs 'dataform run --include-dependencies' for the selected table, then queries the materialized result with visidata."
+        echo "  query         : Extracts and executes the compiled SQL directly with BigQuery (no dependency resolution)."
+        echo "  view          : Opens previously generated query results with visidata (skips execution)."
         echo "  help          : Displays this help message."
         echo ""
         echo "Arguments:"
@@ -163,11 +248,12 @@ case "$subcommand" in
         echo "Examples:"
         echo "  dr            # Runs with default 'run' subcommand and 'json' output format."
         echo "  dr run csv    # Runs with 'run' subcommand and 'csv' output format."
+        echo "  dr query      # Executes extracted SQL directly without dependency resolution."
         echo "  dr view       # Views previously generated results."
         echo "  dr help       # Displays this help message."
         ;;
     *)
-        echo "Error: Unknown subcommand '$subcommand'. Use 'run', 'view', or 'help'." >&2
+        echo "Error: Unknown subcommand '$subcommand'. Use 'run', 'query', 'view', or 'help'." >&2
         exit 1
         ;;
 esac
