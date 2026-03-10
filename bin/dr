@@ -8,7 +8,7 @@ readonly subcommand="${1:-run}" # Optional: run, view
 readonly output_format="${2:-json}" # Optional: json, csv, etc.
 
 # --- Interactive Filter Tool ---
-readonly INTERACTIVE_FILTER_TOOL="${INTERACTIVE_FILTER_TOOL:-peco}"
+readonly INTERACTIVE_FILTER_TOOL="${INTERACTIVE_FILTER_TOOL:-fzf}"
 
 # --- Project Setup ---
 # Get the absolute path of the current directory to use as a unique project ID
@@ -67,7 +67,7 @@ fi
 
 echo "Extracting table names with last modified dates and git status..."
 
-# Generate a sorted list of tables for peco
+# Generate a sorted list of tables for fzf
 table_list=$(jq -r '.tables|.[]|select((.type == "table") or (.type == "view") or (.type == "incremental")) | "\(.fileName)\t\(.target.name)"' "$compiled_filename" |
   while IFS=$'\t' read -r file name || [ -n "$file" ]; do
     # Skip empty lines
@@ -99,7 +99,11 @@ if [ -z "$table_list" ]; then
 fi
 
 # Let the user select a table using the interactive filter tool.
-selected_line=$(echo -e "$table_list" | "$INTERACTIVE_FILTER_TOOL" || true)
+if [ "$INTERACTIVE_FILTER_TOOL" = "fzf" ]; then
+    selected_line=$(echo -e "$table_list" | fzf --delimiter='\t' --with-nth=1,2,4 || true)
+else
+    selected_line=$(echo -e "$table_list" | "$INTERACTIVE_FILTER_TOOL" || true)
+fi
 
 
 if [ -z "$selected_line" ]; then
