@@ -36,4 +36,5 @@
       - tree
       - bubblewrap
       - socat
+      - wl-clipboard
     state: present
