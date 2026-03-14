@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # notify and run script
+# コマンドをラップしてデスクトップ通知 + tmux window/pane通知を送る
 
 _usage(){
 cat << EOS
@@ -16,14 +17,29 @@ if [ -z "$*" ]; then
   _usage
 fi
 
-$*
+"$@"
 
 exit_code=$?
 
 if [ ${exit_code} -eq 0 ]; then
   result='Success'
+  emoji='✅'
+  pane_color='fg=colour46,bold'
 else
   result='Failed'
+  emoji='❌'
+  pane_color='fg=colour196,bold'
 fi
 
+# デスクトップ通知
 notify "$*" "${result}"
+
+# tmux window/pane通知
+if [ -n "$TMUX" ]; then
+  # bell (window ステータスバーのハイライト用)
+  echo -ne '\a'
+  # window名に絵文字を付与
+  tmux rename-window "$(~/dotfiles/bin/tmux-window-name . "$emoji")"
+  # pane border色を変更 (フォーカス時にリセットされる)
+  tmux set-option -p pane-border-style "$pane_color"
+fi
