@@ -48,15 +48,42 @@ function switch_gh_user() {
 }
 add-zsh-hook chpwd switch_gh_user
 
-# tmuxのウィンドウ名をgitリポジトリのルートディレクトリ名にする
+# tmuxのウィンドウ名をgitリポジトリ名+branch/worktree名にする
 function tmux_rename_window_to_cwd() {
   if [[ -n "$TMUX" ]]; then
-    local git_root
-    git_root=$(git rev-parse --show-toplevel 2>/dev/null)
-    tmux rename-window "$(basename "${git_root:-$PWD}")"
+    tmux rename-window "$(~/dotfiles/bin/tmux-window-name .)"
   fi
 }
 add-zsh-hook chpwd tmux_rename_window_to_cwd
+
+# claudeコマンド実行時にウィンドウ名に⌛️をつける
+function tmux_claude_preexec() {
+  if [[ -n "$TMUX" ]] && [[ "$1" = claude* ]]; then
+    tmux rename-window "$(~/dotfiles/bin/tmux-window-name . '⌛️')"
+  fi
+}
+add-zsh-hook preexec tmux_claude_preexec
+
+# 長時間コマンド完了時にbell+✅で通知する
+LONG_RUNNING_THRESHOLD=10
+_cmd_start_time=0
+
+function _long_running_preexec() {
+  _cmd_start_time=$EPOCHSECONDS
+}
+add-zsh-hook preexec _long_running_preexec
+
+function _long_running_precmd() {
+  if [[ $_cmd_start_time -gt 0 ]]; then
+    local elapsed=$(( EPOCHSECONDS - _cmd_start_time ))
+    _cmd_start_time=0
+    if [[ $elapsed -ge $LONG_RUNNING_THRESHOLD ]] && [[ -n "$TMUX" ]]; then
+      echo -ne '\a'
+      tmux rename-window "$(~/dotfiles/bin/tmux-window-name . '✅')"
+    fi
+  fi
+}
+add-zsh-hook precmd _long_running_precmd
 
 # 何も入力しなかったときにもgh_switch_userを発火
 # ターミナル等が変わった際への対応
