@@ -1,0 +1,30 @@
+#!/bin/sh
+# tmux-window-name: Generate window name with emoji, dirname, and branch/worktree
+# Usage: tmux-window-name [path] [emoji]
+
+dir="${1:-.}"
+emoji="${2:-}"
+cd "$dir" 2>/dev/null || exit 1
+
+git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+if [ -z "$git_root" ]; then
+  echo "${emoji}$(basename "$(pwd)")"
+  exit 0
+fi
+
+# Check if in a linked worktree
+git_common=$(cd "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null && pwd)
+git_dir=$(cd "$(git rev-parse --git-dir 2>/dev/null)" 2>/dev/null && pwd)
+
+if [ "$git_common" != "$git_dir" ]; then
+  # Linked worktree: show main repo name + worktree dir name
+  main_repo=$(basename "$(dirname "$git_common")")
+  worktree_name=$(basename "$git_root")
+  echo "${emoji}${main_repo}:${worktree_name}"
+else
+  # Main working tree: show repo name + branch
+  repo_name=$(basename "$git_root")
+  branch=$(git branch --show-current 2>/dev/null)
+  branch="${branch:-detached}"
+  echo "${emoji}${repo_name}:${branch}"
+fi
