@@ -103,6 +103,14 @@ function peco-git-stash () {
 zle -N peco-git-stash
 bindkey '^gs' peco-git-stash
 
+# git worktree のリストから選択
+function peco-git-worktree () {
+  local worktree="$(git worktree list | fzf-popup | awk -F'[ :]' '{print $1}')"
+  peco-p ${worktree}
+}
+zle -N peco-git-worktree
+bindkey '^gw' peco-git-worktree
+
 # gh issue のリストから選択
 function peco-gh-issue () {
   local issues="$(gh issue list | fzf-popup | awk -F'[ ]' 'BEGIN{FS="\t"}{print $1}')"
