@@ -6,7 +6,7 @@ gcloud = 'latest'
 awscli = '2.32.18'
 deno = 'latest'
 jq = '1.8.1'
-bat = '0.24.0'
+bat = '0.26.1'
 delta = '0.18.2'
 terraform = '1.14.5'
 python = '3.14.0'
@@ -39,6 +39,11 @@ rust = 'latest'
 ghq = "1.8.0"
 "go:github.com/dlvhdr/diffnav" = 'latest'
 sqlite = 'latest'
+"ubi:duckdb/duckdb" = 'latest'
+"github:alltuner/mise-completions-sync" = "latest"
+
+[hooks]
+postinstall = "mise-completions-sync --shell zsh"
 
 [settings]
 experimental = true

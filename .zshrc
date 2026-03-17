@@ -38,6 +38,7 @@ autoload -Uz colors
 colors
 
 # complete
+fpath=(${XDG_DATA_HOME:-$HOME/.local/share}/mise-completions/zsh $fpath)
 autoload -Uz compinit && compinit
 zinit cdreplay - q
 
