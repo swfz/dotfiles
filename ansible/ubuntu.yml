@@ -17,7 +17,6 @@
     - { role: fonts, tags: [fonts, init] }
     - { role: actionlint, tags: [actionlint, tool] }
     - { role: reviewdog, tags: [reviewdog, tool] }
-    - { role: duckdb, tags: [duckdb, tool] }
     - { role: agg, tags: [agg, tool] }
     - { role: gh, tags: [gh, tool] }
     - { role: chrome, tags: [chrome, tool]}
