@@ -1,0 +1,211 @@
+#!/bin/bash
+
+# Hex色をターミナルで確認するスクリプト
+# 使い方:
+#   ansi_hexlist                           # RGBグリッド全体を表示(ステップ51=6段階)
+#   ansi_hexlist -s 85                     # ステップ85で表示(4段階, コンパクト)
+#   ansi_hexlist -n "#1a1a00"              # 指定色の周辺を表示(ステップ3, 片側5段)
+#   ansi_hexlist -n "#1a1a00" -s 5 -w 3   # ステップ5, 片側3段で周辺表示
+#   ansi_hexlist "#1a1a00" "#001a00"       # 指定した色だけ表示
+
+RS=$'\e[00m'
+
+print_usage() {
+  echo "Usage: ansi_hexlist [-s step] [-n hex [-w width]] [#hex ...]"
+  echo "  -s step  : RGB step size (default: 51 for grid, 3 for neighborhood)"
+  echo "  -n hex   : show neighborhood around hex color"
+  echo "  -w width : number of steps from center (default: 5)"
+  echo "  steps (divisors of 255): 1, 3, 5, 15, 17, 51, 85, 255"
+}
+
+clamp() {
+  local v=$1
+  if [ "$v" -lt 0 ]; then echo 0
+  elif [ "$v" -gt 255 ]; then echo 255
+  else echo "$v"
+  fi
+}
+
+show_hex_color() {
+  local hex="$1"
+  hex="${hex#\#}"
+
+  local r=$((16#${hex:0:2}))
+  local g=$((16#${hex:2:2}))
+  local b=$((16#${hex:4:2}))
+
+  local fg_seq="\e[38;2;${r};${g};${b}m"
+  local bg_seq="\e[48;2;${r};${g};${b}m"
+
+  printf " ${fg_seq}████${RS}  ${bg_seq}  #${hex}  ${RS}  #${hex} (r=${r}, g=${g}, b=${b})\n"
+}
+
+# 値リストからグリッド描画する共通関数
+# 引数: r_values[] g_values[] b_values[] center_hex(optional)
+render_grid() {
+  local -n _r_vals=$1
+  local -n _g_vals=$2
+  local -n _b_vals=$3
+  local center_hex="${4:-}"
+  local term_width
+  term_width=$(tput cols 2>/dev/null || echo 120)
+
+  local nr=${#_r_vals[@]}
+  local ng=${#_g_vals[@]}
+  local nb=${#_b_vals[@]}
+
+  local cell_width=9
+  local label_width=6
+  local block_width=$(( nb * cell_width + label_width ))
+  local gap=2
+  local blocks_per_row=$(( (term_width + gap) / (block_width + gap) ))
+  if [ "$blocks_per_row" -lt 1 ]; then
+    blocks_per_row=1
+  fi
+
+  local ri=0
+  while [ "$ri" -lt "$nr" ]; do
+    local ri_end=$((ri + blocks_per_row))
+    if [ "$ri_end" -gt "$nr" ]; then
+      ri_end=$nr
+    fi
+
+    # B値ヘッダー
+    local b_header=""
+    for ((rr=ri; rr<ri_end; rr++)); do
+      b_header+=$(printf '   B: ')
+      for b in "${_b_vals[@]}"; do
+        b_header+=$(printf '  %3d     ' "$b" | head -c $cell_width)
+      done
+      if [ $((rr + 1)) -lt "$ri_end" ]; then
+        b_header+=$(printf '%*s' $gap '')
+      fi
+    done
+    printf '%s\n' "$b_header"
+
+    # G行ごとに横並びで出力
+    for g in "${_g_vals[@]}"; do
+      local line=""
+      for ((rr=ri; rr<ri_end; rr++)); do
+        local r=${_r_vals[$rr]}
+        line+=$(printf 'G=%-3d ' "$g")
+        for b in "${_b_vals[@]}"; do
+          local hex
+          hex=$(printf '%02x%02x%02x' "$r" "$g" "$b")
+          local marker=' '
+          if [ "$hex" = "$center_hex" ]; then
+            marker='*'
+          fi
+          line+=$(printf '\e[48;2;%d;%d;%dm%s#%s \e[0m' "$r" "$g" "$b" "$marker" "$hex")
+        done
+        if [ $((rr + 1)) -lt "$ri_end" ]; then
+          line+=$(printf '%*s' $gap '')
+        fi
+      done
+      printf '%b\n' "$line"
+    done
+    echo ""
+
+    ri=$ri_end
+  done
+}
+
+show_grid() {
+  local step="${1:-51}"
+
+  local values=()
+  local v=0
+  while [ "$v" -le 255 ]; do
+    values+=("$v")
+    v=$((v + step))
+  done
+  if [ "${values[-1]}" -ne 255 ]; then
+    values+=(255)
+  fi
+
+  local n=${#values[@]}
+  echo "=== RGB Color Grid (step=${step}, ${n} values/ch, $((n * n * n)) colors) ==="
+  echo ""
+
+  render_grid values values values
+
+  print_usage
+}
+
+show_neighborhood() {
+  local hex="$1"
+  local step="${2:-3}"
+  local width="${3:-5}"
+
+  hex="${hex#\#}"
+  local cr=$((16#${hex:0:2}))
+  local cg=$((16#${hex:2:2}))
+  local cb=$((16#${hex:4:2}))
+
+  make_range() {
+    local center=$1 step=$2 width=$3 name=$4
+    local -n _out=$name
+    _out=()
+    for ((i=-width; i<=width; i++)); do
+      local val=$(clamp $((center + i * step)))
+      # 重複除去
+      if [ ${#_out[@]} -eq 0 ] || [ "${_out[-1]}" -ne "$val" ]; then
+        _out+=("$val")
+      fi
+    done
+  }
+
+  local r_range=() g_range=() b_range=()
+  make_range "$cr" "$step" "$width" r_range
+  make_range "$cg" "$step" "$width" g_range
+  make_range "$cb" "$step" "$width" b_range
+
+  echo "=== Neighborhood of #${hex} (step=${step}, width=+-${width}) ==="
+  echo "  R: ${r_range[*]}  (center=${cr})"
+  echo "  G: ${g_range[*]}  (center=${cg})"
+  echo "  B: ${b_range[*]}  (center=${cb})"
+  echo "  * = center color"
+  echo ""
+
+  render_grid r_range g_range b_range "$hex"
+
+  print_usage
+}
+
+# parse args
+step=""
+width=""
+neighbor_hex=""
+hex_args=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -s)
+      step="$2"
+      shift 2
+      ;;
+    -w)
+      width="$2"
+      shift 2
+      ;;
+    -n)
+      neighbor_hex="$2"
+      shift 2
+      ;;
+    *)
+      hex_args+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [ -n "$neighbor_hex" ]; then
+  show_neighborhood "$neighbor_hex" "${step:-3}" "${width:-5}"
+elif [ ${#hex_args[@]} -gt 0 ]; then
+  for color in "${hex_args[@]}"; do
+    show_hex_color "$color"
+  done
+  print_usage
+else
+  show_grid "${step:-51}"
+fi
