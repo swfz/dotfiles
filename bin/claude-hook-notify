@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Claude Code hook for Notification/Stop events
+# stdin: JSON with .message field
+#
+# Usage: claude-hook-notify <emoji> <notify_title> <border_color> [bg_color]
+#   e.g. claude-hook-notify '🔔' 'ClaudeCode'      'fg=colour226,bold' '#393d45'
+#   e.g. claude-hook-notify '✅' 'ClaudeCode Done'  'fg=colour46,bold'  '#393d45'
+
+emoji="$1"
+notify_title="$2"
+border_color="$3"
+bg_color="${4:-#393d45}"
+
+printf '\a' > /dev/tty
+echo "$(jq -r '.message')" | notify "$notify_title"
+
+if [ -n "$TMUX" ] && [ -n "$TMUX_PANE" ]; then
+  tmux rename-window -t "$TMUX_PANE" "$(~/dotfiles/bin/tmux-window-name . "$emoji")"
+  tmux set-option -p -t "$TMUX_PANE" pane-border-style "$border_color"
+  tmux select-pane -t "$TMUX_PANE" -P "bg=$bg_color"
+fi
