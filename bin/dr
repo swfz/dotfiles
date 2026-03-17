@@ -10,6 +10,10 @@ readonly output_format="${2:-json}" # Optional: json, csv, etc.
 # --- Interactive Filter Tool ---
 readonly INTERACTIVE_FILTER_TOOL="${INTERACTIVE_FILTER_TOOL:-fzf}"
 
+# --- Schema Suffix ---
+# Always append "_local" to schema names to avoid affecting production datasets
+readonly schema_suffix="_local"
+
 # --- Project Setup ---
 # Get the absolute path of the current directory to use as a unique project ID
 readonly project_dir=$(realpath .)
@@ -50,14 +54,14 @@ readonly query_filename="${tmp_dir}/df-query.sql"
 # --- Compile Logic ---
 # Calculate the current hash of the definitions directory
 readonly definitions_dir="$project_dir/definitions"
-current_hash=$(find "$definitions_dir" -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum | cut -d' ' -f1)
+current_hash=$({ echo "schema_suffix=${schema_suffix}"; find "$definitions_dir" -type f -print0 | sort -z | xargs -0 sha256sum; } | sha256sum | cut -d' ' -f1)
 # Read the stored hash, suppressing errors if the file doesn't exist
 stored_hash=$(cat "$hash_filename" 2>/dev/null || true)
 
 if [ "$current_hash" != "$stored_hash" ] || [ ! -f "$compiled_filename" ]; then
   echo "Changes detected in 'definitions/'. Re-running 'dataform compile'..."
   # dataform compile runs in the current directory by default
-  dataform compile --json > "$compiled_filename"
+  dataform compile --json --schema-suffix="$schema_suffix" > "$compiled_filename"
   # Update the hash file on successful compilation
   echo "$current_hash" > "$hash_filename"
 else
