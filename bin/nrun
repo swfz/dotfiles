@@ -40,7 +40,7 @@ if [ -n "$TMUX" ]; then
   echo -ne '\a'
   # window名に絵文字を付与(pane-focus-inフックで維持するため環境変数にも保存)
   tmux set-option -w -t "$TMUX_PANE" @nrun_emoji "$emoji"
-  tmux rename-window "$(~/dotfiles/bin/tmux-window-name . "$emoji")"
+  tmux rename-window -t "$TMUX_PANE" "$(~/dotfiles/bin/tmux-window-name . "$emoji")"
   # pane border色を変更 (フォーカス時にリセットされる)
   tmux set-option -p pane-border-style "$pane_color"
 fi
