@@ -18,7 +18,7 @@ echo "$(jq -r '.message')" | notify "$notify_title"
 if [ -n "$TMUX" ] && [ -n "$TMUX_PANE" ]; then
   tmux rename-window -t "$TMUX_PANE" "$(~/dotfiles/bin/tmux-window-name . "$emoji")"
   tmux set-option -p -t "$TMUX_PANE" pane-border-style "$border_color"
-  tmux select-pane -t "$TMUX_PANE" -P "bg=$bg_color"
+  tmux set-option -p -t "$TMUX_PANE" window-style "bg=$bg_color"
 
   # すでにフォーカス中ならpane-focus-inが発火しないのでここでディレイリセットを仕込む
   active_pane=$(tmux display-message -p '#{pane_id}')
