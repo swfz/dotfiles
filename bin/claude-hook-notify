@@ -19,4 +19,10 @@ if [ -n "$TMUX" ] && [ -n "$TMUX_PANE" ]; then
   tmux rename-window -t "$TMUX_PANE" "$(~/dotfiles/bin/tmux-window-name . "$emoji")"
   tmux set-option -p -t "$TMUX_PANE" pane-border-style "$border_color"
   tmux select-pane -t "$TMUX_PANE" -P "bg=$bg_color"
+
+  # すでにフォーカス中ならpane-focus-inが発火しないのでここでディレイリセットを仕込む
+  active_pane=$(tmux display-message -p '#{pane_id}')
+  if [ "$active_pane" = "$TMUX_PANE" ]; then
+    tmux run-shell -b "~/dotfiles/bin/tmux-delayed-bg-reset $TMUX_PANE"
+  fi
 fi
