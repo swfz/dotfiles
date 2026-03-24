@@ -33,7 +33,7 @@ jobs:
     outputs:
       list: ${{ steps.set-mise-tools.outputs.list }}
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - name: set json
         id: set-mise-tools
         run: |
@@ -77,9 +77,9 @@ jobs:
       matrix:
         row: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - if: github.event.client_payload
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -99,9 +99,9 @@ jobs:
     runs-on: macos-latest
     name: 'playbook mac'
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - if: github.event.client_payload
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -134,14 +134,14 @@ jobs:
     runs-on: ubuntu-latest
     name: 'lint'
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - run: cat $GITHUB_EVENT_PATH
       - if: github.event.client_payload
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v7.1.6
+        uses: astral-sh/setup-uv@v7.6.0
         with:
           python-version: 3.12
       - name: install ansible-lint yamllint
@@ -168,7 +168,7 @@ jobs:
     # needs: [lint, build-mac, build-ubuntu, build-codespace]
     needs: [lint, build-mac, build-ubuntu]
     steps:
-      - uses: Kesin11/actions-timeline@v2.2.5
+      - uses: Kesin11/actions-timeline@v3.0.0
 
   slack-notify:
     if: always()
