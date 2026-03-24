@@ -3,8 +3,11 @@ name: ansible
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'ansible/**'
+      - 'config/mise/**'
       - '.github/workflows/ci-ansible.yml'
   repository_dispatch:
     types: [ansible]
@@ -12,6 +15,10 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - 'ansible/**'
+      - 'config/mise/**'
+      - '.github/workflows/ci-ansible.yml'
   schedule:
     - cron: '0 0 * * SAT'
 
