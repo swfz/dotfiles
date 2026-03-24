@@ -141,7 +141,7 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v7.1.6
+        uses: astral-sh/setup-uv@v7.6.0
         with:
           python-version: 3.12
       - name: install ansible-lint yamllint
