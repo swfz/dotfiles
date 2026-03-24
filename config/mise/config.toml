@@ -41,6 +41,7 @@ ghq = "1.8.0"
 sqlite = 'latest'
 "ubi:duckdb/duckdb" = 'latest'
 "github:alltuner/mise-completions-sync" = "latest"
+"ubi:k1LoW/mo" = "latest"
 
 [hooks]
 postinstall = "mise-completions-sync --shell zsh"
