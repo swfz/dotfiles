@@ -151,6 +151,56 @@ function peco-alias () {
 zle -N peco-alias
 bindkey '^ga' peco-alias
 
+# claude planファイルをタイトルで選択してパスを出力
+function peco-claude-plan () {
+  local plan_dir="$HOME/.claude/plans"
+  [[ -d "$plan_dir" ]] || return
+  local selected="$(for f in "$plan_dir"/*.md(N); do
+    local title="$(head -1 "$f" | sed 's/^# //')"
+    local date="$(stat -f '%Sm' -t '%Y-%m-%d' "$f")"
+    printf "%s\t%s\t%s\n" "$date" "$title" "$f"
+  done | sort -r | fzf-popup --delimiter='\t' --with-nth=1,2 --preview 'bat --color=always --style=numbers {3}' --preview-window right,65% --bind 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up' | awk -F'\t' '{print $3}')"
+  peco-p ${selected}
+}
+zle -N peco-claude-plan
+bindkey '^gcp' peco-claude-plan
+
+# claude sessionファイルを最初のメッセージで選択してパスを出力
+function peco-claude-session () {
+  local project_dir="$HOME/.claude/projects/$(pwd | sed 's|/|-|g')"
+  [[ -d "$project_dir" ]] || return
+  local selected="$(python3 -c "
+import json,os,glob
+project_dir='$project_dir'
+results=[]
+for f in sorted(glob.glob(os.path.join(project_dir,'*.jsonl'))):
+    try:
+        with open(f) as fh:
+            for line in fh:
+                msg=json.loads(line)
+                if msg.get('type')=='user':
+                    c=msg.get('message',{}).get('content','')
+                    t=c if isinstance(c,str) else next((x.get('text','') for x in c if x.get('type')=='text'),'')
+                    t=t.replace('\n',' ').replace('\t',' ').strip()
+                    import re
+                    t=re.sub(r'<[^>]+>[^<]*</[^>]+>','',t).strip()[:80]
+                    if not t or t.startswith('<'):continue
+                    if True:
+                        import datetime
+                        mtime=os.path.getmtime(f)
+                        date=datetime.datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+                        results.append((date,t,f))
+                    break
+    except:pass
+results.sort(key=lambda x:x[0],reverse=True)
+for d,t,f in results:
+    print(f'{d}\t{t}\t{f}')
+" 2>/dev/null | fzf-popup --delimiter='\t' --with-nth=1,2 | awk -F'\t' '{print $3}')"
+  peco-p ${selected}
+}
+zle -N peco-claude-session
+bindkey '^gcs' peco-claude-session
+
 # rfv
 # 1. Search for text in files using Ripgrep
 # 2. Interactively restart Ripgrep with reload action
