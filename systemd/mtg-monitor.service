@@ -7,6 +7,7 @@ EnvironmentFile=%h/.config/switchbot/api.env
 ExecStart=%h/dotfiles/bin/monitor-mtg.sh
 Restart=always
 Environment=PYTHONUNBUFFERED=1
+Environment=MISE_RUBY_VERSION=3.3.5
 
 [Install]
 WantedBy=default.target
