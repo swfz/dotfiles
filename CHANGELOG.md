@@ -1,5 +1,141 @@
 # Changelog
 
+## [v1.0.5](https://github.com/swfz/dotfiles/compare/v1.0.4...v1.0.5) - 2023-10-08
+- chore(deps): update dependency docker/compose to v2.16.0 by @renovate in https://github.com/swfz/dotfiles/pull/718
+- chore(deps): update dependency aws/aws-cli to v2.9.23 by @renovate in https://github.com/swfz/dotfiles/pull/719
+- versionup/vim-to-9.0.1298 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/722
+- feat: husky以外の core.hooksPathを利用しているツールに対応 by @swfz in https://github.com/swfz/dotfiles/pull/725
+- chore(deps): update dependency git/git to v2.39.2 by @renovate in https://github.com/swfz/dotfiles/pull/723
+- chore(deps): update dependency aws/aws-cli to v2.10.0 by @renovate in https://github.com/swfz/dotfiles/pull/724
+- versionup/vim-to-9.0.1318 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/727
+- versionup/vim-to-9.0.1352 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/730
+- versionup/embulk-to-0.10.42 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/729
+- feat: add direnv by @swfz in https://github.com/swfz/dotfiles/pull/731
+- versionup/vim-to-9.0.1376 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/732
+- chore(deps): update dependency aws/aws-cli to v2.11.0 by @renovate in https://github.com/swfz/dotfiles/pull/726
+- chore(deps): update dependency aws/aws-cli to v2.11.1 by @renovate in https://github.com/swfz/dotfiles/pull/733
+- versionup/vim-to-9.0.1399 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/736
+- versionup/embulk-to-0.10.43 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/735
+- chore(deps): update dependency aws/aws-cli to v2.11.2 by @renovate in https://github.com/swfz/dotfiles/pull/734
+- versionup/terraform-to-1.4.1 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/740
+- chore(deps): update actions/checkout action to v3.4.0 by @renovate in https://github.com/swfz/dotfiles/pull/738
+- chore(deps): update dependency aws/aws-cli to v2.11.3 by @renovate in https://github.com/swfz/dotfiles/pull/741
+- chore(deps): update dependency git/git to v2.40.0 by @renovate in https://github.com/swfz/dotfiles/pull/737
+- versionup/vim-to-9.0.1404 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/739
+- chore(deps): update dependency aws/aws-cli to v2.11.4 by @renovate in https://github.com/swfz/dotfiles/pull/744
+- versionup/vim-to-9.0.1413 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/745
+- versionup/terraform-to-1.4.2 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/743
+- chore(deps): update dependency peco/peco to v0.5.11 by @renovate in https://github.com/swfz/dotfiles/pull/746
+- versionup/vim-to-9.0.1426 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/752
+- chore(deps): update dependency sharkdp/bat to v0.23.0 by @renovate in https://github.com/swfz/dotfiles/pull/753
+- chore(deps): update actions/checkout action to v3.5.0 by @renovate in https://github.com/swfz/dotfiles/pull/749
+- chore(deps): update dependency docker/compose to v2.17.2 by @renovate in https://github.com/swfz/dotfiles/pull/747
+- versionup/vim-to-9.0.1433 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/757
+- versionup/terraform-to-1.4.4 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/756
+- versionup/embulk-to-0.10.44 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/750
+- chore(deps): update dependency aws/aws-cli to v2.11.8 by @renovate in https://github.com/swfz/dotfiles/pull/748
+- chore(deps): update dependency aws/aws-cli to v2.11.10 by @renovate in https://github.com/swfz/dotfiles/pull/758
+- versionup/vim-to-9.0.1442 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/761
+- versionup/embulk-to-0.10.47 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/763
+- chore(deps): update dependency aws/aws-cli to v2.11.11 by @renovate in https://github.com/swfz/dotfiles/pull/760
+- chore(deps): update dependency rhysd/actionlint to v1.6.24 by @renovate in https://github.com/swfz/dotfiles/pull/759
+- versionup/vim-to-9.0.1447 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/766
+- versionup/embulk-to-0.10.48 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/765
+- chore(deps): update dependency aws/aws-cli to v2.11.12 by @renovate in https://github.com/swfz/dotfiles/pull/767
+- versionup/vim-to-9.0.1453 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/771
+- versionup/embulk-to-0.10.48 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/769
+- chore(deps): update dependency aws/aws-cli to v2.11.13 by @renovate in https://github.com/swfz/dotfiles/pull/770
+- chore(deps): update actions/checkout action to v3.5.2 by @renovate in https://github.com/swfz/dotfiles/pull/764
+- versionup/vim-to-9.0.1462 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/773
+- chore(deps): update dependency docker/compose to v2.17.3 by @renovate in https://github.com/swfz/dotfiles/pull/775
+- chore(deps): update dependency aws/aws-cli to v2.11.15 by @renovate in https://github.com/swfz/dotfiles/pull/774
+- versionup/embulk-to-0.10.49 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/772
+- chore(deps): update dependency git/git to v2.40.1 by @renovate in https://github.com/swfz/dotfiles/pull/776
+- chore(deps): update dependency aws/aws-cli to v2.11.17 by @renovate in https://github.com/swfz/dotfiles/pull/777
+- versionup/vim-to-9.0.1496 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/778
+- versionup/vim-to-9.0.1510 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/781
+- chore(deps): update dependency aws/aws-cli to v2.11.18 by @renovate in https://github.com/swfz/dotfiles/pull/779
+- versionup/vim-to-9.0.1547 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/783
+- versionup/vim-to-9.0.1570 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/786
+- versionup/embulk-to-0.10.50 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/785
+- versionup/vim-to-9.0.1580 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/787
+- chore(deps): update dependency direnv/direnv to v2.32.3 by @renovate in https://github.com/swfz/dotfiles/pull/789
+- chore(deps): update dependency docker/compose to v2.18.1 by @renovate in https://github.com/swfz/dotfiles/pull/790
+- chore(deps): update dependency aws/aws-cli to v2.11.23 by @renovate in https://github.com/swfz/dotfiles/pull/782
+- feature/migration ansible lint v6 by @swfz in https://github.com/swfz/dotfiles/pull/794
+- chore(deps): update dependency aws/aws-cli to v2.11.26 by @renovate in https://github.com/swfz/dotfiles/pull/791
+- chore(deps): update dependency git/git to v2.41.0 by @renovate in https://github.com/swfz/dotfiles/pull/792
+- remove: embulk by @swfz in https://github.com/swfz/dotfiles/pull/795
+- feature/ansible lint comments by @swfz in https://github.com/swfz/dotfiles/pull/796
+- feature/ansible lint var naming by @swfz in https://github.com/swfz/dotfiles/pull/797
+- feature/ansible lint name missing by @swfz in https://github.com/swfz/dotfiles/pull/798
+- feature/ansible lint key order by @swfz in https://github.com/swfz/dotfiles/pull/799
+- feature/ansible lint risky file permission by @swfz in https://github.com/swfz/dotfiles/pull/800
+- feature/ansible lint no free form by @swfz in https://github.com/swfz/dotfiles/pull/801
+- feature/ansible lint no changed when by @swfz in https://github.com/swfz/dotfiles/pull/802
+- feature/ansible lint command instead of module by @swfz in https://github.com/swfz/dotfiles/pull/806
+- chore(deps): update actions/checkout action to v3.5.3 by @renovate in https://github.com/swfz/dotfiles/pull/803
+- versionup/vim-to-9.0.1621 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/805
+- feature/ansible lint jinja by @swfz in https://github.com/swfz/dotfiles/pull/808
+- feature/ansible lint command instead of shell by @swfz in https://github.com/swfz/dotfiles/pull/809
+- versionup/vim-to-9.0.1623 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/811
+- chore(deps): update dependency aws/aws-cli to v2.11.27 by @renovate in https://github.com/swfz/dotfiles/pull/810
+- chore(deps): update dependency rhysd/actionlint to v1.6.25 by @renovate in https://github.com/swfz/dotfiles/pull/813
+- versionup/vim-to-9.0.1637 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/814
+- chore(deps): update dependency aws/aws-cli to v2.12.1 by @renovate in https://github.com/swfz/dotfiles/pull/812
+- chore(deps): update dependency aws/aws-cli to v2.12.2 by @renovate in https://github.com/swfz/dotfiles/pull/817
+- chore(deps): update dependency docker/compose to v2.19.0 by @renovate in https://github.com/swfz/dotfiles/pull/816
+- chore(deps): update dependency reviewdog/reviewdog to v0.14.2 by @renovate in https://github.com/swfz/dotfiles/pull/815
+- versionup/terraform-to-1.5.1 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/819
+- versionup/vim-to-9.0.1657 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/820
+- chore(deps): update dependency aws/aws-cli to v2.12.4 by @renovate in https://github.com/swfz/dotfiles/pull/818
+- chore(deps): update dependency aws/aws-cli to v2.12.6 by @renovate in https://github.com/swfz/dotfiles/pull/821
+- versionup/vim-to-9.0.1676 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/826
+- chore(deps): update dependency aws/aws-cli to v2.13.0 by @renovate in https://github.com/swfz/dotfiles/pull/825
+- versionup/terraform-to-1.5.2 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/824
+- chore(deps): update dependency docker/compose to v2.20.0 by @renovate in https://github.com/swfz/dotfiles/pull/822
+- chore(deps): update dependency aws/aws-cli to v2.13.1 by @renovate in https://github.com/swfz/dotfiles/pull/827
+- versionup/vim-to-9.0.1677 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/828
+- chore(deps): update dependency docker/compose to v2.20.1 by @renovate in https://github.com/swfz/dotfiles/pull/830
+- versionup/terraform-to-1.5.3 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/829
+- chore(deps): update dependency aws/aws-cli to v2.13.2 by @renovate in https://github.com/swfz/dotfiles/pull/832
+- chore(deps): update dependency aws/aws-cli to v2.13.3 by @renovate in https://github.com/swfz/dotfiles/pull/833
+- feat: peco function by @swfz in https://github.com/swfz/dotfiles/pull/837
+- versionup/vim-to-9.0.1695 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/838
+- versionup/vim-to-9.0.1736 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/839
+- chore(deps): update dependency aws/aws-cli to v2.13.11 by @renovate in https://github.com/swfz/dotfiles/pull/835
+- chore(deps): update dependency docker/compose to v2.20.3 by @renovate in https://github.com/swfz/dotfiles/pull/831
+- versionup/vim-to-9.0.1787 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/844
+- chore(deps): update actions/checkout action to v3.6.0 by @renovate in https://github.com/swfz/dotfiles/pull/843
+- chore(deps): update dependency git/git to v2.42.0 by @renovate in https://github.com/swfz/dotfiles/pull/841
+- chore(deps): update dependency aws/aws-cli to v2.13.13 by @renovate in https://github.com/swfz/dotfiles/pull/842
+- chore(deps): update dependency docker/compose to v2.21.0 by @renovate in https://github.com/swfz/dotfiles/pull/846
+- chore(deps): update dependency aws/aws-cli to v2.13.14 by @renovate in https://github.com/swfz/dotfiles/pull/845
+- chore(deps): update actions/checkout action to v4 by @renovate in https://github.com/swfz/dotfiles/pull/850
+- add alias by @swfz in https://github.com/swfz/dotfiles/pull/853
+- chore(deps): update dependency aws/aws-cli to v2.13.16 by @renovate in https://github.com/swfz/dotfiles/pull/847
+- chore(deps): update dependency aws/aws-cli to v2.13.17 by @renovate in https://github.com/swfz/dotfiles/pull/856
+- chore(deps): update dependency reviewdog/reviewdog to v0.15.0 by @renovate in https://github.com/swfz/dotfiles/pull/854
+- versionup/vim-to-9.0.1885 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/858
+- chore(deps): update tibdex/github-app-token action to v1.9 by @renovate in https://github.com/swfz/dotfiles/pull/857
+- versionup/vim-to-9.0.1888 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/859
+- chore(deps): update dependency aws/aws-cli to v2.13.19 by @renovate in https://github.com/swfz/dotfiles/pull/861
+- fix ansible-lint version 6.19.0 by @swfz in https://github.com/swfz/dotfiles/pull/872
+- chore(deps): update dependency aws/aws-cli to v2.13.22 by @renovate in https://github.com/swfz/dotfiles/pull/866
+- chore(deps): update dependency docker/compose to v2.22.0 by @renovate in https://github.com/swfz/dotfiles/pull/867
+- chore(deps): update dependency rhysd/actionlint to v1.6.26 by @renovate in https://github.com/swfz/dotfiles/pull/864
+- versionup/vim-to-9.0.1946 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/873
+- chore(deps): update actions/checkout action to v4.1.0 by @renovate in https://github.com/swfz/dotfiles/pull/869
+- chore(deps): update dependency aws/aws-cli to v2.13.23 by @renovate in https://github.com/swfz/dotfiles/pull/875
+- versionup/vim-to-9.0.1959 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/874
+- remove unused role by @swfz in https://github.com/swfz/dotfiles/pull/877
+- remove centos by @swfz in https://github.com/swfz/dotfiles/pull/879
+- versionup/vim-to-9.0.1984 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/878
+- chore(deps): update dependency aws/aws-cli to v2.13.24 by @renovate in https://github.com/swfz/dotfiles/pull/876
+- remove unused role by @swfz in https://github.com/swfz/dotfiles/pull/881
+- chore(deps): update dependency aws/aws-cli to v2.13.25 by @renovate in https://github.com/swfz/dotfiles/pull/882
+- versionup/vim-to-9.0.1999 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/883
+
 ## [v1.0.4](https://github.com/swfz/dotfiles/compare/v1.0.3...v1.0.4) - 2023-02-04
 - versionup/vim-to-9.0.1224 by @swfz-dotfiles-ci in https://github.com/swfz/dotfiles/pull/706
 - chore(deps): update dependency rhysd/actionlint to v1.6.23 by @renovate in https://github.com/swfz/dotfiles/pull/704
