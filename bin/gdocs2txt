@@ -1,0 +1,51 @@
+#!/bin/bash
+set -euo pipefail
+
+_usage() {
+cat << EOS
+usage:
+  gdocs2txt <document_id_or_url>
+
+  Export a Google Document as plain text using application-default credentials.
+
+arguments:
+  document_id_or_url : Document ID or full URL
+
+examples:
+  gdocs2txt 1AbCdEfGhIjKlMnOpQrStUvWxYz
+  gdocs2txt "https://docs.google.com/document/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/edit"
+EOS
+  exit 1
+}
+
+_parse_input() {
+  local input="$1"
+
+  if [[ "$input" == https://docs.google.com/document/* ]]; then
+    DOCUMENT_ID=$(echo "$input" | sed -n 's|.*/d/\([^/]*\).*|\1|p')
+  else
+    DOCUMENT_ID="$input"
+  fi
+
+  if [ -z "$DOCUMENT_ID" ]; then
+    echo "Error: could not extract document ID" >&2
+    exit 1
+  fi
+}
+
+main() {
+  if [ $# -lt 1 ]; then
+    _usage
+  fi
+
+  _parse_input "$1"
+
+  local token
+  token="$(gcloud auth application-default print-access-token)"
+
+  curl -sL \
+    -H "Authorization: Bearer ${token}" \
+    "https://docs.google.com/document/d/${DOCUMENT_ID}/export?format=txt"
+}
+
+main "$@"
