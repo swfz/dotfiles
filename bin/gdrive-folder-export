@@ -1,0 +1,205 @@
+#!/bin/bash
+set -euo pipefail
+
+_usage() {
+cat << EOS
+usage:
+  gdrive-folder-export <folder_id_or_url> [output_dir]
+
+  Download HTML files and export Google Docs (as .txt) from a Google Drive
+  folder using application-default credentials.
+
+arguments:
+  folder_id_or_url : Folder ID or full URL
+  output_dir       : Output directory (default: current directory)
+
+options:
+  -r               : Recurse into subfolders
+
+examples:
+  gdrive-folder-export 1AbCdEfGhIjKlMnOpQrStUvWxYz
+  gdrive-folder-export 1AbCdEfGhIjKlMnOpQrStUvWxYz ./output
+  gdrive-folder-export -r "https://drive.google.com/drive/folders/1AbCdEfGhIjKlMnOpQrStUvWxYz"
+EOS
+  exit 1
+}
+
+_parse_folder_input() {
+  local input="$1"
+
+  if [[ "$input" == https://drive.google.com/* ]]; then
+    FOLDER_ID=$(echo "$input" | sed -n 's|.*/folders/\([^/?]*\).*|\1|p')
+  else
+    FOLDER_ID="$input"
+  fi
+
+  if [ -z "$FOLDER_ID" ]; then
+    echo "Error: could not extract folder ID" >&2
+    exit 1
+  fi
+}
+
+_sanitize_filename() {
+  echo "$1" | sed 's|[/\\:*?"<>|]|_|g'
+}
+
+_list_files() {
+  local folder_id="$1"
+  local token="$2"
+  local query="'${folder_id}' in parents and trashed=false"
+  local result=""
+  local page_token=""
+
+  while :; do
+    local response
+    local curl_args=(
+      -sL -G
+      -H "Authorization: Bearer ${token}"
+      -H "x-goog-user-project: ${PROJECT}"
+      --data-urlencode "q=${query}"
+      --data-urlencode "fields=files(id,name,mimeType),nextPageToken"
+      --data-urlencode "pageSize=1000"
+      --data-urlencode "includeItemsFromAllDrives=true"
+      --data-urlencode "supportsAllDrives=true"
+    )
+    if [ -n "$page_token" ]; then
+      curl_args+=(--data-urlencode "pageToken=${page_token}")
+    fi
+
+    response=$(curl "${curl_args[@]}" "https://www.googleapis.com/drive/v3/files")
+
+    if echo "$response" | jq -e '.error' >/dev/null 2>&1; then
+      echo "API Error: $(echo "$response" | jq -r '.error.message')" >&2
+      return 1
+    fi
+
+    local files_chunk
+    files_chunk=$(echo "$response" | jq -c '.files[]?' 2>/dev/null)
+    if [ -n "$files_chunk" ]; then
+      if [ -n "$result" ]; then
+        result="${result}"$'\n'"${files_chunk}"
+      else
+        result="${files_chunk}"
+      fi
+    fi
+
+    page_token=$(echo "$response" | jq -r '.nextPageToken // empty' 2>/dev/null)
+    if [ -z "$page_token" ]; then
+      break
+    fi
+  done
+
+  echo "$result"
+}
+
+_export_google_doc() {
+  local file_id="$1"
+  local file_name="$2"
+  local output_dir="$3"
+  local token="$4"
+
+  local safe_name
+  safe_name=$(_sanitize_filename "$file_name")
+  local output_path="${output_dir}/${safe_name}.txt"
+
+  echo "  [doc] ${file_name} -> ${output_path}" >&2
+  curl -sL \
+    -H "Authorization: Bearer ${token}" \
+    -H "x-goog-user-project: ${PROJECT}" \
+    "https://www.googleapis.com/drive/v3/files/${file_id}/export?mimeType=text/plain" \
+    -o "$output_path"
+}
+
+_download_file() {
+  local file_id="$1"
+  local file_name="$2"
+  local output_dir="$3"
+  local token="$4"
+
+  local safe_name
+  safe_name=$(_sanitize_filename "$file_name")
+  local output_path="${output_dir}/${safe_name}"
+
+  echo "  [html] ${file_name} -> ${output_path}" >&2
+  curl -sL \
+    -H "Authorization: Bearer ${token}" \
+    -H "x-goog-user-project: ${PROJECT}" \
+    "https://www.googleapis.com/drive/v3/files/${file_id}?alt=media" \
+    -o "$output_path"
+}
+
+_process_folder() {
+  local folder_id="$1"
+  local output_dir="$2"
+  local token="$3"
+  local recurse="$4"
+
+  mkdir -p "$output_dir"
+
+  local files
+  files=$(_list_files "$folder_id" "$token")
+
+  if [ -z "$files" ]; then
+    echo "  (no files found)" >&2
+    return
+  fi
+
+  echo "$files" | while IFS= read -r file; do
+    [ -z "$file" ] && continue
+
+    local mime name id
+    mime=$(echo "$file" | jq -r '.mimeType')
+    name=$(echo "$file" | jq -r '.name')
+    id=$(echo "$file" | jq -r '.id')
+
+    case "$mime" in
+      application/vnd.google-apps.document)
+        _export_google_doc "$id" "$name" "$output_dir" "$token"
+        ;;
+      text/html)
+        _download_file "$id" "$name" "$output_dir" "$token"
+        ;;
+      application/vnd.google-apps.folder)
+        if [ "$recurse" = "true" ]; then
+          local sub_dir="${output_dir}/$(_sanitize_filename "$name")"
+          echo "=> ${name}/" >&2
+          _process_folder "$id" "$sub_dir" "$token" "$recurse"
+        fi
+        ;;
+    esac
+  done
+}
+
+main() {
+  local recurse="false"
+
+  while getopts "r" opt; do
+    case "$opt" in
+      r) recurse="true" ;;
+      *) _usage ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  if [ $# -lt 1 ]; then
+    _usage
+  fi
+
+  _parse_folder_input "$1"
+  local output_dir="${2:-.}"
+
+  local token
+  token="$(gcloud auth application-default print-access-token)"
+  PROJECT="$(gcloud config get-value project 2>/dev/null)"
+
+  echo "Folder: ${FOLDER_ID}" >&2
+  echo "Output: ${output_dir}" >&2
+  echo "" >&2
+
+  _process_folder "$FOLDER_ID" "$output_dir" "$token" "$recurse"
+
+  echo "" >&2
+  echo "Done." >&2
+}
+
+main "$@"
