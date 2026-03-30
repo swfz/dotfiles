@@ -22,7 +22,7 @@ use custom configuration to `~/.localrc`
 ### setup
 
 ```
-git config core.hooksPath hooks
+ln -sf "$(pwd)/hooks/post-merge" .git/hooks/post-merge
 ```
 
 ### usage
