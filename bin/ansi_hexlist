@@ -43,12 +43,16 @@ show_hex_color() {
 # 値リストからグリッド描画する共通関数
 # 引数: r_values[] g_values[] b_values[] center_hex(optional)
 render_grid() {
-  local -n _r_vals=$1
-  local -n _g_vals=$2
-  local -n _b_vals=$3
+  local _r_name=$1
+  local _g_name=$2
+  local _b_name=$3
   local center_hex="${4:-}"
   local term_width
   term_width=$(tput cols 2>/dev/null || echo 120)
+
+  eval "local _r_vals=(\"\${${_r_name}[@]}\")"
+  eval "local _g_vals=(\"\${${_g_name}[@]}\")"
+  eval "local _b_vals=(\"\${${_b_name}[@]}\")"
 
   local nr=${#_r_vals[@]}
   local ng=${#_g_vals[@]}
@@ -119,7 +123,7 @@ show_grid() {
     values+=("$v")
     v=$((v + step))
   done
-  if [ "${values[-1]}" -ne 255 ]; then
+  if [ "${values[${#values[@]}-1]}" -ne 255 ]; then
     values+=(255)
   fi
 
@@ -143,22 +147,22 @@ show_neighborhood() {
   local cb=$((16#${hex:4:2}))
 
   make_range() {
-    local center=$1 step=$2 width=$3 name=$4
-    local -n _out=$name
-    _out=()
+    local center=$1 step=$2 width=$3
+    local _out=()
     for ((i=-width; i<=width; i++)); do
       local val=$(clamp $((center + i * step)))
       # 重複除去
-      if [ ${#_out[@]} -eq 0 ] || [ "${_out[-1]}" -ne "$val" ]; then
+      local last_idx=$((${#_out[@]} - 1))
+      if [ ${#_out[@]} -eq 0 ] || [ "${_out[$last_idx]}" -ne "$val" ]; then
         _out+=("$val")
       fi
     done
+    echo "${_out[@]}"
   }
 
-  local r_range=() g_range=() b_range=()
-  make_range "$cr" "$step" "$width" r_range
-  make_range "$cg" "$step" "$width" g_range
-  make_range "$cb" "$step" "$width" b_range
+  local r_range=( $(make_range "$cr" "$step" "$width") )
+  local g_range=( $(make_range "$cg" "$step" "$width") )
+  local b_range=( $(make_range "$cb" "$step" "$width") )
 
   echo "=== Neighborhood of #${hex} (step=${step}, width=+-${width}) ==="
   echo "  R: ${r_range[*]}  (center=${cr})"
