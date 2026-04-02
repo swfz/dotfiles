@@ -10,7 +10,7 @@
 emoji="$1"
 notify_title="$2"
 border_color="$3"
-bg_color="${4:-#393d45}"
+bg_color="${4:-#060a23}"
 
 printf '\a' > /dev/tty
 echo "$(jq -r '.message')" | notify "$notify_title"
