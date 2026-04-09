@@ -165,37 +165,59 @@ function peco-claude-plan () {
 zle -N peco-claude-plan
 bindkey '^gcp' peco-claude-plan
 
-# claude sessionファイルを最初のメッセージで選択してパスを出力
+# claude sessionファイルをプロジェクト名+タイトルで選択してパスを出力
 function peco-claude-session () {
-  local project_dir="$HOME/.claude/projects/$(pwd | sed 's|/|-|g')"
-  [[ -d "$project_dir" ]] || return
+  local projects_dir="$HOME/.claude/projects"
+  [[ -d "$projects_dir" ]] || return
   local selected="$(python3 -c "
-import json,os,glob
-project_dir='$project_dir'
-results=[]
-for f in sorted(glob.glob(os.path.join(project_dir,'*.jsonl'))):
+import json,os,glob,datetime,re
+projects_dir='$projects_dir'
+summary_map={}
+for idx in glob.glob(os.path.join(projects_dir,'*/sessions-index.json')):
     try:
-        with open(f) as fh:
-            for line in fh:
-                msg=json.loads(line)
-                if msg.get('type')=='user':
-                    c=msg.get('message',{}).get('content','')
-                    t=c if isinstance(c,str) else next((x.get('text','') for x in c if x.get('type')=='text'),'')
-                    t=t.replace('\n',' ').replace('\t',' ').strip()
-                    import re
-                    t=re.sub(r'<[^>]+>[^<]*</[^>]+>','',t).strip()[:80]
-                    if not t or t.startswith('<'):continue
-                    if True:
-                        import datetime
-                        mtime=os.path.getmtime(f)
-                        date=datetime.datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
-                        results.append((date,t,f))
-                    break
+        with open(idx) as f:
+            data=json.load(f)
+        for e in data.get('entries',[]):
+            sid=e.get('sessionId','')
+            s=e.get('summary','')
+            if sid and s:summary_map[sid]=s
     except:pass
+results=[]
+for proj_dir in glob.glob(os.path.join(projects_dir,'*/')):
+    dirname=os.path.basename(proj_dir.rstrip('/'))
+    if dirname=='memory':continue
+    proj_name=None
+    for f in sorted(glob.glob(os.path.join(proj_dir,'*.jsonl'))):
+        sid=os.path.splitext(os.path.basename(f))[0]
+        mtime=os.path.getmtime(f)
+        date=datetime.datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+        title=summary_map.get(sid,'')
+        try:
+            with open(f) as fh:
+                for line in fh:
+                    msg=json.loads(line)
+                    if not proj_name and 'cwd' in msg:
+                        proj_name=os.path.basename(msg['cwd'])
+                    if not title and msg.get('type')=='user':
+                        c=msg.get('message',{}).get('content','')
+                        t=c if isinstance(c,str) else next((x.get('text','') for x in c if x.get('type')=='text'),'')
+                        t=t.replace('\n',' ').replace('\t',' ').strip()
+                        t=re.sub(r'<[^>]+>[^<]*</[^>]+>','',t).strip()[:80]
+                        if t and not t.startswith('<'):title=t
+                    if proj_name and title:break
+            with open(f) as fh2:
+                for tl in fh2:
+                    if '"custom-title"' in tl:
+                        tm=json.loads(tl)
+                        if tm.get('type')=='custom-title':title=tm.get('customTitle','')
+        except:pass
+        if not title:title='(no title)'
+        pn=proj_name or dirname
+        results.append((date,pn,title,f))
 results.sort(key=lambda x:x[0],reverse=True)
-for d,t,f in results:
-    print(f'{d}\t{t}\t{f}')
-" 2>/dev/null | fzf-popup --delimiter='\t' --with-nth=1,2 | awk -F'\t' '{print $3}')"
+for d,p,t,f in results:
+    print(f'{d}\t[{p}] {t}\t{f}')
+" 2>/dev/null | fzf-popup --delimiter='\t' --with-nth=1,2 --preview 'claude-session-preview {3}' --preview-window right,50% --bind 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up' | awk -F'\t' '{print $3}')"
   peco-p ${selected}
 }
 zle -N peco-claude-session
