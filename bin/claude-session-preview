@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+"""Claude Code セッションJSONLをプレビュー用に整形表示する"""
+import json, sys, re, os, datetime
+
+f = sys.argv[1]
+branch = ""
+first_ts = last_ts = ""
+user_count = 0
+
+with open(f) as fh:
+    for line in fh:
+        try:
+            m = json.loads(line)
+        except Exception:
+            continue
+
+        t = m.get("type", "")
+        ts = m.get("timestamp", "")[:10] if m.get("timestamp") else ""
+        if ts and not first_ts:
+            first_ts = ts
+        if ts:
+            last_ts = ts
+        if not branch:
+            branch = m.get("gitBranch", "")
+
+        if t == "user":
+            c = m.get("message", {}).get("content", "")
+            text = c if isinstance(c, str) else next(
+                (b.get("text", "") for b in c if b.get("type") == "text"), ""
+            )
+            text = re.sub(r"<[^>]+>.*?</[^>]+>", "", text, flags=re.S).strip()
+            text = re.sub(r"<[^>]+>", "", text).strip()
+            if not text:
+                continue
+            user_count += 1
+            print(f"--- User ---")
+            print(text[:500])
+            print()
+
+        elif t == "assistant":
+            content = m.get("message", {}).get("content", [])
+            texts = []
+            tools = []
+            if isinstance(content, list):
+                for block in content:
+                    if block.get("type") == "text":
+                        txt = block.get("text", "").strip()
+                        if txt:
+                            texts.append(txt)
+                    elif block.get("type") == "tool_use":
+                        name = block.get("name", "")
+                        inp = block.get("input", {})
+                        detail = ""
+                        if name in ("Read", "Write", "Edit") and inp.get("file_path"):
+                            detail = f" {os.path.basename(inp['file_path'])}"
+                        elif name == "Bash" and inp.get("command"):
+                            detail = f" {inp['command'][:60]}"
+                        elif name == "Grep" and inp.get("pattern"):
+                            detail = f" {inp['pattern'][:40]}"
+                        tools.append(f"{name}{detail}")
+            elif isinstance(content, str) and content.strip():
+                texts.append(content.strip())
+
+            if texts:
+                combined = "\n".join(texts)
+                print(f"--- Assistant ---")
+                print(combined[:500])
+                print()
+            if tools:
+                print(f"  [{', '.join(tools[:5])}]")
+                print()
+
+print(f"---")
+print(f"Branch: {branch}  Period: {first_ts} ~ {last_ts}  User messages: {user_count}")
