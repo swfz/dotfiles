@@ -1,0 +1,60 @@
+#!/bin/bash
+set -euo pipefail
+
+_usage() {
+cat << EOS
+usage:
+  gsheet2csv <spreadsheet_id_or_url> [gid]
+
+  Export a Google Spreadsheet sheet as CSV using application-default credentials.
+
+arguments:
+  spreadsheet_id_or_url : Spreadsheet ID or full URL
+  gid                   : Sheet GID (default: 0, overridden by gid in URL)
+
+examples:
+  gsheet2csv 1MkYYhyjGb0uVXmeQGOBMnhy1i4qCrcHuVmT8pSEQAKM
+  gsheet2csv 1MkYYhyjGb0uVXmeQGOBMnhy1i4qCrcHuVmT8pSEQAKM 123456
+  gsheet2csv "https://docs.google.com/spreadsheets/d/1MkYY.../edit#gid=0"
+EOS
+  exit 1
+}
+
+_parse_input() {
+  local input="$1"
+  local default_gid="${2:-0}"
+
+  if [[ "$input" == https://docs.google.com/spreadsheets/* ]]; then
+    SPREADSHEET_ID=$(echo "$input" | sed -n 's|.*/d/\([^/]*\).*|\1|p')
+    if [[ "$input" == *"gid="* ]]; then
+      GID=$(echo "$input" | sed -n 's|.*gid=\([0-9]*\).*|\1|p')
+    else
+      GID="$default_gid"
+    fi
+  else
+    SPREADSHEET_ID="$input"
+    GID="$default_gid"
+  fi
+
+  if [ -z "$SPREADSHEET_ID" ]; then
+    echo "Error: could not extract spreadsheet ID" >&2
+    exit 1
+  fi
+}
+
+main() {
+  if [ $# -lt 1 ]; then
+    _usage
+  fi
+
+  _parse_input "$1" "${2:-0}"
+
+  local token
+  token="$(gcloud auth application-default print-access-token)"
+
+  curl -sL \
+    -H "Authorization: Bearer ${token}" \
+    "https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${GID}"
+}
+
+main "$@"

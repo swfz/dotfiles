@@ -165,11 +165,11 @@ function peco-claude-plan () {
 zle -N peco-claude-plan
 bindkey '^gcp' peco-claude-plan
 
-# claude sessionファイルをプロジェクト名+タイトルで選択してパスを出力
-function peco-claude-session () {
+# claude session共通選択ヘルパー(タブ区切り行を返す)
+function _peco-claude-session-select() {
   local projects_dir="$HOME/.claude/projects"
   [[ -d "$projects_dir" ]] || return
-  local selected="$(python3 -c "
+  python3 -c "
 import json,os,glob,datetime,re
 projects_dir='$projects_dir'
 summary_map={}
@@ -217,11 +217,33 @@ for proj_dir in glob.glob(os.path.join(projects_dir,'*/')):
 results.sort(key=lambda x:x[0],reverse=True)
 for d,p,t,f in results:
     print(f'{d}\t[{p}] {t}\t{f}')
-" 2>/dev/null | fzf-popup --delimiter='\t' --with-nth=1,2 --preview 'claude-session-preview {3}' --preview-window right,50% --bind 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up' | awk -F'\t' '{print $3}')"
+" 2>/dev/null | fzf-popup --delimiter='\t' --with-nth=1,2 --preview 'claude-session-preview {3}' --preview-window right,50%,follow --bind 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up'
+}
+
+# claude sessionファイルをプロジェクト名+タイトルで選択してパスを出力
+function peco-claude-session () {
+  local selected="$(_peco-claude-session-select | awk -F'\t' '{print $3}')"
   peco-p ${selected}
 }
 zle -N peco-claude-session
 bindkey '^gcs' peco-claude-session
+
+# claude sessionファイルパスを選択
+function peco-claude-session-file () {
+  local selected="$(_peco-claude-session-select | awk -F'\t' '{print $3}')"
+  peco-p ${selected}
+}
+zle -N peco-claude-session-file
+bindkey '^gcf' peco-claude-session-file
+
+# claude session IDを選択
+function peco-claude-session-id () {
+  local selected="$(_peco-claude-session-select | awk -F'\t' '{print $3}')"
+  [[ -n "$selected" ]] && selected="$(basename "$selected" .jsonl)"
+  peco-p ${selected}
+}
+zle -N peco-claude-session-id
+bindkey '^gci' peco-claude-session-id
 
 # rfv
 # 1. Search for text in files using Ripgrep
