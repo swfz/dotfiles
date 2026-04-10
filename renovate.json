@@ -1,9 +1,12 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "regexManagers": [
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
+  "osvVulnerabilityAlerts": true,
+  "customManagers": [
     {
+      "customType": "regex",
       "fileMatch": ["ansible/versions_vars.yml"],
       "matchStrings": [
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\n.*?_version: (?<currentValue>.*)\n"
