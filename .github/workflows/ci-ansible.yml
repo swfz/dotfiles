@@ -33,7 +33,7 @@ jobs:
     outputs:
       list: ${{ steps.set-mise-tools.outputs.list }}
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: set json
         id: set-mise-tools
         run: |
@@ -49,7 +49,7 @@ jobs:
     outputs:
       tags: ${{ steps.set-matrix.outputs.result }}
     steps:
-      - uses: actions/github-script@v8.0.0
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         id: set-matrix
         env:
           TOOLS_CHUNKS: ${{ vars.TOOLS_CHUNKS }}
@@ -77,9 +77,9 @@ jobs:
       matrix:
         row: ${{fromJson(needs.set-tags-matrix.outputs.tags)}}
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - if: github.event.client_payload
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -99,9 +99,9 @@ jobs:
     runs-on: macos-latest
     name: 'playbook mac'
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - if: github.event.client_payload
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: install ansible
@@ -134,14 +134,14 @@ jobs:
     runs-on: ubuntu-latest
     name: 'lint'
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - run: cat $GITHUB_EVENT_PATH
       - if: github.event.client_payload
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: Install uv
-        uses: astral-sh/setup-uv@v8.0.0
+        uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
         with:
           python-version: 3.12
       - name: install ansible-lint yamllint
@@ -168,7 +168,7 @@ jobs:
     # needs: [lint, build-mac, build-ubuntu, build-codespace]
     needs: [lint, build-mac, build-ubuntu]
     steps:
-      - uses: Kesin11/actions-timeline@v3.0.0
+      - uses: Kesin11/actions-timeline@e018cfefea60b4f44266998551211a35a58b8097 # v3.0.0
 
   slack-notify:
     if: always()
@@ -177,7 +177,7 @@ jobs:
     name: post slack
     runs-on: ubuntu-latest
     steps:
-      - uses: swfz/slack-workflow-status@v1.4.0
+      - uses: swfz/slack-workflow-status@e6d0c984ad7d32737692508f1a4e4390f16e8fdd # v1.4.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
