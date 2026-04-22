@@ -48,6 +48,7 @@ postinstall = "mise-completions-sync --shell zsh"
 
 [settings]
 experimental = true
+install_before = "7d"
 
 [env]
 GOOGLE_APPLICATION_CREDENTIALS="{{env.HOME}}/.config/gcloud/private_adc.json"
