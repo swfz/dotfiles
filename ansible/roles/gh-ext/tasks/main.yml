@@ -7,4 +7,6 @@
     - swfz/gh-annotations
     - github/gh-copilot
     - kawarimidoll/gh-graph
+    - swfz/gh-deps
+    - babarot/gh-infra
   changed_when: true
