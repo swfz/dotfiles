@@ -1,0 +1,78 @@
+#!/bin/bash
+set -euo pipefail
+
+# Fetch all open PRs for a GitHub user's repositories and display grouped by repository.
+#
+# Usage: gh-open-prs <subcommand> [username]
+#   subcommand: summary | json
+#   username:   GitHub username (default: swfz)
+
+usage() {
+  echo "Usage: gh-open-prs <summary|json> [username]"
+  echo ""
+  echo "Subcommands:"
+  echo "  summary  Show repo breakdown sorted by PR count"
+  echo "  json     Full JSON output grouped by repository"
+  exit 1
+}
+
+readonly subcommand="${1:-}"
+readonly username="${2:-swfz}"
+readonly per_page=100
+
+if [ -z "$subcommand" ] || [[ "$subcommand" != "summary" && "$subcommand" != "json" ]]; then
+  usage
+fi
+
+# Fetch all pages using gh api --paginate
+all_prs=$(gh api --paginate "search/issues?q=is:open+is:pr+user:${username}+archived:false&per_page=${per_page}" --jq '.items[] | {
+  repo: .repository_url,
+  number: .number,
+  title: .title,
+  user: .user.login,
+  created_at: (.created_at | split("T")[0]),
+  updated_at: (.updated_at | split("T")[0]),
+  html_url: .html_url
+}' 2>&1)
+
+if [ -z "$all_prs" ]; then
+  echo "No open PRs found for user: ${username}"
+  exit 0
+fi
+
+# Build grouped data
+grouped=$(echo "$all_prs" | jq -s '
+  map(. + { repo_name: (.repo | split("/") | .[-2:] | join("/")) })
+  | group_by(.repo_name)
+  | map({
+      repo: .[0].repo_name,
+      count: length,
+      prs: (sort_by(.created_at) | reverse | map({
+        number,
+        title,
+        user: .user,
+        created_at,
+        updated_at,
+        url: .html_url
+      }))
+    })
+  | sort_by(-.count)
+')
+
+case "$subcommand" in
+  summary)
+    echo "$grouped" | jq -r '
+      (map(.count) | add) as $total |
+      "Total: \($total) PRs across \(length) repositories\n" +
+      "---\n" +
+      (map("  \(.repo)\t\(.count)") | join("\n"))
+    ' | column -t -s $'\t'
+    ;;
+  json)
+    echo "$grouped" | jq '{
+      total: (map(.count) | add),
+      repo_count: length,
+      repositories: .
+    }'
+    ;;
+esac
