@@ -1,104 +1,126 @@
 # bin
 
-Command Line Tool
-
-## file2slack
-
-- usage
-
-```
-usage:
-  file2slack
-
-  environment SLACK_WEB_API_TOKEN is required.
-  prease set SLACK_WEB_API_TOKEN
-
-  export SLACK_WEB_API_TOKEN=*****
-
-options)
-  -f : filename (if this option is not exist, to post the stdin.)
-  -c : post channel
-  -t : file title
-```
-
-- specified target file 
-
-```
-file2slack -f hoge.png -c channnel_a -t imagefile
-```
-
-- from stdin
-
-```
-cat hoge.json | jq '.fuga' | sort | uniq -c | file2slack -c channel_b -t summary
-```
+A collection of command-line utilities.
 
 ## ansi_colorlist
+Prints a list of ANSI escape sequences for colors.
 
-echo colorlist
+## ansi_hexlist
+Visualizes hex colors in a terminal grid or around a specific color.
 
-## server
+## as_ips
+Retrievies the private IP addresses of running EC2 instances in an Auto Scaling Group.
 
-run static server in current directory
+## check_version.sh
+Checks if a command is installed and its version matches a specified value.
 
-- usage
+## claude-hook-notify
+Claude Code hook to send notifications and update tmux window appearance.
 
-```
-Usage: simpleserver [command] [port]
+## claude-session-preview
+Previews and formats Claude Code session JSONL files.
 
-  simple server
+## ccsync.sh
+Manages Claude Code assets (skills, etc.) by adding/linking/listing/removing them in dotfiles.
 
-Options:
-  command(required),  [start|stop|restart]
-  port,               server port.
-```
+## color
+Prints colors in terminal using hex codes (e.g., `#RRGGBB`).
 
-## wcmd
+## dr
+Runs Dataform jobs (run/view) with JSON/CSV output.
 
-execute command when file changed
+## file2slack
+Posts files or stdin to Slack.
 
-- example 
+## fzf-toggle-exact
+Toggles between fuzzy and exact matching in `fzf`.
 
-```
-wcmd bundle exec rspec
-```
+## gdocs2txt
+Converts Google Docs to text.
 
-## watch-server
+## gdrive-folder-export
+Downloads HTML/Docs from Google Drive as files.
 
-## mbsplit
+## gsheet2csv
+Exports a Google Spreadsheet as CSV.
 
-split by bytesize with multibyte character
+## glue-config-diff
+Compares AWS Lambda function configurations using `diff-sofancy`.
 
-Check whether the specified number of bytes per line is exceeded
+## glue-diff
+Compares Lambda function code (unzipped) using `diff-sofancy`.
 
-- example 
-
-```
-mbsplit dir1 dir2 filename 5000
-```
+## gh-open-prs
+Fetch and display open PRs for a GitHub user, grouped by repo.
 
 ## jq2esc
+`jq` with transform escaped sequence.
 
-jq with transform escaped sequence
+## lambda-config-diff
+Compares AWS Lambda function configurations using `diff-sofancy`.
 
-```
-cat hoge.json | jq2esc '.hoge'
-```
+## lambda-diff
+Compares Lambda function code (unzipped) using `diff-sofancy`.
 
-## glue-diff
+## mbsplit
+Split by bytesize with multibyte character.
 
-text diff between glue job
+## monitor-mtg.sh
+Monitors camera/mic usage and triggers a Switchbot device.
 
-```
-glue-diff awsProfile jobName1 jobName2
-```
+## nrun
+Wraps a command with desktop and tmux notifications based on exit code.
 
-## glue-diff
+## not_have_git_dir.sh
+Checks which directories in the current folder do not contain a `.git` directory.
 
-text diff between glue config
+## notify
+Send desktop notifications (macOS/WSL).
 
-```
-glue-config-diff awsProfile jobName1 jobName2
-```
+## runtimes
+Quickly runs `starship` modules for ruby, nodejs, python, and golang.
+
+## server
+Run static server in current directory.
+
+## setup-monitor-mtg.sh
+Sets up a systemd user service to monitor camera/mic usage.
+
+## switchbot.rb
+Controls a Switchbot device (on/off) using environment variables.
+
+## tms
+Saves the current tmux pane layout to a YAML config file.
+
+## tm
+App Applies a saved tmux pane layout from a YAML config file.
 
 ## traceback
+Traceback utility.
+
+## tmux-cpuused.sh
+Calculates current CPU usage percentage.
+
+## tmux-delayed-bg-reset
+Resets a tmux pane's window style to default after a delay.
+
+## tmux-git-root-name
+Returns the root directory name of the current git repository.
+
+## tmux-memused.sh
+Displays the amount of free memory in `GB`.
+
+## tmux-open-selection
+Opens URLs or files from the tmux buffer/selection in the default browser/editor.
+
+## tmux-window-name
+Generates tmux window names with emoji, directory names, and git branch info.
+
+## watch-server
+A simple web server for watching files.
+
+## watch_node_repl_history
+Monitors and displays the `.node_repl_history` file in the terminal with syntax highlighting.
+
+## wcmd
+Execute command when file changed.
