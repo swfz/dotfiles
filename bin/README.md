@@ -1,104 +1,126 @@
 # bin
 
-Command Line Tool
-
-## file2slack
-
-- usage
-
-```
-usage:
-  file2slack
-
-  environment SLACK_WEB_API_TOKEN is required.
-  prease set SLACK_WEB_API_TOKEN
-
-  export SLACK_WEB_API_TOKEN=*****
-
-options)
-  -f : filename (if this option is not exist, to post the stdin.)
-  -c : post channel
-  -t : file title
-```
-
-- specified target file 
-
-```
-file2slack -f hoge.png -c channnel_a -t imagefile
-```
-
-- from stdin
-
-```
-cat hoge.json | jq '.fuga' | sort | uniq -c | file2slack -c channel_b -t summary
-```
+コマンドラインユーティリティ集。
 
 ## ansi_colorlist
+ANSIエスケープシーケンスの色一覧を表示する。
 
-echo colorlist
+## ansi_hexlist
+ターミナル上でhexカラーをグリッド表示、または特定の色の周辺色を可視化する。
 
-## server
+## as_ips
+Auto Scaling Group内で稼働中のEC2インスタンスのプライベートIPアドレスを取得する。
 
-run static server in current directory
+## check_version.sh
+指定したコマンドがインストールされているか、またそのバージョンが指定値と一致するかをチェックする。
 
-- usage
+## claude-hook-notify
+Claude Codeのフックで、通知の送信とtmuxウィンドウの見た目を更新する。
 
-```
-Usage: simpleserver [command] [port]
+## claude-session-preview
+Claude CodeのセッションJSONLファイルをプレビュー・整形表示する。
 
-  simple server
+## ccsync.sh
+Claude Codeのアセット（skillsなど）をdotfilesに追加/リンク/一覧/削除して管理する。
 
-Options:
-  command(required),  [start|stop|restart]
-  port,               server port.
-```
+## color
+hexコード（例: `#RRGGBB`）でターミナルに色を表示する。
 
-## wcmd
+## dr
+Dataformジョブを実行し（run/view）、JSON/CSV形式で出力する。
 
-execute command when file changed
+## file2slack
+ファイルや標準入力をSlackに投稿する。
 
-- example 
+## fzf-toggle-exact
+`fzf`の曖昧マッチと完全一致マッチを切り替える。
 
-```
-wcmd bundle exec rspec
-```
+## gdocs2txt
+Googleドキュメントをテキストに変換する。
 
-## watch-server
+## gdrive-folder-export
+Googleドライブ上のHTML/Docsをファイルとしてダウンロードする。
 
-## mbsplit
+## gsheet2csv
+GoogleスプレッドシートをCSVとしてエクスポートする。
 
-split by bytesize with multibyte character
+## glue-config-diff
+AWS Lambda関数の設定を`diff-sofancy`で比較する。
 
-Check whether the specified number of bytes per line is exceeded
+## glue-diff
+Lambda関数のコード（解凍済み）を`diff-sofancy`で比較する。
 
-- example 
-
-```
-mbsplit dir1 dir2 filename 5000
-```
+## gh-open-prs
+指定したGitHubユーザーのオープンPRを取得し、リポジトリごとにまとめて表示する。
 
 ## jq2esc
+エスケープシーケンスを変換する`jq`。
 
-jq with transform escaped sequence
+## lambda-config-diff
+AWS Lambda関数の設定を`diff-sofancy`で比較する。
 
-```
-cat hoge.json | jq2esc '.hoge'
-```
+## lambda-diff
+Lambda関数のコード（解凍済み）を`diff-sofancy`で比較する。
 
-## glue-diff
+## mbsplit
+マルチバイト文字を考慮してバイトサイズで分割する。
 
-text diff between glue job
+## monitor-mtg.sh
+カメラ/マイクの利用を監視し、Switchbotデバイスをトリガーする。
 
-```
-glue-diff awsProfile jobName1 jobName2
-```
+## nrun
+コマンドの終了コードに応じて、デスクトップ通知とtmux通知を送るラッパー。
 
-## glue-diff
+## not_have_git_dir.sh
+カレントディレクトリ配下で`.git`ディレクトリを持たないディレクトリをチェックする。
 
-text diff between glue config
+## notify
+デスクトップ通知を送る（macOS/WSL対応）。
 
-```
-glue-config-diff awsProfile jobName1 jobName2
-```
+## runtimes
+ruby・nodejs・python・golangの`starship`モジュールを高速に実行する。
+
+## server
+カレントディレクトリで静的サーバーを起動する。
+
+## setup-monitor-mtg.sh
+カメラ/マイクの利用を監視するsystemdユーザーサービスをセットアップする。
+
+## switchbot.rb
+環境変数を使ってSwitchbotデバイスを制御する（on/off）。
+
+## tms
+現在のtmuxペインレイアウトをYAML設定ファイルに保存する。
+
+## tm
+保存済みのtmuxペインレイアウトをYAML設定ファイルから適用する。
 
 ## traceback
+トレースバックユーティリティ。
+
+## tmux-cpuused.sh
+現在のCPU使用率（％）を計算する。
+
+## tmux-delayed-bg-reset
+一定時間後にtmuxペインのウィンドウスタイルをデフォルトに戻す。
+
+## tmux-git-root-name
+現在のgitリポジトリのルートディレクトリ名を返す。
+
+## tmux-memused.sh
+空きメモリ量を`GB`単位で表示する。
+
+## tmux-open-selection
+tmuxバッファ/セレクション内のURLやファイルをデフォルトのブラウザ/エディタで開く。
+
+## tmux-window-name
+絵文字、ディレクトリ名、gitブランチ情報を含むtmuxウィンドウ名を生成する。
+
+## watch-server
+ファイル監視用のシンプルなWebサーバー。
+
+## watch_node_repl_history
+`.node_repl_history`ファイルをシンタックスハイライト付きでターミナルに監視表示する。
+
+## wcmd
+ファイル変更時にコマンドを実行する。
