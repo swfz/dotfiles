@@ -1,126 +1,126 @@
 # bin
 
-A collection of command-line utilities.
+コマンドラインユーティリティ集。
 
 ## ansi_colorlist
-Prints a list of ANSI escape sequences for colors.
+ANSIエスケープシーケンスの色一覧を表示する。
 
 ## ansi_hexlist
-Visualizes hex colors in a terminal grid or around a specific color.
+ターミナル上でhexカラーをグリッド表示、または特定の色の周辺色を可視化する。
 
 ## as_ips
-Retrievies the private IP addresses of running EC2 instances in an Auto Scaling Group.
+Auto Scaling Group内で稼働中のEC2インスタンスのプライベートIPアドレスを取得する。
 
 ## check_version.sh
-Checks if a command is installed and its version matches a specified value.
+指定したコマンドがインストールされているか、またそのバージョンが指定値と一致するかをチェックする。
 
 ## claude-hook-notify
-Claude Code hook to send notifications and update tmux window appearance.
+Claude Codeのフックで、通知の送信とtmuxウィンドウの見た目を更新する。
 
 ## claude-session-preview
-Previews and formats Claude Code session JSONL files.
+Claude CodeのセッションJSONLファイルをプレビュー・整形表示する。
 
 ## ccsync.sh
-Manages Claude Code assets (skills, etc.) by adding/linking/listing/removing them in dotfiles.
+Claude Codeのアセット（skillsなど）をdotfilesに追加/リンク/一覧/削除して管理する。
 
 ## color
-Prints colors in terminal using hex codes (e.g., `#RRGGBB`).
+hexコード（例: `#RRGGBB`）でターミナルに色を表示する。
 
 ## dr
-Runs Dataform jobs (run/view) with JSON/CSV output.
+Dataformジョブを実行し（run/view）、JSON/CSV形式で出力する。
 
 ## file2slack
-Posts files or stdin to Slack.
+ファイルや標準入力をSlackに投稿する。
 
 ## fzf-toggle-exact
-Toggles between fuzzy and exact matching in `fzf`.
+`fzf`の曖昧マッチと完全一致マッチを切り替える。
 
 ## gdocs2txt
-Converts Google Docs to text.
+Googleドキュメントをテキストに変換する。
 
 ## gdrive-folder-export
-Downloads HTML/Docs from Google Drive as files.
+Googleドライブ上のHTML/Docsをファイルとしてダウンロードする。
 
 ## gsheet2csv
-Exports a Google Spreadsheet as CSV.
+GoogleスプレッドシートをCSVとしてエクスポートする。
 
 ## glue-config-diff
-Compares AWS Lambda function configurations using `diff-sofancy`.
+AWS Lambda関数の設定を`diff-sofancy`で比較する。
 
 ## glue-diff
-Compares Lambda function code (unzipped) using `diff-sofancy`.
+Lambda関数のコード（解凍済み）を`diff-sofancy`で比較する。
 
 ## gh-open-prs
-Fetch and display open PRs for a GitHub user, grouped by repo.
+指定したGitHubユーザーのオープンPRを取得し、リポジトリごとにまとめて表示する。
 
 ## jq2esc
-`jq` with transform escaped sequence.
+エスケープシーケンスを変換する`jq`。
 
 ## lambda-config-diff
-Compares AWS Lambda function configurations using `diff-sofancy`.
+AWS Lambda関数の設定を`diff-sofancy`で比較する。
 
 ## lambda-diff
-Compares Lambda function code (unzipped) using `diff-sofancy`.
+Lambda関数のコード（解凍済み）を`diff-sofancy`で比較する。
 
 ## mbsplit
-Split by bytesize with multibyte character.
+マルチバイト文字を考慮してバイトサイズで分割する。
 
 ## monitor-mtg.sh
-Monitors camera/mic usage and triggers a Switchbot device.
+カメラ/マイクの利用を監視し、Switchbotデバイスをトリガーする。
 
 ## nrun
-Wraps a command with desktop and tmux notifications based on exit code.
+コマンドの終了コードに応じて、デスクトップ通知とtmux通知を送るラッパー。
 
 ## not_have_git_dir.sh
-Checks which directories in the current folder do not contain a `.git` directory.
+カレントディレクトリ配下で`.git`ディレクトリを持たないディレクトリをチェックする。
 
 ## notify
-Send desktop notifications (macOS/WSL).
+デスクトップ通知を送る（macOS/WSL対応）。
 
 ## runtimes
-Quickly runs `starship` modules for ruby, nodejs, python, and golang.
+ruby・nodejs・python・golangの`starship`モジュールを高速に実行する。
 
 ## server
-Run static server in current directory.
+カレントディレクトリで静的サーバーを起動する。
 
 ## setup-monitor-mtg.sh
-Sets up a systemd user service to monitor camera/mic usage.
+カメラ/マイクの利用を監視するsystemdユーザーサービスをセットアップする。
 
 ## switchbot.rb
-Controls a Switchbot device (on/off) using environment variables.
+環境変数を使ってSwitchbotデバイスを制御する（on/off）。
 
 ## tms
-Saves the current tmux pane layout to a YAML config file.
+現在のtmuxペインレイアウトをYAML設定ファイルに保存する。
 
 ## tm
-App Applies a saved tmux pane layout from a YAML config file.
+保存済みのtmuxペインレイアウトをYAML設定ファイルから適用する。
 
 ## traceback
-Traceback utility.
+トレースバックユーティリティ。
 
 ## tmux-cpuused.sh
-Calculates current CPU usage percentage.
+現在のCPU使用率（％）を計算する。
 
 ## tmux-delayed-bg-reset
-Resets a tmux pane's window style to default after a delay.
+一定時間後にtmuxペインのウィンドウスタイルをデフォルトに戻す。
 
 ## tmux-git-root-name
-Returns the root directory name of the current git repository.
+現在のgitリポジトリのルートディレクトリ名を返す。
 
 ## tmux-memused.sh
-Displays the amount of free memory in `GB`.
+空きメモリ量を`GB`単位で表示する。
 
 ## tmux-open-selection
-Opens URLs or files from the tmux buffer/selection in the default browser/editor.
+tmuxバッファ/セレクション内のURLやファイルをデフォルトのブラウザ/エディタで開く。
 
 ## tmux-window-name
-Generates tmux window names with emoji, directory names, and git branch info.
+絵文字、ディレクトリ名、gitブランチ情報を含むtmuxウィンドウ名を生成する。
 
 ## watch-server
-A simple web server for watching files.
+ファイル監視用のシンプルなWebサーバー。
 
 ## watch_node_repl_history
-Monitors and displays the `.node_repl_history` file in the terminal with syntax highlighting.
+`.node_repl_history`ファイルをシンタックスハイライト付きでターミナルに監視表示する。
 
 ## wcmd
-Execute command when file changed.
+ファイル変更時にコマンドを実行する。
