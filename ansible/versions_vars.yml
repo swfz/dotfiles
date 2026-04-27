@@ -1,7 +1,7 @@
 # datasource=github-releases depName=direnv/direnv
 direnv_version: v2.37.1
 # datasource=github-tags depName=git/git
-git_version: v2.53.0
+git_version: v2.54.0
 # dummy
 jo_version: "1.9"
 # dummy
