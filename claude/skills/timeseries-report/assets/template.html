@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #1f2328;
+  --muted: #57606a;
+  --border: #d0d7de;
+  --header-bg: #f6f8fa;
+  --hover: #ddf4ff;
+  --link: #0969da;
+  --danger: #cf222e;
+  --warn: #9a6700;
+  --ok: #1a7f37;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+header {
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+header h1 { margin: 0 0 4px; font-size: 20px; }
+header .meta { margin: 0; color: var(--muted); font-size: 13px; }
+header .left { flex: 1; min-width: 200px; }
+header .controls { display: flex; align-items: center; gap: 6px; }
+header .controls label { color: var(--muted); font-size: 12px; }
+header .controls select, header .controls input[type=date] {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 13px;
+  background: #fff;
+}
+.range-display { color: var(--muted); font-size: 12px; margin-left: 6px; }
+
+main { padding: 16px 24px 80px; max-width: 1400px; margin: 0 auto; }
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin: 16px 0 24px;
+}
+.summary .item {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.summary .item .label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.summary .item .value { font-size: 22px; font-weight: 600; margin-top: 2px; }
+.summary .item .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+details.section {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+details.section > summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  user-select: none;
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before {
+  content: '▶';
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform 0.15s;
+}
+details.section[open] > summary::before { transform: rotate(90deg); }
+details.section > summary .desc { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 8px; }
+details.section > summary .count { margin-left: auto; color: var(--muted); font-size: 12px; }
+details.section .body { padding: 0 14px 14px; }
+
+.table-wrap { overflow-x: auto; border-top: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  position: sticky;
+  top: 0;
+  background: var(--header-bg);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  padding: 6px 8px;
+  padding-right: 12px;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+}
+thead th:last-child { border-right: none; }
+thead th .label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+thead th .arrow { font-size: 10px; color: var(--muted); }
+thead th input.filter {
+  width: 100%;
+  max-width: 140px;
+  margin-top: 4px;
+  padding: 2px 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 12px;
+  background: #fff;
+}
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 7px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.resize-handle::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 60%;
+  background: var(--border);
+  border-radius: 1px;
+  transition: background 0.1s, width 0.1s, height 0.1s;
+}
+.resize-handle:hover::before,
+.resize-handle.dragging::before {
+  background: var(--link);
+  width: 3px;
+  height: 80%;
+}
+.resize-handle:hover { background: rgba(9,105,218,0.08); }
+.resize-handle.dragging { background: rgba(9,105,218,0.15); }
+body.col-resizing { cursor: col-resize !important; user-select: none; }
+
+tbody td { border-bottom: 1px solid #eee; padding: 5px 8px; vertical-align: top; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td a { color: var(--link); text-decoration: none; }
+td a:hover { text-decoration: underline; }
+.empty { padding: 20px; text-align: center; color: var(--muted); }
+
+.help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--muted);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: help;
+  position: relative;
+}
+.help:hover .tip { display: block; }
+.help .tip {
+  display: none;
+  position: fixed;
+  background: #24292f;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: pre-wrap;
+  width: max-content;
+  max-width: 320px;
+  z-index: 10000;
+  line-height: 1.4;
+  text-align: left;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+}
+
+.chart-wrap { padding: 12px 0 0; }
+.chart-wrap canvas { max-height: 280px; }
+#charts.multi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 14px;
+}
+#charts.multi details.section { margin-bottom: 0; }
+
+.tag-failure { color: var(--danger); font-weight: 600; }
+.tag-warning { color: var(--warn); font-weight: 600; }
+.tag-success { color: var(--ok); font-weight: 600; }
+.truncate { max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.truncate:hover { white-space: normal; word-break: break-word; }
+</style>
+</head>
+<body>
+<header>
+  <div class="left">
+    <h1>{{TITLE}}</h1>
+    <p class="meta">{{META}}</p>
+  </div>
+  <div class="controls">
+    <label for="preset">期間</label>
+    <select id="preset"></select>
+    <input type="date" id="from" title="開始日">
+    <input type="date" id="to" title="終了日">
+    <span class="range-display" id="range-display"></span>
+  </div>
+</header>
+<main>
+  <section id="summary"></section>
+  <section id="charts"></section>
+  <section id="tables"></section>
+</main>
+
+<script id="config" type="application/json">{{CONFIG_JSON}}</script>
+
+<script>
+'use strict';
+
+const config = JSON.parse(document.getElementById('config').textContent);
+const dateField = config.dateField || 'date';
+
+// 期間 state
+const allDates = [];
+const presets = config.presets || [
+  { label: '全期間', days: null },
+  { label: '直近1年', days: 365 },
+  { label: '直近6ヶ月', days: 180 },
+  { label: '直近3ヶ月', days: 90 },
+  { label: '直近1ヶ月', days: 30 },
+  { label: '直近1週間', days: 7 },
+];
+
+let dateRange = { from: null, to: null };  // null = 制限なし
+
+const tableState = {};
+const chartInstances = {};
+if (config.tables) {
+  config.tables.forEach(t => {
+    tableState[t.id] = { sortBy: null, columnFilters: {}, columnWidths: {} };
+  });
+}
+
+function escapeHtml(s) {
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function helpIcon(text) {
+  if (!text) return '';
+  return `<span class="help">?<span class="tip">${escapeHtml(text)}</span></span>`;
+}
+
+function parseDate(s) {
+  if (!s) return null;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function inRange(dateStr) {
+  if (!dateRange.from && !dateRange.to) return true;
+  const d = parseDate(dateStr);
+  if (!d) return true;
+  if (dateRange.from && d < dateRange.from) return false;
+  if (dateRange.to && d > dateRange.to) return false;
+  return true;
+}
+
+function buildDateBounds() {
+  const dates = [];
+  (config.charts || []).forEach(c => {
+    const isScatter = (c.type || 'line') === 'scatter';
+    const dateKey = c.dateKey || (isScatter ? dateField : (c.xField || 'x'));
+    (c.data || []).forEach(d => {
+      const dt = parseDate(d[dateKey]);
+      if (dt) dates.push(dt);
+    });
+  });
+  (config.tables || []).forEach(t => {
+    (t.rows || []).forEach(r => {
+      const dt = parseDate(r[dateField]);
+      if (dt) dates.push(dt);
+    });
+  });
+  if (dates.length === 0) return { min: null, max: null };
+  return {
+    min: new Date(Math.min(...dates.map(d => d.getTime()))),
+    max: new Date(Math.max(...dates.map(d => d.getTime()))),
+  };
+}
+
+const bounds = buildDateBounds();
+
+function fmtDate(d) {
+  if (!d) return '';
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+
+function applyPreset(days) {
+  if (days == null) {
+    dateRange = { from: null, to: null };
+  } else {
+    const to = bounds.max || new Date();
+    const from = new Date(to);
+    from.setDate(from.getDate() - days + 1);
+    dateRange = { from, to };
+  }
+  syncRangeInputs();
+  updateAll();
+}
+
+function syncRangeInputs() {
+  document.getElementById('from').value = dateRange.from ? fmtDate(dateRange.from) : '';
+  document.getElementById('to').value = dateRange.to ? fmtDate(dateRange.to) : '';
+  const disp = document.getElementById('range-display');
+  if (dateRange.from || dateRange.to) {
+    disp.textContent = `${dateRange.from ? fmtDate(dateRange.from) : '*'} 〜 ${dateRange.to ? fmtDate(dateRange.to) : '*'}`;
+  } else if (bounds.min && bounds.max) {
+    disp.textContent = `${fmtDate(bounds.min)} 〜 ${fmtDate(bounds.max)}`;
+  } else {
+    disp.textContent = '';
+  }
+}
+
+function setupRangeControls() {
+  const sel = document.getElementById('preset');
+  sel.innerHTML = presets.map((p, i) => `<option value="${i}">${escapeHtml(p.label)}</option>`).join('');
+  sel.addEventListener('change', e => {
+    const i = Number(e.target.value);
+    applyPreset(presets[i].days);
+  });
+  document.getElementById('from').addEventListener('change', e => {
+    dateRange.from = e.target.value ? parseDate(e.target.value) : null;
+    syncRangeInputs();
+    updateAll();
+  });
+  document.getElementById('to').addEventListener('change', e => {
+    dateRange.to = e.target.value ? parseDate(e.target.value) : null;
+    syncRangeInputs();
+    updateAll();
+  });
+  // 初期は全期間
+  syncRangeInputs();
+}
+
+// === Tables ===
+function applyFilters(table) {
+  const state = tableState[table.id];
+  let rows = (table.rows || []).filter(r => inRange(r[dateField]));
+  Object.entries(state.columnFilters).forEach(([field, q]) => {
+    if (!q) return;
+    const lq = q.toLowerCase();
+    rows = rows.filter(r => String(r[field] ?? '').toLowerCase().includes(lq));
+  });
+  if (state.sortBy) {
+    const { field, dir } = state.sortBy;
+    const col = table.columns.find(c => c.field === field);
+    rows.sort((a, b) => {
+      const av = a[field], bv = b[field];
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      let cmp;
+      if (col && col.type === 'number') cmp = Number(av) - Number(bv);
+      else cmp = String(av).localeCompare(String(bv), 'ja');
+      return dir === 'asc' ? cmp : -cmp;
+    });
+  }
+  return rows;
+}
+
+function renderCell(col, row) {
+  const v = row[col.field];
+  if (col.render === 'link') {
+    const href = row[col.linkField || 'url'];
+    if (!href) return escapeHtml(v ?? '');
+    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(v ?? href)}</a>`;
+  }
+  if (col.render === 'level') {
+    const lv = String(v || '').toLowerCase();
+    const cls = lv === 'failure' ? 'tag-failure' : lv === 'warning' ? 'tag-warning' : lv === 'success' ? 'tag-success' : '';
+    return `<span class="${cls}">${escapeHtml(v ?? '')}</span>`;
+  }
+  if (col.render === 'truncate') {
+    return `<span class="truncate" title="${escapeHtml(v ?? '')}">${escapeHtml(v ?? '')}</span>`;
+  }
+  return escapeHtml(v ?? '');
+}
+
+function renderTableHead(table) {
+  const state = tableState[table.id];
+  const ths = table.columns.map(col => {
+    const sortable = col.sortable !== false;
+    const filterable = col.filterable !== false;
+    let arrow = '';
+    if (state.sortBy && state.sortBy.field === col.field) {
+      arrow = `<span class="arrow">${state.sortBy.dir === 'asc' ? '▲' : '▼'}</span>`;
+    }
+    const labelHtml = `<span class="label" data-action="sort" data-field="${escapeHtml(col.field)}" ${sortable ? '' : 'style="cursor:default"'}>${escapeHtml(col.label)} ${helpIcon(col.help)}${sortable ? arrow : ''}</span>`;
+    const filterHtml = filterable
+      ? `<input class="filter" data-field="${escapeHtml(col.field)}" placeholder="filter…" value="${escapeHtml(state.columnFilters[col.field] || '')}">`
+      : '';
+    const w = state.columnWidths[col.field];
+    const styleAttr = w ? ` style="width:${w}px;min-width:${w}px;max-width:${w}px;"` : '';
+    return `<th class="${col.type === 'number' ? 'num' : ''}"${styleAttr}>${labelHtml}${filterHtml}<div class="resize-handle"></div></th>`;
+  }).join('');
+  return `<thead><tr>${ths}</tr></thead>`;
+}
+
+function renderTableBody(table) {
+  const rows = applyFilters(table);
+  if (rows.length === 0) {
+    return `<tbody><tr><td colspan="${table.columns.length}" class="empty">no rows</td></tr></tbody>`;
+  }
+  const trs = rows.map(row => {
+    const tds = table.columns.map(col => `<td class="${col.type === 'number' ? 'num' : ''}">${renderCell(col, row)}</td>`).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+  return `<tbody>${trs}</tbody>`;
+}
+
+function renderTable(table) {
+  const filteredCount = applyFilters(table).length;
+  const totalCount = (table.rows || []).length;
+  const countLabel = filteredCount === totalCount ? `${totalCount} 行` : `${filteredCount} / ${totalCount} 行`;
+  return `
+    <details class="section" id="table-${escapeHtml(table.id)}" ${table.open !== false ? 'open' : ''}>
+      <summary>
+        <span>${escapeHtml(table.title)}</span>
+        ${table.description ? `<span class="desc">${escapeHtml(table.description)}</span>` : ''}
+        <span class="count">${countLabel}</span>
+      </summary>
+      <div class="body">
+        <div class="table-wrap"><table>${renderTableHead(table)}${renderTableBody(table)}</table></div>
+      </div>
+    </details>
+  `;
+}
+
+function setupColumnResize(table, root) {
+  root.querySelectorAll('thead th').forEach((th, idx) => {
+    const col = table.columns[idx];
+    if (!col) return;
+    const handle = th.querySelector('.resize-handle');
+    if (!handle) return;
+    handle.addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const startX = e.clientX;
+      const startW = th.offsetWidth;
+      handle.classList.add('dragging');
+      document.body.classList.add('col-resizing');
+      function onMove(ev) {
+        const w = Math.max(40, startW + ev.clientX - startX);
+        th.style.width = w + 'px';
+        th.style.minWidth = w + 'px';
+        th.style.maxWidth = w + 'px';
+        tableState[table.id].columnWidths[col.field] = w;
+      }
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        handle.classList.remove('dragging');
+        document.body.classList.remove('col-resizing');
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+}
+
+function attachTableListeners(table) {
+  const root = document.getElementById(`table-${table.id}`);
+  setupColumnResize(table, root);
+  root.querySelectorAll('thead .label[data-action=sort]').forEach(el => {
+    el.addEventListener('click', () => {
+      const field = el.getAttribute('data-field');
+      const col = table.columns.find(c => c.field === field);
+      if (col && col.sortable === false) return;
+      const cur = tableState[table.id].sortBy;
+      const dir = cur && cur.field === field && cur.dir === 'asc' ? 'desc' : 'asc';
+      tableState[table.id].sortBy = { field, dir };
+      rerenderTable(table.id);
+    });
+  });
+  root.querySelectorAll('thead input.filter').forEach(input => {
+    input.addEventListener('input', e => {
+      const field = e.target.getAttribute('data-field');
+      tableState[table.id].columnFilters[field] = e.target.value;
+      rerenderTableBody(table.id);
+    });
+  });
+}
+
+function rerenderTable(tableId) {
+  const table = config.tables.find(t => t.id === tableId);
+  const root = document.getElementById(`table-${tableId}`);
+  const wasOpen = root.open;
+  root.outerHTML = renderTable(table);
+  document.getElementById(`table-${tableId}`).open = wasOpen;
+  attachTableListeners(table);
+}
+
+function rerenderTableBody(tableId) {
+  const table = config.tables.find(t => t.id === tableId);
+  const root = document.getElementById(`table-${tableId}`);
+  const tbl = root.querySelector('table');
+  const tbody = tbl.querySelector('tbody');
+  const newBody = document.createElement('template');
+  newBody.innerHTML = renderTableBody(table);
+  tbody.replaceWith(newBody.content.firstElementChild);
+  const filteredCount = applyFilters(table).length;
+  const totalCount = (table.rows || []).length;
+  const countLabel = filteredCount === totalCount ? `${totalCount} 行` : `${filteredCount} / ${totalCount} 行`;
+  root.querySelector('summary .count').textContent = countLabel;
+}
+
+function renderTables() {
+  const root = document.getElementById('tables');
+  if (!config.tables || config.tables.length === 0) { root.style.display = 'none'; return; }
+  root.innerHTML = config.tables.map(renderTable).join('');
+  config.tables.forEach(t => attachTableListeners(t));
+}
+
+// === Charts ===
+function chartFilteredData(c) {
+  // scatter は x が数値なので、dateKey (or 全体の dateField) で期間フィルタする
+  const isScatter = (c.type || 'line') === 'scatter';
+  const dateKey = c.dateKey || (isScatter ? dateField : (c.xField || 'x'));
+  return (c.data || []).filter(d => {
+    const dv = d[dateKey] ?? (isScatter ? d[dateField] : d.x);
+    return inRange(dv);
+  });
+}
+
+function renderCharts() {
+  const root = document.getElementById('charts');
+  if (!config.charts || config.charts.length === 0) { root.style.display = 'none'; return; }
+  if (config.charts.length >= 2) root.classList.add('multi');
+  root.innerHTML = config.charts.map(c => `
+    <details class="section" id="chart-${escapeHtml(c.id)}" ${c.open !== false ? 'open' : ''}>
+      <summary>
+        <span>${escapeHtml(c.title)}</span>
+        ${c.description ? `<span class="desc">${escapeHtml(c.description)}</span>` : ''}
+      </summary>
+      <div class="body chart-wrap"><canvas id="canvas-${escapeHtml(c.id)}"></canvas></div>
+    </details>
+  `).join('');
+  const palette = ['#0969da','#cf222e','#1a7f37','#9a6700','#8250df','#bf3989','#1f6feb','#3192aa','#a371f7','#d4a72c'];
+  config.charts.forEach(c => {
+    const ctx = document.getElementById(`canvas-${c.id}`);
+    const type = c.type || 'line';
+    const isCircular = type === 'pie' || type === 'doughnut' || type === 'polarArea';
+    const isScatter = type === 'scatter';
+    const data = chartFilteredData(c);
+    const xField = c.xField || 'x';
+    const yField = c.yField || 'y';
+    const labels = isScatter ? [] : data.map(d => d[xField] ?? d.x);
+    const values = isScatter ? [] : data.map(d => d[yField] ?? d.y);
+    const datasets = (c.datasets) ? c.datasets.map((ds, i) => ({
+      label: ds.label,
+      data: isScatter ? ds.data.filter(p => inRange(p.x)) : (ds.data || data.map(d => d[ds.field] ?? d.y)).filter((_, j) => true),
+      backgroundColor: ds.color ? ds.color + '88' : palette[i % palette.length] + '88',
+      borderColor: ds.color || palette[i % palette.length],
+      borderWidth: 1.5,
+      tension: 0.2,
+      pointRadius: isScatter ? 3 : (data.length > 200 ? 0 : 2),
+      pointHoverRadius: 5,
+    })) : [{
+      label: c.yLabel || c.title,
+      data: isScatter ? data : values,
+      backgroundColor: isCircular ? data.map((_, i) => palette[i % palette.length] + 'cc') : 'rgba(9,105,218,0.5)',
+      borderColor: isCircular ? data.map((_, i) => palette[i % palette.length]) : 'rgba(9,105,218,1)',
+      borderWidth: 1,
+      tension: 0.2,
+      pointRadius: isScatter ? 4 : (type === 'line' && values.length > 200 ? 0 : 2),
+      pointHoverRadius: isScatter ? 7 : 5,
+    }];
+    const chart = new Chart(ctx, {
+      type,
+      data: isScatter ? { datasets } : { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: c.indexAxis || 'x',
+        plugins: {
+          legend: { display: isCircular || (c.datasets && c.datasets.length > 1) },
+          tooltip: { mode: isCircular ? 'nearest' : isScatter ? 'nearest' : 'index', intersect: isScatter ? true : false }
+        },
+        scales: isCircular ? {} : isScatter ? {
+          x: { type: 'linear', position: 'bottom', title: { display: !!c.xLabel, text: c.xLabel || '' } },
+          y: { type: 'linear', title: { display: !!c.yLabel, text: c.yLabel || '' } }
+        } : {
+          x: { ticks: { autoSkip: true, maxRotation: 45 } },
+          y: { beginAtZero: c.beginAtZero !== false }
+        }
+      }
+    });
+    chartInstances[c.id] = chart;
+  });
+}
+
+function refreshCharts() {
+  // 簡易: 全 chart を作り直す
+  Object.values(chartInstances).forEach(ch => ch.destroy());
+  for (const k of Object.keys(chartInstances)) delete chartInstances[k];
+  document.getElementById('charts').classList.remove('multi');
+  document.getElementById('charts').innerHTML = '';
+  renderCharts();
+}
+
+function refreshTables() {
+  if (!config.tables) return;
+  config.tables.forEach(t => rerenderTableBody(t.id));
+}
+
+function updateAll() {
+  refreshCharts();
+  refreshTables();
+}
+
+// === Summary (期間で再集計するためsummaryFnsを使う) ===
+function renderSummary() {
+  const el = document.getElementById('summary');
+  if (!config.summary || config.summary.length === 0) { el.style.display = 'none'; return; }
+  el.className = 'summary';
+  el.innerHTML = config.summary.map(s => `
+    <div class="item" data-field="${escapeHtml(s.field || '')}" data-fn="${escapeHtml(s.fn || '')}">
+      <div class="label">${escapeHtml(s.label)} ${helpIcon(s.help)}</div>
+      <div class="value" data-role="value">${escapeHtml(s.value ?? '-')}</div>
+      ${s.sub ? `<div class="sub">${escapeHtml(s.sub)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function setupHelpTooltips() {
+  document.body.addEventListener('mouseover', (e) => {
+    const help = e.target.closest && e.target.closest('.help');
+    if (!help) return;
+    const tip = help.querySelector('.tip');
+    if (!tip) return;
+    const rect = help.getBoundingClientRect();
+    tip.style.left = (rect.left + rect.width / 2) + 'px';
+    tip.style.top = (rect.top - 6) + 'px';
+  });
+}
+
+function init() {
+  setupRangeControls();
+  renderSummary();
+  renderCharts();
+  renderTables();
+  setupHelpTooltips();
+}
+
+init();
+</script>
+</body>
+</html>
