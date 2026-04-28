@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #fafafa;
+  --fg: #1f2328;
+  --muted: #57606a;
+  --border: #d0d7de;
+  --header-bg: #f6f8fa;
+  --hover: #ddf4ff;
+  --selected: #fff8c5;
+  --link: #0969da;
+  --danger: #cf222e;
+  --warn: #9a6700;
+  --ok: #1a7f37;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+}
+header {
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+}
+header h1 { margin: 0 0 4px; font-size: 20px; }
+header .meta { margin: 0; color: var(--muted); font-size: 13px; }
+main { padding: 16px 24px 80px; max-width: 1400px; margin: 0 auto; }
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+  margin: 16px 0 24px;
+}
+.summary .item {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.summary .item .label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+.summary .item .value { font-size: 22px; font-weight: 600; margin-top: 2px; }
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 16px;
+  min-height: 24px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--selected);
+  border: 1px solid #d4a72c;
+  border-radius: 12px;
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+.chip:hover { background: #fff3a8; }
+.chip .x { color: var(--muted); font-weight: 600; }
+
+details.section {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+details.section > summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  user-select: none;
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::before {
+  content: '▶';
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform 0.15s;
+}
+details.section[open] > summary::before { transform: rotate(90deg); }
+details.section > summary .desc { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 8px; }
+details.section > summary .count { margin-left: auto; color: var(--muted); font-size: 12px; }
+details.section .body { padding: 0 14px 14px; }
+
+.table-wrap { overflow-x: auto; border-top: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead th {
+  position: sticky;
+  top: 0;
+  background: var(--header-bg);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  padding: 6px 8px;
+  white-space: nowrap;
+  user-select: none;
+}
+thead th .label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+thead th .arrow { font-size: 10px; color: var(--muted); }
+thead th input.filter {
+  width: 100%;
+  max-width: 140px;
+  margin-top: 4px;
+  padding: 2px 4px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 12px;
+  background: #fff;
+}
+thead th { padding-right: 12px; position: relative; border-right: 1px solid var(--border); }
+thead th:last-child { border-right: none; }
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 7px;
+  height: 100%;
+  cursor: col-resize;
+  user-select: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.resize-handle::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 60%;
+  background: var(--border);
+  border-radius: 1px;
+  transition: background 0.1s, width 0.1s, height 0.1s;
+}
+.resize-handle:hover::before,
+.resize-handle.dragging::before {
+  background: var(--link);
+  width: 3px;
+  height: 80%;
+}
+.resize-handle:hover { background: rgba(9,105,218,0.08); }
+.resize-handle.dragging { background: rgba(9,105,218,0.15); }
+body.col-resizing { cursor: col-resize !important; user-select: none; }
+tbody td { border-bottom: 1px solid #eee; padding: 5px 8px; vertical-align: top; }
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:hover { background: var(--hover); }
+tbody tr.selected { background: var(--selected); }
+tbody tr.selected:hover { background: #fff3a8; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td a { color: var(--link); text-decoration: none; }
+td a:hover { text-decoration: underline; }
+.empty { padding: 20px; text-align: center; color: var(--muted); }
+
+.help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--muted);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: help;
+  position: relative;
+}
+.help:hover .tip {
+  display: block;
+}
+.help .tip {
+  display: none;
+  position: fixed;
+  background: #24292f;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: pre-wrap;
+  width: max-content;
+  max-width: 320px;
+  z-index: 10000;
+  line-height: 1.4;
+  text-align: left;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+}
+
+.chart-wrap { padding: 12px 0 0; }
+.chart-wrap canvas { max-height: 280px; }
+
+#charts.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+#charts.two-cols details.section { margin-bottom: 0; }
+@media (max-width: 720px) {
+  #charts.two-cols { grid-template-columns: 1fr; }
+}
+
+.tag-failure { color: var(--danger); font-weight: 600; }
+.tag-warning { color: var(--warn); font-weight: 600; }
+.tag-success { color: var(--ok); font-weight: 600; }
+
+.truncate { max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.truncate:hover { white-space: normal; word-break: break-word; }
+</style>
+</head>
+<body>
+<header>
+  <h1>{{TITLE}}</h1>
+  <p class="meta">{{META}}</p>
+</header>
+<main>
+  <section id="summary"></section>
+  <div class="active-filters" id="active-filters"></div>
+  <section id="charts"></section>
+  <section id="tables"></section>
+</main>
+
+<script id="config" type="application/json">{{CONFIG_JSON}}</script>
+
+<script>
+'use strict';
+
+const config = JSON.parse(document.getElementById('config').textContent);
+const tableState = {};   // tableId -> { sortBy, columnFilters, ancestorFilters }
+const chartInstances = {}; // chartId -> Chart
+
+config.tables.forEach(t => {
+  tableState[t.id] = { sortBy: null, columnFilters: {}, ancestorFilters: {}, setFilters: {}, columnWidths: {} };
+});
+
+function getDescendants(tableId) {
+  const result = [];
+  const stack = config.tables.filter(t => t.parent === tableId);
+  while (stack.length) {
+    const t = stack.pop();
+    result.push(t);
+    config.tables.filter(c => c.parent === t.id).forEach(c => stack.push(c));
+  }
+  return result;
+}
+
+function getAncestors(tableId) {
+  const result = [];
+  let cur = config.tables.find(t => t.id === tableId);
+  while (cur && cur.parent) {
+    const p = config.tables.find(t => t.id === cur.parent);
+    if (!p) break;
+    result.push(p);
+    cur = p;
+  }
+  return result;
+}
+
+function escapeHtml(s) {
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function helpIcon(text) {
+  if (!text) return '';
+  return `<span class="help">?<span class="tip">${escapeHtml(text)}</span></span>`;
+}
+
+function renderSummary() {
+  const el = document.getElementById('summary');
+  if (!config.summary || config.summary.length === 0) { el.style.display = 'none'; return; }
+  el.className = 'summary';
+  el.innerHTML = config.summary.map(s => `
+    <div class="item">
+      <div class="label">${escapeHtml(s.label)} ${helpIcon(s.help)}</div>
+      <div class="value">${escapeHtml(s.value)}</div>
+    </div>
+  `).join('');
+}
+
+function applyFilters(table) {
+  const state = tableState[table.id];
+  let rows = table.rows.slice();
+  Object.entries(state.ancestorFilters).forEach(([field, value]) => {
+    rows = rows.filter(r => String(r[field]) === String(value));
+  });
+  Object.entries(state.setFilters).forEach(([field, set]) => {
+    rows = rows.filter(r => set.has(String(r[field])));
+  });
+  Object.entries(state.columnFilters).forEach(([field, q]) => {
+    if (!q) return;
+    const lq = q.toLowerCase();
+    rows = rows.filter(r => String(r[field] ?? '').toLowerCase().includes(lq));
+  });
+  if (state.sortBy) {
+    const { field, dir } = state.sortBy;
+    const col = table.columns.find(c => c.field === field);
+    rows.sort((a, b) => {
+      const av = a[field], bv = b[field];
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      let cmp;
+      if (col && col.type === 'number') cmp = Number(av) - Number(bv);
+      else cmp = String(av).localeCompare(String(bv), 'ja');
+      return dir === 'asc' ? cmp : -cmp;
+    });
+  }
+  return rows;
+}
+
+function renderCell(col, row) {
+  const v = row[col.field];
+  if (col.render === 'link') {
+    const href = row[col.linkField || 'url'];
+    if (!href) return escapeHtml(v ?? '');
+    return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(v ?? href)}</a>`;
+  }
+  if (col.render === 'level') {
+    const lv = String(v || '').toLowerCase();
+    const cls = lv === 'failure' ? 'tag-failure' : lv === 'warning' ? 'tag-warning' : lv === 'success' ? 'tag-success' : '';
+    return `<span class="${cls}">${escapeHtml(v ?? '')}</span>`;
+  }
+  if (col.render === 'truncate') {
+    return `<span class="truncate" title="${escapeHtml(v ?? '')}">${escapeHtml(v ?? '')}</span>`;
+  }
+  return escapeHtml(v ?? '');
+}
+
+function renderTableHead(table) {
+  const state = tableState[table.id];
+  const ths = table.columns.map(col => {
+    const sortable = col.sortable !== false;
+    const filterable = col.filterable !== false;
+    let arrow = '';
+    if (state.sortBy && state.sortBy.field === col.field) {
+      arrow = `<span class="arrow">${state.sortBy.dir === 'asc' ? '▲' : '▼'}</span>`;
+    }
+    const labelHtml = `<span class="label" data-action="sort" data-field="${escapeHtml(col.field)}" ${sortable ? '' : 'style="cursor:default"'}>${escapeHtml(col.label)} ${helpIcon(col.help)}${sortable ? arrow : ''}</span>`;
+    const filterHtml = filterable
+      ? `<input class="filter" data-field="${escapeHtml(col.field)}" placeholder="filter…" value="${escapeHtml(state.columnFilters[col.field] || '')}">`
+      : '';
+    const w = state.columnWidths[col.field];
+    const styleAttr = w ? ` style="width:${w}px;min-width:${w}px;max-width:${w}px;"` : '';
+    return `<th class="${col.type === 'number' ? 'num' : ''}"${styleAttr}>${labelHtml}${filterHtml}<div class="resize-handle"></div></th>`;
+  }).join('');
+  return `<thead><tr>${ths}</tr></thead>`;
+}
+
+function isRowSelected(table, row) {
+  const descendants = getDescendants(table.id);
+  if (descendants.length === 0 || !table.rowKey) return false;
+  return descendants.every(t => {
+    const v = tableState[t.id].ancestorFilters[table.rowKey];
+    return v !== undefined && String(v) === String(row[table.rowKey]);
+  });
+}
+
+function renderTableBody(table) {
+  const rows = applyFilters(table);
+  const isParent = config.tables.some(t => t.parent === table.id);
+  if (rows.length === 0) {
+    return `<tbody><tr><td colspan="${table.columns.length}" class="empty">no rows</td></tr></tbody>`;
+  }
+  const trs = rows.map(row => {
+    const tds = table.columns.map(col => `<td class="${col.type === 'number' ? 'num' : ''}">${renderCell(col, row)}</td>`).join('');
+    let cls = '';
+    if (isParent) {
+      cls = 'clickable';
+      if (isRowSelected(table, row)) cls += ' selected';
+    }
+    return `<tr class="${cls}" data-row-key="${escapeHtml(row[table.rowKey] ?? '')}">${tds}</tr>`;
+  }).join('');
+  return `<tbody>${trs}</tbody>`;
+}
+
+function renderTable(table) {
+  const filteredCount = applyFilters(table).length;
+  const totalCount = table.rows.length;
+  const countLabel = filteredCount === totalCount ? `${totalCount} 行` : `${filteredCount} / ${totalCount} 行`;
+  return `
+    <details class="section" id="table-${escapeHtml(table.id)}" ${table.open !== false ? 'open' : ''}>
+      <summary>
+        <span>${escapeHtml(table.title)}</span>
+        ${table.description ? `<span class="desc">${escapeHtml(table.description)}</span>` : ''}
+        <span class="count">${countLabel}</span>
+      </summary>
+      <div class="body">
+        <div class="table-wrap">
+          <table>
+            ${renderTableHead(table)}
+            ${renderTableBody(table)}
+          </table>
+        </div>
+      </div>
+    </details>
+  `;
+}
+
+function renderTables() {
+  document.getElementById('tables').innerHTML = config.tables.map(renderTable).join('');
+  config.tables.forEach(table => {
+    const root = document.getElementById(`table-${table.id}`);
+    setupColumnResize(table, root);
+    root.querySelectorAll('thead .label[data-action=sort]').forEach(el => {
+      el.addEventListener('click', () => {
+        const field = el.getAttribute('data-field');
+        const col = table.columns.find(c => c.field === field);
+        if (col && col.sortable === false) return;
+        const cur = tableState[table.id].sortBy;
+        const dir = cur && cur.field === field && cur.dir === 'asc' ? 'desc' : 'asc';
+        tableState[table.id].sortBy = { field, dir };
+        rerenderTable(table.id);
+      });
+    });
+    root.querySelectorAll('thead input.filter').forEach(input => {
+      input.addEventListener('input', e => {
+        const field = e.target.getAttribute('data-field');
+        tableState[table.id].columnFilters[field] = e.target.value;
+        rerenderTableBody(table.id);
+      });
+    });
+    root.querySelectorAll('tbody tr.clickable').forEach(tr => {
+      tr.addEventListener('click', () => {
+        const key = tr.getAttribute('data-row-key');
+        toggleAncestorFilter(table.id, key);
+      });
+    });
+  });
+}
+
+function rerenderTable(tableId) {
+  const table = config.tables.find(t => t.id === tableId);
+  const root = document.getElementById(`table-${tableId}`);
+  const wasOpen = root.open;
+  root.outerHTML = renderTable(table);
+  // re-attach listeners on this table only
+  const newRoot = document.getElementById(`table-${tableId}`);
+  newRoot.open = wasOpen;
+  attachTableListeners(table);
+}
+
+function rerenderTableBody(tableId) {
+  const table = config.tables.find(t => t.id === tableId);
+  const root = document.getElementById(`table-${tableId}`);
+  const tbl = root.querySelector('table');
+  const tbody = tbl.querySelector('tbody');
+  const newBody = document.createElement('template');
+  newBody.innerHTML = renderTableBody(table);
+  tbody.replaceWith(newBody.content.firstElementChild);
+  // 行件数表示更新
+  const filteredCount = applyFilters(table).length;
+  const totalCount = table.rows.length;
+  const countLabel = filteredCount === totalCount ? `${totalCount} 行` : `${filteredCount} / ${totalCount} 行`;
+  root.querySelector('summary .count').textContent = countLabel;
+  // 行のクリックリスナ再設定
+  root.querySelectorAll('tbody tr.clickable').forEach(tr => {
+    tr.addEventListener('click', () => {
+      const key = tr.getAttribute('data-row-key');
+      toggleAncestorFilter(table.id, key);
+    });
+  });
+}
+
+function setupColumnResize(table, root) {
+  root.querySelectorAll('thead th').forEach((th, idx) => {
+    const col = table.columns[idx];
+    if (!col) return;
+    const handle = th.querySelector('.resize-handle');
+    if (!handle) return;
+    handle.addEventListener('mousedown', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const startX = e.clientX;
+      const startW = th.offsetWidth;
+      handle.classList.add('dragging');
+      document.body.classList.add('col-resizing');
+      function onMove(ev) {
+        const w = Math.max(40, startW + ev.clientX - startX);
+        th.style.width = w + 'px';
+        th.style.minWidth = w + 'px';
+        th.style.maxWidth = w + 'px';
+        tableState[table.id].columnWidths[col.field] = w;
+      }
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        handle.classList.remove('dragging');
+        document.body.classList.remove('col-resizing');
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+}
+
+function attachTableListeners(table) {
+  const root = document.getElementById(`table-${table.id}`);
+  setupColumnResize(table, root);
+  root.querySelectorAll('thead .label[data-action=sort]').forEach(el => {
+    el.addEventListener('click', () => {
+      const field = el.getAttribute('data-field');
+      const col = table.columns.find(c => c.field === field);
+      if (col && col.sortable === false) return;
+      const cur = tableState[table.id].sortBy;
+      const dir = cur && cur.field === field && cur.dir === 'asc' ? 'desc' : 'asc';
+      tableState[table.id].sortBy = { field, dir };
+      rerenderTable(table.id);
+    });
+  });
+  root.querySelectorAll('thead input.filter').forEach(input => {
+    input.addEventListener('input', e => {
+      const field = e.target.getAttribute('data-field');
+      tableState[table.id].columnFilters[field] = e.target.value;
+      rerenderTableBody(table.id);
+    });
+  });
+  root.querySelectorAll('tbody tr.clickable').forEach(tr => {
+    tr.addEventListener('click', () => {
+      const key = tr.getAttribute('data-row-key');
+      toggleAncestorFilter(table.id, key);
+    });
+  });
+}
+
+function toggleAncestorFilter(parentTableId, rowKeyValue) {
+  const parent = config.tables.find(t => t.id === parentTableId);
+  if (!parent || !parent.rowKey) return;
+  const field = parent.rowKey;
+  const descendants = getDescendants(parentTableId);
+  if (descendants.length === 0) return;
+  const allOn = descendants.every(t => {
+    const v = tableState[t.id].ancestorFilters[field];
+    return v !== undefined && String(v) === String(rowKeyValue);
+  });
+  descendants.forEach(t => {
+    const s = tableState[t.id];
+    if (allOn) {
+      delete s.ancestorFilters[field];
+    } else {
+      s.ancestorFilters[field] = rowKeyValue;
+    }
+    rerenderTableBody(t.id);
+  });
+  rerenderTableBody(parentTableId);
+  renderActiveFilters();
+}
+
+function clearAncestorFilter(field, value) {
+  // ancestorFilters のクリア
+  let chartTriggered = false;
+  config.tables.forEach(t => {
+    const s = tableState[t.id];
+    if (s.ancestorFilters[field] !== undefined && String(s.ancestorFilters[field]) === String(value)) {
+      delete s.ancestorFilters[field];
+      // このテーブルが何かのグラフの filterTable なら、 そのグラフ起因の祖先 setFilters もクリア
+      const chart = (config.charts || []).find(c => c.filterTable === t.id && c.filterField === field);
+      if (chart) {
+        chartTriggered = true;
+        getAncestors(t.id).forEach(anc => {
+          delete tableState[anc.id].setFilters[anc.rowKey];
+          rerenderTableBody(anc.id);
+        });
+      }
+      rerenderTableBody(t.id);
+    }
+  });
+  config.tables.forEach(t => {
+    if (t.rowKey === field) rerenderTableBody(t.id);
+  });
+  renderActiveFilters();
+}
+
+function renderActiveFilters() {
+  const el = document.getElementById('active-filters');
+  const seen = new Map();
+  config.tables.forEach(t => {
+    Object.entries(tableState[t.id].ancestorFilters).forEach(([field, value]) => {
+      const key = `${field} ${value}`;
+      if (!seen.has(key)) {
+        const parent = config.tables.find(p => p.rowKey === field);
+        seen.set(key, { field, value, label: parent ? parent.title : field });
+      }
+    });
+  });
+  const chips = Array.from(seen.values());
+  el.innerHTML = chips.map((c, i) => `<span class="chip" data-i="${i}">${escapeHtml(c.label)}: ${escapeHtml(c.value)} <span class="x">×</span></span>`).join('');
+  el.querySelectorAll('.chip').forEach((el2, i) => {
+    el2.addEventListener('click', () => clearAncestorFilter(chips[i].field, chips[i].value));
+  });
+}
+
+function renderCharts() {
+  if (!config.charts || config.charts.length === 0) {
+    document.getElementById('charts').style.display = 'none';
+    return;
+  }
+  const root = document.getElementById('charts');
+  if (config.charts.length >= 2) root.classList.add('two-cols');
+  root.innerHTML = config.charts.map(c => `
+    <details class="section" id="chart-${escapeHtml(c.id)}" ${c.open !== false ? 'open' : ''}>
+      <summary>
+        <span>${escapeHtml(c.title)}</span>
+        ${c.description ? `<span class="desc">${escapeHtml(c.description)}</span>` : ''}
+      </summary>
+      <div class="body chart-wrap"><canvas id="canvas-${escapeHtml(c.id)}"></canvas></div>
+    </details>
+  `).join('');
+  const palette = ['#0969da','#cf222e','#1a7f37','#9a6700','#8250df','#bf3989','#1f6feb','#3192aa','#a371f7','#d4a72c'];
+  config.charts.forEach(c => {
+    const ctx = document.getElementById(`canvas-${c.id}`);
+    const type = c.type || 'bar';
+    const isCircular = type === 'pie' || type === 'doughnut' || type === 'polarArea';
+    const isScatter = type === 'scatter';
+    const labels = isScatter ? [] : c.data.map(d => d.x);
+    const values = isScatter ? [] : c.data.map(d => d.y);
+    const datasets = [{
+      label: c.yLabel || c.title,
+      data: isScatter ? c.data : values,
+      backgroundColor: isCircular ? c.data.map((_, i) => palette[i % palette.length] + 'cc') : 'rgba(9,105,218,0.5)',
+      borderColor: isCircular ? c.data.map((_, i) => palette[i % palette.length]) : 'rgba(9,105,218,1)',
+      borderWidth: 1,
+      tension: 0.2,
+      pointRadius: isScatter ? 4 : undefined,
+      pointHoverRadius: isScatter ? 7 : undefined
+    }];
+    const chart = new Chart(ctx, {
+      type,
+      data: isScatter ? { datasets } : { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: c.indexAxis || 'x',
+        onClick: (evt, elements) => {
+          if (!c.filterTable || !c.filterField) return;
+          if (elements.length === 0) return;
+          const idx = elements[0].index;
+          const xv = isScatter ? (c.data[idx][c.filterField] ?? c.data[idx].x) : labels[idx];
+          const target = config.tables.find(t => t.id === c.filterTable);
+          if (!target) return;
+          const targets = [target, ...getDescendants(target.id)];
+          const ancestors = getAncestors(target.id);
+          const allOn = targets.every(t => {
+            const v = tableState[t.id].ancestorFilters[c.filterField];
+            return v !== undefined && String(v) === String(xv);
+          });
+          if (allOn) {
+            targets.forEach(t => { delete tableState[t.id].ancestorFilters[c.filterField]; });
+            ancestors.forEach(t => { delete tableState[t.id].setFilters[t.rowKey]; });
+          } else {
+            targets.forEach(t => { tableState[t.id].ancestorFilters[c.filterField] = xv; });
+            const filteredTargetRows = applyFilters(target);
+            ancestors.forEach(t => {
+              const keys = new Set(filteredTargetRows.map(r => String(r[t.rowKey])));
+              tableState[t.id].setFilters[t.rowKey] = keys;
+            });
+          }
+          config.tables.forEach(t => rerenderTableBody(t.id));
+          renderActiveFilters();
+        },
+        plugins: {
+          legend: { display: isCircular },
+          tooltip: { mode: isCircular ? 'nearest' : isScatter ? 'nearest' : 'index', intersect: isScatter ? true : false }
+        },
+        scales: isCircular ? {} : isScatter ? {
+          x: { type: 'linear', position: 'bottom', title: { display: !!c.xLabel, text: c.xLabel || '' } },
+          y: { type: 'linear', title: { display: !!c.yLabel, text: c.yLabel || '' } }
+        } : {
+          x: { ticks: { autoSkip: true, maxRotation: 45 } },
+          y: { beginAtZero: true }
+        }
+      }
+    });
+    chartInstances[c.id] = chart;
+  });
+}
+
+function setupHelpTooltips() {
+  document.body.addEventListener('mouseover', (e) => {
+    const help = e.target.closest && e.target.closest('.help');
+    if (!help) return;
+    const tip = help.querySelector('.tip');
+    if (!tip) return;
+    const rect = help.getBoundingClientRect();
+    tip.style.left = (rect.left + rect.width / 2) + 'px';
+    tip.style.top = (rect.top - 6) + 'px';
+  });
+}
+
+function init() {
+  renderSummary();
+  renderCharts();
+  renderTables();
+  renderActiveFilters();
+  setupHelpTooltips();
+}
+
+init();
+</script>
+</body>
+</html>
