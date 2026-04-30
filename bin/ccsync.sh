@@ -18,6 +18,7 @@ Commands:
 
 Examples:
   $(basename "$0") add skills/commit
+  $(basename "$0") add agents/foo.md
   $(basename "$0") link
   $(basename "$0") list
   $(basename "$0") remove skills/commit
@@ -31,24 +32,24 @@ cmd_add() {
   local name="${target#*/}"
 
   if [[ -z "$type" || -z "$name" || "$type" == "$name" ]]; then
-    echo "Error: Invalid format. Use <type>/<name> (e.g., skills/commit)" >&2
+    echo "Error: Invalid format. Use <type>/<name> (e.g., skills/commit, agents/foo.md)" >&2
     exit 1
   fi
 
   local src="${CLAUDE_DIR}/${type}/${name}"
   local dest="${DOTFILES_DIR}/claude/${type}/${name}"
 
-  if [[ ! -d "$src" ]]; then
-    echo "Error: Source directory does not exist: ${src}" >&2
-    exit 1
-  fi
-
   if [[ -L "$src" ]]; then
     echo "Error: ${src} is already a symlink" >&2
     exit 1
   fi
 
-  if [[ -d "$dest" ]]; then
+  if [[ ! -e "$src" ]]; then
+    echo "Error: Source does not exist: ${src}" >&2
+    exit 1
+  fi
+
+  if [[ -e "$dest" ]]; then
     echo "Error: Destination already exists: ${dest}" >&2
     exit 1
   fi
@@ -74,10 +75,10 @@ cmd_link() {
     local type
     type="$(basename "$type_dir")"
 
-    for asset_dir in "${type_dir}"/*/; do
-      [[ -d "$asset_dir" ]] || continue
+    for asset_path in "${type_dir}"*; do
+      [[ -e "$asset_path" ]] || continue
       local name
-      name="$(basename "$asset_dir")"
+      name="$(basename "$asset_path")"
       local target="${CLAUDE_DIR}/${type}/${name}"
       local src="${dotfiles_claude}/${type}/${name}"
 
@@ -93,8 +94,8 @@ cmd_link() {
         continue
       fi
 
-      if [[ -d "$target" ]]; then
-        echo "Warning: ${target} exists as a regular directory (skipping)" >&2
+      if [[ -e "$target" ]]; then
+        echo "Warning: ${target} already exists (skipping)" >&2
         warned=$((warned + 1))
         continue
       fi
@@ -119,10 +120,10 @@ cmd_list() {
     local type
     type="$(basename "$type_dir")"
 
-    for asset_dir in "${type_dir}"/*/; do
-      [[ -d "$asset_dir" ]] || continue
+    for asset_path in "${type_dir}"*; do
+      [[ -e "$asset_path" ]] || continue
       local name
-      name="$(basename "$asset_dir")"
+      name="$(basename "$asset_path")"
       local target="${CLAUDE_DIR}/${type}/${name}"
       local src="${dotfiles_claude}/${type}/${name}"
       local status
@@ -135,8 +136,8 @@ cmd_list() {
         else
           status="conflict (-> ${current_link})"
         fi
-      elif [[ -d "$target" ]]; then
-        status="not linked (directory exists)"
+      elif [[ -e "$target" ]]; then
+        status="not linked (exists)"
       else
         status="not linked"
       fi
@@ -157,14 +158,14 @@ cmd_remove() {
   local name="${target#*/}"
 
   if [[ -z "$type" || -z "$name" || "$type" == "$name" ]]; then
-    echo "Error: Invalid format. Use <type>/<name> (e.g., skills/commit)" >&2
+    echo "Error: Invalid format. Use <type>/<name> (e.g., skills/commit, agents/foo.md)" >&2
     exit 1
   fi
 
   local dotfiles_path="${DOTFILES_DIR}/claude/${type}/${name}"
   local claude_path="${CLAUDE_DIR}/${type}/${name}"
 
-  if [[ ! -d "$dotfiles_path" ]]; then
+  if [[ ! -e "$dotfiles_path" ]]; then
     echo "Error: Not managed: ${target}" >&2
     exit 1
   fi
