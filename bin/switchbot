@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# SwitchBot API v1.1 で指定デバイスを on/off する。
+# 環境変数: SWITCHBOT_TOKEN, SWITCHBOT_SECRET, SWITCHBOT_DEVICE_ID
+set -euo pipefail
+
+action="${1:-}"
+case "$action" in
+  on)  command='turnOn'  ;;
+  off) command='turnOff' ;;
+  *) echo "usage: $(basename "$0") <on|off>" >&2; exit 2 ;;
+esac
+
+: "${SWITCHBOT_TOKEN:?required}"
+: "${SWITCHBOT_SECRET:?required}"
+: "${SWITCHBOT_DEVICE_ID:?required}"
+
+t="$(($(date +%s) * 1000))"
+nonce="$(uuidgen)"
+sign="$(printf '%s%s%s' "$SWITCHBOT_TOKEN" "$t" "$nonce" \
+  | openssl dgst -sha256 -hmac "$SWITCHBOT_SECRET" -binary \
+  | base64)"
+
+curl --fail-with-body -sS -X POST \
+  -H "Authorization: $SWITCHBOT_TOKEN" \
+  -H "T: $t" \
+  -H "Sign: $sign" \
+  -H "Nonce: $nonce" \
+  -H "Content-Type: application/json" \
+  -d "{\"command\":\"$command\",\"parameter\":\"default\",\"commandType\":\"command\"}" \
+  "https://api.switch-bot.com/v1.1/devices/$SWITCHBOT_DEVICE_ID/commands"
+echo

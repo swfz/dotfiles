@@ -86,8 +86,8 @@ ruby・nodejs・python・golangの`starship`モジュールを高速に実行す
 ## setup-monitor-mtg.sh
 カメラ/マイクの利用を監視するsystemdユーザーサービスをセットアップする。
 
-## switchbot.rb
-環境変数を使ってSwitchbotデバイスを制御する（on/off）。
+## switchbot
+SwitchBot API v1.1 を直接叩いてデバイスを on/off する。`SWITCHBOT_TOKEN` / `SWITCHBOT_SECRET` / `SWITCHBOT_DEVICE_ID` を環境変数で渡す。Ruby gem 依存をやめたのでランタイム差し替えの影響を受けない。
 
 ## tms
 現在のtmuxペインレイアウトをYAML設定ファイルに保存する。
@@ -124,3 +124,26 @@ tmuxバッファ/セレクション内のURLやファイルをデフォルトの
 
 ## wcmd
 ファイル変更時にコマンドを実行する。
+
+## release-digest
+
+各種サービスのRSS/Atomフィード (Google Cloud / AWS / Claude Code / GitHub Copilot など) から
+直近N時間のリリース情報を取得し、`claude -p` で要約してMarkdownに保存する。
+
+- ソース追加: `config/release-digest/sources.tsv` に `name<TAB>url` を1行追加
+- 実行: `release-digest`
+- 出力先: `~/release-digest/YYYY-MM-DD.md`
+
+オプション環境変数:
+
+- `RELEASE_DIGEST_HOURS` (default `24`): 過去何時間分を対象にするか
+- `RELEASE_DIGEST_OUT_DIR` (default `~/release-digest`): 出力先ディレクトリ
+- `RELEASE_DIGEST_LIMIT` (default `20`): ソースあたりLLMに渡すエントリ上限
+- `RELEASE_DIGEST_MODEL` (default `sonnet`): `claude --model` に渡す値。空文字で省略
+- `RELEASE_DIGEST_CONFIG`: 設定ファイルパスの上書き
+
+cron例 (毎朝9時):
+
+```
+0 9 * * * /home/you/dotfiles/bin/release-digest >> /home/you/release-digest/cron.log 2>&1
+```

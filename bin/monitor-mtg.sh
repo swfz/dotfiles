@@ -53,7 +53,7 @@ while true; do
     if ! is_home_network; then
         if [ "$LAST_STATE" == "on" ]; then
             log "Left home network, turning off"
-            ruby ~/dotfiles/bin/swithbot.rb off
+            ~/dotfiles/bin/switchbot off
             LAST_STATE="off"
         fi
         sleep $INTERVAL
@@ -74,10 +74,10 @@ while true; do
     if [ "$TARGET_STATE" != "$LAST_STATE" ]; then
         if [ "$TARGET_STATE" == "on" ]; then
             log "Status Change: OFF -> ON (Active App: $ACTIVE_APP)"
-            ruby ~/dotfiles/bin/swithbot.rb on
+            ~/dotfiles/bin/switchbot on
         else
             log "Status Change: ON -> OFF (Idle)"
-            ruby ~/dotfiles/bin/swithbot.rb off
+            ~/dotfiles/bin/switchbot off
         fi
 
         LAST_STATE="$TARGET_STATE"
