@@ -5,6 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DOTFILES_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 CLAUDE_DIR="${HOME}/.claude"
+ASSET_TYPES=(skills rules agents commands)
 
 usage() {
   cat <<EOF
@@ -15,6 +16,7 @@ Commands:
   link                   Create symlinks for all managed assets
   list                   List managed assets and their status
   remove <type>/<name>   Remove an asset from dotfiles management
+  unmanaged              List assets in ~/.claude not managed by dotfiles
 
 Examples:
   $(basename "$0") add skills/commit
@@ -22,6 +24,7 @@ Examples:
   $(basename "$0") link
   $(basename "$0") list
   $(basename "$0") remove skills/commit
+  $(basename "$0") unmanaged
 EOF
   exit 1
 }
@@ -152,6 +155,41 @@ cmd_list() {
   fi
 }
 
+cmd_unmanaged() {
+  local found=0
+
+  for type in "${ASSET_TYPES[@]}"; do
+    local claude_type_dir="${CLAUDE_DIR}/${type}"
+    [[ -d "$claude_type_dir" ]] || continue
+
+    for asset_path in "${claude_type_dir}"/*; do
+      [[ -e "$asset_path" || -L "$asset_path" ]] || continue
+      local name
+      name="$(basename "$asset_path")"
+      local expected_src="${DOTFILES_DIR}/claude/${type}/${name}"
+      local status
+
+      if [[ -L "$asset_path" ]]; then
+        local link_target
+        link_target="$(readlink "$asset_path")"
+        if [[ "$link_target" == "$expected_src" ]]; then
+          continue
+        fi
+        status="external -> ${link_target}"
+      else
+        status="unmanaged"
+      fi
+
+      printf "  %-30s %s\n" "${type}/${name}" "[${status}]"
+      found=$((found + 1))
+    done
+  done
+
+  if [[ "$found" -eq 0 ]]; then
+    echo "All assets are managed."
+  fi
+}
+
 cmd_remove() {
   local target="$1"
   local type="${target%%/*}"
@@ -203,6 +241,9 @@ case "$command" in
   remove)
     [[ $# -lt 1 ]] && usage
     cmd_remove "$1"
+    ;;
+  unmanaged)
+    cmd_unmanaged
     ;;
   *)
     echo "Error: Unknown command: ${command}" >&2
