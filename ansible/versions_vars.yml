@@ -17,7 +17,7 @@ reviewdog_version: v0.21.0
 # datasource=github-releases depName=duckdb/duckdb
 duckdb_version: v1.5.2
 # datasource=github-releases depName=asciinema/agg
-agg_version: v1.7.0
+agg_version: v1.8.1
 # datasource=github-releases depName=cli/cli
 gh_version: v2.92.0
 # datasource=github-releases depName=jdx/mise
