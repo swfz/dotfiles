@@ -52,6 +52,9 @@ postinstall = "mise-completions-sync --shell zsh"
 experimental = true
 install_before = "7d"
 
+[settings.npm]
+package_manager = "pnpm"
+
 [env]
 GOOGLE_APPLICATION_CREDENTIALS="{{env.HOME}}/.config/gcloud/private_adc.json"
 CLOUDSDK_PYTHON="{{env.HOME}}/.local/share/mise/installs/python/3.12.12/bin/python3"
