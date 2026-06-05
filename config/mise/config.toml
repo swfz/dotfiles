@@ -40,7 +40,9 @@ rust = 'latest'
 ghq = "1.10.1"
 "ubi:dlvhdr/diffnav" = 'latest'
 sqlite = 'latest'
-"ubi:duckdb/duckdb" = 'latest'
+# ubiバックエンドはOS/libcの判別が甘くglibc環境(WSL/Ubuntu)でmusl版を掴むことがある(ELFローダー無しでexec不可)。
+# githubバックエンドはOS/arch/libcを自動判別しMac/Linux両対応するためこちらを使う
+"github:duckdb/duckdb" = 'latest'
 "github:alltuner/mise-completions-sync" = "latest"
 "ubi:k1LoW/mo" = "latest"
 "ubi:rtk-ai/rtk"= "latest"
