@@ -46,6 +46,7 @@ sqlite = 'latest'
 "github:alltuner/mise-completions-sync" = "latest"
 "ubi:k1LoW/mo" = "latest"
 "ubi:rtk-ai/rtk"= "latest"
+"github:sxyazi/yazi" = "latest"
 
 [hooks]
 postinstall = "mise-completions-sync --shell zsh"
