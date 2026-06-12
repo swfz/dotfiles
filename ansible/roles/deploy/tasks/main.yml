@@ -92,6 +92,12 @@
     dest: ~/.config/mise/config.toml
     state: link
 
+- name: Symlink nvim config
+  ansible.builtin.file:
+    src: "{{ dotfiles.dest }}/config/nvim"
+    dest: ~/.config/nvim
+    state: link
+
 - name: Symlink starship config
   ansible.builtin.file:
     src: "{{ dotfiles.dest }}/config/starship/starship.toml"
