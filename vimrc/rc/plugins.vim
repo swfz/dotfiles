@@ -79,6 +79,7 @@ Plug 'tpope/vim-markdown'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 't9md/vim-quickhl'
 Plug 'slim-template/vim-slim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
 " ============================================

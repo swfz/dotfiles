@@ -34,7 +34,7 @@ alias gbd="git branch --merged | grep -v '*' | xargs -i git branch -d {}"
 alias ds="delta -s"
 
 #vim
-alias vi="vim"
+alias vi="nvim"
 alias view='vim -R -'
 alias mysqlu="mysql --default-character-set=utf8"
 alias psgrep="ps aux | grep "
