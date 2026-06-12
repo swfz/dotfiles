@@ -92,11 +92,14 @@
     dest: ~/.config/mise/config.toml
     state: link
 
+# NOTE: CIではdotfilesをデフォルトブランチからcloneするため、
+# 未マージブランチで追加されたconfig/nvimがsrcに存在しない。force指定で許容する
 - name: Symlink nvim config
   ansible.builtin.file:
     src: "{{ dotfiles.dest }}/config/nvim"
     dest: ~/.config/nvim
     state: link
+    force: true
 
 - name: Symlink starship config
   ansible.builtin.file:
