@@ -1,0 +1,442 @@
+<!-- ===== レビューコメントレイヤー (review-comments) =====
+     このブロック全体を対象HTMLの </body> 直前にそのまま挿入する。
+     外部依存なし・全インライン。アーティファクトの厳格CSP下で動作する。
+     クラス/ID はすべて rc- 接頭辞で名前空間を分離している。
+     文書の背景輝度を検出し、ダーク文書では自動的にダークパレットへ追従する。 -->
+<style>
+  :root{
+    --rc-panel-bg:#fbfbfa; --rc-line:#d8d8d4; --rc-fg:#1f1f1f; --rc-muted:#8a8a85;
+    --rc-card-bg:#ffffff; --rc-card-hover:#f0f0ec; --rc-accent:#2f6df6; --rc-accent-hover:#235ad6; --rc-accent-fg:#ffffff;
+    --rc-mark-bg:#fff1b8; --rc-mark-line:#f4c430; --rc-mark-hover:#ffe066;
+    --rc-quote-bg:#fffbe9; --rc-quote-line:#f4d77a; --rc-quote-fg:#555555;
+    --rc-input-bg:#ffffff; --rc-shadow:rgba(0,0,0,.10);
+    --rc-active-line:#f4b400; --rc-active-glow:rgba(244,180,0,.25);
+  }
+  html.rc-dark{
+    --rc-panel-bg:#161b22; --rc-line:#30363d; --rc-fg:#e6edf3; --rc-muted:#8b949e;
+    --rc-card-bg:#0d1117; --rc-card-hover:#21262d; --rc-accent:#388bfd; --rc-accent-hover:#58a6ff; --rc-accent-fg:#ffffff;
+    --rc-mark-bg:rgba(210,153,34,.32); --rc-mark-line:#d29922; --rc-mark-hover:rgba(210,153,34,.55);
+    --rc-quote-bg:#1c2230; --rc-quote-line:#d29922; --rc-quote-fg:#adb6c0;
+    --rc-input-bg:#0d1117; --rc-shadow:rgba(0,0,0,.5);
+    --rc-active-line:#d29922; --rc-active-glow:rgba(210,153,34,.32);
+  }
+  #rc-panel, #rc-panel * { box-sizing: border-box; }
+  #rc-panel {
+    position: fixed; top: 0; right: 0; height: 100vh; width: 340px;
+    background: var(--rc-panel-bg); border-left: 1px solid var(--rc-line);
+    display: flex; flex-direction: column; z-index: 2147483646;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+    font-size: 13px; color: var(--rc-fg); box-shadow: -2px 0 8px var(--rc-shadow);
+    transition: transform .18s ease;
+  }
+  #rc-panel.rc-collapsed { transform: translateX(100%); }
+  #rc-resizer {
+    position: absolute; left: -3px; top: 0; width: 7px; height: 100%;
+    cursor: col-resize; z-index: 1;
+  }
+  #rc-resizer:hover { background: rgba(90,120,255,.25); }
+  .rc-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-bottom: 1px solid var(--rc-line); flex: 0 0 auto;
+  }
+  .rc-title { font-weight: 600; font-size: 13px; }
+  .rc-header button, .rc-footer button {
+    border: 1px solid var(--rc-line); background: var(--rc-card-bg); border-radius: 6px;
+    padding: 5px 10px; font-size: 12px; cursor: pointer; color: var(--rc-fg);
+  }
+  .rc-header button:hover, .rc-footer button:hover { background: var(--rc-card-hover); }
+  #rc-list { flex: 1 1 auto; overflow-y: auto; padding: 8px; }
+  .rc-empty { color: var(--rc-muted); padding: 16px 8px; line-height: 1.6; }
+  .rc-item {
+    border: 1px solid var(--rc-line); border-radius: 8px; background: var(--rc-card-bg);
+    padding: 9px 10px; margin-bottom: 8px; cursor: pointer;
+  }
+  .rc-item.rc-active { border-color: var(--rc-active-line); box-shadow: 0 0 0 2px var(--rc-active-glow); }
+  .rc-item-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+  .rc-num { font-weight: 600; color: var(--rc-mark-line); font-size: 12px; }
+  .rc-del { border: none; background: none; cursor: pointer; color: var(--rc-muted); font-size: 14px; line-height: 1; padding: 2px 4px; }
+  .rc-del:hover { color: #e5534b; }
+  .rc-quote {
+    border-left: 3px solid var(--rc-quote-line); background: var(--rc-quote-bg); padding: 4px 8px;
+    margin: 0 0 6px; color: var(--rc-quote-fg); font-size: 12px; line-height: 1.5;
+    max-height: 4.5em; overflow: hidden; white-space: pre-wrap; word-break: break-word;
+  }
+  .rc-body { white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
+  .rc-footer { flex: 0 0 auto; padding: 10px 12px; border-top: 1px solid var(--rc-line); }
+  #rc-copy { width: 100%; background: var(--rc-accent); color: var(--rc-accent-fg); border-color: var(--rc-accent); font-weight: 600; padding: 8px; }
+  #rc-copy:hover { background: var(--rc-accent-hover); }
+  #rc-reopen {
+    position: fixed; top: 12px; right: 12px; z-index: 2147483646; display: none;
+    border: 1px solid var(--rc-line); background: var(--rc-panel-bg); color: var(--rc-fg); border-radius: 20px;
+    padding: 7px 13px; font-size: 13px; cursor: pointer; box-shadow: 0 2px 6px var(--rc-shadow);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
+  }
+  #rc-reopen.rc-show { display: block; }
+
+  /* 本文中のマーカー */
+  .rc-mark {
+    background: var(--rc-mark-bg); border-bottom: 2px solid var(--rc-mark-line); cursor: pointer;
+    border-radius: 2px; transition: background .12s;
+  }
+  .rc-mark:hover, .rc-mark.rc-mark-active { background: var(--rc-mark-hover); }
+
+  /* 選択時に出る「+ コメント」ボタン */
+  #rc-adder {
+    position: absolute; z-index: 2147483647; display: none;
+  }
+  #rc-adder button {
+    background: var(--rc-accent); color: var(--rc-accent-fg); border: none; border-radius: 6px;
+    padding: 6px 11px; font-size: 12px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  /* コメント入力ボックス */
+  #rc-editor {
+    position: absolute; z-index: 2147483647; display: none;
+    background: var(--rc-panel-bg); border: 1px solid var(--rc-line); border-radius: 8px;
+    box-shadow: 0 4px 16px var(--rc-shadow); padding: 8px; width: 280px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
+  }
+  #rc-input {
+    width: 100%; min-height: 64px; resize: vertical; border: 1px solid var(--rc-line);
+    border-radius: 6px; padding: 6px 8px; font-size: 13px; font-family: inherit;
+    background: var(--rc-input-bg); color: var(--rc-fg);
+  }
+  #rc-editor .rc-editor-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 6px; }
+  #rc-editor button { border-radius: 6px; padding: 5px 11px; font-size: 12px; cursor: pointer; border: 1px solid var(--rc-line); background: var(--rc-card-bg); color: var(--rc-fg); }
+  #rc-save { background: var(--rc-accent); color: var(--rc-accent-fg); border-color: var(--rc-accent); font-weight: 600; }
+  /* ホバーで出るコメント吹き出し(常にダーク基調・両テーマで可読) */
+  #rc-tip {
+    position: absolute; z-index: 2147483647; display: none; max-width: 280px;
+    background: #1f2328; color: #ffffff; border-radius: 6px; padding: 7px 10px;
+    font-size: 12px; line-height: 1.5; white-space: pre-wrap; word-break: break-word;
+    box-shadow: 0 4px 12px rgba(0,0,0,.4); pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
+  }
+  body.rc-has-panel { margin-right: 340px; }
+</style>
+
+<div id="rc-panel">
+  <div id="rc-resizer"></div>
+  <div class="rc-header">
+    <span class="rc-title">コメント (<span id="rc-count">0</span>)</span>
+    <button id="rc-toggle" type="button">隠す</button>
+  </div>
+  <div id="rc-list"></div>
+  <div class="rc-footer">
+    <button id="rc-copy" type="button">コメント一覧をコピー</button>
+  </div>
+</div>
+<button id="rc-reopen" type="button">💬 コメント (<span id="rc-reopen-count">0</span>)</button>
+<div id="rc-adder"><button type="button">＋ コメント</button></div>
+<div id="rc-editor">
+  <textarea id="rc-input" placeholder="指摘・コメントを入力…"></textarea>
+  <div class="rc-editor-actions">
+    <button id="rc-cancel" type="button">キャンセル</button>
+    <button id="rc-save" type="button">追加</button>
+  </div>
+</div>
+<div id="rc-tip"></div>
+
+<script>
+(function () {
+  "use strict";
+  var comments = [];           // {id, quote, body}
+  var seq = 0;
+  var pendingRange = null;      // 選択範囲を保持
+  var pendingRect = null;
+
+  /* ---- 文書の背景輝度を検出してダーク/ライト追従 ---- */
+  (function detectTheme() {
+    function parse(c) {
+      var m = c && c.match(/rgba?\(([^)]+)\)/);
+      if (!m) return null;
+      var p = m[1].split(",").map(function (n) { return parseFloat(n); });
+      if (p.length >= 4 && p[3] === 0) return null; // 透明は無視
+      return p;
+    }
+    var cands = [document.body, document.documentElement];
+    for (var i = 0; i < cands.length; i++) {
+      if (!cands[i]) continue;
+      var p = parse(getComputedStyle(cands[i]).backgroundColor);
+      if (p) {
+        var lum = 0.299 * p[0] + 0.587 * p[1] + 0.114 * p[2];
+        if (lum < 128) document.documentElement.classList.add("rc-dark");
+        return;
+      }
+    }
+  })();
+
+  var panel   = document.getElementById("rc-panel");
+  var resizer = document.getElementById("rc-resizer");
+  var listEl  = document.getElementById("rc-list");
+  var countEl = document.getElementById("rc-count");
+  var reopenCountEl = document.getElementById("rc-reopen-count");
+  var toggleBtn = document.getElementById("rc-toggle");
+  var reopenBtn = document.getElementById("rc-reopen");
+  var copyBtn = document.getElementById("rc-copy");
+  var adder   = document.getElementById("rc-adder");
+  var addBtn  = adder.querySelector("button");
+  var editor  = document.getElementById("rc-editor");
+  var input   = document.getElementById("rc-input");
+  var saveBtn = document.getElementById("rc-save");
+  var cancelBtn = document.getElementById("rc-cancel");
+  var tip     = document.getElementById("rc-tip");
+  var UI = [panel, reopenBtn, adder, editor, tip];
+
+  function isInUI(node) {
+    while (node) {
+      for (var i = 0; i < UI.length; i++) if (node === UI[i]) return true;
+      node = node.parentNode;
+    }
+    return false;
+  }
+
+  document.body.classList.add("rc-has-panel");
+
+  /* ---- 選択 → 「+ コメント」ボタン ---- */
+  document.addEventListener("mouseup", function (e) {
+    if (isInUI(e.target)) return;
+    setTimeout(function () {
+      var sel = window.getSelection();
+      if (!sel || sel.isCollapsed || sel.rangeCount === 0) { hideAdder(); return; }
+      var range = sel.getRangeAt(0);
+      var text = sel.toString();
+      if (!text.trim()) { hideAdder(); return; }
+      if (isInUI(range.startContainer) || isInUI(range.endContainer)) { hideAdder(); return; }
+      pendingRange = range.cloneRange();
+      var rect = range.getBoundingClientRect();
+      pendingRect = rect;
+      adder.style.display = "block";
+      adder.style.top = (window.scrollY + rect.bottom + 6) + "px";
+      adder.style.left = (window.scrollX + rect.left) + "px";
+    }, 1);
+  });
+
+  function hideAdder() { adder.style.display = "none"; }
+  function hideEditor() { editor.style.display = "none"; input.value = ""; }
+
+  addBtn.addEventListener("click", function () {
+    if (!pendingRange) return;
+    hideAdder();
+    editor.style.display = "block";
+    var top = window.scrollY + (pendingRect ? pendingRect.bottom + 6 : 100);
+    var left = window.scrollX + (pendingRect ? pendingRect.left : 100);
+    // 右端からはみ出さないよう調整
+    var maxLeft = window.scrollX + document.documentElement.clientWidth - 300 - panelWidth();
+    if (left > maxLeft) left = Math.max(window.scrollX + 8, maxLeft);
+    editor.style.top = top + "px";
+    editor.style.left = left + "px";
+    input.focus();
+  });
+
+  function panelWidth() { return panel.classList.contains("rc-collapsed") ? 0 : panel.offsetWidth; }
+
+  saveBtn.addEventListener("click", saveComment);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); saveComment(); }
+    if (e.key === "Escape") { hideEditor(); }
+  });
+  cancelBtn.addEventListener("click", hideEditor);
+
+  function saveComment() {
+    var body = input.value.trim();
+    if (!body || !pendingRange) { hideEditor(); return; }
+    var id = "c" + (++seq);
+    var quote = pendingRange.toString();
+    try { wrapRange(pendingRange, id); } catch (err) { /* 万一失敗しても一覧には残す */ }
+    comments.push({ id: id, quote: quote, body: body });
+    pendingRange = null;
+    hideEditor();
+    render();
+    openPanel();
+    focusComment(id);
+  }
+
+  /* ---- 選択範囲を span.rc-mark で包む(複数要素跨ぎ対応) ---- */
+  function wrapRange(range, id) {
+    var nodes = textNodesInRange(range);
+    for (var i = 0; i < nodes.length; i++) {
+      var info = nodes[i], node = info.node, start = info.start, end = info.end;
+      var target = node;
+      if (start > 0) target = target.splitText(start);
+      if (end - start < target.nodeValue.length) target.splitText(end - start);
+      var span = document.createElement("span");
+      span.className = "rc-mark";
+      span.setAttribute("data-rc-id", id);
+      target.parentNode.insertBefore(span, target);
+      span.appendChild(target);
+    }
+  }
+
+  function textNodesInRange(range) {
+    var out = [];
+    var startN = range.startContainer, endN = range.endContainer;
+    if (startN === endN && startN.nodeType === 3) {
+      out.push({ node: startN, start: range.startOffset, end: range.endOffset });
+      return out;
+    }
+    var root = range.commonAncestorContainer;
+    if (root.nodeType === 3) root = root.parentNode;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+    var n, started = false;
+    while ((n = walker.nextNode())) {
+      if (n === startN) started = true;
+      if (started) {
+        if (isInUI(n)) { if (n === endN) break; else continue; }
+        var s = (n === startN) ? range.startOffset : 0;
+        var e = (n === endN) ? range.endOffset : n.nodeValue.length;
+        if (e > s && n.nodeValue.slice(s, e).length) out.push({ node: n, start: s, end: e });
+      }
+      if (n === endN) break;
+    }
+    return out;
+  }
+
+  function unwrap(id) {
+    var marks = document.querySelectorAll('.rc-mark[data-rc-id="' + id + '"]');
+    for (var i = 0; i < marks.length; i++) {
+      var m = marks[i], parent = m.parentNode;
+      while (m.firstChild) parent.insertBefore(m.firstChild, m);
+      parent.removeChild(m);
+      parent.normalize();
+    }
+  }
+
+  /* ---- マーカーのホバー/クリック ---- */
+  document.addEventListener("mouseover", function (e) {
+    var mark = e.target.closest ? e.target.closest(".rc-mark") : null;
+    if (!mark) return;
+    var c = byId(mark.getAttribute("data-rc-id"));
+    if (!c) return;
+    tip.textContent = c.body;
+    tip.style.display = "block";
+    var r = mark.getBoundingClientRect();
+    var top = window.scrollY + r.top - tip.offsetHeight - 8;
+    if (top < window.scrollY) top = window.scrollY + r.bottom + 8;
+    tip.style.top = top + "px";
+    tip.style.left = (window.scrollX + r.left) + "px";
+  });
+  document.addEventListener("mouseout", function (e) {
+    if (e.target.closest && e.target.closest(".rc-mark")) tip.style.display = "none";
+  });
+  document.addEventListener("click", function (e) {
+    var mark = e.target.closest ? e.target.closest(".rc-mark") : null;
+    if (mark) { openPanel(); focusComment(mark.getAttribute("data-rc-id"), true); }
+  });
+
+  /* ---- サイドバー描画 ---- */
+  function byId(id) { for (var i = 0; i < comments.length; i++) if (comments[i].id === id) return comments[i]; return null; }
+
+  function render() {
+    countEl.textContent = comments.length;
+    reopenCountEl.textContent = comments.length;
+    listEl.innerHTML = "";
+    if (!comments.length) {
+      var empty = document.createElement("div");
+      empty.className = "rc-empty";
+      empty.textContent = "本文中のテキストを選択すると「＋ コメント」ボタンが出ます。指摘をコメントとして残し、最後に下のボタンで一覧をコピーしてください。";
+      listEl.appendChild(empty);
+      return;
+    }
+    comments.forEach(function (c, idx) {
+      var item = document.createElement("div");
+      item.className = "rc-item"; item.setAttribute("data-rc-id", c.id);
+      var head = document.createElement("div"); head.className = "rc-item-head";
+      var num = document.createElement("span"); num.className = "rc-num"; num.textContent = "#" + (idx + 1);
+      var del = document.createElement("button"); del.className = "rc-del"; del.type = "button"; del.textContent = "✕"; del.title = "削除";
+      del.addEventListener("click", function (ev) { ev.stopPropagation(); removeComment(c.id); });
+      head.appendChild(num); head.appendChild(del);
+      var quote = document.createElement("div"); quote.className = "rc-quote"; quote.textContent = c.quote;
+      var body = document.createElement("div"); body.className = "rc-body"; body.textContent = c.body;
+      item.appendChild(head); item.appendChild(quote); item.appendChild(body);
+      item.addEventListener("click", function () { focusComment(c.id, true); });
+      listEl.appendChild(item);
+    });
+  }
+
+  function removeComment(id) {
+    unwrap(id);
+    comments = comments.filter(function (c) { return c.id !== id; });
+    render();
+  }
+
+  function focusComment(id, scrollToMark) {
+    var items = listEl.querySelectorAll(".rc-item");
+    for (var i = 0; i < items.length; i++) items[i].classList.remove("rc-active");
+    var marks = document.querySelectorAll(".rc-mark");
+    for (var j = 0; j < marks.length; j++) marks[j].classList.remove("rc-mark-active");
+    var item = listEl.querySelector('.rc-item[data-rc-id="' + id + '"]');
+    if (item) { item.classList.add("rc-active"); item.scrollIntoView({ block: "nearest" }); }
+    var idMarks = document.querySelectorAll('.rc-mark[data-rc-id="' + id + '"]');
+    for (var k = 0; k < idMarks.length; k++) idMarks[k].classList.add("rc-mark-active");
+    if (scrollToMark && idMarks.length) idMarks[0].scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+
+  /* ---- 開閉 ---- */
+  var customWidth = null; // ドラッグで変更した幅(px)。未変更なら null
+  function openPanel() {
+    panel.classList.remove("rc-collapsed");
+    reopenBtn.classList.remove("rc-show");
+    if (customWidth) document.body.style.marginRight = customWidth + "px";
+    else document.body.classList.add("rc-has-panel");
+  }
+  function collapsePanel() {
+    panel.classList.add("rc-collapsed");
+    reopenBtn.classList.add("rc-show");
+    document.body.classList.remove("rc-has-panel");
+    document.body.style.marginRight = ""; // インライン余白を消し本文を全幅に戻す
+  }
+  toggleBtn.addEventListener("click", collapsePanel);
+  reopenBtn.addEventListener("click", openPanel);
+
+  /* ---- 幅可変(ドラッグ) ---- */
+  var dragging = false;
+  resizer.addEventListener("mousedown", function (e) { dragging = true; e.preventDefault(); document.body.style.userSelect = "none"; });
+  document.addEventListener("mousemove", function (e) {
+    if (!dragging) return;
+    var w = window.innerWidth - e.clientX;
+    w = Math.max(240, Math.min(680, w));
+    customWidth = w;
+    panel.style.width = w + "px";
+    document.body.classList.remove("rc-has-panel");
+    document.body.style.marginRight = w + "px";
+  });
+  document.addEventListener("mouseup", function () { if (dragging) { dragging = false; document.body.style.userSelect = ""; } });
+
+  /* ---- コピー(Markdown) ---- */
+  copyBtn.addEventListener("click", function () {
+    if (!comments.length) { flash(copyBtn, "コメントがありません"); return; }
+    var md = "# レビューコメント\n\n";
+    comments.forEach(function (c, i) {
+      md += "## " + (i + 1) + ".\n";
+      md += "> " + c.quote.replace(/\n/g, "\n> ") + "\n\n";
+      md += c.body + "\n\n";
+    });
+    copyText(md, function (ok) { flash(copyBtn, ok ? "コピーしました" : "コピー失敗"); });
+  });
+
+  function copyText(text, cb) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { cb(true); }, function () { cb(fallbackCopy(text)); });
+    } else { cb(fallbackCopy(text)); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.left = "-9999px";
+    document.body.appendChild(ta); ta.select();
+    var ok = false; try { ok = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+  function flash(btn, msg) {
+    var orig = btn.textContent; btn.textContent = msg;
+    setTimeout(function () { btn.textContent = orig; }, 1400);
+  }
+
+  /* スクロールやリサイズで浮遊UIを隠す */
+  window.addEventListener("scroll", function () { hideAdder(); tip.style.display = "none"; }, true);
+
+  render();
+})();
+</script>
+<!-- ===== /レビューコメントレイヤー ===== -->
