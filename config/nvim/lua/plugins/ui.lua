@@ -2,16 +2,11 @@
 return {
   -- ── Colorscheme ──────────────────────────────────────────────
   {
-    "maxmx03/solarized.nvim",
+    "rhysd/vim-color-spring-night",
     lazy = false,
     priority = 1000,
-    opts = {
-      style        = "dark",
-      transparent  = { enabled = true },
-    },
-    config = function(_, opts)
-      require("solarized").setup(opts)
-      vim.cmd("colorscheme solarized")
+    config = function()
+      vim.cmd("colorscheme spring-night")
     end,
   },
 
@@ -21,8 +16,8 @@ return {
     lazy    = false,
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      local ok_theme, theme = pcall(require, "lualine.themes.wombat")
-      local selected_theme = ok_theme and "wombat" or "auto"
+      local ok_theme = pcall(require, "lualine.themes.spring_night")
+      local selected_theme = ok_theme and "spring_night" or "auto"
 
       require("lualine").setup({
         options = {
