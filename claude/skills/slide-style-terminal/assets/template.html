@@ -1,0 +1,347 @@
+<title>スライドタイトル</title>
+<style>
+  /* ============================================================
+     slide-style-terminal : ターミナルウィンドウ風スライドデッキ
+     - Artifact 用フラグメント (doctype/html/head/body は書かない)
+     - 外部リソース禁止。フォント・画像は data: URI で埋め込むこと
+     - Nerd Font 不使用 (powerline 矢印は CSS clip-path で描画)
+     ============================================================ */
+  :root {
+    --deck-bg: #12181f;   /* デッキ外 (レターボックス) */
+    --win:     #2b3646;   /* ウィンドウ本体 (スライド地) */
+    --bar:     #232d3a;   /* タイトルバー / ステータス地 */
+    --fg:      #d6dce1;   /* 主テキスト */
+    --muted:   #7c8a99;   /* 副次・結線・パス */
+    --accent:  #e23f7a;   /* ブランドのピンク */
+    --line:    #3c4a5a;   /* 罫線・ツリー結線・枠 */
+    --kw:      #e23f7a;   /* SQLキーワード (SELECT/FROM) */
+    --fn:      #7fb4d8;   /* 関数・キー (read_json / "id") */
+    --str:     #9ece6a;   /* 文字列 */
+    --num:     #e0a06a;   /* 数値 */
+    --com:     #6b7684;   /* コメント */
+    --prompt:  #9ece6a;   /* プロンプト記号 (D / $ / ❯) */
+    --link:    #5fb2c8;
+    --code-bg: #1f2833;   /* コードブロック地 */
+    --term-bg: #1a222c;   /* 端末出力地 */
+    --mono: ui-monospace, "SF Mono", "Cica", "HackGen", Menlo, Consolas,
+            "Noto Sans Mono CJK JP", "Yu Gothic", "Hiragino Kaku Gothic ProN", monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px), /* 微かなスキャンライン */
+      radial-gradient(120% 120% at 50% 0%, #1a222c 0%, var(--deck-bg) 70%);
+    color: var(--fg);
+    font-family: var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck { scroll-snap-type: y mandatory; }
+
+  /* --- スライド枠: 16:9 レターボックス --- */
+  .slide {
+    height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    scroll-snap-align: start;
+    padding: 2.2vh 2vw;
+  }
+  /* --- ターミナルウィンドウ本体 --- */
+  .slide-inner {
+    position: relative;
+    width: min(100%, calc((100vh - 4.4vh) * 16 / 9));
+    aspect-ratio: 16 / 9;
+    background: var(--win);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 2px 0 rgba(255,255,255,.03) inset;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    container-type: size;   /* cqw/cqh の基準。幅に追従してスケール */
+  }
+
+  /* --- タイトルバー (信号機 + パス) --- */
+  .win-bar {
+    flex: 0 0 auto;
+    height: 6.4cqh;
+    display: flex; align-items: center; gap: .8cqw;
+    padding: 0 2.4cqw;
+    background: var(--bar);
+    border-bottom: 1px solid var(--line);
+    font-size: 1.9cqw; color: var(--muted);
+  }
+  .dot { width: 1.5cqw; height: 1.5cqw; border-radius: 50%; }
+  .dot.r { background: #ec6a5e; } .dot.y { background: #f4bf4f; } .dot.g { background: #61c554; }
+  .win-title { margin-left: 1.6cqw; }
+  .win-title b { color: #aeb9c4; font-weight: 600; }
+
+  /* --- 本文エリア --- */
+  .win-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 4.2cqh 4cqw 3cqh;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* --- 見出し (プロンプト風) --- */
+  .head {
+    display: flex; align-items: baseline; gap: .5em;
+    font-size: 5cqw; font-weight: 700; letter-spacing: .01em;
+    margin: 0 0 2.6cqh; line-height: 1.1;
+  }
+  .head::before { content: "\276F"; color: var(--accent); }  /* ❯ */
+  .cursor {   /* 点滅ブロックカーソル */
+    display: inline-block; width: .5em; height: 1em;
+    background: var(--accent); margin-left: .1em;
+    transform: translateY(.12em);
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* --- ツリー箇条書き (tree コマンド風の結線) --- */
+  .tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+  .tree ul { margin-left: 1.1em; }
+  .tree li {
+    position: relative;
+    padding-left: 1.5em;
+    margin: .3cqh 0;
+    font-size: 2.9cqw; line-height: 1.5;
+  }
+  .tree li::before {   /* 縦線 │ */
+    content: ""; position: absolute; left: .25em; top: 0; bottom: 0;
+    width: 1px; background: var(--line);
+  }
+  .tree li:last-child::before { bottom: calc(100% - .78em); }  /* └ の脚: ティックまでで止める */
+  .tree li::after {    /* 横線 ─ (エルボー) */
+    content: ""; position: absolute; left: .25em; top: .78em;
+    width: .85em; height: 1px; background: var(--line);
+  }
+  .tree ul li { font-size: 2.55cqw; color: #c3ccd4; }
+  .tree ul ul li { font-size: 2.35cqw; color: var(--muted); }
+
+  /* --- インライン・シンタックス色 --- */
+  .kw{color:var(--kw)} .fn{color:var(--fn)} .str{color:var(--str)}
+  .num{color:var(--num)} .com{color:var(--com);font-style:italic} .dim{color:var(--muted)}
+
+  /* --- タイトルスライド (ブート風) --- */
+  .boot { font-size: 2.5cqw; line-height: 1.7; color: var(--muted); }
+  .boot .p { color: var(--prompt); }
+  .title-main { font-size: 9cqw; font-weight: 700; letter-spacing: .02em; color: #eef2f5; margin-top: 1.5cqh; }
+  .title-sub  { font-size: 2.8cqw; color: var(--muted); margin-top: 1cqh; }
+
+  /* --- コードブロック (ファイル名タブ付き) --- */
+  .code-wrap { display: flex; flex-direction: column; min-height: 0; align-items: flex-start; }
+  .code-tab {
+    font-size: 1.9cqw; color: var(--fg);
+    background: var(--code-bg); border: 1px solid var(--line); border-bottom: none;
+    padding: .5cqh 1.6cqw; border-radius: 6px 6px 0 0;
+  }
+  .code-tab::before { content: "\25CF "; color: var(--num); }  /* 未保存風ドット ● */
+  pre.code, pre.term {
+    margin: 0; font-family: var(--mono); white-space: pre; overflow: auto;
+    width: fit-content; max-width: 100%;   /* 中身にフィット (余白を作らない) */
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 0 6px 6px 6px;
+    padding: 2cqh 2cqw; font-size: 2.1cqw; line-height: 1.5; color: var(--fg);
+  }
+  pre.term {
+    border-radius: 6px; font-size: 1.5cqw; line-height: 1.35; color: #c3ccd4;
+    background: var(--term-bg);
+  }
+  pre.term .p { color: var(--prompt); }   /* D / $ プロンプト */
+
+  /* --- 2カラム --- */
+  .cols { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; min-height: 0; }
+  .cols > * { min-width: 0; display: flex; flex-direction: column; }
+
+  /* --- 画像 (白背景ボックスに収める) --- */
+  .figure { text-align: center; margin: 0; }
+  .figure img { max-width: 100%; max-height: 55cqh; background: #fff; padding: 1.2cqw; border-radius: 4px; }
+  .figure figcaption { margin-top: 2cqh; font-size: 2.1cqw; }
+  a.link { color: var(--link); text-decoration: underline; }
+
+  /* --- ステータスライン (powerline / lightline 風) --- */
+  .status {
+    flex: 0 0 auto;
+    display: flex; align-items: stretch;
+    height: 5.4cqh; font-size: 1.9cqw;
+    background: var(--bar); border-top: 1px solid var(--line);
+  }
+  .seg { display: flex; align-items: center; padding: 0 1.8cqw; white-space: nowrap; }
+  .seg--mode { background: var(--accent); color: #17202a; font-weight: 700; position: relative; }
+  .seg--mode::after {   /* powerline の右向き矢印 */
+    content: ""; position: absolute; right: -1.2cqh; top: 0; bottom: 0;
+    width: 1.2cqh; background: var(--accent);
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+  }
+  .seg--branch { background: #38465a; color: #cfd8e0; margin-left: 1.2cqh; }
+  .seg--file   { color: var(--muted); }
+  .seg--spring { flex: 1; }
+  .seg--info   { color: var(--muted); }
+  .seg--count  { background: var(--accent); color: #17202a; font-weight: 700; position: relative; }
+  .seg--count::before {   /* powerline の左向き矢印 */
+    content: ""; position: absolute; left: -1.2cqh; top: 0; bottom: 0;
+    width: 1.2cqh; background: var(--accent);
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
+
+  @media print { .slide { height: auto; page-break-after: always; } }
+</style>
+
+<div class="deck">
+
+  <!-- ============ タイトル (ブート風) ============ -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="win-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="win-title">swfz@mac: <b>~/talks/duckdb</b> — zsh</span>
+      </div>
+      <div class="win-body" style="justify-content:center">
+        <div class="boot">
+<span class="p">❯</span> ./present.sh --topic duckdb
+<span class="dim">▶ loading deck ...</span> <span class="str">ready</span>
+        </div>
+        <div class="title-main">DuckDB<span class="cursor"></span></div>
+        <div class="title-sub">澤藤勇也</div>
+      </div>
+      <div class="status">
+        <span class="seg seg--mode">NORMAL</span>
+        <span class="seg seg--branch">git:main</span>
+        <span class="seg seg--file">deck.html</span>
+        <span class="seg seg--spring"></span>
+        <span class="seg seg--info">utf-8 &nbsp; duckdb</span>
+        <span class="seg seg--count"><span class="pageno">1</span>/12</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ツリー箇条書き ============ -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="win-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="win-title">swfz@mac: <b>~/talks/duckdb</b> — zsh</span>
+      </div>
+      <div class="win-body">
+        <h2 class="head">DuckDB?</h2>
+        <ul class="tree">
+          <li><span class="kw">SQLite</span> の OLAP 版
+            <ul>
+              <li>分析用途</li>
+              <li>Notebook で使われるようなライブラリで使われていたり
+                <ul><li>PyGWalker</li></ul>
+              </li>
+            </ul>
+          </li>
+          <li>様々な種類のデータを読み込める</li>
+        </ul>
+      </div>
+      <div class="status">
+        <span class="seg seg--mode">NORMAL</span>
+        <span class="seg seg--branch">git:main</span>
+        <span class="seg seg--file">deck.html</span>
+        <span class="seg seg--spring"></span>
+        <span class="seg seg--info">utf-8 &nbsp; duckdb</span>
+        <span class="seg seg--count"><span class="pageno">2</span>/12</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2カラム: コード + 端末出力 ============ -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="win-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="win-title">swfz@mac: <b>~/talks/duckdb</b> — zsh</span>
+      </div>
+      <div class="win-body">
+        <div class="cols">
+          <div>
+            <h2 class="head" style="font-size:3.6cqw">JSON ファイル</h2>
+            <div class="code-wrap">
+              <span class="code-tab">users.json</span>
+<pre class="code">[
+  {
+    <span class="fn">"id"</span>: <span class="num">1</span>,
+    <span class="fn">"name"</span>: <span class="str">"Alice"</span>,
+    <span class="fn">"age"</span>: <span class="num">30</span>
+  }
+]</pre>
+            </div>
+          </div>
+          <div>
+            <h2 class="head" style="font-size:3.6cqw">読み込み</h2>
+<pre class="term"><span class="p">D</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="fn">read_json</span>(<span class="str">'users.json'</span>);
+┌───────┬─────────┬───────┐
+│  id   │  name   │  age  │
+│ int64 │ varchar │ int64 │
+├───────┼─────────┼───────┤
+│   1   │ Alice   │   30  │
+│   2   │ Bob     │   25  │
+└───────┴─────────┴───────┘</pre>
+          </div>
+        </div>
+      </div>
+      <div class="status">
+        <span class="seg seg--mode">NORMAL</span>
+        <span class="seg seg--branch">git:main</span>
+        <span class="seg seg--file">query.sql</span>
+        <span class="seg seg--spring"></span>
+        <span class="seg seg--info">sql &nbsp; duckdb</span>
+        <span class="seg seg--count"><span class="pageno">7</span>/12</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 画像スライド ============ -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="win-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="win-title">swfz@mac: <b>~/talks/duckdb</b> — zsh</span>
+      </div>
+      <div class="win-body">
+        <h2 class="head">インストール</h2>
+        <div class="code-wrap">
+          <span class="code-tab">install.sh</span>
+<pre class="code"><span class="p">$</span> brew install duckdb</pre>
+        </div>
+        <figure class="figure" style="margin-top:3cqh">
+          <!-- 画像は data: URI で埋め込む (外部URL不可) -->
+          <!-- <img src="data:image/png;base64,..." alt=""> -->
+          <figcaption><a class="link" href="#">DuckDB Installation</a></figcaption>
+        </figure>
+      </div>
+      <div class="status">
+        <span class="seg seg--mode">NORMAL</span>
+        <span class="seg seg--branch">git:main</span>
+        <span class="seg seg--file">install.sh</span>
+        <span class="seg seg--spring"></span>
+        <span class="seg seg--info">sh &nbsp; duckdb</span>
+        <span class="seg seg--count"><span class="pageno">5</span>/12</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ← → / Space / PageUp・Down でスライド移動
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    function cur() {
+      var y = window.scrollY + window.innerHeight / 2;
+      for (var i = 0; i < slides.length; i++)
+        if (slides[i].offsetTop <= y && slides[i].offsetTop + slides[i].offsetHeight > y) return i;
+      return 0;
+    }
+    function go(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      slides[i].scrollIntoView({ behavior: 'smooth' });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key) >= 0) { go(cur() + 1); e.preventDefault(); }
+      else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) >= 0) { go(cur() - 1); e.preventDefault(); }
+    });
+  })();
+</script>
