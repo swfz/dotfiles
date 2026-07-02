@@ -34,4 +34,7 @@ opt.fileencodings = { "utf-8" }
 opt.backspace    = { "indent", "eol", "start" }
 
 -- Clipboard
-opt.clipboard    = "unnamed"
+-- WSL では X/Wayland プロバイダが使えず clipboard=unnamed だと無名レジスタが
+-- 壊れたシステムクリップボードに紐づき dd/p/yy が機能しなくなる。
+-- Win との同期は不要なので設定せず、nvim 内部レジスタで完結させる。
+-- OS へコピーしたい場合のみ明示的に "+y / "+p を使う想定。
