@@ -86,6 +86,9 @@ ruby・nodejs・python・golangの`starship`モジュールを高速に実行す
 ## setup-monitor-mtg.sh
 カメラ/マイクの利用を監視するsystemdユーザーサービスをセットアップする。
 
+## setup-toggl-proxy.sh
+Toggl APIプロキシサーバ（`~/memo/apps/ts-input/server/toggl2ts-server.rb`、Toggl→TeamSpiritマッピングのローカルAPI）をsystemdユーザーサービスとしてセットアップする。トークンは `~/.config/toggl/api.env` に `TOGGL_TOKEN` を記載する（toggl-*系サービスで共有）。
+
 ## switchbot
 SwitchBot API v1.1 を直接叩いてデバイスを on/off する。`SWITCHBOT_TOKEN` / `SWITCHBOT_SECRET` / `SWITCHBOT_DEVICE_ID` を環境変数で渡す。Ruby gem 依存をやめたのでランタイム差し替えの影響を受けない。
 
