@@ -4,6 +4,9 @@ After=network.target
 
 [Service]
 EnvironmentFile=%h/.config/toggl/api.env
+# miseのRuby更新後にgem未インストールで起動失敗するのを防ぐ（gem installが走る場合があるためタイムアウトは長め）
+ExecStartPre=%h/memo/apps/ts-input/server/ensure-gems.sh
+TimeoutStartSec=300
 ExecStart=%h/.local/share/mise/shims/ruby %h/memo/apps/ts-input/server/toggl2ts-server.rb
 Restart=always
 
