@@ -1,0 +1,11 @@
+[Unit]
+Description=Toggl API proxy server (ts-input Toggl->TeamSpirit mapping)
+After=network.target
+
+[Service]
+EnvironmentFile=%h/.config/toggl/api.env
+ExecStart=%h/.local/share/mise/shims/ruby %h/memo/apps/ts-input/server/toggl2ts-server.rb
+Restart=always
+
+[Install]
+WantedBy=default.target
