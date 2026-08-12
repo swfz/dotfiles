@@ -1,0 +1,388 @@
+<title>ドキュメントタイトル</title>
+<style>
+  /* ============================================================
+     style-terminal / document : ターミナルウィンドウ風 縦スクロール資料
+     - Artifact 用フラグメント (doctype/html/head/body は書かない)
+     - 外部リソース禁止。フォント・画像は data: URI で埋め込むこと
+     - Nerd Font 不使用 (powerline 矢印は CSS clip-path で描画)
+     - slide.html の姉妹版。:root の配色・--mono は slide.html と同一値
+       (色を変えるときは必ず両方揃えること)
+     - スライドとの差分: 16:9 レターボックス / container query / キーボード
+       ナビを廃止し、rem・px ベースの通常の縦スクロールフローにしている
+     ============================================================ */
+  :root {
+    --deck-bg: #12181f;   /* ページ地 (ウィンドウの外) */
+    --win:     #2b3646;   /* ウィンドウ本体 (本文の地) */
+    --bar:     #232d3a;   /* タイトルバー / ステータス地 */
+    --fg:      #d6dce1;   /* 主テキスト */
+    --muted:   #7c8a99;   /* 副次・結線・パス */
+    --accent:  #e23f7a;   /* ブランドのピンク */
+    --line:    #3c4a5a;   /* 罫線・ツリー結線・枠 */
+    --kw:      #e23f7a;   /* SQLキーワード (SELECT/FROM) */
+    --fn:      #7fb4d8;   /* 関数・キー (read_json / "id") */
+    --str:     #9ece6a;   /* 文字列 */
+    --num:     #e0a06a;   /* 数値 */
+    --com:     #6b7684;   /* コメント */
+    --prompt:  #9ece6a;   /* プロンプト記号 (D / $ / ❯) */
+    --link:    #5fb2c8;
+    --code-bg: #1f2833;   /* コードブロック地 */
+    --term-bg: #1a222c;   /* 端末出力地 */
+    --mono: ui-monospace, "SF Mono", "Cica", "HackGen", Menlo, Consolas,
+            "Noto Sans Mono CJK JP", "Yu Gothic", "Hiragino Kaku Gothic ProN", monospace;
+
+    scroll-behavior: smooth;   /* 目次リンクを滑らかに (フラグメントなので :root に指定) */
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px), /* 微かなスキャンライン */
+      radial-gradient(120% 120% at 50% 0%, #1a222c 0%, var(--deck-bg) 70%);
+    background-attachment: fixed;   /* 長いページでもビネットを固定 */
+    color: var(--fg);
+    font-family: var(--mono);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- ページ全体: 中央寄せ1カラム --- */
+  .doc { max-width: 900px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+
+  /* --- ターミナルウィンドウ本体 (1セクション = 1ウィンドウ) --- */
+  .doc-win {
+    position: relative;
+    background: var(--win);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 2px 0 rgba(255,255,255,.03) inset;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 1.5rem;   /* 目次リンクで飛んだとき上に少し余白 */
+  }
+
+  /* --- タイトルバー (信号機 + パス) --- */
+  .win-bar {
+    flex: 0 0 auto;
+    height: 2.4rem;
+    display: flex; align-items: center; gap: .4rem;
+    padding: 0 1rem;
+    background: var(--bar);
+    border-bottom: 1px solid var(--line);
+    font-size: .8rem; color: var(--muted);
+  }
+  .dot { width: .75rem; height: .75rem; border-radius: 50%; flex: 0 0 auto; }
+  .dot.r { background: #ec6a5e; } .dot.y { background: #f4bf4f; } .dot.g { background: #61c554; }
+  .win-title { margin-left: .8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .win-title b { color: #aeb9c4; font-weight: 600; }
+
+  /* --- 本文エリア --- */
+  .win-body { flex: 1 1 auto; padding: 1.8rem 1.75rem 2rem; }
+
+  /* --- 見出し (プロンプト風) --- */
+  .head {
+    display: flex; align-items: baseline; gap: .5em;
+    font-size: 1.75rem; font-weight: 700; letter-spacing: .01em;
+    margin: 0 0 1.2rem; line-height: 1.25;
+  }
+  .head::before { content: "\276F"; color: var(--accent); }  /* ❯ */
+  /* --- 小見出し --- */
+  .subhead {
+    font-size: 1.1rem; font-weight: 600; color: #aeb9c4;
+    margin: 2rem 0 .8rem; line-height: 1.3;
+  }
+  .subhead::before { content: "\276F\276F "; color: var(--accent); opacity: .6; }  /* ❯❯ */
+  .win-body > .subhead:first-child { margin-top: 0; }
+
+  /* --- 本文段落 (読み物なので行間広め) --- */
+  p { margin: 0 0 1rem; font-size: .95rem; line-height: 1.9; color: var(--fg); }
+  p:last-child { margin-bottom: 0; }
+
+  .cursor {   /* 点滅ブロックカーソル */
+    display: inline-block; width: .5em; height: 1em;
+    background: var(--accent); margin-left: .1em;
+    transform: translateY(.12em);
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* --- ツリー箇条書き (tree コマンド風の結線) --- */
+  .tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+  .tree ul { margin-left: 1.1em; }
+  .tree li {
+    position: relative;
+    padding-left: 1.5em;
+    margin: .15rem 0;
+    font-size: .95rem; line-height: 1.7;
+  }
+  .tree li::before {   /* 縦線 │ */
+    content: ""; position: absolute; left: .25em; top: 0; bottom: 0;
+    width: 1px; background: var(--line);
+  }
+  .tree li:last-child::before { bottom: calc(100% - .85em); }  /* └ の脚: ティックまでで止める */
+  .tree li::after {    /* 横線 ─ (エルボー) */
+    content: ""; position: absolute; left: .25em; top: .85em;
+    width: .85em; height: 1px; background: var(--line);
+  }
+  .tree ul li { font-size: .9rem; color: #c3ccd4; }
+  .tree ul ul li { font-size: .85rem; color: var(--muted); }
+
+  /* --- 目次 (tree 風。各セクションへのページ内リンク) --- */
+  .toc { margin-top: 1.6rem; }
+  .toc li { margin: .2rem 0; }
+  .toc a { color: var(--link); text-decoration: none; border-bottom: 1px solid transparent; }
+  .toc a:hover { border-bottom-color: var(--link); }
+  .toc .dim { margin-left: .6em; }
+
+  /* --- インライン・シンタックス色 --- */
+  .kw{color:var(--kw)} .fn{color:var(--fn)} .str{color:var(--str)}
+  .num{color:var(--num)} .com{color:var(--com);font-style:italic} .dim{color:var(--muted)}
+
+  /* --- タイトルウィンドウ (ブート風) --- */
+  .boot { font-size: .9rem; line-height: 1.8; color: var(--muted); white-space: pre-wrap; }
+  .boot .p { color: var(--prompt); }
+  .title-main { font-size: 3rem; font-weight: 700; letter-spacing: .02em; color: #eef2f5; margin-top: .8rem; line-height: 1.15; }
+  .title-sub  { font-size: 1rem; color: var(--muted); margin-top: .6rem; }
+
+  /* --- コードブロック (ファイル名タブ付き) --- */
+  .code-wrap { display: flex; flex-direction: column; align-items: flex-start; margin: 0 0 1rem; }
+  .code-tab {
+    font-size: .78rem; color: var(--fg);
+    background: var(--code-bg); border: 1px solid var(--line); border-bottom: none;
+    padding: .3rem .7rem; border-radius: 6px 6px 0 0;
+  }
+  .code-tab::before { content: "\25CF "; color: var(--num); }  /* 未保存風ドット ● */
+  pre.code, pre.term {
+    margin: 0; font-family: var(--mono); white-space: pre; overflow: auto;
+    width: fit-content; max-width: 100%;   /* 中身にフィット (余白を作らない) */
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 0 6px 6px 6px;
+    padding: .9rem 1.1rem; font-size: .85rem; line-height: 1.6; color: var(--fg);
+  }
+  pre.term {
+    border-radius: 6px; font-size: .78rem; line-height: 1.45; color: #c3ccd4;
+    background: var(--term-bg); margin: 0 0 1rem;
+  }
+  pre.term .p { color: var(--prompt); }   /* D / $ プロンプト */
+  pre.code:last-child, pre.term:last-child, .code-wrap:last-child { margin-bottom: 0; }
+
+  /* --- 2カラム --- */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .cols > * { min-width: 0; }
+  @media (max-width: 720px) { .cols { grid-template-columns: 1fr; } }
+
+  /* --- 画像 (白背景ボックスに収める) --- */
+  .figure { text-align: center; margin: 1.4rem 0 0; }
+  .figure img { max-width: 100%; background: #fff; padding: .6rem; border-radius: 4px; }
+  .figure figcaption { margin-top: .8rem; font-size: .8rem; color: var(--muted); }
+  a.link { color: var(--link); text-decoration: underline; }
+
+  /* --- ステータスライン (powerline / lightline 風) --- */
+  .status {
+    flex: 0 0 auto;
+    display: flex; align-items: stretch;
+    height: 2rem; font-size: .78rem;
+    background: var(--bar); border-top: 1px solid var(--line);
+  }
+  .seg { display: flex; align-items: center; padding: 0 .8rem; white-space: nowrap; }
+  .seg--mode { background: var(--accent); color: #17202a; font-weight: 700; position: relative; }
+  .seg--mode::after {   /* powerline の右向き矢印 */
+    content: ""; position: absolute; right: -.7rem; top: 0; bottom: 0;
+    width: .7rem; background: var(--accent);
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+  }
+  .seg--branch { background: #38465a; color: #cfd8e0; margin-left: .7rem; }
+  .seg--file   { color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+  .seg--spring { flex: 1; }
+  .seg--info   { color: var(--muted); }
+  .seg--count  { background: var(--accent); color: #17202a; font-weight: 700; position: relative; }
+  .seg--count::before {   /* powerline の左向き矢印 */
+    content: ""; position: absolute; left: -.7rem; top: 0; bottom: 0;
+    width: .7rem; background: var(--accent);
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
+
+  @media print {
+    body { background: none; }
+    .doc-win { break-inside: avoid; box-shadow: none; }
+  }
+</style>
+
+<div class="doc">
+
+  <!-- ============ タイトル (ブート風) + 目次 ============ -->
+  <section class="doc-win" id="top">
+    <div class="win-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="win-title">swfz@mac: <b>~/docs/duckdb</b> — zsh</span>
+    </div>
+    <div class="win-body">
+      <div class="boot"><span class="p">❯</span> ./build.sh --doc duckdb
+<span class="dim">▶ rendering document ...</span> <span class="str">ready</span></div>
+      <div class="title-main">DuckDB<span class="cursor"></span></div>
+      <div class="title-sub">手元で完結する分析用データベース入門 / 澤藤勇也</div>
+
+      <!-- 目次: tree 風のページ内リンク -->
+      <ul class="tree toc">
+        <li><a href="#sec-1">§1 概要</a> <span class="dim">— DuckDB とは何か</span></li>
+        <li><a href="#sec-2">§2 コード例</a> <span class="dim">— JSON を読んで SELECT する</span></li>
+        <li><a href="#sec-3">§3 実践</a> <span class="dim">— インストールと集計クエリ</span></li>
+      </ul>
+    </div>
+    <div class="status">
+      <span class="seg seg--mode">NORMAL</span>
+      <span class="seg seg--branch">git:main</span>
+      <span class="seg seg--file">index.html</span>
+      <span class="seg seg--spring"></span>
+      <span class="seg seg--info">utf-8 &nbsp; duckdb</span>
+      <span class="seg seg--count">TOC</span>
+    </div>
+  </section>
+
+  <!-- ============ §1 概要 (見出し + 段落 + ツリー箇条書き) ============ -->
+  <section class="doc-win" id="sec-1">
+    <div class="win-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="win-title">swfz@mac: <b>~/docs/duckdb/overview.md</b> — zsh</span>
+    </div>
+    <div class="win-body">
+      <h2 class="head">概要</h2>
+      <p>
+        DuckDB は <span class="kw">SQLite</span> のように単一ファイル・サーバ不要で動きながら、
+        列指向ストレージとベクトル化実行エンジンを持つ <span class="fn">OLAP</span> 向けのデータベース。
+        手元の CSV / JSON / Parquet をそのままテーブルのように SQL で扱えるので、
+        「集計のためだけに DWH へ上げる」手間を省ける。
+      </p>
+      <ul class="tree">
+        <li><span class="kw">SQLite</span> の OLAP 版
+          <ul>
+            <li>分析用途に振り切った設計 (列指向 + ベクトル化実行)</li>
+            <li>Notebook 系のライブラリの内部でも使われている
+              <ul><li>PyGWalker / dbt-duckdb など</li></ul>
+            </li>
+          </ul>
+        </li>
+        <li>様々な種類のデータを読み込める
+          <ul>
+            <li>CSV / JSON / Parquet / <span class="dim">S3 上のファイル</span></li>
+          </ul>
+        </li>
+        <li>インストールが軽い <span class="com">-- 依存なしの単一バイナリ</span></li>
+      </ul>
+    </div>
+    <div class="status">
+      <span class="seg seg--mode">NORMAL</span>
+      <span class="seg seg--branch">git:main</span>
+      <span class="seg seg--file">overview.md</span>
+      <span class="seg seg--spring"></span>
+      <span class="seg seg--info">markdown &nbsp; duckdb</span>
+      <span class="seg seg--count">§1</span>
+    </div>
+  </section>
+
+  <!-- ============ §2 コード例 (2カラム: コード + 端末出力) ============ -->
+  <section class="doc-win" id="sec-2">
+    <div class="win-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="win-title">swfz@mac: <b>~/docs/duckdb/query.sql</b> — zsh</span>
+    </div>
+    <div class="win-body">
+      <h2 class="head">コード例</h2>
+      <p>
+        ファイルを <span class="kw">CREATE TABLE</span> で取り込まなくてよい。
+        <span class="fn">read_json</span> / <span class="fn">read_csv</span> にパスを渡せば、
+        その場でテーブルとして <span class="kw">SELECT</span> できる。
+      </p>
+      <div class="cols">
+        <div>
+          <h3 class="subhead">入力ファイル</h3>
+          <div class="code-wrap">
+            <span class="code-tab">users.json</span>
+<pre class="code">[
+  {
+    <span class="fn">"id"</span>: <span class="num">1</span>,
+    <span class="fn">"name"</span>: <span class="str">"Alice"</span>,
+    <span class="fn">"age"</span>: <span class="num">30</span>
+  },
+  {
+    <span class="fn">"id"</span>: <span class="num">2</span>,
+    <span class="fn">"name"</span>: <span class="str">"Bob"</span>,
+    <span class="fn">"age"</span>: <span class="num">25</span>
+  }
+]</pre>
+          </div>
+        </div>
+        <div>
+          <h3 class="subhead">読み込み</h3>
+<pre class="term"><span class="p">D</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="fn">read_json</span>(<span class="str">'users.json'</span>);
+┌───────┬─────────┬───────┐
+│  id   │  name   │  age  │
+│ int64 │ varchar │ int64 │
+├───────┼─────────┼───────┤
+│   1   │ Alice   │   30  │
+│   2   │ Bob     │   25  │
+└───────┴─────────┴───────┘</pre>
+        </div>
+      </div>
+    </div>
+    <div class="status">
+      <span class="seg seg--mode">NORMAL</span>
+      <span class="seg seg--branch">git:main</span>
+      <span class="seg seg--file">query.sql</span>
+      <span class="seg seg--spring"></span>
+      <span class="seg seg--info">sql &nbsp; duckdb</span>
+      <span class="seg seg--count">§2</span>
+    </div>
+  </section>
+
+  <!-- ============ §3 実践 (小見出し + コード + ASCII テーブル + 画像) ============ -->
+  <section class="doc-win" id="sec-3">
+    <div class="win-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="win-title">swfz@mac: <b>~/docs/duckdb/practice.md</b> — zsh</span>
+    </div>
+    <div class="win-body">
+      <h2 class="head">実践</h2>
+
+      <h3 class="subhead">インストール</h3>
+      <p>単一バイナリなのでパッケージマネージャから入れて終わり。</p>
+      <div class="code-wrap">
+        <span class="code-tab">install.sh</span>
+<pre class="code"><span class="p">$</span> brew install duckdb
+<span class="p">$</span> duckdb <span class="com"># 引数なしならインメモリDBで起動</span></pre>
+      </div>
+
+      <h3 class="subhead">集計クエリ</h3>
+      <p>
+        <span class="fn">read_csv</span> はスキーマを推論するので、型指定なしでいきなり
+        <span class="kw">GROUP BY</span> できる。結果は CLI が ASCII 罫線で整形して返す。
+      </p>
+<pre class="term"><span class="p">D</span> <span class="kw">SELECT</span> dept, <span class="fn">count</span>(*) <span class="kw">AS</span> cnt, <span class="fn">avg</span>(salary)::<span class="kw">INT</span> <span class="kw">AS</span> avg_salary
+<span class="p">D</span> <span class="kw">FROM</span> <span class="fn">read_csv</span>(<span class="str">'employees.csv'</span>)
+<span class="p">D</span> <span class="kw">GROUP BY</span> dept <span class="kw">ORDER BY</span> cnt <span class="kw">DESC</span>;
+┌─────────────┬───────┬────────────┐
+│    dept     │  cnt  │ avg_salary │
+│   varchar   │ int64 │   int32    │
+├─────────────┼───────┼────────────┤
+│ Engineering │    42 │     720000 │
+│ Sales       │    18 │     540000 │
+│ Design      │     7 │     610000 │
+└─────────────┴───────┴────────────┘
+<span class="dim">Run Time (s): real 0.014 user 0.031 sys 0.004</span></pre>
+
+      <h3 class="subhead">参考</h3>
+      <figure class="figure">
+        <!-- 画像は data: URI で埋め込む (外部URL不可) -->
+        <!-- <img src="data:image/png;base64,..." alt=""> -->
+        <figcaption><a class="link" href="#top">DuckDB Documentation — 先頭の目次に戻る</a></figcaption>
+      </figure>
+    </div>
+    <div class="status">
+      <span class="seg seg--mode">NORMAL</span>
+      <span class="seg seg--branch">git:main</span>
+      <span class="seg seg--file">practice.md</span>
+      <span class="seg seg--spring"></span>
+      <span class="seg seg--info">markdown &nbsp; duckdb</span>
+      <span class="seg seg--count">§3</span>
+    </div>
+  </section>
+
+</div>
