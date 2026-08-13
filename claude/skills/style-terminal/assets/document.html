@@ -12,7 +12,12 @@
      - 構造: ドキュメント全体で「1つ」のターミナルウィンドウ。
        章は .win-body 内の <section class="sec"> で、破線だけで区切る
      - ライトテーマ: <div class="doc doc--light"> と class を足すだけで白基調に
-       切り替わる (下部の body:has(.doc--light) ブロックで変数を一括上書き)
+       切り替わる (下部の body:has(.doc--light) ブロックで変数を一括上書き)。
+       .win-bar 右端の .theme-toggle ボタンで読み手が実行時に切り替えられる
+     - ヘッダーバー (.win-bar) は position:sticky で画面上部に固定。
+       タイトルブロック (.title-main) が画面外に出たら .is-stuck が付き、
+       パス表示の代わりに「タイトル ❯ 現在の章見出し」(.win-doc-title) を
+       中央に表示する (scrollspy。最初の章より手前ではサブタイトル)
      ============================================================ */
   :root {
     /* --- 面 --- */
@@ -24,6 +29,7 @@
     --code-bg: #1f2833;   /* コードブロック地 */
     --term-bg: #1a222c;   /* 端末出力地 */
     --win-shadow: 0 24px 60px rgba(0,0,0,.5), 0 2px 0 rgba(255,255,255,.03) inset;
+    --bar-stuck-shadow: 0 4px 16px rgba(0,0,0,.35);  /* sticky 中の .win-bar の影 */
     /* --- 文字 --- */
     --fg:      #d6dce1;   /* 主テキスト */
     --muted:   #7c8a99;   /* 副次・結線・パス */
@@ -77,9 +83,10 @@
     display: flex; flex-direction: column;
   }
 
-  /* --- タイトルバー (信号機 + パス) --- */
+  /* --- タイトルバー (信号機 + パス。スクロール中は画面上部に固定) --- */
   .win-bar {
     flex: 0 0 auto;
+    position: sticky; top: 0; z-index: 6;
     height: 2.4rem;
     display: flex; align-items: center; gap: .4rem;
     padding: 0 1rem;
@@ -88,16 +95,35 @@
     border-radius: 9px 9px 0 0;
     font-size: .8rem; color: var(--muted);
   }
+  .win-bar.is-stuck { box-shadow: var(--bar-stuck-shadow); }
   .dot { width: .75rem; height: .75rem; border-radius: 50%; flex: 0 0 auto; }
   .dot.r { background: #ec6a5e; } .dot.y { background: #f4bf4f; } .dot.g { background: #61c554; }
-  .win-title { margin-left: .8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .win-title { margin-left: .8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: opacity .18s; }
   .win-title b { color: var(--strong); font-weight: 600; }
+  .win-bar.is-stuck .win-title { opacity: 0; }
+  .win-doc-title {   /* sticky 中に中央に出す「タイトル ❯ 現在の章見出し」(JS が scrollspy で更新) */
+    position: absolute; left: 50%; transform: translateX(-50%);
+    max-width: 55%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: var(--strong); font-weight: 600;
+    opacity: 0; transition: opacity .18s; pointer-events: none;
+  }
+  .win-doc-title .sep { color: var(--accent); font-weight: 400; margin: 0 .5em; }
+  .win-doc-title .sub { color: var(--muted); font-weight: 400; }
+  .win-bar.is-stuck .win-doc-title { opacity: 1; }
+  .theme-toggle {   /* ダーク ⇔ ライトの切り替えボタン (押した先のテーマ名を表示) */
+    margin-left: auto; flex: 0 0 auto;
+    font-family: inherit; font-size: .72rem; line-height: 1;
+    color: var(--muted); background: transparent;
+    border: 1px solid var(--line); border-radius: 5px;
+    padding: .28rem .6rem; cursor: pointer;
+  }
+  .theme-toggle:hover { color: var(--fg); border-color: var(--muted); }
 
   /* --- 本文エリア (タイトル + 目次 + 全章) --- */
   .win-body { flex: 1 1 auto; padding: 1.8rem 1.75rem 2.5rem; }
 
   /* --- 章: 2つ目以降を破線で区切る (ウィンドウ枠は作らない) --- */
-  .sec { scroll-margin-top: 1.5rem; }
+  .sec { scroll-margin-top: 3.4rem; }   /* sticky な .win-bar (2.4rem) に隠れない分 */
   .win-body > .sec:first-of-type { margin-top: 2.4rem; }
   .sec + .sec {
     margin-top: 2.6rem; padding-top: 2.6rem;
@@ -245,6 +271,7 @@
     --code-bg: #f5f3ee;
     --term-bg: #edeae3;
     --win-shadow: 0 2px 10px rgba(28,24,18,.08);   /* 影は大幅に弱める */
+    --bar-stuck-shadow: 0 3px 12px rgba(28,24,18,.14);
 
     --fg:      #2b3138;
     --muted:   #5f666e;
@@ -272,6 +299,8 @@
     .doc-win { box-shadow: none; }
     .sec { break-inside: avoid; }
     .status { position: static; }
+    .win-bar { position: static; }
+    .theme-toggle { display: none; }
   }
 </style>
 
@@ -282,6 +311,8 @@
     <div class="win-bar">
       <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
       <span class="win-title">swfz@mac: <b>~/docs/duckdb</b> — zsh</span>
+      <span class="win-doc-title"></span> <!-- 空なら JS が .title-main の文言を入れる -->
+      <button class="theme-toggle" type="button" aria-label="テーマ切り替え"></button>
     </div>
 
     <div class="win-body">
@@ -437,5 +468,73 @@
     addEventListener('scroll', function () { t = t || requestAnimationFrame(update); }, { passive: true });
     addEventListener('resize', update);
     update();
+  })();
+
+  // ヘッダーバー: タイトルブロックが画面外に出たら .is-stuck を付け、
+  // 「タイトル ❯ いま読んでいる章の見出し」を表示 (最初の章より手前ではサブタイトル)
+  (function () {
+    var bar = document.querySelector('.win-bar');
+    var docTitle = document.querySelector('.win-doc-title');
+    var titleMain = document.querySelector('.title-main');
+    var titleSub = document.querySelector('.title-sub');
+    if (!docTitle.textContent.trim() && titleMain) {
+      docTitle.textContent = titleMain.textContent.trim();
+      var fallback = titleSub ? titleSub.textContent.trim() : '';
+      var secs = [].slice.call(document.querySelectorAll('.sec'));
+      if (fallback || secs.length) {
+        var sep = document.createElement('span'); sep.className = 'sep'; sep.textContent = '❯';
+        var sub = document.createElement('span'); sub.className = 'sub';
+        docTitle.appendChild(sep); docTitle.appendChild(sub);
+        var t = 0;
+        var spy = function () {   // 現在地 = 基準線にかかっている章
+          t = 0;
+          // 基準線は通常ヘッダーバーのすぐ下 (+24px は章ジャンプ後の scroll-margin-top の位置も拾える余裕)。
+          // 末尾の章は最下部まで行っても基準線まで上がれないことがあるため、残りスクロール量が
+          // 画面 0.5 枚分を切ったら基準線を画面下端へスライドさせ、末尾の章も順に現在地になるようにする。
+          // 二次カーブ (最後で一気に下がる) にして、末尾寄りの章への目次ジャンプ直後の表示ずれを防ぐ
+          var base = bar.getBoundingClientRect().bottom + 24;
+          var maxY = document.documentElement.scrollHeight - window.innerHeight;
+          var remain = maxY - (window.scrollY || document.documentElement.scrollTop);
+          var zone = window.innerHeight * .5;
+          var line = base;
+          if (maxY > 0 && remain < zone) {
+            var k = 1 - remain / zone;
+            line = base + k * k * (window.innerHeight - base);
+          }
+          var cur = null;
+          for (var i = 0; i < secs.length; i++) {
+            if (secs[i].getBoundingClientRect().top <= line) cur = secs[i];
+          }
+          var head = cur && cur.querySelector('.head');
+          sub.textContent = head ? head.textContent.trim() : fallback;
+        };
+        addEventListener('scroll', function () { t = t || requestAnimationFrame(spy); }, { passive: true });
+        addEventListener('resize', spy);
+        spy();
+      }
+    }
+    if (titleMain) {
+      new IntersectionObserver(function (entries) {
+        bar.classList.toggle('is-stuck', !entries[0].isIntersecting);
+      }).observe(titleMain);
+    }
+  })();
+
+  // テーマ切り替え (dark ⇔ light)。ボタンには「押した先」のテーマ名を出す。
+  // 選択は localStorage に保持 (Artifact サンドボックス等で使えなければ単に保持されないだけ)
+  (function () {
+    var doc = document.querySelector('.doc');
+    var btn = document.querySelector('.theme-toggle');
+    function render() { btn.textContent = doc.classList.contains('doc--light') ? '☾ dark' : '☀ light'; }
+    try {
+      var saved = localStorage.getItem('style-terminal-theme');
+      if (saved) doc.classList.toggle('doc--light', saved === 'light');
+    } catch (e) {}
+    btn.addEventListener('click', function () {
+      doc.classList.toggle('doc--light');
+      try { localStorage.setItem('style-terminal-theme', doc.classList.contains('doc--light') ? 'light' : 'dark'); } catch (e) {}
+      render();
+    });
+    render();
   })();
 </script>
