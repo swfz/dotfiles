@@ -166,19 +166,31 @@
     height: 5.4cqh; font-size: 1.9cqw;
     background: var(--bar); border-top: 1px solid var(--line);
   }
+  /* powerline の流儀: セグメントは隙間なく並べ、矢印は「前セグメントの色の三角」を
+     「次セグメントの背景の上」に重ねて描く (mode ▶ branch ▶ 地 … 地 ◀ info ◀ count) */
   .seg { display: flex; align-items: center; padding: 0 1.8cqw; white-space: nowrap; }
-  .seg--mode { background: var(--accent); color: #17202a; font-weight: 700; position: relative; }
-  .seg--mode::after {   /* powerline の右向き矢印 */
+  .seg--mode { background: var(--accent); color: #17202a; font-weight: 700; position: relative; z-index: 2; }
+  .seg--mode::after {   /* mode 色の右向き矢印 (branch の背景に重なる) */
     content: ""; position: absolute; right: -1.2cqh; top: 0; bottom: 0;
     width: 1.2cqh; background: var(--accent);
     clip-path: polygon(0 0, 0 100%, 100% 50%);
   }
-  .seg--branch { background: #38465a; color: #cfd8e0; margin-left: 1.2cqh; }
-  .seg--file   { color: var(--muted); }
+  .seg--branch { background: #38465a; color: #cfd8e0; position: relative; z-index: 1; padding-left: calc(1.8cqw + 1.2cqh); }
+  .seg--branch::after {   /* branch 色の右向き矢印 (bar 地に重なる) */
+    content: ""; position: absolute; right: -1.2cqh; top: 0; bottom: 0;
+    width: 1.2cqh; background: #38465a;
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+  }
+  .seg--file   { color: var(--muted); padding-left: calc(1.8cqw + 1.2cqh); }
   .seg--spring { flex: 1; }
-  .seg--info   { color: var(--muted); }
+  .seg--info   { background: #38465a; color: #cfd8e0; position: relative; padding-right: calc(1.8cqw + 1.2cqh); }
+  .seg--info::before {   /* info 色の左向き矢印 (bar 地に重なる) */
+    content: ""; position: absolute; left: -1.2cqh; top: 0; bottom: 0;
+    width: 1.2cqh; background: #38465a;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
   .seg--count  { background: var(--accent); color: #17202a; font-weight: 700; position: relative; }
-  .seg--count::before {   /* powerline の左向き矢印 */
+  .seg--count::before {   /* count 色の左向き矢印 (info の背景に重なる) */
     content: ""; position: absolute; left: -1.2cqh; top: 0; bottom: 0;
     width: 1.2cqh; background: var(--accent);
     clip-path: polygon(100% 0, 0 50%, 100% 100%);

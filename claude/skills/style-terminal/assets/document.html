@@ -239,22 +239,34 @@
     background: var(--bar); border-top: 1px solid var(--line);
     border-radius: 0 0 9px 9px;
   }
+  /* powerline の流儀: セグメントは隙間なく並べ、矢印は「前セグメントの色の三角」を
+     「次セグメントの背景の上」に重ねて描く (mode ▶ branch ▶ 地 … 地 ◀ info ◀ count) */
   .seg { display: flex; align-items: center; padding: 0 .8rem; white-space: nowrap; }
-  .seg--mode { background: var(--accent); color: var(--seg-fg); font-weight: 700; position: relative; border-radius: 0 0 0 9px; }
-  .seg--mode::after {   /* powerline の右向き矢印 */
+  .seg--mode { background: var(--accent); color: var(--seg-fg); font-weight: 700; position: relative; z-index: 2; border-radius: 0 0 0 9px; }
+  .seg--mode::after {   /* mode 色の右向き矢印 (branch の背景に重なる) */
     content: ""; position: absolute; right: -.7rem; top: 0; bottom: 0;
     width: .7rem; background: var(--accent);
     clip-path: polygon(0 0, 0 100%, 100% 50%);
   }
-  .seg--branch { background: var(--branch-bg); color: var(--branch-fg); margin-left: .7rem; }
-  .seg--file   { color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+  .seg--branch { background: var(--branch-bg); color: var(--branch-fg); position: relative; z-index: 1; padding-left: 1.5rem; }
+  .seg--branch::after {   /* branch 色の右向き矢印 (bar 地に重なる) */
+    content: ""; position: absolute; right: -.7rem; top: 0; bottom: 0;
+    width: .7rem; background: var(--branch-bg);
+    clip-path: polygon(0 0, 0 100%, 100% 50%);
+  }
+  .seg--file   { color: var(--muted); overflow: hidden; text-overflow: ellipsis; padding-left: 1.5rem; }
   .seg--spring { flex: 1; }
-  .seg--info   { color: var(--muted); }
+  .seg--info   { background: var(--branch-bg); color: var(--branch-fg); position: relative; padding-right: 1.5rem; }
+  .seg--info::before {   /* info 色の左向き矢印 (bar 地に重なる) */
+    content: ""; position: absolute; left: -.7rem; top: 0; bottom: 0;
+    width: .7rem; background: var(--branch-bg);
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  }
   .seg--count  {   /* vim 風のスクロール位置 (Top / NN% / Bot) */
     background: var(--accent); color: var(--seg-fg); font-weight: 700; position: relative;
     justify-content: center; min-width: 3.6rem; border-radius: 0 0 9px 0;
   }
-  .seg--count::before {   /* powerline の左向き矢印 */
+  .seg--count::before {   /* count 色の左向き矢印 (info の背景に重なる) */
     content: ""; position: absolute; left: -.7rem; top: 0; bottom: 0;
     width: .7rem; background: var(--accent);
     clip-path: polygon(100% 0, 0 50%, 100% 100%);
