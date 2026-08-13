@@ -1,0 +1,766 @@
+<meta charset="utf-8">   <!-- ローカルHTMLとして直接開いても文字化けしないように (Artifact では無害) -->
+<title>資料タイトル</title>
+<style>
+  /* ============================================================
+     style-journal / document : 技術ジャーナル風 提案・状況報告資料
+     - Artifact 用フラグメント (doctype/html/head/body は書かない)
+     - 外部リソース禁止。画像は data: URI で埋め込むこと
+     - Webフォント不使用。明朝 (見出し) × ゴシック (本文) × 等幅 (番号・ラベル)
+       のシステムフォント3役で組む
+     - JS はテーマ切替ボタン (.theme-toggle) のみ。それ以外は CSS だけで動く
+       既定は OS テーマ追従 (data-theme 属性なし)。ボタンで明示切替すると
+       data-theme を root に立て、localStorage に保存する
+     - カラートークンは3状態対応:
+         1) bare :root            = ライト (基準。完全なパレットを持つ)
+         2) @media prefers dark   = OS がダークのとき (明示ライト指定が勝つよう guard)
+         3) :root[data-theme=...] = Artifact ビューアの明示切替
+       ★ 色を触るときは「ライト / ダーク media / ダーク attr / print」の
+         4ブロックすべてを揃えて変えること
+     - 二色構造 (デッキ「紺と躑躅」): 躑躅=シグネチャピンク #ff0087 が唯一の
+       アクセント (小さい文字は --accent-deep でコントラスト確保)、
+       紺 --navy は構造の色 (強い罫線 --rule・スラッシュ装飾・ネスト六角形)。
+       紺を強調に使わない。ブルー #0087d7 はリンク・コード関数専用 (--link)。
+       順調/注意/危険 のセマンティック色は別枠 (--ok/--warn/--risk)。
+       この区別を崩さない (新しい色相を足さない)
+     ============================================================ */
+  :root {
+    /* --- 面 --- */
+    --sheet:   #fcfdfe;   /* 紙面 (ページ全体の地。カードは使わずフラット) */
+    --code-bg: #f3f6f8;   /* コードブロック地 */
+    /* --- 文字 --- */
+    --ink:     #1f2b36;   /* 主テキスト (青バイアスの墨) */
+    --muted:   #5b6b79;   /* 副次テキスト */
+    --line:    #d7dfe6;   /* 弱い罫線 */
+    --navy:    #004c8c;   /* 紺 (デッキ「紺と躑躅」の構造色。罫線・装飾の骨格に使い、強調には使わない) */
+    --rule:    var(--navy);   /* 最強の罫線 (マストヘッド二重罫・章区切り帯) = 紺100% */
+    /* 罫線の濃度階層: 文書レベル --rule (100%) > ブロックレベル --rule-mid (60%) > 行レベル --line
+       (大きい仕切りほど濃く。--navy 参照なのでテーマに自動追従する) */
+    --rule-mid: color-mix(in srgb, var(--navy) 60%, transparent);
+    /* --- アクセント (主役はピンク1色。ブルーはリンク・コード関数専用) --- */
+    --accent:      #ff0087;   /* シグネチャピンク (罫・マーカー・番号などグラフィックと大きい文字用) */
+    --accent-deep: #c2006b;   /* 小さい文字用の濃ピンク (白地で 4.5:1 を確保) */
+    --wash:        #fdeef5;   /* アクセントの淡い地 */
+    --link:        #0087d7;   /* リンク・コード関数のブルー。強調には使わない */
+    /* --- セマンティック (ステータス専用。アクセントとは別枠) --- */
+    --ok:        #25714a;  --ok-wash:   #e9f4ee;
+    --warn:      #96660f;  --warn-wash: #f9f1dd;
+    --risk:      #b13226;  --risk-wash: #faeceb;
+    /* --- シンタックス (別名。新しい色相は足さない。参照なので定義は1回でよい) --- */
+    --kw:  var(--accent-deep);
+    --fn:  var(--link);
+    --str: var(--ok);
+    --num: var(--warn);
+    --com: var(--muted);
+    /* --- フォント3役 ---
+       先頭の "* Embedded" は embed_fonts.py が公開前に data URI で埋め込む
+       Webフォント (題字=しっぽり明朝 / 本文=Noto Sans JP / 等幅=JetBrains Mono)。
+       未埋め込みでもシステムフォントのフォールバックで読める。
+       フォールバックは Noto (バリアブル。本物のウェイトを持つ) を
+       BIZ/Yu (1〜2ウェイトで疑似ボールドになりがち) より優先する */
+    --serif: "Shippori Mincho Embedded", Georgia, "Hiragino Mincho ProN",
+             "Noto Serif JP", "BIZ UDPMincho", "Yu Mincho", YuMincho, serif;
+    --sans:  "Noto Sans JP Embedded", "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+             "Noto Sans JP", "BIZ UDPGothic", "Yu Gothic Medium", "Yu Gothic",
+             "Segoe UI", sans-serif;
+    --mono:  "JetBrains Mono Embedded", ui-monospace, "JetBrains Mono", "Cascadia Code",
+             "SF Mono", Menlo, Consolas, "Noto Sans Mono CJK JP",
+             "Noto Sans JP Embedded", monospace;   /* 末尾寄りは等幅内の和文用フォールバック */
+
+    scroll-behavior: smooth;   /* 目次リンクを滑らかに (フラグメントなので :root に指定) */
+  }
+
+  /* --- ダーク: OS 設定 (明示ライト指定 data-theme="light" が勝つよう guard) --- */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --sheet:   #182129;
+      --code-bg: #121a21;
+      --ink:     #d9e3eb;
+      --muted:   #93a5b3;
+      --line:    #33424f;
+      --navy:    #005faf;   /* ダークでは深い鮮やかなブルー */
+      --accent:      #ff0087;
+      --accent-deep: #ff77b9;   /* ダークでは逆に明るいピンクで小さい文字のコントラストを確保 */
+      --wash:        #331a28;
+      --link:        #4db2ec;
+      --ok:   #66c493;  --ok-wash:   #172e22;
+      --warn: #d9b060;  --warn-wash: #2e2715;
+      --risk: #e88579;  --risk-wash: #331d1a;
+    }
+  }
+  /* --- ダーク: ビューアの明示切替 (上の media ブロックと同値を維持すること) --- */
+  :root[data-theme="dark"] {
+    --sheet:   #182129;
+    --code-bg: #121a21;
+    --ink:     #d9e3eb;
+    --muted:   #93a5b3;
+    --line:    #33424f;
+    --navy:    #005faf;
+    --accent:      #ff0087;
+    --accent-deep: #ff77b9;
+    --wash:        #331a28;
+    --link:        #4db2ec;
+    --ok:   #66c493;  --ok-wash:   #172e22;
+    --warn: #d9b060;  --warn-wash: #2e2715;
+    --risk: #e88579;  --risk-wash: #331d1a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--sheet);   /* 透過させない (ホストの地を借りない) */
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- ページ全体: カード (紙面の枠) は使わずフラット。中央寄せの1カラム --- */
+  .page  { max-width: 1040px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+
+  /* --- ジャーナル罫 (太1本 + 細1本の二重罫) --- */
+  .rule        { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+  .rule--double{
+    border-top: 3px solid var(--rule); position: relative;
+    height: 3px; overflow: visible;   /* UA の hr { overflow: hidden } が ::after の細罫をクリップするので上書き */
+  }
+  .rule--double::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 2px;
+    border-top: 1px solid var(--rule);
+  }
+
+  /* ============ マストヘッド (文書種別・番号・日付 / 題字 / メタ情報) ============ */
+  .eyebrow {
+    display: flex; align-items: baseline; gap: 1em; flex-wrap: wrap;
+    font-family: var(--mono); font-size: .74rem; letter-spacing: .14em;
+    color: var(--muted); margin-bottom: .55rem;
+  }
+  .eyebrow .doc-type { color: var(--accent); font-weight: 700; }
+  .eyebrow .spring   { flex: 1; }
+
+  .title {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(1.65rem, 4.5vw, 2.45rem); line-height: 1.35;
+    letter-spacing: .02em; text-wrap: balance;
+    font-feature-settings: "palt" 1;   /* 約物を詰めて題字らしく (非対応フォントでは無視される) */
+    margin: 1.5rem 0 0;
+  }
+  .title-sub {
+    font-family: var(--serif); font-size: 1.02rem; color: var(--muted);
+    margin: .55rem 0 0; letter-spacing: .03em;
+  }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 1rem 2.2rem; align-items: flex-end; margin: 1.5rem 0 1.1rem; }
+  .meta-item .lab {
+    display: block; font-family: var(--mono); font-size: .66rem;
+    letter-spacing: .16em; color: var(--muted); margin-bottom: .25rem;
+  }
+  .meta-item .val { font-size: .9rem; font-weight: 600; }
+  .meta .spring   { flex: 1; }
+
+  /* ============ ステータスピル (色 + 形の二重符号化。色だけに頼らない) ============ */
+  .pill {
+    display: inline-flex; align-items: center; gap: .4em;
+    font-size: .76rem; font-weight: 700; line-height: 1;
+    padding: .38em .8em; border-radius: 999px;
+    background: var(--wash); color: var(--accent-deep);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  .pill::before { content: "●"; font-size: .7em; }              /* 既定 (info) */
+  .pill--ok   { background: var(--ok-wash);   color: var(--ok);
+                border-color: color-mix(in srgb, var(--ok) 35%, transparent); }
+  .pill--warn { background: var(--warn-wash); color: var(--warn);
+                border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
+  .pill--warn::before { content: "▲"; }
+  .pill--risk { background: var(--risk-wash); color: var(--risk);
+                border-color: color-mix(in srgb, var(--risk) 35%, transparent); }
+  .pill--risk::before { content: "✕"; }
+  .pill--mute { background: transparent; color: var(--muted); border-color: var(--line); }
+  .pill--mute::before { content: "○"; }
+
+  /* ピルの前置きラベル: 全体: ●順調  スケジュール: ▲注意 */
+  .pills    { display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; margin: 0 0 1.2rem; }
+  .pill-set { display: inline-flex; align-items: center; gap: .55em; }
+  .pill-set .lab { font-size: .8rem; color: var(--muted); }
+
+  /* ============ サマリー (結論ファースト。マストヘッド直下に必ず置く) ============ */
+  .summary {
+    margin: 1.6rem 0 0; padding: 1.05rem 1.3rem;
+    background: var(--wash); border-left: 4px solid var(--accent);
+    border-radius: 0 3px 3px 0;
+  }
+  .summary .lab {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .16em;
+    color: var(--accent-deep); font-weight: 700; display: block; margin-bottom: .45rem;
+  }
+  .summary p { margin: 0; font-size: .96rem; line-height: 1.95; }
+  .summary p + p { margin-top: .5rem; }
+
+  /* ============ 目次 (テーブルと同じ天地の強罫で囲んで独立したブロックに見せる) ============ */
+  .toc-wrap {
+    margin: 2.1rem 0 0; padding: .8rem 0 .6rem;
+    border-top: 2px solid var(--rule-mid); border-bottom: 2px solid var(--rule-mid);
+  }
+  .toc-wrap .lab {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .16em;
+    color: var(--muted); display: block; margin-bottom: .5rem;
+  }
+  ol.toc { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  ol.toc li {
+    counter-increment: toc;
+    display: flex; align-items: baseline; gap: .7em;
+    font-size: .92rem; padding: .28rem 0;
+  }
+  ol.toc li + li { border-top: 1px dotted var(--line); }
+  ol.toc li::before {
+    content: counter(toc) "."; font-family: var(--serif);
+    color: var(--accent); min-width: 1.2em; text-align: right;
+  }
+  ol.toc a { color: var(--ink); text-decoration: none; }
+  ol.toc a:hover { color: var(--link); text-decoration: underline; text-underline-offset: .25em; }
+  ol.toc .dim { margin-left: auto; padding-left: 1em; text-align: right; }
+
+  /* ============ 章 (番号は CSS カウンタ。目次と順序を揃えること) ============ */
+  .body { counter-reset: sec; margin-top: 2.6rem; }
+  .sec  { scroll-margin-top: 1.5rem; }
+  .sec + .sec {   /* 章の切れ目: デッキのスライド上下と同じ二色罫で区切る */
+    margin-top: 3.1rem; padding-top: 1.6rem;   /* 区切り帯と章タイトルの間は詰める */
+    position: relative;
+  }
+  .sec + .sec::before {   /* 左からの太い帯が継ぎ目のスラッシュで消えていく。線上は紺一色 (ピンクは混ぜない) */
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+    background-image: linear-gradient(var(--navy), var(--navy));
+    background-size: 62% 6px;
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+  }
+  .sec + .sec::after {   /* 継ぎ目: 帯がスラッシュに割れ、1本ずつ細く・まばらになりながら消えていく */
+    content: ""; position: absolute; left: calc(62% - .4rem); top: 0;
+    width: 3.6rem; height: 6px;
+    background-color: var(--sheet);   /* 重なった帯の端を塗りつぶして断ち切る (透け防止) */
+    background-image: linear-gradient(75deg,   /* 1本ごとに細く・薄くなっていく */
+      var(--navy) 0 5px,                                              transparent 5.8px 9.8px,
+      color-mix(in srgb, var(--navy) 82%, transparent) 10.6px 14.6px, transparent 15.4px 19.8px,
+      color-mix(in srgb, var(--navy) 64%, transparent) 20.6px 23.8px, transparent 24.6px 29.4px,
+      color-mix(in srgb, var(--navy) 48%, transparent) 30.2px 32.6px, transparent 33.4px 38.6px,
+      color-mix(in srgb, var(--navy) 34%, transparent) 39.4px 41.2px, transparent 42px 47.6px,
+      color-mix(in srgb, var(--navy) 22%, transparent) 48.4px 49.6px, transparent 50.4px);
+  }
+
+  .head {
+    display: flex; align-items: baseline; gap: .6em;
+    font-family: var(--serif); font-weight: 600;
+    font-size: 1.42rem; line-height: 1.45; letter-spacing: .01em;
+    font-feature-settings: "palt" 1;
+    margin: 0 0 1.3rem; text-wrap: balance;
+  }
+  .head::before {
+    counter-increment: sec; content: counter(sec) ".";
+    color: var(--accent); flex: 0 0 auto;
+    font-family: var(--mono); font-size: 1.35em; font-weight: 700;   /* 章番号は大きめのプログラミングフォント */
+  }
+  .head::after {   /* 見出し末尾の罫線 */
+    content: ""; flex: 1 0 2.5rem; height: 1px;
+    background: var(--line); align-self: center; margin-left: .4em;
+  }
+
+  .subhead {
+    font-size: 1.02rem; font-weight: 700; margin: 2rem 0 .8rem;
+    padding-left: .65em; border-left: 3px solid var(--accent); line-height: 1.5;
+  }
+
+  /* --- 本文 --- */
+  p { margin: 0 0 1rem; font-size: .94rem; line-height: 2.0; }
+  p:last-child { margin-bottom: 0; }
+  a { color: var(--link); text-decoration: underline; text-underline-offset: .25em; }
+  strong { font-weight: 700; }
+  code {   /* インラインコード */
+    font-family: var(--mono); font-size: .84em;
+    background: var(--code-bg); border: 1px solid var(--line);
+    padding: .08em .4em; border-radius: 3px;
+  }
+  .dim { color: var(--muted); font-size: .85em; }
+
+  /* --- 箇条書き (デッキ由来の六角形マーカー) --- */
+  ul.list { list-style: none; margin: 0 0 1rem; padding: 0; }
+  ul.list li { position: relative; padding-left: 1.3em; margin: .35rem 0; font-size: .94rem; line-height: 1.9; }
+  ul.list li::before {
+    content: ""; position: absolute; left: .08em; top: .7em;
+    width: .52em; height: .58em; background: var(--accent); opacity: .6;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  }
+  ul.list ul { list-style: none; margin: .2rem 0 0; padding: 0 0 0 .2em; }
+  ul.list ul li { font-size: .88rem; color: var(--muted); }
+  ul.list ul li::before { width: .4em; height: .44em; top: .68em; opacity: .5;
+    background: var(--navy); }   /* ネストは紺の六角形 (デッキの混色に倣う) */
+
+  /* ============ 事実 / 解釈 / 依頼 のラベル (書き手の3区分を視覚化) ============ */
+  .lab-chip {
+    display: inline-block; font-size: .7rem; font-weight: 700; line-height: 1;
+    padding: .3em .55em; border-radius: 2px; margin-right: .55em;
+    vertical-align: .12em; letter-spacing: .08em;
+  }
+  .lab-chip--fact   { color: var(--muted);  border: 1px solid var(--line); }        /* 事実: 無彩 */
+  .lab-chip--interp { color: var(--accent-deep); border: 1px solid
+                      color-mix(in srgb, var(--accent) 45%, transparent); }         /* 解釈: アクセント枠 */
+  .lab-chip--ask    { color: var(--sheet);  background: var(--accent-deep);
+                      border: 1px solid var(--accent-deep); }                       /* 依頼: アクセント地 */
+
+  /* ============ キー数値タイル (冒頭に数字で現状を示す) ============ */
+  .kv { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.2rem; margin: 1.4rem 0; }
+  .kv-item {
+    border-top: 1px solid var(--rule-mid); padding-top: .6rem;
+    border-left: 1px solid var(--rule-mid); padding-left: .7em;   /* 数値ブロックの目印 (上罫と同色の左罫) */
+  }
+  .kv-lab  { font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; color: var(--muted); }
+  .kv-num  {
+    font-family: var(--serif); font-size: 1.85rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; line-height: 1.2; margin-top: .2rem;
+  }
+  .kv-num small { font-size: .55em; color: var(--muted); font-weight: 400; margin-left: .1em; }
+  .kv-delta { font-size: .76rem; font-weight: 700; margin-top: .25rem; font-variant-numeric: tabular-nums; }
+  .kv-delta--bad  { color: var(--risk); }
+  .kv-delta--good { color: var(--ok); }
+  .kv-delta .dim  { font-weight: 400; }
+
+  /* ============ 提案・依頼・注意 callout (枠上にラベルが乗る) ============ */
+  .callout {
+    position: relative; margin: 1.6rem 0 1.2rem; padding: 1.15rem 1.3rem .95rem;
+    border: 1.5px solid var(--accent); border-radius: 3px;
+  }
+  .callout-lab {
+    position: absolute; top: -.72em; left: 1rem;
+    background: var(--sheet); padding: 0 .6em;
+    font-size: .78rem; font-weight: 700; color: var(--accent-deep); letter-spacing: .12em;
+  }
+  .callout p, .callout ul.list { font-size: .93rem; }
+  .callout > :last-child { margin-bottom: 0; }
+  .callout--risk { border-color: var(--risk); }
+  .callout--risk .callout-lab { color: var(--risk); }
+
+  /* ============ Before/After (現状→改善後。中央にアクセントのシェブロン) ============ */
+  .ba { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.1rem; align-items: center; margin: 1.5rem 0 1.2rem; }
+  .ba-panel {
+    align-self: stretch; border: 1px solid var(--line); border-radius: 3px;
+    padding: .95rem 1.15rem .85rem;
+  }
+  .ba-panel .lab {
+    display: block; font-family: var(--mono); font-size: .66rem;
+    letter-spacing: .16em; color: var(--muted); margin-bottom: .5rem;
+  }
+  .ba-panel--after { border-color: color-mix(in srgb, var(--accent) 55%, transparent); background: var(--wash); }
+  .ba-panel--after .lab { color: var(--accent-deep); }
+  .ba-panel p, .ba-panel ul.list li { font-size: .9rem; }
+  .ba-chevrons { display: flex; gap: .3em; }
+  .ba-chevrons i {
+    width: .8em; height: 1.2em; font-size: 1.15rem; background: var(--accent);
+    clip-path: polygon(0 0, 50% 0, 100% 50%, 50% 100%, 0 100%, 50% 50%);
+  }
+  .ba-chevrons i:nth-child(2) { opacity: .7; }
+  .ba-chevrons i:nth-child(3) { opacity: .45; }
+  @media (max-width: 720px) {
+    .ba { grid-template-columns: 1fr; }
+    .ba-chevrons { justify-content: center; transform: rotate(90deg); }
+  }
+
+  /* ============ テーブル (天地の強罫 + 横罫のみ。縦罫は引かない) ============ */
+  .tbl-wrap { overflow-x: auto; margin: 1.3rem 0; }
+  table.tbl { border-collapse: collapse; width: 100%; font-size: .88rem; }
+  .tbl th, .tbl td { padding: .55rem .8rem; text-align: left; vertical-align: top; line-height: 1.7; }
+  .tbl thead th {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .1em;
+    color: var(--muted); font-weight: 700;
+    border-top: 2px solid var(--rule-mid); border-bottom: 1px solid var(--rule-mid);
+    white-space: nowrap;
+  }
+  .tbl tbody tr + tr td, .tbl tbody tr + tr th { border-top: 1px solid var(--line); }
+  .tbl tbody { border-bottom: 2px solid var(--rule-mid); }
+  .tbl tbody tr:last-child td, .tbl tbody tr:last-child th { border-bottom: 2px solid var(--rule-mid); }
+  .tbl tbody th { font-weight: 700; font-size: .85rem; white-space: nowrap; }
+  .tbl td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* 比較表の推奨列 */
+  .tbl .rec { background: var(--wash); }
+  .rec-badge {
+    display: inline-block; font-size: .64rem; font-weight: 700; letter-spacing: .1em;
+    color: var(--sheet); background: var(--accent-deep);
+    padding: .25em .6em; border-radius: 2px; margin-bottom: .3rem;
+  }
+
+  /* ============ 差分ブロック (前回からの変化。状況報告の本体) ============ */
+  ul.diff { list-style: none; margin: 0 0 1rem; padding: 0; }
+  ul.diff li {
+    display: flex; gap: .7em; align-items: baseline;
+    padding: .42rem .2rem; font-size: .92rem; line-height: 1.8;
+  }
+  ul.diff li + li { border-top: 1px dotted var(--line); }
+  ul.diff li::before {
+    font-family: var(--mono); font-weight: 700; flex: 0 0 1em; text-align: center;
+  }
+  .diff--add::before  { content: "+"; color: var(--ok); }
+  .diff--del::before  { content: "−"; color: var(--risk); }
+  .diff--keep::before { content: "＝"; color: var(--muted); }
+  .diff--keep { color: var(--muted); }
+  ul.diff .dim { margin-left: auto; padding-left: 1em; white-space: nowrap; }
+
+  /* ============ コードブロック (ファイル名キャプション付き) ============ */
+  .code-wrap { margin: 1.2rem 0; }
+  .code-cap {
+    font-family: var(--mono); font-size: .72rem; color: var(--muted);
+    letter-spacing: .06em; margin-bottom: .35rem;
+  }
+  .code-cap::before { content: "— "; color: var(--accent); }
+  pre.code {
+    margin: 0; padding: .95rem 1.15rem;
+    font-family: var(--mono); font-size: .82rem; line-height: 1.7;
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 3px;
+    overflow-x: auto; white-space: pre;
+  }
+  .kw{color:var(--kw);font-weight:700} .fn{color:var(--fn)} .str{color:var(--str)}
+  .num{color:var(--num)} .com{color:var(--com);font-style:italic}
+
+  /* ============ 画像 (スクリーンショット想定。地は両テーマとも白) ============ */
+  .figure { text-align: center; margin: 1.4rem 0; }
+  .figure img { max-width: 100%; background: #fff; padding: .5rem; border: 1px solid var(--line); border-radius: 3px; }
+  .figure figcaption { margin-top: .6rem; font-size: .78rem; color: var(--muted); }
+
+  /* ============ 奥付 (作成者・更新履歴) ============ */
+  .colophon { margin-top: 3rem; }
+  .colophon .rule--double { margin-bottom: 1.1rem; }
+  .colophon .meta { margin: 0 0 1rem; }
+  table.history { border-collapse: collapse; font-size: .78rem; color: var(--muted); }
+  table.history td { padding: .15rem 1.2rem .15rem 0; vertical-align: top; line-height: 1.7; }
+  table.history td:first-child { font-family: var(--mono); white-space: nowrap; }
+
+  /* ============ テーマ切替ボタン (右上固定。既定はOS追従、クリックで明示切替) ============ */
+  .theme-toggle {
+    position: fixed; top: 1rem; right: 1rem; z-index: 10;
+    width: 2.4rem; height: 2.4rem; border-radius: 50%;
+    display: grid; place-items: center; padding: 0;
+    border: 1px solid var(--line); background: var(--sheet); color: var(--muted);
+    font-family: var(--sans); font-size: 1.05rem; line-height: 1; cursor: pointer;
+    box-shadow: 0 1px 4px rgba(15,30,45,.15);
+  }
+  .theme-toggle:hover { color: var(--accent-deep);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+
+  /* ============ 印刷 (ライトの配色で刷る。ダーク閲覧中でも紙は白) ============ */
+  @media print {
+    :root, :root[data-theme="dark"] {
+      --sheet: #fff; --code-bg: #f3f6f8;
+      --ink: #1f2b36; --muted: #5b6b79; --line: #d7dfe6; --navy: #004c8c;
+      --accent: #ff0087; --accent-deep: #c2006b; --wash: #fdeef5; --link: #0087d7;
+      --ok: #25714a; --ok-wash: #e9f4ee;
+      --warn: #96660f; --warn-wash: #f9f1dd;
+      --risk: #b13226; --risk-wash: #faeceb;
+    }
+    body { background: #fff; }
+    .page { max-width: none; padding: 0; }
+    .summary, .callout, .kv, .tbl-wrap, .code-wrap, .figure, .ba { break-inside: avoid; }
+    .theme-toggle { display: none; }
+  }
+</style>
+
+<!-- テーマ切替 (既定はOS追従。アイコンとツールチップは JS が現在の実効テーマから設定する) -->
+<button class="theme-toggle" type="button" aria-label="テーマ切り替え">◐</button>
+
+<div class="page">
+  <article class="sheet">
+
+    <!-- ============ マストヘッド ============ -->
+    <header class="mast">
+      <div class="eyebrow">
+        <span class="doc-type">PROPOSAL</span>
+        <span>NO. 2026-081</span>
+        <span class="spring"></span>
+        <span>2026-08-12</span>
+      </div>
+      <hr class="rule rule--double">
+      <h1 class="title">BigQuery スキャンコスト最適化</h1>
+      <p class="title-sub">パーティション分割による費用削減の提案</p>
+      <div class="meta">
+        <span class="spring"></span>
+        <span class="pill">レビュー待ち</span>
+      </div>
+      <hr class="rule">
+    </header>
+
+    <!-- ============ サマリー (結論ファースト。必ずここに置く) ============ -->
+    <section class="summary">
+      <span class="lab">SUMMARY — 依頼したいこと</span>
+      <p>
+        BigQuery のスキャン費用が3ヶ月で約2倍 (月額 ¥118k → ¥241k) になっている。
+        主要因は <code>events</code> テーブルへの全期間スキャンで、
+        パーティション分割 + クラスタリング (案B) により<strong>月額約 ¥120k の削減</strong>を見込む。
+        <strong>9月第1週の実施について、8/29 (金) までに承認をお願いしたい。</strong>
+      </p>
+    </section>
+
+    <!-- ============ 目次 ============ -->
+    <nav class="toc-wrap" id="top">
+      <span class="lab">CONTENTS</span>
+      <ol class="toc">
+        <li><a href="#sec-1">スキャン費用が3ヶ月で2倍になっている</a><span class="dim">背景</span></li>
+        <li><a href="#sec-2">3つの選択肢</a><span class="dim">比較</span></li>
+        <li><a href="#sec-3">推奨: 案B (パーティション + クラスタリング)</a><span class="dim">根拠</span></li>
+        <li><a href="#sec-4">進め方と依頼事項</a><span class="dim">アクション</span></li>
+        <li><a href="#sec-5">前回レビューからの差分</a><span class="dim">進捗</span></li>
+      </ol>
+    </nav>
+
+    <main class="body">
+
+      <!-- ============ 1. 背景 (見出しはキーメッセージ。数字 → 事実/解釈の順) ============ -->
+      <section class="sec" id="sec-1">
+        <h2 class="head">スキャン費用が3ヶ月で2倍になっている</h2>
+
+        <div class="kv">
+          <div class="kv-item">
+            <div class="kv-lab">月間スキャン費用</div>
+            <div class="kv-num">¥241<small>k</small></div>
+            <div class="kv-delta kv-delta--bad">▲ +104% <span class="dim">vs 5月</span></div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-lab">月間スキャン量</div>
+            <div class="kv-num">48.2<small>TB</small></div>
+            <div class="kv-delta kv-delta--bad">▲ +96% <span class="dim">vs 5月</span></div>
+          </div>
+          <div class="kv-item">
+            <div class="kv-lab">対象クエリ数</div>
+            <div class="kv-num">312<small>本/日</small></div>
+            <div class="kv-delta"><span class="dim">横ばい</span></div>
+          </div>
+        </div>
+
+        <p>
+          <span class="lab-chip lab-chip--fact">事実</span>
+          増加分の 78% は <code>analytics.events</code> テーブルへの直接クエリが占める。
+          クエリ本数は横ばいで、1クエリあたりのスキャン量だけが増えている。
+        </p>
+        <p>
+          <span class="lab-chip lab-chip--interp">解釈</span>
+          ダッシュボードの日次更新が全期間スキャンになっており、テーブルの成長に比例して
+          費用が増える構造。放置すると年末には月額 ¥400k 規模に達する見込み。
+        </p>
+        <ul class="list">
+          <li>調査で分かったこと
+            <ul>
+              <li>上位10クエリのうち 8本が <code>WHERE</code> に日付条件を持つ (プルーニング可能)</li>
+              <li>残り2本はレポート用の全件集計で、対象外としてよい</li>
+            </ul>
+          </li>
+          <li>費用の内訳と推移の詳細は <a href="#top">別紙ダッシュボード</a> を参照</li>
+        </ul>
+      </section>
+
+      <!-- ============ 2. 選択肢 (比較表。推奨列をハイライト) ============ -->
+      <section class="sec" id="sec-2">
+        <h2 class="head">3つの選択肢</h2>
+        <p>削減効果・工数・リスクの3軸で比較した。詳細な試算は §3 に記載。</p>
+
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th></th>
+                <th>案A: ビュー最適化のみ</th>
+                <th class="rec"><span class="rec-badge">推奨</span><br>案B: パーティション + クラスタ</th>
+                <th>案C: BI Engine 導入</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>削減見込み</th>
+                <td class="num">¥40k/月</td>
+                <td class="num rec">¥120k/月</td>
+                <td class="num">¥90k/月</td>
+              </tr>
+              <tr>
+                <th>初期工数</th>
+                <td>2人日</td>
+                <td class="rec">5人日</td>
+                <td>3人日 + 月額固定費</td>
+              </tr>
+              <tr>
+                <th>停止時間</th>
+                <td>なし</td>
+                <td class="rec">なし (並行移行)</td>
+                <td>なし</td>
+              </tr>
+              <tr>
+                <th>リスク</th>
+                <td>効果が頭打ち</td>
+                <td class="rec">移行時のクエリ書き換え漏れ</td>
+                <td>固定費 ¥60k/月 が常時発生</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ 3. 推奨案 (callout + 根拠 + コード + 試算表) ============ -->
+      <section class="sec" id="sec-3">
+        <h2 class="head">推奨: 案B (パーティション + クラスタリング)</h2>
+
+        <div class="callout">
+          <span class="callout-lab">提案</span>
+          <p>
+            <code>events</code> を <code>event_time</code> の日付パーティション +
+            <code>user_id</code> クラスタリングで再作成し、参照側を段階的に切り替える。
+            並行稼働期間を2週間設け、<strong>停止時間ゼロ</strong>で移行する。
+          </p>
+        </div>
+
+        <h3 class="subhead">根拠</h3>
+        <ul class="list">
+          <li>削減額が最大 (¥120k/月)。初期工数 5人日は約1.2ヶ月で回収できる</li>
+          <li>固定費が増えない (案C は BI Engine の月額 ¥60k が常時発生する)</li>
+          <li>主要クエリの 8/10 が日付条件を持つため、書き換えなしでプルーニングが効く</li>
+        </ul>
+
+        <h3 class="subhead">移行前後のイメージ</h3>
+        <div class="ba">
+          <div class="ba-panel">
+            <span class="lab">BEFORE</span>
+            <p><code>events</code> へ全期間スキャン。月額 <strong>¥241k</strong>、日次更新のたびに 1,840 GB を走査。</p>
+          </div>
+          <div class="ba-chevrons" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="ba-panel ba-panel--after">
+            <span class="lab">AFTER</span>
+            <p>日付パーティション + <code>user_id</code> クラスタで月額 <strong>約¥121k</strong>。日次更新の走査は 62 GB に。</p>
+          </div>
+        </div>
+
+        <h3 class="subhead">移行 DDL</h3>
+        <div class="code-wrap">
+          <div class="code-cap">migrate_events.sql</div>
+<pre class="code"><span class="kw">CREATE TABLE</span> <span class="fn">analytics.events_v2</span>
+<span class="kw">PARTITION BY</span> <span class="fn">DATE</span>(event_time)
+<span class="kw">CLUSTER BY</span> user_id
+<span class="kw">AS SELECT</span> * <span class="kw">FROM</span> <span class="fn">analytics.events</span>;  <span class="com">-- 検証環境で 14 min / エラーなし</span></pre>
+        </div>
+
+        <h3 class="subhead">効果試算 (検証環境での実測)</h3>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>クエリ</th><th>現行スキャン</th><th>移行後</th><th>削減率</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>日次ダッシュボード更新</th><td class="num">1,840 GB</td><td class="num">62 GB</td><td class="num">−96.6%</td></tr>
+              <tr><th>ユーザー別集計バッチ</th><td class="num">920 GB</td><td class="num">118 GB</td><td class="num">−87.2%</td></tr>
+              <tr><th>月次レポート (全件集計)</th><td class="num">460 GB</td><td class="num">460 GB</td><td class="num">±0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 画像を入れる場合は data: URI で埋め込む (外部URL不可)
+        <figure class="figure">
+          <img src="data:image/png;base64,..." alt="費用推移グラフ">
+          <figcaption>スキャン費用の月次推移 (2026-05 〜 2026-08)</figcaption>
+        </figure>
+        -->
+      </section>
+
+      <!-- ============ 4. 依頼 (callout--依頼 + 担当・期限つきアクションテーブル) ============ -->
+      <section class="sec" id="sec-4">
+        <h2 class="head">進め方と依頼事項</h2>
+
+        <div class="callout">
+          <span class="callout-lab">依頼</span>
+          <p>
+            <strong>8/29 (金) までに本提案の承認</strong>をお願いしたい。
+            承認され次第、9/1 (月) の週から移行作業に着手する。
+            懸念点があればこのドキュメントへのコメント、または #data-platform まで。
+          </p>
+        </div>
+
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th>アクション</th><th>担当</th><th>期限</th><th>状態</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>検証環境での効果測定</th><td>swfz</td><td class="num">08/08</td><td><span class="pill pill--ok">完了</span></td></tr>
+              <tr><th>負荷試験</th><td>swfz</td><td class="num">08/22</td><td><span class="pill pill--warn">1週遅延</span></td></tr>
+              <tr><th>本提案の承認</th><td>データ基盤チーム</td><td class="num">08/29</td><td><span class="pill pill--mute">未着手</span></td></tr>
+              <tr><th><code>events_v2</code> 作成・並行稼働開始</th><td>swfz</td><td class="num">09/05</td><td><span class="pill pill--mute">未着手</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ 5. 差分 (状況報告の中核部品。前回からの変化だけを書く) ============ -->
+      <section class="sec" id="sec-5">
+        <h2 class="head">前回レビューからの差分</h2>
+
+        <div class="pills">
+          <span class="pill-set"><span class="lab">全体</span><span class="pill pill--ok">順調</span></span>
+          <span class="pill-set"><span class="lab">スケジュール</span><span class="pill pill--warn">注意</span></span>
+          <span class="pill-set"><span class="lab">予算影響</span><span class="pill pill--mute">変更なし</span></span>
+        </div>
+
+        <ul class="diff">
+          <li class="diff--add">検証環境での効果測定が完了。試算を §3 に反映<span class="dim">08/08</span></li>
+          <li class="diff--add">ステークホルダーレビュー 3/4 完了 (残: SRE チーム)<span class="dim">08/11</span></li>
+          <li class="diff--del">負荷試験が1週遅延。完了見込みは 08/22<span class="dim">08/12</span></li>
+          <li class="diff--keep">移行スケジュール・予算影響に変更なし</li>
+        </ul>
+
+        <div class="callout callout--risk">
+          <span class="callout-lab">リスク</span>
+          <p>
+            負荷試験がさらに1週遅れると 9月第1週の着手に間に合わない。
+            その場合は着手を 9/8 週にスライドする (削減開始が2週遅れ、機会損失 約¥60k)。
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ 奥付 ============ -->
+    <footer class="colophon">
+      <hr class="rule rule--double">
+      <div class="meta">
+        <div class="meta-item"><span class="lab">作成</span><span class="val">swfz</span></div>
+        <div class="meta-item"><span class="lab">最終更新</span><span class="val">2026-08-12</span></div>
+      </div>
+      <table class="history">
+        <tr><td>v1.0 — 08/01</td><td>初版 (課題整理と選択肢の洗い出し)</td></tr>
+        <tr><td>v1.1 — 08/12</td><td>検証環境での実測値を反映、進捗と差分の章を追加</td></tr>
+      </table>
+    </footer>
+
+  </article>
+</div>
+
+<script>
+  // テーマ切替: 既定は OS テーマ追従 (data-theme なし)。クリックで実効テーマの
+  // 反対側に明示切替し、選択を localStorage に保存する (次回開いたときも維持)。
+  (function () {
+    var KEY = 'style-journal-theme';
+    var root = document.documentElement;
+    var btn = document.querySelector('.theme-toggle');
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    try {
+      var saved = localStorage.getItem(KEY);
+      if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+    } catch (e) {}
+    function effective() {
+      var t = root.getAttribute('data-theme');
+      return (t === 'dark' || t === 'light') ? t : (mq.matches ? 'dark' : 'light');
+    }
+    function paint() {
+      var dark = effective() === 'dark';
+      btn.textContent = dark ? '☀' : '☾';
+      btn.title = dark ? 'ライトテーマに切り替え' : 'ダークテーマに切り替え';
+      btn.setAttribute('aria-label', btn.title);
+    }
+    btn.addEventListener('click', function () {
+      var next = effective() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem(KEY, next); } catch (e) {}
+      paint();
+    });
+    mq.addEventListener('change', paint);   // OS追従中にOS側が変わったらアイコンも追従
+    paint();
+  })();
+</script>
