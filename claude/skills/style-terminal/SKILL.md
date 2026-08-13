@@ -48,7 +48,7 @@ HTML 資料を、外部リソースに依存しない単一 HTML として生成
 1. **モードを判定し、該当テンプレートを読む。** どちらも全コンポーネントを含む動くリファレンス (DuckDB 例) を兼ねる。
 2. **内容を差し替える。**
    - スライド: 1トピック = 1 `<section class="slide">` → `<div class="slide-inner">` の中に `.win-bar` / `.win-body` / `.status` の3段。ページ番号は `.status` の `.seg--count` 内 `<span class="pageno">N</span>/総数` を更新 (タイトルは `1`)。
-   - ドキュメント: 全体を `<div class="doc">` (中央寄せ・最大幅900px) → `<div class="doc-win">` (`.win-bar` / `.win-body` / `.status` の3段) で包む。`.win-body` の中にタイトルブロック + 目次 `<ul class="tree toc">` を置き、続けて章を `<section class="sec" id="sec-N">` として並べる。目次の `<a>` は各章の `id` へのページ内リンク。`.seg--count` は末尾の JS が自動更新するので触らない。ライトにするなら `.doc` に `doc--light` を足す。
+   - ドキュメント: 全体を `<div class="doc">` (中央寄せ・最大幅900px。コードやテーブルが多いなら `doc--wide` を足して1200px、任意幅は `--doc-w` で指定) → `<div class="doc-win">` (`.win-bar` / `.win-body` / `.status` の3段) で包む。`.win-body` の中にタイトルブロック + 目次 `<ul class="tree toc">` を置き、続けて章を `<section class="sec" id="sec-N">` として並べる。目次の `<a>` は各章の `id` へのページ内リンク。`.seg--count` は末尾の JS が自動更新するので触らない。ライトにするなら `.doc` に `doc--light` を足す。
    - `.win-bar` のパス表示と `.status` の `git:` ブランチ・ファイル名・モードは**テーマに合わせて書き換える**と世界観が締まる。
 3. **画像は data: URI で埋め込む** (Artifact は外部URL・CDN・フォント読み込みを CSP でブロックする)。
    - ローカル画像 → base64 化して `<img src="data:image/png;base64,...">`。

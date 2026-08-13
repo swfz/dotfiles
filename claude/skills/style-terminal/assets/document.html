@@ -68,8 +68,11 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* --- ページ全体: 中央寄せ1カラム --- */
-  .doc { max-width: 900px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  /* --- ページ全体: 中央寄せ1カラム ---
+     幅は --doc-w で制御。既定 900px は読みやすい行長。コード・テーブルが
+     多い資料は .doc に doc--wide を足して 1200px に広げる (任意の値も可) */
+  .doc { max-width: var(--doc-w, 900px); margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+  .doc--wide { --doc-w: 1200px; }
 
   /* --- ターミナルウィンドウ本体 (ドキュメント全体で1つだけ) ---
      .status を position:sticky で画面下に張り付かせるため overflow:hidden は
@@ -304,7 +307,7 @@
   }
 </style>
 
-<!-- ライトテーマにするときは class="doc doc--light" -->
+<!-- ライトテーマにするときは class="doc doc--light" / 幅広にするときは doc--wide を追加 -->
 <div class="doc">
   <div class="doc-win">
 
