@@ -29,6 +29,7 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
+    overflow: hidden;   /* 表示は常に1枚。スクロールバーを出さない */
     background:
       repeating-linear-gradient(0deg, rgba(0,0,0,.10) 0 1px, transparent 1px 3px), /* 微かなスキャンライン */
       radial-gradient(120% 120% at 50% 0%, #1a222c 0%, var(--deck-bg) 70%);
@@ -36,15 +37,15 @@
     font-family: var(--mono);
     -webkit-font-smoothing: antialiased;
   }
-  .deck { scroll-snap-type: y mandatory; }
 
-  /* --- スライド枠: 16:9 レターボックス --- */
+  /* --- スライド枠: 16:9 レターボックス (表示中の1枚だけを出す) --- */
   .slide {
+    display: none;   /* .is-active だけ表示。スクロールせずキーで差し替える */
     height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    scroll-snap-align: start;
+    align-items: center; justify-content: center;
     padding: 2.2vh 2vw;
   }
+  .slide.is-active { display: flex; }
   /* --- ターミナルウィンドウ本体 --- */
   .slide-inner {
     position: relative;
@@ -196,13 +197,152 @@
     clip-path: polygon(100% 0, 0 50%, 100% 100%);
   }
 
-  @media print { .slide { height: auto; page-break-after: always; } }
+  /* ============================================================
+     発表者ツール (アウトライン / ヘルプ / presenter view)
+     - カンペと経過時間は presenter view にだけ出す (本番スライドには出さない)
+     - オーバーレイは .slide-inner の内側に重ねる (16:9 を崩さない)
+     - presenter view は別ウィンドウ。この <style> をクローンして持ち込むので
+       .pv-* も必ずこのブロックに置く (外部リソース禁止のまま完結させる)
+     ============================================================ */
+
+  /* --- オーバーレイのペイン (tmux の分割ペイン風) --- */
+  .pane {
+    position: absolute; left: 0; right: 0; z-index: 5;
+    display: none; flex-direction: column;
+    background: var(--term-bg);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -12px 32px rgba(0,0,0,.45);
+  }
+  .pane.is-open { display: flex; }
+  .pane--full  { top: 6.4cqh; bottom: 5.4cqh; border-top: none; }
+  .pane-bar {
+    flex: 0 0 auto;
+    display: flex; align-items: center; gap: 1.2cqw;
+    padding: .9cqh 2.4cqw;
+    font-size: 1.8cqw; color: var(--muted);
+  }
+  .pane-name { color: var(--accent); font-weight: 700; }
+  .pane-rule { flex: 1; border-top: 1px dashed var(--line); }  /* ─── の伸縮罫線 */
+  .pane-body {
+    flex: 1 1 auto; min-height: 0; overflow: auto;
+    padding: 1.4cqh 2.8cqw 2cqh;
+    font-size: 2.2cqw; line-height: 1.6; color: #c3ccd4;
+  }
+  .pane-empty { color: var(--com); font-style: italic; }
+
+  /* --- アウトライン一覧 --- */
+  .ol-list { list-style: none; margin: 0; padding: 0; }
+  .ol-list li {
+    display: flex; align-items: baseline; gap: 1.2cqw;
+    padding: .45cqh 0; font-size: 2.2cqw; color: #aeb9c4;
+  }
+  .ol-list li::before { content: "\00a0"; width: 1em; flex: 0 0 auto; }
+  .ol-list li.is-cur { color: #eef2f5; font-weight: 700; }
+  .ol-list li.is-sel {   /* Enter で飛ぶ先の選択カーソル */
+    background: rgba(226, 63, 122, .16);
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+  .ol-list li.is-cur::before { content: "\276F"; color: var(--accent); }  /* ❯ */
+  .ol-no { color: var(--muted); min-width: 2.4cqw; text-align: right; }
+  .ol-list li.is-cur .ol-no { color: var(--accent); }
+  .ol-t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ol-min { margin-left: auto; color: var(--num); font-variant-numeric: tabular-nums; }
+
+  /* --- ヘルプ --- */
+  .help-grid { display: grid; grid-template-columns: auto 1fr; gap: .6cqh 2.4cqw; font-size: 2.1cqw; }
+  .help-grid kbd { color: var(--accent); font-family: var(--mono); white-space: nowrap; }
+
+  /* --- 一時メッセージ (presenter view が開けなかった等) --- */
+  .toast {
+    position: absolute; z-index: 9; left: 2.4cqw; bottom: 7cqh;
+    max-width: 60cqw;
+    background: var(--accent); color: #17202a; font-weight: 700;
+    font-size: 1.8cqw; line-height: 1.4;
+    padding: .9cqh 1.8cqw; border-radius: 4px;
+  }
+
+  /* ============================================================
+     presenter view (別ウィンドウ / PiP)
+     container が無いので cqw ではなく px 基準で書く。
+     デッキ用の .tree などは cqw 指定なので明示的に打ち消す。
+     ============================================================ */
+  .pv {
+    display: flex; flex-direction: column; gap: 12px;
+    box-sizing: border-box; height: 100vh; padding: 14px 16px;
+    font-family: var(--mono); color: var(--fg);
+  }
+  .pv-top { display: flex; align-items: baseline; gap: 10px; }
+  .pv-clock {
+    font-size: 38px; font-weight: 700; color: #eef2f5;
+    font-variant-numeric: tabular-nums; letter-spacing: .02em; line-height: 1;
+  }
+  .pv-total { font-size: 15px; color: var(--muted); }
+  .pv-budget {   /* 持ち時間 (分) を発表中に変えられる入力欄 */
+    width: 4.6em; margin: 0 .15em;
+    font-family: var(--mono); font-size: 14px; text-align: right;
+    color: var(--fg); background: var(--code-bg);
+    border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px;
+  }
+  .pv-budget:focus { outline: none; border-color: var(--accent); }
+  .pv-delta { margin-left: auto; font-size: 17px; font-weight: 700; color: var(--muted); }
+  .pv-delta.is-behind { color: var(--accent); }
+  .pv-delta.is-ahead  { color: var(--str); }
+  .pv-bar { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .pv-bar > i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .pv-cur { display: flex; gap: .4em; font-size: 20px; font-weight: 700; color: #eef2f5; line-height: 1.25; }
+  .pv-cur::before { content: "\276F"; color: var(--accent); }
+  .pv-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); }
+  .pv-meta b { color: #aeb9c4; font-weight: 600; }
+  .pv-notes {
+    flex: 1 1 auto; min-height: 60px; overflow: auto;
+    background: var(--term-bg); border: 1px solid var(--line); border-radius: 6px;
+    padding: 11px 13px; font-size: 15px; line-height: 1.65;
+  }
+  .pv-notes p { margin: 0 0 .5em; }
+  .pv-notes .tree li,
+  .pv-notes .tree ul li,
+  .pv-notes .tree ul ul li { font-size: 15px; margin: 2px 0; }
+  .pv-next { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pv-next b { color: #aeb9c4; font-weight: 600; }
+  .pv-foot { display: flex; align-items: center; gap: 8px; }
+  .pv-jump, .pv-btn {
+    font-family: var(--mono); font-size: 12px; color: var(--fg);
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px;
+    padding: 5px 7px;
+  }
+  .pv-jump { flex: 1; min-width: 0; }
+  .pv-btn { cursor: pointer; background: var(--bar); white-space: nowrap; }
+  .pv-btn:hover { border-color: var(--accent); }
+  /* PiP は狭いので詰める */
+  @media (max-height: 430px) {
+    .pv { gap: 8px; padding: 10px 12px; }
+    .pv-clock { font-size: 27px; }
+    .pv-cur { font-size: 16px; }
+    .pv-notes { font-size: 13.5px; padding: 8px 10px; }
+    .pv-notes .tree li,
+    .pv-notes .tree ul li,
+    .pv-notes .tree ul ul li { font-size: 13.5px; }
+  }
+
+  @media print {   /* 印刷・PDF 化のときだけ全スライドを縦に並べる */
+    body { overflow: visible; }
+    .slide { display: flex !important; height: auto; page-break-after: always; }
+    .pane, .toast { display: none !important; }
+  }
 </style>
 
-<div class="deck">
+<!-- data-total: 全体の持ち時間(分)。data-min 未指定のスライドには残りが等分で配られる -->
+<div class="deck" data-total="15">
 
   <!-- ============ タイトル (ブート風) ============ -->
-  <section class="slide">
+  <section class="slide" data-min="0.5">
+    <!-- カンペ: <template> なのでレンダリングされない。中で .tree や色 span も使える -->
+    <template class="notes">
+      <ul class="tree">
+        <li>掴みの一言。タイマーは <span class="kw">t</span> で走らせる</li>
+        <li>自己紹介は 20 秒で切り上げる</li>
+      </ul>
+    </template>
     <div class="slide-inner">
       <div class="win-bar">
         <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
@@ -228,7 +368,13 @@
   </section>
 
   <!-- ============ ツリー箇条書き ============ -->
-  <section class="slide">
+  <section class="slide" data-min="2">
+    <template class="notes">
+      <p>SQLite との対比から入る。<span class="dim">OLTP / OLAP の説明は深追いしない</span></p>
+      <ul class="tree">
+        <li>PyGWalker の話は時間が余ったときだけ</li>
+      </ul>
+    </template>
     <div class="slide-inner">
       <div class="win-bar">
         <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
@@ -338,22 +484,336 @@
 </div>
 
 <script>
-  // ← → / Space / PageUp・Down でスライド移動
+  /* ============================================================
+     スライド切り替え + 発表者ツール
+       ← → ↑ ↓ Space PgUp/PgDn  移動      g / G  先頭 / 末尾
+       o  アウトライン    ?  ヘルプ    Esc  閉じているペインを閉じる
+       t  タイマー開始/停止   T  リセット
+       p  presenter view (別ウィンドウ。ダメなら PiP にフォールバック)
+
+     - スライドは**表示中の1枚だけ**を出す。スクロールしないのでスクロールバーが出ず、
+       キー押下でパッと切り替わる。
+     - **カンペと経過時間は presenter view にだけ出す。** 本番スライドには出さない。
+       カンペは各 .slide 直下の <template class="notes"> に書く。
+     - 想定尺は .slide の data-min="1.5" (分)、全体の持ち時間は .deck の data-total。
+     - presenter view は同じ JS realm から DOM を直接触るので状態同期のコードは不要。
+     ============================================================ */
   (function () {
-    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-    function cur() {
-      var y = window.scrollY + window.innerHeight / 2;
-      for (var i = 0; i < slides.length; i++)
-        if (slides[i].offsetTop <= y && slides[i].offsetTop + slides[i].offsetHeight > y) return i;
-      return 0;
+    var doc = document;
+    var deck = doc.querySelector('.deck');
+    var slides = Array.prototype.slice.call(doc.querySelectorAll('.slide'));
+    if (!slides.length) return;
+    var N = slides.length;
+
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
     }
-    function go(i) {
-      i = Math.max(0, Math.min(slides.length - 1, i));
-      slides[i].scrollIntoView({ behavior: 'smooth' });
+    function mmss(sec) {
+      var neg = sec < 0;
+      sec = Math.abs(Math.round(sec));
+      var m = Math.floor(sec / 60), s = sec % 60;
+      return (neg ? '-' : '') + m + ':' + (s < 10 ? '0' : '') + s;
     }
-    document.addEventListener('keydown', function (e) {
-      if (['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key) >= 0) { go(cur() + 1); e.preventDefault(); }
-      else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) >= 0) { go(cur() - 1); e.preventDefault(); }
+    function signed(sec) { return (sec < 0 ? '' : '+') + mmss(sec); }
+
+    /* ---------- スライドのメタ情報 ---------- */
+    var titles = slides.map(function (s) {
+      var el = s.querySelector('.head, .title-main');
+      return el ? el.textContent.trim().replace(/\s+/g, ' ') : '';
     });
+    var notes = slides.map(function (s) {
+      var t = s.querySelector('template.notes');
+      return t ? t.innerHTML.trim() : '';
+    });
+
+    /* 想定尺: data-min 未指定のスライドには data-total の残りを等分で配る */
+    var declared = slides.map(function (s) {
+      var v = parseFloat(s.getAttribute('data-min'));
+      return isFinite(v) ? v : null;
+    });
+    var sumDeclared = declared.reduce(function (a, m) { return a + (m || 0); }, 0);
+    var blanks = declared.filter(function (m) { return m === null; }).length;
+    var totalAttr = parseFloat(deck && deck.getAttribute('data-total'));
+    var budgetMin = isFinite(totalAttr) ? totalAttr
+                  : (blanks === 0 ? sumDeclared : null);   /* 総尺が決まらない場合は null */
+    var plan, cumStart, budgetSec;
+
+    /* 持ち時間は presenter view から変えられるので、その都度ここで配分を組み直す */
+    function recalcPlan() {
+      var fill = (budgetMin !== null && blanks > 0) ? Math.max(0, (budgetMin - sumDeclared) / blanks) : 0;
+      plan = declared.map(function (m) { return m === null ? fill : m; });
+      cumStart = [];   /* 各スライドに入る時点での目標経過秒 */
+      for (var i = 0, acc = 0; i < N; i++) { cumStart.push(acc * 60); acc += plan[i]; }
+      budgetSec = budgetMin !== null ? budgetMin * 60 : null;
+    }
+    recalcPlan();
+
+    /* ---------- 状態 (開閉状態は永続化しない: 本番で開いたまま復元されると事故る) ---------- */
+    var idx = 0;
+    var sel = 0;   /* アウトラインの選択カーソル (Enter で飛ぶ先) */
+    var ui = { outline: false, help: false };
+    var timer = { startedAt: null, accum: 0 };
+    var pv = null;   /* presenter view: { win, doc, els } */
+
+    function elapsed() {
+      return timer.accum + (timer.startedAt !== null ? (Date.now() - timer.startedAt) / 1000 : 0);
+    }
+    function ticking() { return timer.startedAt !== null; }
+    function started() { return ticking() || timer.accum > 0; }
+    function toggleTimer() {
+      if (ticking()) { timer.accum = elapsed(); timer.startedAt = null; }
+      else timer.startedAt = Date.now();
+      renderView(); renderClock();
+    }
+    function resetTimer() {
+      timer.startedAt = null; timer.accum = 0;
+      renderView(); renderClock();
+    }
+
+    /* ---------- 移動 (スクロールせず表示を差し替える) ---------- */
+    function go(i) {
+      i = Math.max(0, Math.min(N - 1, i));
+      if (i === idx) return;
+      idx = i;
+      renderView();
+    }
+
+    /* ---------- ステータスライン: ページ番号の採番 ---------- */
+    function setupStatus() {
+      slides.forEach(function (s, i) {
+        var st = s.querySelector('.status');
+        if (!st) return;
+        var count = st.querySelector('.seg--count');
+        if (count) count.innerHTML = '<span class="pageno">' + (i + 1) + '</span>/' + N;
+        var mode = st.querySelector('.seg--mode');
+        if (mode && !mode.getAttribute('data-orig')) mode.setAttribute('data-orig', mode.textContent);
+      });
+    }
+
+    /* ---------- オーバーレイのペイン (1組を表示中のスライドへ付け替える) ---------- */
+    function makePane(name, hint) {
+      var el = doc.createElement('div');
+      el.className = 'pane pane--full';
+      el.innerHTML =
+        '<div class="pane-bar"><span class="pane-name">' + name + '</span>' +
+        '<span class="pane-rule"></span><span>' + hint + '</span></div>' +
+        '<div class="pane-body"></div>';
+      return el;
+    }
+    var outlinePane = makePane(':outline',
+      '[&uarr;&darr;] select &nbsp; [Enter] go &nbsp; [Esc] cancel &nbsp; [o] close');
+    var helpPane = makePane(':help', '[?] close');
+    helpPane.querySelector('.pane-body').innerHTML = '<div class="help-grid">' +
+      [['&rarr; &darr; Space PgDn', '次のスライド'],
+       ['&larr; &uarr; PgUp', '前のスライド'],
+       ['g / G', '先頭 / 末尾'],
+       ['o', 'アウトラインの開閉 (&uarr;&darr; で選択 / Enter でそのスライドへ)'],
+       ['t / T', 'タイマー 開始・停止 / リセット'],
+       ['p', 'presenter view を別ウィンドウで開く / 閉じる (カンペ・時計はこちら)'],
+       ['? / Esc', 'このヘルプ / 開いているペインを閉じる']]
+        .map(function (r) { return '<kbd>' + r[0] + '</kbd><span>' + r[1] + '</span>'; }).join('') +
+      '</div>';
+
+    function outlineHtml() {
+      return '<ul class="ol-list">' + titles.map(function (t, i) {
+        return '<li class="' + (i === idx ? 'is-cur ' : '') + (i === sel ? 'is-sel' : '') + '">' +
+          '<span class="ol-no">' + (i + 1) + '</span>' +
+          '<span class="ol-t">' + esc(t || '(無題)') + '</span>' +
+          '<span class="ol-min">' + (plan[i] ? mmss(plan[i] * 60) : '') + '</span></li>';
+      }).join('') + '</ul>';
+    }
+
+    function toast(msg) {
+      var inner = slides[idx].querySelector('.slide-inner');
+      if (!inner) return;
+      var t = doc.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      inner.appendChild(t);
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 4000);
+    }
+
+    /* ---------- presenter view ---------- */
+    function pvBodyHtml() {
+      return '<div class="pv">' +
+        '<div class="pv-top"><span class="pv-clock">0:00</span>' +
+        '<span class="pv-total">/ <input class="pv-budget" type="number" min="0" step="0.5" placeholder="--"> min</span>' +
+        '<span class="pv-delta"></span></div>' +
+        '<div class="pv-bar"><i></i></div>' +
+        '<div class="pv-cur"></div>' +
+        '<div class="pv-meta"></div>' +
+        '<div class="pv-notes"></div>' +
+        '<div class="pv-next"></div>' +
+        '<div class="pv-foot">' +
+          '<select class="pv-jump" title="スライドへジャンプ"></select>' +
+          '<button class="pv-btn pv-timer" type="button">t: start</button>' +
+          '<button class="pv-btn pv-reset" type="button">T: reset</button>' +
+        '</div></div>';
+    }
+
+    function attachPresenter(win, wdoc) {
+      var meta = wdoc.createElement('meta');
+      meta.setAttribute('charset', 'utf-8');
+      wdoc.head.appendChild(meta);
+      /* デッキの <style> をそのまま持ち込む (外部リソースを足さない) */
+      var st = doc.querySelector('style');
+      if (st) wdoc.head.appendChild(wdoc.importNode(st, true));
+      wdoc.title = 'presenter — ' + (doc.title || 'deck');
+      wdoc.body.innerHTML = pvBodyHtml();
+
+      var els = {};
+      ['clock', 'total', 'delta', 'cur', 'meta', 'notes', 'next', 'jump', 'budget'].forEach(function (k) {
+        els[k] = wdoc.querySelector('.pv-' + k);
+      });
+      els.bar = wdoc.querySelector('.pv-bar > i');
+      els.tbtn = wdoc.querySelector('.pv-timer');
+      els.rbtn = wdoc.querySelector('.pv-reset');
+
+      /* 持ち時間はここから変えられる (data-total が初期値。空にするとペース判定なし) */
+      els.budget.value = budgetMin !== null ? String(budgetMin) : '';
+      els.budget.addEventListener('input', function () {
+        var v = parseFloat(els.budget.value);
+        budgetMin = isFinite(v) && v > 0 ? v : null;
+        recalcPlan();
+        renderView(); renderClock();
+      });
+
+      els.jump.innerHTML = titles.map(function (t, i) {
+        return '<option value="' + i + '">' + (i + 1) + '. ' + esc(t || '(無題)') + '</option>';
+      }).join('');
+      els.jump.addEventListener('change', function () {
+        go(parseInt(els.jump.value, 10));
+        els.jump.blur();   /* フォーカスが残ると矢印キーが select に食われる */
+      });
+      els.tbtn.addEventListener('click', toggleTimer);
+      els.rbtn.addEventListener('click', resetTimer);
+      wdoc.addEventListener('keydown', onKey);
+      win.addEventListener('pagehide', function () { pv = null; });
+
+      pv = { win: win, doc: wdoc, els: els };
+      renderView(); renderClock();
+    }
+
+    function openPresenter() {
+      if (pv) { closePresenter(); return; }
+      /* 本線は別ウィンドウ。PiP はブラウザ全体で1枠しかなく Meet のミニウィンドウと
+         奪い合うので、ポップアップがブロックされたときだけのフォールバックに置く。 */
+      var w = null;
+      /* window name を固定すると同名の既存ウィンドウを乗っ取るので _blank で毎回新規に開く
+         (二重に開くのは pv 変数で防いでいる) */
+      try { w = window.open('', '_blank', 'width=840,height=640'); } catch (e) {}
+      if (w && !w.closed && w.document) { attachPresenter(w, w.document); return; }
+      if (window.documentPictureInPicture) {
+        window.documentPictureInPicture.requestWindow({ width: 520, height: 440 })
+          .then(function (pw) { attachPresenter(pw, pw.document); })
+          .catch(function () { toast('presenter view を開けません (ポップアップと PiP が両方ブロックされています)'); });
+        return;
+      }
+      toast('presenter view を開けません (ポップアップがブロックされています)');
+    }
+    function closePresenter() {
+      if (!pv) return;
+      try { pv.win.close(); } catch (e) {}
+      pv = null;
+    }
+
+    /* ---------- 描画: 構造 (idx / 開閉が変わったとき) ---------- */
+    function renderView() {
+      slides.forEach(function (s, i) { s.classList.toggle('is-active', i === idx); });
+
+      var inner = slides[idx].querySelector('.slide-inner');
+      if (inner) [outlinePane, helpPane].forEach(function (p) {
+        if (p.parentNode !== inner) inner.appendChild(p);
+      });
+      if (ui.outline) outlinePane.querySelector('.pane-body').innerHTML = outlineHtml();
+      outlinePane.classList.toggle('is-open', ui.outline);
+      helpPane.classList.toggle('is-open', ui.help);
+
+      var mode = ui.help ? ':help' : ui.outline ? ':outline' : null;
+      slides.forEach(function (s) {
+        var m = s.querySelector('.seg--mode');
+        if (m) m.textContent = mode !== null ? mode : (m.getAttribute('data-orig') || 'NORMAL');
+      });
+
+      if (pv) {
+        pv.els.cur.textContent = titles[idx] || '(無題)';
+        pv.els.notes.innerHTML =
+          notes[idx] || '<span class="pane-empty">(このスライドにカンペはありません)</span>';
+        pv.els.next.innerHTML = idx + 1 < N
+          ? 'next &#10095; <b>' + (idx + 2) + '. ' + esc(titles[idx + 1] || '(無題)') + '</b>'
+          : 'next &#10095; <b>(最後のスライド)</b>';
+        if (pv.els.jump.value !== String(idx)) pv.els.jump.value = String(idx);
+        pv.els.tbtn.textContent = ticking() ? 't: pause' : 't: start';
+      }
+    }
+
+    /* ---------- 描画: 時計 (0.5秒ごと。presenter view にだけ出す) ---------- */
+    function renderClock() {
+      if (!pv) return;
+      var el = elapsed();
+      var delta = budgetSec !== null && started() ? el - cumStart[idx] : null;
+      var SLACK = 20;   /* 遅れ・巻きを色で出すまでの猶予 (秒) */
+      var cls = delta === null ? '' : delta > SLACK ? ' is-behind' : delta < -SLACK ? ' is-ahead' : '';
+
+      pv.els.clock.textContent = mmss(el);
+      pv.els.delta.textContent = delta !== null ? signed(delta) : (ticking() ? '' : 'not started');
+      pv.els.delta.className = 'pv-delta' + cls;
+      var ratio = budgetSec ? el / budgetSec : (idx + 1) / N;
+      pv.els.bar.style.width = Math.min(100, Math.max(0, ratio * 100)) + '%';
+      var left = cumStart[idx] + plan[idx] * 60 - el;
+      pv.els.meta.innerHTML =
+        'slide <b>' + (idx + 1) + '/' + N + '</b>' +
+        (plan[idx] ? '<span>目安 <b>' + mmss(plan[idx] * 60) + '</b></span>' : '') +
+        (plan[idx] && started()
+          ? '<span>' + (left < 0 ? 'このスライド <b>超過 ' + mmss(-left) + '</b>'
+                                 : 'このスライド残り <b>' + mmss(left) + '</b>') + '</span>'
+          : '');
+    }
+
+    /* ---------- キー ---------- */
+    function onKey(e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var tag = ((e.target && e.target.tagName) || '').toLowerCase();
+      if (tag === 'select' || tag === 'input' || tag === 'textarea') return;
+      var k = e.key;
+
+      /* アウトライン表示中は矢印で選択カーソルを動かし、Enter でそのスライドへ飛ぶ */
+      if (ui.outline) {
+        if (['ArrowDown', 'ArrowRight', 'PageDown', ' ', 'j'].indexOf(k) >= 0) {
+          sel = Math.min(N - 1, sel + 1); renderView(); e.preventDefault(); return;
+        }
+        if (['ArrowUp', 'ArrowLeft', 'PageUp', 'k'].indexOf(k) >= 0) {
+          sel = Math.max(0, sel - 1); renderView(); e.preventDefault(); return;
+        }
+        if (k === 'g') { sel = 0; renderView(); e.preventDefault(); return; }
+        if (k === 'G') { sel = N - 1; renderView(); e.preventDefault(); return; }
+        if (k === 'Enter') {
+          ui.outline = false; go(sel); renderView(); e.preventDefault(); return;
+        }
+      }
+
+      if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].indexOf(k) >= 0) { go(idx + 1); e.preventDefault(); }
+      else if (['ArrowLeft', 'ArrowUp', 'PageUp'].indexOf(k) >= 0) { go(idx - 1); e.preventDefault(); }
+      else if (k === 'g') { go(0); e.preventDefault(); }
+      else if (k === 'G') { go(N - 1); e.preventDefault(); }
+      else if (k === 'o') { ui.outline = !ui.outline; ui.help = false; sel = idx; renderView(); e.preventDefault(); }
+      else if (k === '?') { ui.help = !ui.help; ui.outline = false; renderView(); e.preventDefault(); }
+      else if (k === 't') { toggleTimer(); e.preventDefault(); }
+      else if (k === 'T') { resetTimer(); e.preventDefault(); }
+      else if (k === 'p') { openPresenter(); e.preventDefault(); }
+      else if (k === 'Escape') { ui.outline = ui.help = false; renderView(); }
+    }
+
+    /* ---------- 起動 ---------- */
+    setupStatus();
+    renderView();
+    renderClock();
+    setInterval(renderClock, 500);
+    doc.addEventListener('keydown', onKey);
+
+    /* 元のウィンドウを閉じたら presenter view も畳む */
+    window.addEventListener('pagehide', closePresenter);
   })();
 </script>
