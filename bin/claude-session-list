@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Claude Codeの全セッションをタブ区切りの一覧として標準出力に出す
+
+1行 = 日付\t[プロジェクト名] タイトル\tjsonlフルパス (日付降順)
+
+Usage: claude-session-list [projects_dir]
+  projects_dir を省略した場合は ~/.claude/projects を使う
+"""
+import json, os, glob, datetime, re, sys
+
+projects_dir = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser("~/.claude/projects")
+
+summary_map = {}
+for idx in glob.glob(os.path.join(projects_dir, '*/sessions-index.json')):
+    try:
+        with open(idx) as f:
+            data = json.load(f)
+        for e in data.get('entries', []):
+            sid = e.get('sessionId', '')
+            s = e.get('summary', '')
+            if sid and s:
+                summary_map[sid] = s
+    except Exception:
+        pass
+
+results = []
+for proj_dir in glob.glob(os.path.join(projects_dir, '*/')):
+    dirname = os.path.basename(proj_dir.rstrip('/'))
+    if dirname == 'memory':
+        continue
+    proj_name = None
+    for f in sorted(glob.glob(os.path.join(proj_dir, '*.jsonl'))):
+        sid = os.path.splitext(os.path.basename(f))[0]
+        mtime = os.path.getmtime(f)
+        date = datetime.datetime.fromtimestamp(mtime).strftime('%Y-%m-%d')
+        title = summary_map.get(sid, '')
+        try:
+            with open(f) as fh:
+                for line in fh:
+                    msg = json.loads(line)
+                    if not proj_name and 'cwd' in msg:
+                        proj_name = os.path.basename(msg['cwd'])
+                    if not title and msg.get('type') == 'user':
+                        c = msg.get('message', {}).get('content', '')
+                        t = c if isinstance(c, str) else next((x.get('text', '') for x in c if x.get('type') == 'text'), '')
+                        t = t.replace('\n', ' ').replace('\t', ' ').strip()
+                        t = re.sub(r'<[^>]+>[^<]*</[^>]+>', '', t).strip()[:80]
+                        if t and not t.startswith('<'):
+                            title = t
+                    if proj_name and title:
+                        break
+            with open(f) as fh2:
+                for tl in fh2:
+                    if '"custom-title"' in tl:
+                        tm = json.loads(tl)
+                        if tm.get('type') == 'custom-title':
+                            title = tm.get('customTitle', '')
+        except Exception:
+            pass
+        if not title:
+            title = '(no title)'
+        pn = proj_name or dirname
+        results.append((date, pn, title, f))
+
+results.sort(key=lambda x: x[0], reverse=True)
+for d, p, t, f in results:
+    print(f'{d}\t[{p}] {t}\t{f}')

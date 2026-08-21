@@ -17,6 +17,9 @@ Auto Scaling Group内で稼働中のEC2インスタンスのプライベートIP
 ## claude-hook-notify
 Claude Codeのフックで、通知の送信とtmuxウィンドウの見た目を更新する。
 
+## claude-session-list
+Claude Codeの全セッションを「日付/プロジェクト名+タイトル/jsonlパス」のタブ区切り一覧として出力する。
+
 ## claude-session-preview
 Claude CodeのセッションJSONLファイルをプレビュー・整形表示する。
 
