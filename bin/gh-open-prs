@@ -11,29 +11,62 @@ usage() {
   echo "Usage: gh-open-prs <summary|json> [username]"
   echo ""
   echo "Subcommands:"
-  echo "  summary  Show repo breakdown sorted by PR count"
+  echo "  summary  Show repo breakdown (PR count and CI result counts) sorted by PR count"
   echo "  json     Full JSON output grouped by repository"
   exit 1
 }
 
 readonly subcommand="${1:-}"
 readonly username="${2:-swfz}"
-readonly per_page=100
 
 if [ -z "$subcommand" ] || [[ "$subcommand" != "summary" && "$subcommand" != "json" ]]; then
   usage
 fi
 
+# GraphQL search so that each PR carries the CI status of its latest commit.
+# statusCheckRollup is null when the repository has no checks/statuses configured.
+readonly graphql_query='
+query($q: String!, $endCursor: String) {
+  search(query: $q, type: ISSUE, first: 100, after: $endCursor) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      ... on PullRequest {
+        number
+        title
+        url
+        createdAt
+        updatedAt
+        author { login }
+        repository { nameWithOwner }
+        commits(last: 1) {
+          nodes { commit { statusCheckRollup { state } } }
+        }
+      }
+    }
+  }
+}'
+
 # Fetch all pages using gh api --paginate
-all_prs=$(gh api --paginate "search/issues?q=is:open+is:pr+user:${username}+archived:false&per_page=${per_page}" --jq '.items[] | {
-  repo: .repository_url,
-  number: .number,
-  title: .title,
-  user: .user.login,
-  created_at: (.created_at | split("T")[0]),
-  updated_at: (.updated_at | split("T")[0]),
-  html_url: .html_url
-}' 2>&1)
+all_prs=$(gh api graphql --paginate \
+  -f q="is:open is:pr user:${username} archived:false" \
+  -f query="$graphql_query" \
+  --jq '.data.search.nodes[] | {
+    repo_name: .repository.nameWithOwner,
+    number: .number,
+    title: .title,
+    user: .author.login,
+    created_at: (.createdAt | split("T")[0]),
+    updated_at: (.updatedAt | split("T")[0]),
+    url: .url,
+    ci: (
+      .commits.nodes[0].commit.statusCheckRollup.state
+      | if . == null then "-"
+        elif . == "SUCCESS" then "Success"
+        elif . == "FAILURE" or . == "ERROR" then "Fail"
+        else "Pending"
+        end
+    )
+  }')
 
 if [ -z "$all_prs" ]; then
   echo "No open PRs found for user: ${username}"
@@ -42,18 +75,24 @@ fi
 
 # Build grouped data
 grouped=$(echo "$all_prs" | jq -s '
-  map(. + { repo_name: (.repo | split("/") | .[-2:] | join("/")) })
-  | group_by(.repo_name)
+  group_by(.repo_name)
   | map({
       repo: .[0].repo_name,
       count: length,
+      ci: {
+        success: (map(select(.ci == "Success")) | length),
+        fail: (map(select(.ci == "Fail")) | length),
+        pending: (map(select(.ci == "Pending")) | length),
+        none: (map(select(.ci == "-")) | length)
+      },
       prs: (sort_by(.created_at) | reverse | map({
         number,
         title,
-        user: .user,
+        user,
+        ci,
         created_at,
         updated_at,
-        url: .html_url
+        url
       }))
     })
   | sort_by(-.count)
@@ -63,15 +102,27 @@ case "$subcommand" in
   summary)
     echo "$grouped" | jq -r '
       (map(.count) | add) as $total |
+      (map(.ci.success) | add) as $success |
+      (map(.ci.fail) | add) as $fail |
+      (map(.ci.pending) | add) as $pending |
+      (map(.ci.none) | add) as $none |
       "Total: \($total) PRs across \(length) repositories\n" +
+      "CI: Success \($success) / Fail \($fail) / Pending \($pending) / - \($none)\n" +
       "---\n" +
-      (map("  \(.repo)\t\(.count)") | join("\n"))
+      "  Repo\tPRs\tSuccess\tFail\tPending\t-\n" +
+      (map("  \(.repo)\t\(.count)\t\(.ci.success)\t\(.ci.fail)\t\(.ci.pending)\t\(.ci.none)") | join("\n"))
     ' | column -t -s $'\t'
     ;;
   json)
     echo "$grouped" | jq '{
       total: (map(.count) | add),
       repo_count: length,
+      ci: {
+        success: (map(.ci.success) | add),
+        fail: (map(.ci.fail) | add),
+        pending: (map(.ci.pending) | add),
+        none: (map(.ci.none) | add)
+      },
       repositories: .
     }'
     ;;

@@ -54,7 +54,7 @@ AWS Lambda関数の設定を`diff-sofancy`で比較する。
 Lambda関数のコード（解凍済み）を`diff-sofancy`で比較する。
 
 ## gh-open-prs
-指定したGitHubユーザーのオープンPRを取得し、リポジトリごとにまとめて表示する。
+指定したGitHubユーザーのオープンPRを取得し、リポジトリごとにまとめて表示する。`summary` では最新コミットの CI 結果（Success / Fail / Pending / `-`=CI未設定）の件数も併記する。
 
 ## jq2esc
 エスケープシーケンスを変換する`jq`。
