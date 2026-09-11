@@ -153,3 +153,6 @@ cron例 (毎朝9時):
 ```
 0 9 * * * /home/you/dotfiles/bin/release-digest >> /home/you/release-digest/cron.log 2>&1
 ```
+
+## rdpick
+Raindrop.ioからテーマ関連記事の候補を取得して整形出力する（Markdown/JSON/TSV）。テーマ関連性の最終判定は行わず、Claude Codeに出力を渡して判定させる用途。`RAINDROP_TOKEN`環境変数が必要（詳細は`src/rdpick/README.md`）。
