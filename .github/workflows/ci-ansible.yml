@@ -60,10 +60,17 @@ jobs:
             const tags = (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...targetTags, 'all'] : targetTags;
             const tools = ${{ needs.set-mise-tools.outputs.list }};
             const chunks = process.env.TOOLS_CHUNKS || 3;
-            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks)));
+            // 空のchunkは`mise i`が引数なしで全ツールをインストールしてしまうため除外する
+            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks))).filter(chunk => chunk.length > 0);
+            // npm:やpipx:のツールはバックエンドのランタイムが同じジョブにインストールされていないと失敗するため、chunkごとに補う
+            const backendDeps = { npm: ['node'], pipx: ['python', 'pipx'] };
+            const withDeps = (chunk) => {
+              const deps = [...new Set(chunk.flatMap(tool => backendDeps[tool.split(':')[0]] ?? []))];
+              return [...deps.filter(dep => !chunk.includes(dep)), ...chunk];
+            };
             return tags.map(tag => {
               if (tag === "mise") {
-                return chunkedTools.map(tool => ({tag, tools: tool.join(" ")}));
+                return chunkedTools.map(tool => ({tag, tools: withDeps(tool).join(" ")}));
               }
               return {tag, tools: ''};
             }).flat();
