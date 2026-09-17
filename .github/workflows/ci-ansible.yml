@@ -62,10 +62,11 @@ jobs:
             const chunks = process.env.TOOLS_CHUNKS || 3;
             // 空のchunkは`mise i`が引数なしで全ツールをインストールしてしまうため除外する
             const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks))).filter(chunk => chunk.length > 0);
-            // npm:やpipx:のツールはバックエンドのランタイムが同じジョブにインストールされていないと失敗するため、chunkごとに補う
-            const backendDeps = { npm: ['node'], pipx: ['python', 'pipx'] };
+            // npm:やpipx:のツールはバックエンドが使うツールが同じジョブにインストールされていないと失敗するため、chunkごとに補う
+            // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvが使われる
+            const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv'] };
             const withDeps = (chunk) => {
-              const deps = [...new Set(chunk.flatMap(tool => backendDeps[tool.split(':')[0]] ?? []))];
+              const deps = [...new Set(chunk.flatMap(tool => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : []))];
               return [...deps.filter(dep => !chunk.includes(dep)), ...chunk];
             };
             return tags.map(tag => {
