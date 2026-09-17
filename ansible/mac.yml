@@ -4,6 +4,13 @@
   vars_files:
     - common_vars.yml
     - versions_vars.yml
+  # brewはroot実行を拒否するのでansibleのbecomeではなく、brewが内部で呼ぶsudoに渡す必要がある
+  # ansibleはモジュール実行時にttyを渡さず`sudo -v`のチケットも効かないためSUDO_ASKPASS経由で渡す
+  vars_prompt:
+    - name: brew_sudo_password
+      prompt: "sudo password (既存appをcaskにadoptする場合に必要、不要ならEnter)"
+      private: true
+      unsafe: true
   become: false
   become_user: "{{ user }}"
   roles:
