@@ -1,3 +1,12 @@
+# mac(localhost)
+
+実行時に sudo password を聞かれる (手動で入れた既存appをcaskにadoptする際にbrewが内部でsudoを呼ぶため)
+新規インストールのみなら空のままEnterでよい
+
+```
+ansible-playbook -i hosts -c local mac.yml --extra-vars "user='$(whoami)'"
+```
+
 # ubuntu(localhost)
 
 ```
