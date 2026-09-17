@@ -63,8 +63,8 @@ jobs:
             // 空のchunkは`mise i`が引数なしで全ツールをインストールしてしまうため除外する
             const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks))).filter(chunk => chunk.length > 0);
             // npm:やpipx:のツールはバックエンドが使うツールが同じジョブにインストールされていないと失敗するため、chunkごとに補う
-            // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvが使われる
-            const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv'] };
+            // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvとpipxが依存として要求される
+            const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv', 'pipx'] };
             // gcloudのインストールスクリプトはCLOUDSDK_PYTHONのpythonを実行するため先に入っている必要がある
             const toolDeps = { gcloud: ['python'] };
             const depsOf = (chunk) => {
