@@ -43,10 +43,13 @@
   when: repo_changed is defined and repo_changed.rc is defined and repo_changed.rc != 0
   changed_when: true
 
+# CIではPRのブランチを検証したいためDOTFILES_REFで上書きできるようにする
+# 未指定なら従来どおりデフォルトブランチ(HEAD)をclone
 - name: Clone dotfiles repository
   ansible.builtin.git:
     repo: "{{ repo_prefix }}{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
+    version: "{{ ansible_env.get('DOTFILES_REF', 'HEAD') }}"
     clone: true
     update: true
     force: true

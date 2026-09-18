@@ -9,19 +9,23 @@
     - coreutils
     - binutils
     - findutils
-    # GUI
-    - google-chrome
-    - vagrant
-    - virtualbox
-    - slack
-    - licecap
     - imagemagick
     - asciinema
     - agg
 
+# GUIアプリはcask
+# adoptは手動で/Applicationsに置いた.appをCaskroom管理下に取り込むためのオプション
+# (accept_external_appsはbrew側のエラーメッセージ変更で判定が効かないため使わない)
+# adopt時のchmodでbrewがsudoを呼ぶため、既存appを取り込む場合はbrew_sudo_passwordが要る
+# 空ならomitされ、新規インストール(sudo不要)だけが実行される
 - name: Install with cask
   community.general.homebrew_cask:
     name: "{{ item }}"
     state: installed
+    install_options: adopt
+    sudo_password: "{{ brew_sudo_password | default('') or omit }}"
   with_items:
-    - bitbar
+    - google-chrome
+    - slack
+    - licecap
+    - betterdisplay

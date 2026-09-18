@@ -60,12 +60,22 @@ jobs:
             const tags = (eventName === 'workflow_dispatch' || eventName === 'schedule') ? [...targetTags, 'all'] : targetTags;
             const tools = ${{ needs.set-mise-tools.outputs.list }};
             const chunks = process.env.TOOLS_CHUNKS || 3;
-            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks)));
+            // 空のchunkは`mise i`が引数なしで全ツールをインストールしてしまうため除外する
+            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks))).filter(chunk => chunk.length > 0);
+            // npm:やpipx:のツールはバックエンドが使うツールが同じジョブにインストールされていないと失敗するため、chunkごとに補う
+            // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvとpipxが依存として要求される
+            const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv', 'pipx'] };
+            // gcloudのインストールスクリプトはCLOUDSDK_PYTHONのpythonを実行するため先に入っている必要がある
+            const toolDeps = { gcloud: ['python'] };
+            const depsOf = (chunk) => {
+              const deps = chunk.flatMap(tool => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : toolDeps[tool] ?? []);
+              return [...new Set(deps)].filter(dep => !chunk.includes(dep));
+            };
             return tags.map(tag => {
               if (tag === "mise") {
-                return chunkedTools.map(tool => ({tag, tools: tool.join(" ")}));
+                return chunkedTools.map(tool => ({tag, tools: tool.join(" "), deps: depsOf(tool).join(" ")}));
               }
-              return {tag, tools: ''};
+              return {tag, tools: '', deps: ''};
             }).flat();
 
   build-ubuntu:
@@ -91,6 +101,8 @@ jobs:
         env:
           CI: true
           TOOLS: ${{ matrix.row.tools }}
+          TOOLS_DEPS: ${{ matrix.row.deps }}
+          DOTFILES_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           cd ansible
           ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.row.tag }}"
@@ -141,7 +153,7 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.ref }}
       - name: Install uv
-        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
         with:
           python-version: 3.12
       - name: install ansible-lint yamllint
