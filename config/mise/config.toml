@@ -52,7 +52,7 @@ sqlite = 'latest'
 "github:sxyazi/yazi" = "latest"
 
 [hooks]
-postinstall = "mise-completions-sync --shell zsh"
+postinstall = "misecompsync --shell zsh"
 
 [settings]
 experimental = true
