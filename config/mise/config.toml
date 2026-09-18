@@ -14,7 +14,7 @@ python = ['3.14.7', '3.12.12']
 pipx = 'latest'
 act = 'latest'
 vim = 'latest'
-"ubi:peco/peco" = 'latest'
+"github:peco/peco" = 'latest'
 yq = 'latest'
 uv = 'latest'
 fillin = 'latest'
@@ -22,7 +22,6 @@ bun = 'latest'
 # npm:pnpmはpnpm自身でインストールしようとして循環するためregistry(aqua)の単体バイナリを使う
 pnpm = 'latest'
 eza = 'latest'
-ubi = 'latest'
 vivid = 'latest'
 ripgrep = 'latest'
 fzf = 'latest'
@@ -41,14 +40,14 @@ neovim = 'latest'
 ollama = 'latest'
 rust = 'latest'
 ghq = "1.10.1"
-"ubi:dlvhdr/diffnav" = 'latest'
+"github:dlvhdr/diffnav" = 'latest'
 sqlite = 'latest'
 # ubiバックエンドはOS/libcの判別が甘くglibc環境(WSL/Ubuntu)でmusl版を掴むことがある(ELFローダー無しでexec不可)。
-# githubバックエンドはOS/arch/libcを自動判別しMac/Linux両対応するためこちらを使う
+# githubバックエンドはOS/arch/libcを自動判別しMac/Linux両対応するため、GitHub Releasesから取るツールはすべてこちらを使う
 "github:duckdb/duckdb" = 'latest'
 "github:alltuner/mise-completions-sync" = "latest"
-"ubi:k1LoW/mo" = "latest"
-"ubi:rtk-ai/rtk"= "latest"
+"github:k1LoW/mo" = "latest"
+"github:rtk-ai/rtk" = "latest"
 "github:sxyazi/yazi" = "latest"
 
 [hooks]
