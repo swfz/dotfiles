@@ -48,6 +48,7 @@ sqlite = 'latest'
 "github:alltuner/mise-completions-sync" = "latest"
 "github:k1LoW/mo" = "latest"
 "github:sxyazi/yazi" = "latest"
+ffmpeg = "latest"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"
