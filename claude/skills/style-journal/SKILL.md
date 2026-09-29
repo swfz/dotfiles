@@ -57,7 +57,7 @@ style-terminal の姉妹スキル。あちらが「見せる (プレゼン)」�
    - **本文を編集したら再実行** (冪等。サブセットに無い文字はフォールバック書体で混植になるため)
    - オフライン等で実行できない場合はスキップしてよい (システムフォントで読める)
 5. **出力**
-   - **Artifact 公開** (既定): テンプレートは doctype/html/head/body を持たない**フラグメント**なので、そのまま Artifact ツールに渡せる。**先に `artifact-design` スキルを読む** (Artifact ツールの要件)。`favicon` は文書系の絵文字 (例 `📋` `🗞️`) を渡す。
+   - **Artifact 公開** (既定): テンプレートは doctype/html/head/body を持たない**フラグメント**なので、そのまま Artifact ツールに渡せる。**先に `artifact-design` スキルを読む** (Artifact ツールの要件)。初回公開時は `icon` に `document` / `report` のような短い一般語を渡す (`favicon` は廃止済み)。
    - **ローカル HTML** で欲しい場合はファイルパスを渡す。WSL なので `file:///...` と `file://wsl.localhost/Ubuntu/...` の両方を返す。
    - レビューを集めたい資料なら `artifact-review-comments` スキルの併用を提案する (このスタイルと相性がよい)。
 6. **操作確認**: 目次リンクで章に飛べるか、右上のテーマ切替ボタンでライト/ダークが切り替わり両方で読めるか。Artifact 公開後や画面確認が要る場合は Playwright で最低限の表示・操作を確認する。
