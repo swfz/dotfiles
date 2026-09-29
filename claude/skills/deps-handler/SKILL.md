@@ -97,7 +97,7 @@ gh pr merge <PR番号>
 
 ```bash
 git fetch origin <ブランチ名>
-git checkout <ブランチ名>
+git switch <ブランチ名>
 pnpm install
 ```
 
@@ -153,7 +153,7 @@ CIが全パスするまでこのサイクルを繰り返す。
 
 mainブランチに戻る:
 ```bash
-git checkout main
+git switch main
 git pull
 ```
 
