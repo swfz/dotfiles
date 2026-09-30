@@ -49,6 +49,7 @@ sqlite = 'latest'
 "github:k1LoW/mo" = "latest"
 "github:sxyazi/yazi" = "latest"
 ffmpeg = "latest"
+gh = "2.99.0"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"
