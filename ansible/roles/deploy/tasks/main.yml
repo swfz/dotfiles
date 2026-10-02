@@ -146,16 +146,6 @@
     state: link
   with_items: "{{ dotfiles.files }}"
 
-- name: Symlink zsh color
-  ansible.builtin.file:
-    src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
-    dest: ~/.zshrc.color
-    state: link
-    force: true
-  when: zsh_color is defined
-  tags:
-    - color
-
 - name: .vim directory
   ansible.builtin.file:
     path: ~/.vim
