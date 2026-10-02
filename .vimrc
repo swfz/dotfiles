@@ -7,11 +7,7 @@ source ~/dotfiles/vimrc/plugins/unite.vim
 source ~/dotfiles/vimrc/plugins/complete.vim
 
 " this settings dependencies colorscheme. section
-if $IS_WSL == 1
-  source ~/dotfiles/vimrc/plugins/lightline.vim
-else
-  source ~/dotfiles/vimrc/plugins/powerline.vim
-endif
+source ~/dotfiles/vimrc/plugins/lightline.vim
 
 " colorscheme patch
 autocmd ColorScheme * highlight IncSearch ctermfg=17 ctermbg=214
@@ -23,7 +19,6 @@ colorscheme solarized
 " LuciusBlack
 " hi Normal ctermbg=NONE
 
-" source ~/dotfiles/vimrc/plugins/lightline.vim
 source ~/dotfiles/vimrc/plugins/unite-outline.vim
 source ~/dotfiles/vimrc/plugins/taglist.vim
 source ~/dotfiles/vimrc/plugins/submode.vim

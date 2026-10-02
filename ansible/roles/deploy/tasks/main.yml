@@ -146,16 +146,6 @@
     state: link
   with_items: "{{ dotfiles.files }}"
 
-- name: Symlink base color
-  ansible.builtin.file:
-    src: "{{ dotfiles.dest }}/powerline_theme/base_colorscheme_{{ base_color }}.json"
-    dest: "{{ link.base.target_dir }}/{{ link.base.target_file }}"
-    state: link
-    force: true
-  when: base_color is defined
-  tags:
-    - color
-
 - name: Symlink zsh color
   ansible.builtin.file:
     src: "{{ dotfiles.dest }}/zsh/.color.{{ zsh_color }}"
@@ -165,37 +155,6 @@
   when: zsh_color is defined
   tags:
     - color
-
-- name: Symlink zsh color for powerline(custom)
-  ansible.builtin.file:
-    src: "{{ dotfiles.dest }}/powerline_theme/shell_colorscheme_{{ zsh_color }}.json"
-    dest: "{{ link.zsh.target_dir }}/{{ link.zsh.target_file }}"
-    state: link
-    force: true
-  when: zsh_color is defined and zsh_color != 'solarized'
-  tags:
-    - color
-
-- name: Symlink zsh color for powerline(solarized)
-  ansible.builtin.file:
-    src: "{{ link.zsh.target_dir }}/solarized.json"
-    dest: "{{ link.zsh.target_dir }}/{{ link.zsh.target_file }}"
-    state: link
-    force: true
-  when: zsh_color is defined and zsh_color == 'solarized'
-  tags:
-    - color
-
-- name: Symlink tmux powerline config
-  ansible.builtin.file:
-    src: "{{ link.tmux.basedir }}/{{ item }}"
-    dest: ~/.tmux-{{ item }}
-    state: link
-    force: true
-  with_items: "{{ link.tmux.files }}"
-
-# TODO tmuxのカラー設定
-# .anyenv/envs/pyenv/versions/3.5.2/lib/python3.5/site-packages/powerline/config_files/colorschemes/tmux/default.json
 
 - name: .vim directory
   ansible.builtin.file:
