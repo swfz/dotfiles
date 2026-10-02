@@ -1,0 +1,428 @@
+lockfile_version: '1'
+apm_version: 0.31.0
+dependencies:
+- repo_url: mattpocock/skills
+  name: grilling
+  host: github.com
+  resolved_commit: d81f3a183412e71a5b1e84ca21bc1a35eea03a60
+  version: unknown
+  virtual_path: skills/productivity/grilling
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/grilling
+  - .agents/skills/grilling/SKILL.md
+  - .agents/skills/grilling/agents/openai.yaml
+  - .claude/skills/grilling
+  - .claude/skills/grilling/SKILL.md
+  - .claude/skills/grilling/agents/openai.yaml
+  deployed_file_hashes:
+    .agents/skills/grilling/SKILL.md: sha256:10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2
+    .agents/skills/grilling/agents/openai.yaml: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
+    .claude/skills/grilling/SKILL.md: sha256:10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2
+    .claude/skills/grilling/agents/openai.yaml: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
+  content_hash: sha256:e98f109bca3d8889f673d9f32bf84086f85a70ff9e241f8a34a4560a07ab5a39
+- repo_url: nanaism/yomiyasu
+  name: yomiyasu
+  host: github.com
+  resolved_commit: f03aecd9c4c4a69e229f3848ecba66c3871f734c
+  version: 1.0.2
+  virtual_path: skills/yomiyasu
+  is_virtual: true
+  package_type: hybrid
+  deployed_files:
+  - .agents/skills/yomiyasu
+  - .agents/skills/yomiyasu/.claude-plugin/marketplace.json
+  - .agents/skills/yomiyasu/.claude-plugin/plugin.json
+  - .agents/skills/yomiyasu/SKILL.md
+  - .agents/skills/yomiyasu/apm.yml
+  - .agents/skills/yomiyasu/assets/algo-artis.png
+  - .agents/skills/yomiyasu/references/domains/business.md
+  - .agents/skills/yomiyasu/references/domains/essay.md
+  - .agents/skills/yomiyasu/references/domains/tech.md
+  - .agents/skills/yomiyasu/references/gemini-syntax.md
+  - .agents/skills/yomiyasu/references/slop-catalog.md
+  - .agents/skills/yomiyasu/scripts/yomiyasu_diff.py
+  - .agents/skills/yomiyasu/scripts/yomiyasu_lint.py
+  - .claude/skills/yomiyasu
+  - .claude/skills/yomiyasu/.claude-plugin/marketplace.json
+  - .claude/skills/yomiyasu/.claude-plugin/plugin.json
+  - .claude/skills/yomiyasu/SKILL.md
+  - .claude/skills/yomiyasu/apm.yml
+  - .claude/skills/yomiyasu/assets/algo-artis.png
+  - .claude/skills/yomiyasu/references/domains/business.md
+  - .claude/skills/yomiyasu/references/domains/essay.md
+  - .claude/skills/yomiyasu/references/domains/tech.md
+  - .claude/skills/yomiyasu/references/gemini-syntax.md
+  - .claude/skills/yomiyasu/references/slop-catalog.md
+  - .claude/skills/yomiyasu/scripts/yomiyasu_diff.py
+  - .claude/skills/yomiyasu/scripts/yomiyasu_lint.py
+  deployed_file_hashes:
+    .agents/skills/yomiyasu/.claude-plugin/marketplace.json: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
+    .agents/skills/yomiyasu/.claude-plugin/plugin.json: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
+    .agents/skills/yomiyasu/SKILL.md: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
+    .agents/skills/yomiyasu/apm.yml: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+    .agents/skills/yomiyasu/assets/algo-artis.png: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
+    .agents/skills/yomiyasu/references/domains/business.md: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
+    .agents/skills/yomiyasu/references/domains/essay.md: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
+    .agents/skills/yomiyasu/references/domains/tech.md: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
+    .agents/skills/yomiyasu/references/gemini-syntax.md: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
+    .agents/skills/yomiyasu/references/slop-catalog.md: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
+    .agents/skills/yomiyasu/scripts/yomiyasu_diff.py: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
+    .agents/skills/yomiyasu/scripts/yomiyasu_lint.py: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
+    .claude/skills/yomiyasu/.claude-plugin/marketplace.json: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
+    .claude/skills/yomiyasu/.claude-plugin/plugin.json: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
+    .claude/skills/yomiyasu/SKILL.md: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
+    .claude/skills/yomiyasu/apm.yml: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+    .claude/skills/yomiyasu/assets/algo-artis.png: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
+    .claude/skills/yomiyasu/references/domains/business.md: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
+    .claude/skills/yomiyasu/references/domains/essay.md: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
+    .claude/skills/yomiyasu/references/domains/tech.md: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
+    .claude/skills/yomiyasu/references/gemini-syntax.md: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
+    .claude/skills/yomiyasu/references/slop-catalog.md: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
+    .claude/skills/yomiyasu/scripts/yomiyasu_diff.py: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
+    .claude/skills/yomiyasu/scripts/yomiyasu_lint.py: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
+  content_hash: sha256:5bdf872b2db7b11717141fbf1c4397bed1b72b6ff065626917cb9eb0468d9993
+  declared_license: MIT
+- repo_url: vercel-labs/skills
+  name: find-skills
+  host: github.com
+  resolved_commit: 3694740352eeef5cdd689af694c485f1ff62eec3
+  version: unknown
+  virtual_path: skills/find-skills
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/find-skills
+  - .agents/skills/find-skills/SKILL.md
+  - .claude/skills/find-skills
+  - .claude/skills/find-skills/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/find-skills/SKILL.md: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
+    .claude/skills/find-skills/SKILL.md: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
+  content_hash: sha256:913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396
+deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/skills/find-skills
+  runtime: null
+  scope: project
+  owners:
+  - vercel-labs/skills/skills/find-skills
+  active_owner: vercel-labs/skills/skills/find-skills
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/find-skills/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - vercel-labs/skills/skills/find-skills
+  active_owner: vercel-labs/skills/skills/find-skills
+  content_hash: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/grilling
+  runtime: null
+  scope: project
+  owners:
+  - mattpocock/skills/skills/productivity/grilling
+  active_owner: mattpocock/skills/skills/productivity/grilling
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/grilling/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - mattpocock/skills/skills/productivity/grilling
+  active_owner: mattpocock/skills/skills/productivity/grilling
+  content_hash: sha256:10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/grilling/agents/openai.yaml
+  runtime: null
+  scope: project
+  owners:
+  - mattpocock/skills/skills/productivity/grilling
+  active_owner: mattpocock/skills/skills/productivity/grilling
+  content_hash: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/.claude-plugin/marketplace.json
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/.claude-plugin/plugin.json
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/apm.yml
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/assets/algo-artis.png
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/references/domains/business.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/references/domains/essay.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/references/domains/tech.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/references/gemini-syntax.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/references/slop-catalog.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/scripts/yomiyasu_diff.py
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/scripts/yomiyasu_lint.py
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
+- kind: project-relative
+  target: codex
+  value: .agents/skills/find-skills
+  runtime: null
+  scope: project
+  owners:
+  - vercel-labs/skills/skills/find-skills
+  active_owner: vercel-labs/skills/skills/find-skills
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/find-skills/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - vercel-labs/skills/skills/find-skills
+  active_owner: vercel-labs/skills/skills/find-skills
+  content_hash: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
+- kind: project-relative
+  target: codex
+  value: .agents/skills/grilling
+  runtime: null
+  scope: project
+  owners:
+  - mattpocock/skills/skills/productivity/grilling
+  active_owner: mattpocock/skills/skills/productivity/grilling
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/grilling/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - mattpocock/skills/skills/productivity/grilling
+  active_owner: mattpocock/skills/skills/productivity/grilling
+  content_hash: sha256:10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2
+- kind: project-relative
+  target: codex
+  value: .agents/skills/grilling/agents/openai.yaml
+  runtime: null
+  scope: project
+  owners:
+  - mattpocock/skills/skills/productivity/grilling
+  active_owner: mattpocock/skills/skills/productivity/grilling
+  content_hash: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/.claude-plugin/marketplace.json
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/.claude-plugin/plugin.json
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/apm.yml
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/assets/algo-artis.png
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/references/domains/business.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/references/domains/essay.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/references/domains/tech.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/references/gemini-syntax.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/references/slop-catalog.md
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/scripts/yomiyasu_diff.py
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/scripts/yomiyasu_lint.py
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
