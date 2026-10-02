@@ -95,6 +95,24 @@
     dest: ~/.config/mise/config.toml
     state: link
 
+# apm(Agent Package Manager)のグローバルマニフェストとロック
+# NOTE: 既存マシンでは~/.apm配下に実ファイルがあるためforceでsymlinkに置き換える
+- name: Symlink apm config
+  ansible.builtin.file:
+    path: ~/.apm
+    state: directory
+    mode: "0755"
+
+- name: Symlink apm config
+  ansible.builtin.file:
+    src: "{{ dotfiles.dest }}/config/apm/{{ item }}"
+    dest: ~/.apm/{{ item }}
+    state: link
+    force: true
+  with_items:
+    - apm.yml
+    - apm.lock.yaml
+
 # NOTE: CIではdotfilesをデフォルトブランチからcloneするため、
 # 未マージブランチで追加されたconfig/nvimがsrcに存在しない。force指定で許容する
 - name: Symlink nvim config
