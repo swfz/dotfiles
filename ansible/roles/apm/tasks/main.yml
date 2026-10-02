@@ -1,7 +1,7 @@
 ---
 # ~/.apm/apm.yml(dotfilesでsymlink)に宣言した第三者スキルをロックどおりに復元する
 # apm本体はmise(config/mise/config.toml)で入るため、mise-toolsロールの後に実行する
-- name: Exist apm
+- name: Exist apm  # noqa command-instead-of-shell
   ansible.builtin.shell: "{{ execute }} 'command -v apm'"
   register: apm_exist
   changed_when: false
