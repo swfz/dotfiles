@@ -122,9 +122,20 @@ jobs:
       - name: run ansible
         env:
           CI: true
+          DOTFILES_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           cd ansible
-          ansible-playbook -i localhost, -c local mac.yml
+          ansible-playbook -i localhost, -c local mac.yml --extra-vars "user=$(whoami)"
+      - name: verify deploy symlinks
+        run: |
+          for f in .zshrc .vimrc .tmux.conf .gvimrc .darwin.rc .sshrc .sshrc.d .vim/snippets \
+            .config/nvim .config/starship.toml .config/mise/config.toml .config/bat/config \
+            .apm/apm.yml .apm/apm.lock.yaml; do
+            if [ ! -L "$HOME/$f" ] || [ ! -e "$HOME/$f" ]; then
+              echo "::error::$HOME/$f is not a valid symlink"
+              exit 1
+            fi
+          done
 
   # build-codespace:
   #   runs-on: ubuntu-latest
