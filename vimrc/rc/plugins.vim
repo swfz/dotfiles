@@ -128,11 +128,7 @@ Plug 'tsukkee/unite-tag'
 " ============================================
 " Statusline
 " ============================================
-if $IS_WSL == 1
-  Plug 'itchyny/lightline.vim'
-else
-  Plug 'Lokaltog/powerline', { 'rtp': 'powerline/bindings/vim' }
-endif
+Plug 'itchyny/lightline.vim'
 
 call plug#end()
 

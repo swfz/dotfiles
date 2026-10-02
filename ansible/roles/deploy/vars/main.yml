@@ -2,16 +2,3 @@
 git:  # noqa var-naming[no-role-prefix]
   username: "{{ git_username | default('vagrant') }}"
   usermail: "{{ git_usermail | default('vagrant@example.com') }}"
-powerline_dir: ~/.anyenv/envs/pyenv/versions/{{ envs.pyenv.version }}/lib/python{{ envs.pyenv.version.rsplit('.', 1).pop(0) }}/site-packages/powerline  # noqa var-naming[no-role-prefix]
-link:  # noqa var-naming[no-role-prefix]
-  base:
-    target_dir: "{{ powerline_dir }}/config_files/colorschemes"
-    target_file: default.json
-  zsh:
-    target_dir: "{{ powerline_dir }}/config_files/colorschemes/shell"
-    target_file: default.json
-  tmux:
-    basedir: "{{ powerline_dir }}/bindings/tmux"
-    files:
-      - powerline-base.conf
-      - powerline.conf
