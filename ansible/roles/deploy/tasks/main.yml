@@ -9,7 +9,7 @@
 - name: Set git repo prefix(https)  # noqa var-naming[no-role-prefix]
   ansible.builtin.set_fact:
     repo_prefix: https://github.com/
-  when: ansible_env.get('CI', None) and ansible_env.CI == "true"
+  when: ansible_env.get('CI', '') == "true"
 
 - name: Command directory
   ansible.builtin.file:
