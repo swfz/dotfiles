@@ -14,7 +14,6 @@ python = ['3.14.7', '3.12.12']
 pipx = 'latest'
 act = 'latest'
 vim = 'latest'
-"github:peco/peco" = 'latest'
 yq = 'latest'
 uv = 'latest'
 fillin = 'latest'

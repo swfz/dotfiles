@@ -15,6 +15,7 @@
   become_user: "{{ user }}"
   roles:
     - { role: brew, tags: brew }
+    - { role: deploy, tags: deploy }
     - { role: mise, tags: [mise, mise_i] }
     - { role: actionlint, tags: actionlint }
     - { role: reviewdog, tags: reviewdog }

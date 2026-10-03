@@ -4,7 +4,6 @@
     name: "{{ item }}"
     state: installed
   with_items:
-    - peco
     - nkf
     - coreutils
     - binutils
