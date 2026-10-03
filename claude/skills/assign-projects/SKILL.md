@@ -73,3 +73,8 @@ gh ap -project-id 2 -issue 1 -field 'Month=2026-03-01' -field 'Point=1'
 gh ap -project-id 2 -pr 2 -field 'Iteration=2026-03-01' -field 'Point=1'
 ```
 
+
+## 実行結果
+
+`gh ap` は実行後に紐づけ結果(Project・対象Item・各フィールドの値)を標準出力に表示する。
+追加で確認用のコマンドは実行せず、この出力をそのままユーザーへの報告に使う。
