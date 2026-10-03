@@ -34,7 +34,6 @@
   roles:
     - { role: deploy, tags: deploy }
     - { role: direnv, tags: [direnv, init] }
-    - { role: powerline, tags: [powerline, init] }
     - { role: mise-tools, tags: [mise-tools, mise]}
     - { role: apm, tags: [apm, mise] }
     - { role: vim-plugins, tags: [vim-plugins, mise] }
