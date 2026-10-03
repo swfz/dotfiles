@@ -51,6 +51,7 @@ sqlite = 'latest'
 "github:sxyazi/yazi" = "latest"
 ffmpeg = "latest"
 gh = "2.101.0"
+rclone = "latest"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"
