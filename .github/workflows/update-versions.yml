@@ -21,9 +21,6 @@ jobs:
           - name: zsh
             repo: zsh-users/zsh
             type: from-tag
-          - name: tmux
-            repo: tmux/tmux
-            type: prefix
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: install yq

@@ -12,7 +12,6 @@
     - { role: common, tags: [common, init, tool] }
     - { role: git, tags: [git, deploy] }
     - { role: zsh, tags: [zsh, deploy, init, mise] }
-    - { role: tmux, tags: [tmux, init] }
     # - { role: vim8, tags: [vim8, vim] }
     - { role: fonts, tags: [fonts, init] }
     - { role: actionlint, tags: [actionlint, tool] }

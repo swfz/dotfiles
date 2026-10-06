@@ -7,8 +7,6 @@ jo_version: "1.9"
 # dummy
 q_version: 3.1.7
 # dummy
-tmux_version: "3.6"
-# dummy
 zsh_version: "5.9"
 # datasource=github-releases depName=rhysd/actionlint
 actionlint_version: v1.7.12

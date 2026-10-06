@@ -1,5 +1,0 @@
----
-tmux:  # noqa var-naming[no-role-prefix]
-  dir: tmux-{{ tmux_version }}
-  tgz: tmux-{{ tmux_version }}.tar.gz
-  src: https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz
