@@ -53,9 +53,9 @@ jobs:
         id: exist_branch
         name: check exist branch
         run: |
-          git fetch
-          count=`git branch -a | grep ${{ steps.check.outputs.branch }} | wc -l`
-          echo "count=$count" >> $GITHUB_OUTPUT
+          # 部分一致だと 3.7 が 3.7-rc や 3.7c のブランチにも一致してしまうため完全一致で確認する
+          count=$(git ls-remote --heads origin "refs/heads/${{ steps.check.outputs.branch }}" | wc -l)
+          echo "count=$count" >> "$GITHUB_OUTPUT"
 
       # 対象バージョンがかぶっている場合（ブランチが存在する場合）は以後の処理は行わない
       - if: steps.check.outputs.branch && steps.exist_branch.outputs.count == 0
