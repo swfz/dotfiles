@@ -184,7 +184,7 @@ template.html に埋め込む JSON。Claude が生成するのはこれだけ。
 ## 完了報告のフォーマット
 
 ```
-~/.claude/skills/html-report/assets/template.html を元に <出力ファイル名> を生成した。
+~/.claude/skills/drilldown-report/assets/template.html を元に <出力ファイル名> を生成した。
 
 主なテーブル構成:
 - <親テーブル>: <件数>

@@ -53,7 +53,7 @@ HTML 資料を、外部リソースに依存しない単一 HTML として生成
 3. **画像は data: URI で埋め込む** (Artifact は外部URL・CDN・フォント読み込みを CSP でブロックする)。
    - ローカル画像 → base64 化して `<img src="data:image/png;base64,...">`。
 4. **出力**
-   - **Artifact 公開** (既定): テンプレートは doctype/html/head/body を持たない**フラグメント**なので、そのまま Artifact ツールに渡せる。**先に `artifact-design` スキルを読む** (Artifact ツールの要件)。`favicon` は端末系の絵文字 (例 `🖥️` `⚡`) を渡す。
+   - **Artifact 公開** (既定): テンプレートは doctype/html/head/body を持たない**フラグメント**なので、そのまま Artifact ツールに渡せる。**先に `artifact-design` スキルを読む** (Artifact ツールの要件)。初回公開時は `icon` に `terminal` / `slides` のような短い一般語を渡す (`favicon` は廃止済み)。
    - **ローカル HTML** で欲しい場合はファイルパスを渡す。WSL なので `file:///...` と `file://wsl.localhost/Ubuntu/...` の両方を返す。
 5. **操作確認**: スライドは `← → / Space / PageUp・Down` で切り替え・`?` でキー一覧・`o` でアウトライン・`t` でタイマー・`p` で presenter view (カンペと時計はここ)、ドキュメントは目次リンクで章に飛べる・スクロールでステータスラインの位置表示が変わる・ヘッダーバーが上部に固定され大枠タイトルが出る・`.theme-toggle` でテーマが切り替わる。Artifact 公開後や画面確認が要る場合は Playwright で最低限の表示・操作を確認する。
 
