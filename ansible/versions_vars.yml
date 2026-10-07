@@ -17,6 +17,6 @@ duckdb_version: v1.5.6
 # datasource=github-releases depName=asciinema/agg
 agg_version: v1.9.0
 # datasource=github-releases depName=cli/cli
-gh_version: v2.101.0
+gh_version: v2.102.0
 # datasource=github-releases depName=jdx/mise
 mise_version: v2026.9.17
