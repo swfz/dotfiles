@@ -41,7 +41,7 @@ apm = 'latest'
 "pipx:cisco-ai-skill-scanner" = 'latest'
 ollama = 'latest'
 rust = 'latest'
-ghq = "1.10.1"
+ghq = "1.11.2"
 "github:dlvhdr/diffnav" = 'latest'
 sqlite = 'latest'
 # ubiバックエンドはOS/libcの判別が甘くglibc環境(WSL/Ubuntu)でmusl版を掴むことがある(ELFローダー無しでexec不可)。
