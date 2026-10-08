@@ -139,6 +139,31 @@ git push origin <ブランチ名>
 # バックグラウンド（run_in_background: true）でCI監視し、待ち時間中に他のPR対応を並行して進める
 gh pr checks <PR番号> --watch
 ```
+##### projectsへの紐づけ
+
+何かしら修正が発生した場合は`gh ap`でprojectsに紐づけてる
+
+例
+
+```bash
+gh ext install swfz/gh-ap
+gh ap -project-id 2 -pr 2 -field 'Iteration=2026-03-01' -field 'Point=1' -field 'Month=2026-03-01'
+```
+`-project-id`は固定
+
+`-pr`はPRのNumber（カレントブランチでPRが出てれば省略可）
+
+###### field項目
+- Point
+    - 1（基本は1、修正が難航した場合は3）
+- Month
+    - 基本的には現在の月の月初の日付
+    - 例) 2026-03-10 -> 2026-03-01
+- Iteration
+    - 現在のIteration
+    - Iterationの初日を指定する
+    - 現在は月ごとに切ってるので月初
+
 
 CIが全パスするまでこのサイクルを繰り返す。
 
