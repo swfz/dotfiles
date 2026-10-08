@@ -3,14 +3,14 @@ node = '24.21.0'
 ruby = '4.0.7'
 go = '1.27.1'
 gcloud = 'latest'
-awscli = '2.37.5'
+awscli = '2.37.7'
 deno = 'latest'
 jq = '1.8.2'
 bat = '0.26.1'
 delta = '0.19.2'
 terraform = '1.16.4'
 # 3.12.12はgcloudのCLOUDSDK_PYTHON用(gcloudは新しいpythonをサポートしないため別で保持する)
-python = ['3.14.7', '3.12.12']
+python = ['3.14.8', '3.12.12']
 pipx = 'latest'
 act = 'latest'
 vim = 'latest'
@@ -41,7 +41,7 @@ apm = 'latest'
 "pipx:cisco-ai-skill-scanner" = 'latest'
 ollama = 'latest'
 rust = 'latest'
-ghq = "1.10.1"
+ghq = "1.11.2"
 "github:dlvhdr/diffnav" = 'latest'
 sqlite = 'latest'
 # ubiバックエンドはOS/libcの判別が甘くglibc環境(WSL/Ubuntu)でmusl版を掴むことがある(ELFローダー無しでexec不可)。
@@ -51,7 +51,7 @@ sqlite = 'latest'
 "github:k1LoW/mo" = "latest"
 "github:sxyazi/yazi" = "latest"
 ffmpeg = "latest"
-gh = "2.101.0"
+gh = "2.102.0"
 rclone = "latest"
 
 [hooks]
