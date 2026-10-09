@@ -42,5 +42,6 @@
       changed_when: true
       with_items:
         - ./configure
-        - make
-        - make install
+        # Git 2.56以降はRust(cargo)がデフォルトで必要になるため無効化する(Git 3.0で必須化予定)
+        - make NO_RUST=YesPlease
+        - make NO_RUST=YesPlease install
