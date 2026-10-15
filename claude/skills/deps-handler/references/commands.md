@@ -23,6 +23,7 @@
 
 | カテゴリ | コマンド/ツール | 用途 | 承認理由 |
 |---|---|---|---|
+| GitHub CLI | `gh pr edit <PR> --add-label agent-workflow` | マージ前のラベル付け | 共有リポジトリへの変更 |
 | GitHub CLI | `gh pr merge <PR> --squash` | PRマージ | 共有リポジトリへの変更 |
 | GitHub CLI | `gh issue view --repo <repo>` | 外部リポジトリのIssue確認 | 外部APIアクセス |
 | Git | `git add <file>` | ファイルステージング | コミット準備 |
