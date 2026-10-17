@@ -17,6 +17,8 @@ allowed-tools:
   - Bash(gh issue list:*)
   - Bash(gh issue view:*)
   - Bash(gh label list:*)
+  - Bash(gh project field-list:*)
+  - Bash(gh project item-list:*)
   - Bash(git log:*)
   - Bash(git ls-files:*)
   - Bash(git fetch:*)
@@ -31,12 +33,14 @@ allowed-tools:
 
 ```
 [autopilot-audit] (このスキル / 手動 or 低頻度Routine)
-  全精査 → レベル判定 → ダッシュボードIssue更新 → 改善Issueを autopilot:proposed で起票
-                                                       ↓ swfz が承認して autopilot:approved に付け替え
+  全精査 → レベル判定 → 改善Issue起票 → Project「autopilot」に Status=Proposed で追加 → ダッシュボードIssue更新
+                                                       ↓ swfz が Project 上で Status を Approved に変更
 [消化Routine] (別スキル / このスキルの範囲外)
-  autopilot:approved を拾う → autopilot:working → 実装・PR作成
-  自動マージ可否はダッシュボードのレベルと Issue の autopilot:risk-* ラベルで決める
+  Status=Approved を拾う → Working → 実装・PR作成
+  自動マージ可否はダッシュボードのレベルと Project の Risk で決める
 ```
+
+状態(Status)・リスク(Risk)・レベル(Level)・柱(Pillar)は GitHub Projects「autopilot」で管理する。詳細は [references/project.md](references/project.md)。ラベルは識別用の `autopilot` / `autopilot:dashboard` のみ。
 
 ## 絶対守ること
 
@@ -113,12 +117,13 @@ Issue の粒度は **1 Issue = 1 PR** に合わせる。基準と Issue は1対1
   - 例: `docs.L2.agent-md` + `docs.L2.architecture` →「CLAUDE.md を作成する」
   - 統合するのは、触るファイルと完了条件の確認方法が共通するものだけ。関心事が違うもの(permissions と lockfile 等)は統合しない
 
-### Step 5: ラベル準備と起票
+### Step 5: 起票と Project への追加
 
-- 必要なラベルが無ければ作成する([references/issue-format.md](references/issue-format.md) のラベル一覧)
+- ラベル `autopilot` / `autopilot:dashboard` が無ければ作成する([references/issue-format.md](references/issue-format.md))
 - Issue 本文は [references/issue-format.md](references/issue-format.md) のテンプレートに従う。**完了条件は消化Routineが機械的に確認できる形で書く**
 - **依存先から順に起票する**。後続 Issue の「依存」欄には、先に起票した Issue の実番号を入れる
-- 全件に `autopilot` + 状態ラベル(通常 `autopilot:proposed`、GitHub 設定変更など人間作業のものは `autopilot:handoff`)+ `autopilot:risk-*` を付ける。`autopilot:approved` は付けない(承認制)
+- 全件にラベル `autopilot` を付ける
+- 起票した Issue を Project「autopilot」に追加し、Status / Risk / Level / Pillar を設定する([references/project.md](references/project.md))。Status は通常 `Proposed`、GitHub 設定変更など人間作業のものは `Handoff`。`Approved` にはしない(承認制)
 
 ### Step 6: 既存 Issue の整理
 
@@ -137,9 +142,9 @@ Issue の粒度は **1 Issue = 1 PR** に合わせる。基準と Issue は1対1
 レベル: L1 → L2 (L3 まで 7/12 pass, 80% には残り 3)
 柱別: Style L2 / Build L2 / Testing L1 / Docs L2 / Security L1 / Task L1 / CI L2 / DevEnv L1 / Obs L0
 
-起票 (autopilot:proposed, 6件):
-  #45 [ci.L2.required-checks] 必須チェックを設定する  autopilot:risk-low
-  #46 [testing.L2.core-logic#logger] logger.ts にテストを追加  autopilot:risk-low
+起票 (Status=Proposed, 6件):
+  #45 [ci.L2.required-checks] 必須チェックを設定する  Risk=Low
+  #46 [testing.L2.core-logic#logger] logger.ts にテストを追加  Risk=Low
   ...
 クローズ (達成済み, 2件): #31, #33
 未起票 (上限超過, 4件): ダッシュボード参照
@@ -147,7 +152,7 @@ unknown (判定不能, 1件): obs.L3.alerting — Sentry の有無をリポジ�
 未導入ツール: yamllint, ansible-lint (確認の上で実行 / Routine では unknown)
 
 ダッシュボード: https://github.com/swfz/<repo>/issues/<n>
-次の一手: 起票した Issue を確認し、着手してよいものに autopilot:approved を付ける
+次の一手: Project「autopilot」で起票した Issue を確認し、着手してよいものの Status を Approved にする
 ```
 
 ## 避けること

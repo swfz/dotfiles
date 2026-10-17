@@ -31,7 +31,7 @@
 
 L3 まで: 7 / 12 pass(80% には残り 3)
 
-自動マージ: autopilot:risk-low 不可(L3 未満)/ autopilot:risk-medium 不可(L4 未満)
+自動マージ: Risk=Low 不可(L3 未満)/ Risk=Medium 不可(L4 未満)
 
 ## 柱別
 

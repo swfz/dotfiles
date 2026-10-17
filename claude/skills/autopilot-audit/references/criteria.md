@@ -87,7 +87,7 @@
 
 | ID | 基準 | 適用 | 判定方法 |
 |---|---|---|---|
-| `task.L1.labels` | 自動化用ラベルが揃っている | | `autopilot:proposed` / `autopilot:approved` / `autopilot:working` / `autopilot:handoff` が存在 |
+| `task.L1.labels` | 自動化用ラベルが揃っている | | `autopilot` / `autopilot:dashboard` が存在 |
 | `task.L2.issue-template` | 自動化向け Issue テンプレート | | `.github/ISSUE_TEMPLATE/` に「完了条件」欄が必須のテンプレートがある |
 | `task.L2.pr-template` | PR テンプレート | | `.github/pull_request_template.md` 等 |
 

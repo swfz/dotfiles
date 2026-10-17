@@ -4,31 +4,29 @@
 
 ## ラベル
 
-| ラベル | 色 | 用途 | 付ける主体 |
-|---|---|---|---|
-| `autopilot` | `5319e7` | このスキル由来の Issue 全て | autopilot-audit |
-| `autopilot:dashboard` | `5319e7` | ダッシュボード Issue | autopilot-audit |
-| `autopilot:proposed` | `fbca04` | 起票直後。承認待ち | autopilot-audit |
-| `autopilot:approved` | `0e8a16` | 承認済み。消化Routineが拾ってよい | swfz |
-| `autopilot:working` | `1d76db` | 消化Routineが着手中 | 消化Routine |
-| `autopilot:handoff` | `d93f0b` | 自動では進められない。人間の判断が必要 | 消化Routine / autopilot-audit |
-| `autopilot:risk-low` / `autopilot:risk-medium` / `autopilot:risk-high` | `c2e0c6` / `fef2c0` / `f9d0c4` | 自動マージ判定に使うリスク区分。起票時に1つ付け、以後固定 | autopilot-audit |
+ラベルは識別用の2つだけ。状態・リスク・レベル・柱は Project「autopilot」のフィールドで持つ([project.md](project.md))。
+
+| ラベル | 色 | 用途 |
+|---|---|---|
+| `autopilot` | `5319e7` | このスキル由来の Issue 全て(重複チェックに使う) |
+| `autopilot:dashboard` | `5319e7` | ダッシュボード Issue |
 
 ```bash
-gh label create "autopilot:proposed" --color fbca04 --description "autopilot: 承認待ち" -R swfz/<repo> 2>/dev/null || true
+gh label create "autopilot" --color 5319e7 --description "autopilot-audit 由来の Issue" -R swfz/<repo> 2>/dev/null || true
+gh label create "autopilot:dashboard" --color 5319e7 --description "Autopilot ダッシュボード" -R swfz/<repo> 2>/dev/null || true
 ```
 
-## リスク区分
+## リスク区分(Project の Risk)
 
-消化Routineの自動マージ判定に使う。ダッシュボードのレベルとの組み合わせで決まる。
+消化Routineの自動マージ判定に使う。ダッシュボードのレベルとの組み合わせで決まる。起票時に決め、以後は変えない。
 
-| ラベル | 対象 | 自動マージ |
+| Risk | 対象 | 自動マージ |
 |---|---|---|
-| `autopilot:risk-low` | テスト追加、ドキュメント、CI/lint 設定の追加、ラベル・テンプレート追加、依存更新 | L3 以上で CI green なら可 |
-| `autopilot:risk-medium` | リファクタ、小さなバグ修正、lint 警告の解消、ログ出力の追加 | L4 以上で CI green なら可 |
-| `autopilot:risk-high` | 認証・認可、秘匿情報、データ永続化の変更、ブランチ保護など GitHub 設定の変更、デプロイ設定 | 常に人間がマージ |
+| `Low` | テスト追加、ドキュメント、CI/lint 設定の追加、ラベル・テンプレート追加、依存更新 | L3 以上で CI green なら可 |
+| `Medium` | リファクタ、小さなバグ修正、lint 警告の解消、ログ出力の追加 | L4 以上で CI green なら可 |
+| `High` | 認証・認可、秘匿情報、データ永続化の変更、ブランチ保護など GitHub 設定の変更、デプロイ設定 | 常に人間がマージ |
 
-GitHub のリポジトリ設定(ブランチ保護、secret scanning 等)を変える Issue はコード変更で完結しないため、`autopilot:risk-high` を付け、`autopilot:proposed` ではなく `autopilot:handoff` で起票する。
+GitHub のリポジトリ設定(ブランチ保護、secret scanning 等)を変える Issue はコード変更で完結しないため、Risk=`High`、Status=`Handoff` で起票する。
 
 ## タイトル
 
@@ -78,11 +76,10 @@ GitHub のリポジトリ設定(ブランチ保護、secret scanning 等)を変�
 
 ## メタ
 
+柱・レベル・リスクは Project のフィールドが正。本文には書かない(二重管理でずれるため)。
+
 | 項目 | 値 |
 |---|---|
-| 柱 | Testing |
-| レベル | L2 |
-| risk | `autopilot:risk-low`(ラベルと一致させる) |
 | 想定規模 | S(〜50行) / M(〜200行) / L(それ以上 → 分割を検討) |
 | 依存 | #<先に片付けるべき Issue>(あれば) |
 ```
@@ -93,7 +90,7 @@ GitHub のリポジトリ設定(ブランチ保護、secret scanning 等)を変�
 - **想定規模 L は原則作らない**。精査の段階で分割する
 - **依存関係を明示**。`ci.L2.required-checks` は `ci.L1.runs-on-pr` の後、など
 - 根拠にシークレットの値そのものを書かない(`file:line` とパターン名のみ)
-- public リポジトリでは、未修正の脆弱性の詳細(再現手順・エクスプロイト可能な箇所)を Issue に書かない。`security.L3.code-scan` の具体的な指摘は「詳細はローカルの精査結果を参照」とし、`autopilot:handoff` で起票してユーザーに報告する
+- public リポジトリでは、未修正の脆弱性の詳細(再現手順・エクスプロイト可能な箇所)を Issue に書かない。`security.L3.code-scan` の具体的な指摘は「詳細はローカルの精査結果を参照」とし、Status=`Handoff` で起票してユーザーに報告する
 
 ## 重複チェック
 

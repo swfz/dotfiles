@@ -50,7 +50,8 @@ gh pr list -R <o>/<r> --state merged --author app/renovate --limit 20 --json num
 ```bash
 gh label list -R <o>/<r> --limit 200 --json name --jq '.[].name'
 gh issue list -R <o>/<r> --label autopilot --state open --limit 200 --json number,title,labels,body
-gh issue create -R <o>/<r> --title "<title>" --body-file <file> --label autopilot,autopilot:proposed,autopilot:risk-low
+gh issue create -R <o>/<r> --title "<title>" --body-file <file> --label autopilot
+# Project への追加とフィールド設定は references/project.md
 gh issue edit <n> -R <o>/<r> --body-file <file>
 gh issue comment <n> -R <o>/<r> --body-file <file>
 gh issue close <n> -R <o>/<r> --comment "<理由>" [--reason "not planned"]
