@@ -49,6 +49,7 @@ allowed-tools:
 3. **1回の起票は最大10件**。溢れた分はダッシュボードの「未起票」に載せる
 4. **重複起票しない**。Issue 本文の `autopilot-id` マーカーで既存 Issue(open)と突き合わせる
 5. **根拠のない判定をしない**。各基準の pass/fail には、確認したコマンド出力か `file:line` を根拠として残す。判定できなかったものは `unknown` とし、fail 扱いにしない
+6. **「無い」「足りない」という判定は、対象ファイルを実際に読んで確かめる**。grep で見つからないことや、一部だけ読んだ印象を根拠にしない(例: README の環境変数の表を見落として「1つしか書かれていない」と判定しない)
 
 ## ワークフロー
 
@@ -121,6 +122,7 @@ Issue の粒度は **1 Issue = 1 PR** に合わせる。基準と Issue は1対1
 
 - ラベル `autopilot` / `autopilot:dashboard` が無ければ作成する([references/issue-format.md](references/issue-format.md))
 - Issue 本文は [references/issue-format.md](references/issue-format.md) のテンプレートに従う。**完了条件は消化Routineが機械的に確認できる形で書く**
+- **起票前に、完了条件の確認コマンドを現状のリポジトリで一度実行する**。現状で「期待どおりに fail する」ことと、コマンド自体が正しく動く(正規表現の取りこぼし、パスの誤りがない)ことを確かめる。直した後に pass する形かも見直す
 - **依存先から順に起票する**。後続 Issue の「依存」欄には、先に起票した Issue の実番号を入れる
 - 全件にラベル `autopilot` を付ける
 - 起票した Issue を Project「autopilot」に追加し、Status / Risk / Level / Pillar を設定する([references/project.md](references/project.md))。Status は通常 `Proposed`、GitHub 設定変更など人間作業のものは `Handoff`。`Approved` にはしない(承認制)
