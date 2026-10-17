@@ -56,25 +56,21 @@ gh project item-list $P --owner $OWNER --limit 500 --format json \
 
 worker が無人で作って自動マージ・Review になった PR は入れない(人の作業ではないため)。
 
-individual-project は 1000 件超あるので `gh project item-list 2` で全件取らない(GraphQL のレート制限に当たる)。追加結果の確認は Issue / PR 側の `projectItems` を引く。
+individual-project は 1000 件超あるので `gh project item-list 2` で全件取らない(GraphQL のレート制限に当たる)。確認は gh-ap の出力で足りる。
 
-フィールド: Point(数値。小さいもの 1、想定規模 M 相当 2、それ以上 3/5)、Month(その月の 1 日)、Iteration(`YYYY-MM`)。
+フィールド: Point(数値。小さいもの 1、想定規模 M 相当 2、それ以上 3/5)、Month(その月の 1 日)、Iteration(月単位。指定は開始日 `YYYY-MM-01`)。
+
+追加とフィールド設定は gh 拡張 [gh-ap](https://github.com/swfz/gh-ap)(`gh extension install swfz/gh-ap`)で行う。対象リポジトリの clone の中で実行する(`-R` 指定は無い)。
 
 ```bash
-P2=PVT_kwHOAD6fZs0elg
-F2=$(gh project field-list 2 --owner swfz --format json)
-fid2() { echo "$F2" | jq -r --arg n "$1" '.fields[] | select(.name==$n) | .id'; }
-oid2() { echo "$F2" | jq -r --arg n "$1" --arg o "$2" '.fields[] | select(.name==$n) | .options[] | select(.name==$o) | .id'; }
-# Iteration の ID(今月分)
-iter=$(gh api graphql -f query='query{user(login:"swfz"){projectV2(number:2){field(name:"Iteration"){... on ProjectV2IterationField{configuration{iterations{id title}}}}}}}' \
-  | jq -r --arg t "$(date +%Y-%m)" '.data.user.projectV2.field.configuration.iterations[] | select(.title==$t) | .id')
-
-item=$(gh project item-add 2 --owner swfz --url <Issue/PR の URL> --format json --jq .id)
-gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Status)" --single-select-option-id "$(oid2 Status Todo)"
-gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Point)" --number 1
-gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Month)" --date "$(date +%Y-%m-01)"
-gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Iteration)" --iteration-id "$iter"
+gh ap -project-id 2 -issue <n> \
+  -field "Status=Todo" -field "Point=1" -field "Month=$(date +%Y-%m-01)" -field "Iteration=$(date +%Y-%m-01)" < /dev/null
+# PR は -pr <n>。Status は open なら Review、マージ済みなら Done
 ```
+
+- `-field` で指定しなかったフィールドは対話で聞かれる。無人実行では Status / Point / Month / Iteration を全て指定し、標準入力を `/dev/null` にする(聞かれた場合に待ち続けず EOF で失敗させる)
+- Iteration はタイトル(`2026-10`)ではなく開始日(`2026-10-01`)で指定する。タイトルだと `Option '2026-10' not found` になる
+- 既に追加済みでもエラーにならず、フィールドが上書きされる。実行後に項目の現在値が出力されるので、それで結果を確認する
 
 ## 承認(当面の運用)
 
