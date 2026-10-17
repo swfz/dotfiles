@@ -10,18 +10,14 @@ autopilot Issue の状態・リスク・レベル・柱を管理する GitHub Pr
 
 | フィールド | 値 | 設定する主体 |
 |---|---|---|
-| Status | `Proposed` / `Approved` / `Working` / `Handoff` / `Done` | 起票時は autopilot-audit。`Approved` は swfz、`Working` は消化Routine、`Done` はクローズ時に Project のビルトインワークフロー |
+| Status | `Proposed` / `Approved` / `Working` / `Review` / `Handoff` / `Done` | 起票時は autopilot-audit。`Approved` は swfz、`Working` / `Review` / `Handoff` は autopilot-worker、`Done` はクローズ時に Project のビルトインワークフロー |
 | Risk | `Low` / `Medium` / `High` | autopilot-audit(起票時に決めて固定。基準は issue-format.md) |
 | Level | `L1` / `L2` / `L3` / `L4` | autopilot-audit。その Issue が到達に寄与するレベル(複数基準なら最も低いもの) |
 | Pillar | `Style` / `Build` / `Testing` / `Docs` / `Security` / `Task` / `CI` / `DevEnv` / `Obs` | autopilot-audit。複数の柱にまたがる場合は主たるもの1つ |
 
-Status の遷移:
+Status の遷移と各状態の扱いは [../../autopilot-worker/references/status.md](../../autopilot-worker/references/status.md)。
 
-```
-Proposed ──(swfz 承認)──→ Approved ──(Routine 着手)──→ Working ──→ PR 作成 → クローズで Done
-    │                                                   │
-    └─(起票時点で人間作業)──→ Handoff ←──(詰まった)──────┘
-```
+**注意**: 単一選択フィールドの選択肢を API(`updateProjectV2Field`)で変更すると、全 Item のそのフィールドの値が消える。選択肢の追加・変更は GitHub の画面で行う。
 
 `Handoff` は swfz が直接対応してクローズするか、判断をコメントして `Approved` に戻す。
 
