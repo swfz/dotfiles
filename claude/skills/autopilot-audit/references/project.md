@@ -45,6 +45,37 @@ gh project item-list $P --owner $OWNER --limit 500 --format json \
 
 `gh project item-add` は既に追加済みの Issue に対しても既存の item ID を返すので、再実行しても重複しない。
 
+## individual-project への連携
+
+人の手が入る作業は、swfz の作業実績を記録している Project「individual-project」(https://github.com/users/swfz/projects/2)にも入れる。autopilot の Status 管理はそのまま autopilot 側で続ける。
+
+| 対象 | 入れるもの | Status |
+|---|---|---|
+| Handoff にした Issue(起票時の Handoff を含む) | Issue | `Todo` |
+| Handoff から人が対応して作った PR、会話の中で直接作った派生 PR | PR | open なら `Review`、マージ済みなら `Done` |
+
+worker が無人で作って自動マージ・Review になった PR は入れない(人の作業ではないため)。
+
+individual-project は 1000 件超あるので `gh project item-list 2` で全件取らない(GraphQL のレート制限に当たる)。追加結果の確認は Issue / PR 側の `projectItems` を引く。
+
+フィールド: Point(数値。小さいもの 1、想定規模 M 相当 2、それ以上 3/5)、Month(その月の 1 日)、Iteration(`YYYY-MM`)。
+
+```bash
+P2=PVT_kwHOAD6fZs0elg
+F2=$(gh project field-list 2 --owner swfz --format json)
+fid2() { echo "$F2" | jq -r --arg n "$1" '.fields[] | select(.name==$n) | .id'; }
+oid2() { echo "$F2" | jq -r --arg n "$1" --arg o "$2" '.fields[] | select(.name==$n) | .options[] | select(.name==$o) | .id'; }
+# Iteration の ID(今月分)
+iter=$(gh api graphql -f query='query{user(login:"swfz"){projectV2(number:2){field(name:"Iteration"){... on ProjectV2IterationField{configuration{iterations{id title}}}}}}}' \
+  | jq -r --arg t "$(date +%Y-%m)" '.data.user.projectV2.field.configuration.iterations[] | select(.title==$t) | .id')
+
+item=$(gh project item-add 2 --owner swfz --url <Issue/PR の URL> --format json --jq .id)
+gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Status)" --single-select-option-id "$(oid2 Status Todo)"
+gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Point)" --number 1
+gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Month)" --date "$(date +%Y-%m-01)"
+gh project item-edit --id "$item" --project-id $P2 --field-id "$(fid2 Iteration)" --iteration-id "$iter"
+```
+
 ## 承認(当面の運用)
 
 自動承認は入れていない。Project のボード/テーブルで Status を `Approved` に変更する。

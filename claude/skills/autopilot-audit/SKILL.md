@@ -126,6 +126,7 @@ Issue の粒度は **1 Issue = 1 PR** に合わせる。基準と Issue は1対1
 - **依存先から順に起票する**。後続 Issue の「依存」欄には、先に起票した Issue の実番号を入れる
 - 全件にラベル `autopilot` を付ける
 - 起票した Issue を Project「autopilot」に追加し、Status / Risk / Level / Pillar を設定する([references/project.md](references/project.md))。Status は通常 `Proposed`、GitHub 設定変更など人間作業のものは `Handoff`。`Approved` にはしない(承認制)
+- Status=`Handoff` で起票したものは Project「individual-project」にも追加する([references/project.md](references/project.md) の「individual-project への連携」)
 
 ### Step 6: 既存 Issue の整理
 

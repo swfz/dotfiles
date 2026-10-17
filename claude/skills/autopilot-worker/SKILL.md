@@ -170,6 +170,8 @@ PR の Project 紐づけは不要(Issue 側で管理する)。
 
 Issue に Handoff コメントを残す。作業途中のブランチや PR があれば残したままリンクする(消さない)。
 
+Handoff にした Issue は Project「individual-project」にも追加する(Status=`Todo`。手順は [../autopilot-audit/references/project.md](../autopilot-audit/references/project.md) の「individual-project への連携」)。
+
 ```
 <!-- autopilot-worker:handoff -->
 autopilot-worker から引き継ぎます。
