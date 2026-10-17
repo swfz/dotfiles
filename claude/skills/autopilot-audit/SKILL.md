@@ -29,13 +29,15 @@ allowed-tools:
 リポジトリが **AIエージェントだけで安全に改善・運用できる状態** にどれだけ近いかを判定し、
 足りないものを Issue 化する。Factory.ai の Agent Readiness モデルを swfz 配下向けに調整したもの。
 
+レベル(L1 動く / L2 文書化 / L3 標準化 / L4 最適化)の意味と全基準は [references/criteria.md](references/criteria.md)。
+
 全体の運用像:
 
 ```
 [autopilot-audit] (このスキル / 手動 or 低頻度Routine)
   全精査 → レベル判定 → 改善Issue起票 → Project「autopilot」に Status=Proposed で追加 → ダッシュボードIssue更新
                                                        ↓ swfz が Project 上で Status を Approved に変更
-[消化Routine] (別スキル / このスキルの範囲外)
+[autopilot-worker] (別スキル / 日次Routine)
   Status=Approved を拾う → Working → 実装・PR作成
   自動マージ可否はダッシュボードのレベルと Project の Risk で決める
 ```
