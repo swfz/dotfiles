@@ -32,9 +32,9 @@
 |---|---|---|---|
 | `style.L1.linter` | linter の設定がある | | eslint/biome/deno lint/ruff/golangci-lint/rubocop 等の設定ファイル or package.json scripts |
 | `style.L1.formatter` | formatter の設定がある | | prettier/biome/deno fmt/ruff format/gofmt 等 |
-| `style.L2.typecheck` | 型チェックがある | 型のある言語 / TS / Python / 大規模 JS | `tsc --noEmit`/`deno check`/mypy/pyright がスクリプトか CI にある。JS のみのアプリは、テスト・生成物・vendoring(shadcn の `components/ui/` 等)を除くソースが **3000 行以上なら TypeScript 化を要求**して fail(`checkJs` では不可)。3000 行未満の JS、shell のみは `n/a` |
+| `style.L2.typecheck` | 型チェックがある | 型のある言語 / TS / Python / JS | `tsc --noEmit`/`deno check`/mypy/pyright がスクリプトか CI にあり、対象ソースの **80% 以上(行数)が型チェックされている**。JS は TypeScript 化したものだけを数える(`checkJs` は数えない)。対象ソースからは、テスト・生成物・vendoring(shadcn の `components/ui/` 等)・設定ファイル・単発スクリプト(一度きりの移行・調査用など)を除く。shell のみは `n/a` |
 | `style.L2.pre-commit` | コミット前フックがある | | lefthook/husky/pre-commit の設定 |
-| `style.L3.strict` | strict 設定 | 型のある言語 / TS / Python / 大規模 JS | tsconfig `strict: true` / mypy strict 等。適用範囲は `style.L2.typecheck` と同じ |
+| `style.L3.strict` | 全ソースが strict で型チェックされている | 型のある言語 / TS / Python / JS | 対象ソース(`style.L2.typecheck` と同じ範囲)の **100%** が型チェックされ、tsconfig `strict: true` / mypy strict 等が有効 |
 | `style.L3.zero-warnings` | lint 警告 0 | | lint を実行して warning/error が 0 |
 | `style.L3.few-ignores` | 抑制コメントが少ない | | `eslint-disable`/`@ts-ignore`/`@ts-expect-error`/`# type: ignore`/`noqa`/`any` の合計が 1000 行あたり 1 未満 |
 
@@ -58,10 +58,11 @@
 | `testing.L1.runs-locally` | テストがローカルで通る | | テストコマンドを実行して成功 |
 | `testing.L2.ci-runs-tests` | 全てのテストが CI で走る | | アプリ内の全テスト(言語・ランナーごと。例: vitest + Playwright + pytest)が PR トリガーの workflow で実行されている。1つでも CI 未実行のテストがあれば fail とし、根拠に列挙する |
 | `testing.L2.core-logic` | 主要ロジックにテストがある | | 分岐を持つモジュール・公開 API・エントリポイントについて対応するテストがあるか全精査。未テストの主要モジュールが 0 なら pass |
-| `testing.L3.coverage-gate` | カバレッジ閾値を CI で強制 | | vitest/jest/deno/pytest-cov の閾値設定 + CI で実行 |
+| `testing.L3.coverage-gate` | カバレッジ閾値を CI で強制 | | vitest/jest/deno/pytest-cov の閾値設定があり CI で実行され、**lines の閾値が 70% 以上** |
 | `testing.L3.e2e` | e2e または VRT がある | service, site | Playwright 等の e2e が CI で走る |
 | `testing.L3.no-retry` | テストのリトライで失敗を隠していない | | テストランナーのリトライ設定が 0(Playwright `retries`、vitest `retry`、jest `retryTimes`、pytest-rerunfailures 等)。CI のみリトライする設定も fail |
 | `testing.L4.no-flaky` | flaky なテストが 0 | | 直近 30 日のデフォルトブランチで「失敗 → 同一 SHA の rerun で成功」した run が 0。テストレポート(Playwright の flaky 集計、JUnit XML 等)が artifact にあれば、リトライ後 pass のテストも 0 であること |
+| `testing.L4.coverage-high` | カバレッジ閾値が高い | | `testing.L3.coverage-gate` を満たし、**lines の閾値が 90% 以上** |
 
 ## Documentation (`docs`)
 
