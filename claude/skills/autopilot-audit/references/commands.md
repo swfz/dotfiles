@@ -67,8 +67,11 @@ git ls-files | xargs grep -cE 'eslint-disable|@ts-ignore|@ts-expect-error|type: 
 # 秘匿情報
 gitleaks detect --no-banner --redact 2>/dev/null || echo "gitleaks なし → パターン grep で代替"
 
-# JS のみのアプリのソース行数(style.L2.typecheck の 3000 行判定。テスト・vendoring を除く)
-git ls-files '*.js' '*.jsx' '*.mjs' '*.cjs' | grep -vE '\.(test|spec)\.|/components/ui/|(^|/)(dist|build|vendor|e2e)/' | xargs cat | wc -l
+# 型チェック対象の割合(style.L2.typecheck / style.L3.strict)。単発スクリプトは個別に読んで EXCLUDE に足す
+EXCLUDE='\.(test|spec)\.|\.d\.ts$|/components/ui/|(^|/)(dist|build|vendor|e2e|coverage)/|\.config\.'
+ts=$(git ls-files '*.ts' '*.tsx' '*.mts' '*.cts' | grep -vE "$EXCLUDE" | xargs cat 2>/dev/null | wc -l)
+js=$(git ls-files '*.js' '*.jsx' '*.mjs' '*.cjs' | grep -vE "$EXCLUDE" | xargs cat 2>/dev/null | wc -l)
+echo "ts=$ts js=$js ratio=$(( ts * 100 / (ts + js) ))%"
 # テストランナーのリトライ設定
 git grep -nE 'retries\s*:|retry\s*:|retryTimes|reruns' -- '*.config.*' 'pytest.ini' 'pyproject.toml' 'setup.cfg'
 ```
