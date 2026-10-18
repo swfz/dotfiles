@@ -31,3 +31,20 @@ paths:
 - すべてのジョブに `timeout-minutes` を設定する（未設定時のデフォルトは360分＝6時間で、無駄なリソース消費につながる）
 - 処理の想定所要時間に応じた適切な値を設定する
 
+## 実行コスト
+
+プライベートリポジトリは Actions の無料枠を超えると従量課金になる(パブリックリポジトリの標準ランナーは無料)。
+
+- E2E など重いジョブは `pull_request` でだけ実行し、main への push では省く(マージ前の PR で通ったものと同じ内容になるため)
+  - 必須チェックに入っているジョブでも、ルールセットは PR で評価されるので push 側で省いて問題ない
+- PR の連続 push では古い実行をキャンセルする。main への push は全コミットの結果を残すためキャンセルしない
+
+```yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+```
+
+- ジョブの課金は1分単位で切り上げられる。数十秒で終わるジョブを細かく分けすぎない
+- macOS ランナーは Linux の約10倍の単価なので、必要なジョブに限定する
+
