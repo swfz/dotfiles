@@ -1,0 +1,45 @@
+---
+name: test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  ccsync:
+    runs-on: ubuntu-latest
+    name: 'ccsync'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: run ccsync test
+        run: bash tests/ccsync_test.sh
+
+  rdpick:
+    runs-on: ubuntu-latest
+    name: 'rdpick'
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: src/rdpick
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: src/rdpick/go.mod
+          cache: false
+      - name: go vet
+        run: go vet ./...
+      - name: go test
+        run: go test ./...
