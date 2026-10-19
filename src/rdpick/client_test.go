@@ -43,7 +43,7 @@ func TestClientFetchPaging(t *testing.T) {
 			}
 			resp := raindropResponse{Result: true, Items: itemsForRange(start, count), Count: total}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -65,7 +65,7 @@ func TestClientFetchPaging(t *testing.T) {
 			page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 			resp := raindropResponse{Result: true, Items: itemsForRange(page*perPage, perPage), Count: 1000}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -88,7 +88,7 @@ func TestClientFetchPaging(t *testing.T) {
 			requestedPages++
 			resp := raindropResponse{Result: true, Items: itemsForRange(0, 10), Count: 10}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -112,7 +112,7 @@ func TestClientFetchPaging(t *testing.T) {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			resp := raindropResponse{Result: true, Items: []RaindropItem{}, Count: 0}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -134,7 +134,7 @@ func TestClientFetchErrors(t *testing.T) {
 	t.Run("401はトークン無効のエラーになる", func(t *testing.T) {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte(`{"result":false}`))
+			_, _ = w.Write([]byte(`{"result":false}`))
 		}))
 		defer server.Close()
 
@@ -159,7 +159,7 @@ func TestClientFetchErrors(t *testing.T) {
 			}
 			resp := raindropResponse{Result: true, Items: itemsForRange(0, 5), Count: 5}
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(resp)
+			_ = json.NewEncoder(w).Encode(resp)
 		}))
 		defer server.Close()
 
@@ -201,7 +201,7 @@ func TestClientFetchErrors(t *testing.T) {
 	t.Run("その他の非200エラーはステータスコードと本文を含む", func(t *testing.T) {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("internal server error detail"))
+			_, _ = w.Write([]byte("internal server error detail"))
 		}))
 		defer server.Close()
 
@@ -218,7 +218,7 @@ func TestClientFetchErrors(t *testing.T) {
 	t.Run("不正なJSONはデコードエラーになる", func(t *testing.T) {
 		server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte("{not valid json"))
+			_, _ = w.Write([]byte("{not valid json"))
 		}))
 		defer server.Close()
 
