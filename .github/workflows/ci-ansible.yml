@@ -22,6 +22,9 @@ on:
   schedule:
     - cron: '0 0 * * SAT'
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -191,6 +194,9 @@ jobs:
     runs-on: ubuntu-latest
     # needs: [lint, build-mac, build-ubuntu, build-codespace]
     needs: [lint, build-mac, build-ubuntu]
+    permissions:
+      actions: read
+      contents: read
     steps:
       - uses: Kesin11/actions-timeline@57fc93f20c6da7fbc14063c6d24a2a5627c799ad # v3.2
 
@@ -200,6 +206,9 @@ jobs:
     needs: [lint, build-mac, build-ubuntu]
     name: post slack
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - uses: Gamesight/slack-workflow-status@2e709ce51fd47f02b7221db8547e6e6f49f81f1d # v2.0.0
         with:
