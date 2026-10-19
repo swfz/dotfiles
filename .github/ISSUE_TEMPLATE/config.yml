@@ -1,0 +1,2 @@
+# テンプレートを使わない自由記述の Issue も引き続き作れるようにする
+blank_issues_enabled: true
