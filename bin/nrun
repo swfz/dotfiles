@@ -3,8 +3,8 @@
 # notify and run script
 # コマンドをラップしてデスクトップ通知 + tmux window/pane通知を送る
 
-_usage(){
-cat << EOS
+_usage() {
+  cat <<EOS
 usage:
   nrun command [option...]
 

@@ -51,4 +51,3 @@ check_version "gh" "gh --version | head -n 1 | cut -d ' ' -f 3"
 # mise
 # e.g) 2025.10.11 linux-x64 (2025-10-18)
 check_version "mise" "mise --version | cut -d ' ' -f 1"
-

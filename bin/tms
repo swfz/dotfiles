@@ -39,7 +39,7 @@ while IFS=$'\t' read -r left top width height; do
 done < <(tmux list-panes -F '#{pane_left}	#{pane_top}	#{pane_width}	#{pane_height}')
 
 if [[ "$pane_count" -eq 1 ]]; then
-  echo '{"command":""}' | yq -P '.' > "$config_file"
+  echo '{"command":""}' | yq -P '.' >"$config_file"
   echo "Saved layout to ${config_file} (1 pane)"
   echo "Edit the file to add a command."
   exit 0
@@ -61,17 +61,17 @@ build_tree() {
     right_edges+=($((PANE_LEFT[$idx] + PANE_WIDTH[$idx])))
   done
   local -a unique_right=($(printf '%s\n' "${right_edges[@]}" | sort -nu))
-  local max_right=${unique_right[${#unique_right[@]}-1]}
+  local max_right=${unique_right[${#unique_right[@]} - 1]}
 
   # 有効な分割線を全て収集
   local -a h_dividers=()
   for divider in "${unique_right[@]}"; do
-    (( divider >= max_right )) && continue
+    ((divider >= max_right)) && continue
     local valid=true
     for idx in "${indices[@]}"; do
       local pl=${PANE_LEFT[$idx]}
       local pr=$((pl + PANE_WIDTH[$idx]))
-      if (( pl < divider && pr > divider )); then
+      if ((pl < divider && pr > divider)); then
         valid=false
         break
       fi
@@ -84,7 +84,7 @@ build_tree() {
     # 分割線の間にあるペインをまとめる
     local -a all_dividers=(0 "${h_dividers[@]}" "$((max_right + 1))")
     local group_count=$((${#all_dividers[@]} - 1))
-    local -a group_list=()   # スペース区切りのインデックス群
+    local -a group_list=() # スペース区切りのインデックス群
     local -a group_widths=()
     local total_w=0
 
@@ -96,9 +96,9 @@ build_tree() {
       for idx in "${indices[@]}"; do
         local pl=${PANE_LEFT[$idx]}
         local pr=$((pl + PANE_WIDTH[$idx]))
-        if (( pl >= d_left && pr <= d_right )); then
+        if ((pl >= d_left && pr <= d_right)); then
           group+=("$idx")
-          (( PANE_WIDTH[$idx] > gw )) && gw=${PANE_WIDTH[$idx]}
+          ((PANE_WIDTH[$idx] > gw)) && gw=${PANE_WIDTH[$idx]}
         fi
       done
       [[ ${#group[@]} -eq 0 ]] && continue
@@ -121,7 +121,7 @@ build_tree() {
         local child_json
         child_json=$(build_tree "${group_list[$g]}")
         child_json=$(echo "$child_json" | jq --arg w "${pct}%" '{width: $w} + .')
-        (( g > 0 )) && json="${json},"
+        ((g > 0)) && json="${json},"
         json="${json}${child_json}"
       done
       echo "${json}]}"
@@ -135,16 +135,16 @@ build_tree() {
     bottom_edges+=($((PANE_TOP[$idx] + PANE_HEIGHT[$idx])))
   done
   local -a unique_bottom=($(printf '%s\n' "${bottom_edges[@]}" | sort -nu))
-  local max_bottom=${unique_bottom[${#unique_bottom[@]}-1]}
+  local max_bottom=${unique_bottom[${#unique_bottom[@]} - 1]}
 
   local -a v_dividers=()
   for divider in "${unique_bottom[@]}"; do
-    (( divider >= max_bottom )) && continue
+    ((divider >= max_bottom)) && continue
     local valid=true
     for idx in "${indices[@]}"; do
       local pt=${PANE_TOP[$idx]}
       local pb=$((pt + PANE_HEIGHT[$idx]))
-      if (( pt < divider && pb > divider )); then
+      if ((pt < divider && pb > divider)); then
         valid=false
         break
       fi
@@ -167,9 +167,9 @@ build_tree() {
       for idx in "${indices[@]}"; do
         local pt=${PANE_TOP[$idx]}
         local pb=$((pt + PANE_HEIGHT[$idx]))
-        if (( pt >= d_top && pb <= d_bottom )); then
+        if ((pt >= d_top && pb <= d_bottom)); then
           group+=("$idx")
-          (( PANE_HEIGHT[$idx] > gh )) && gh=${PANE_HEIGHT[$idx]}
+          ((PANE_HEIGHT[$idx] > gh)) && gh=${PANE_HEIGHT[$idx]}
         fi
       done
       [[ ${#group[@]} -eq 0 ]] && continue
@@ -192,7 +192,7 @@ build_tree() {
         local child_json
         child_json=$(build_tree "${group_list[$g]}")
         child_json=$(echo "$child_json" | jq --arg h "${pct}%" '{height: $h} + .')
-        (( g > 0 )) && json="${json},"
+        ((g > 0)) && json="${json},"
         json="${json}${child_json}"
       done
       echo "${json}]}"
@@ -231,7 +231,7 @@ json=$(echo "$json" | jq --argjson cmds "$old_cmds_json" '
   )
 ')
 
-echo "$json" | yq -P '.' > "$config_file"
+echo "$json" | yq -P '.' >"$config_file"
 
 echo "Saved layout to ${config_file} (${pane_count} panes)"
 echo "Edit the file to add commands for each pane."

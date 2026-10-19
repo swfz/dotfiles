@@ -8,8 +8,8 @@
 echo $1
 echo $2
 
-got=`yq r ./ansible/versions_vars.yml $1_version`
-latest=`./.github/workflows/bin/latest-version-$3.sh $2`
+got=$(yq r ./ansible/versions_vars.yml $1_version)
+latest=$(./.github/workflows/bin/latest-version-$3.sh $2)
 
 echo "got: $got"
 echo "latest: $latest"

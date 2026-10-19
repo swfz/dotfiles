@@ -1,7 +1,7 @@
 #!/bin/sh
 
 function exist_command() {
-  if which "$1" > /dev/null 2>&1 ; then
+  if which "$1" >/dev/null 2>&1; then
     echo 1
   else
     echo 0
@@ -10,7 +10,7 @@ function exist_command() {
 
 #ag(silver searcher)
 function install_ag() {
-  exist_ag=`exist_command ag`
+  exist_ag=$(exist_command ag)
   if [ $exist_ag -ne 1 ]; then
     echo -e "\e[32m ag install..........\e[m"
     sudo yum -y install pcre-devel xz-devel
@@ -24,17 +24,17 @@ function install_ctags() {
   tar zxf ctags-5.8.tar.gz
   cd ctags-5.8
   mkdir -p $HOME/local
-  ./configure  --prefix=$HOME/local
+  ./configure --prefix=$HOME/local
   make
   make install
 }
 
-function install_vim74(){
-  exist_mercurial=`exist_command hg`
+function install_vim74() {
+  exist_mercurial=$(exist_command hg)
   if [ $exist_mercurial -ne 1 ]; then
     yum install -y mercurial
   fi
-  exist_vim=`exist_command vim`
+  exist_vim=$(exist_command vim)
   if [ $exist_vim -ne 1 ]; then
     echo -e "\e[32m vim74 install..........\e[m"
     cd
@@ -58,8 +58,8 @@ function install_vim74(){
   fi
 }
 
-function install_rpmforge(){
-  rpmforge=`yum repolist all | grep rpmforge | wc -l`
+function install_rpmforge() {
+  rpmforge=$(yum repolist all | grep rpmforge | wc -l)
   if [ $rpmforge -eq 0 ]; then
     echo -e "\e[32m rpmforge install..........\e[m"
     wget http://apt.sw.be/RPM-GPG-KEY.dag.txt
@@ -69,8 +69,8 @@ function install_rpmforge(){
   fi
 }
 
-function install_epel(){
-  rpmforge=`yum repolist all | grep epel | wc -l`
+function install_epel() {
+  rpmforge=$(yum repolist all | grep epel | wc -l)
   if [ $rpmforge -eq 0 ]; then
     echo -e "\e[32m epel install..........\e[m"
     rpm -ivh http://ftp-srv2.kddilabs.jp/Linux/distributions/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
@@ -80,8 +80,7 @@ function install_epel(){
   fi
 }
 
-
-function install_libevent2(){
+function install_libevent2() {
   cd
   curl -LO https://github.com/downloads/libevent/libevent/libevent-2.0.21-stable.tar.gz
   tar zxvf libevent-2.0.21-stable.tar.gz
@@ -91,13 +90,13 @@ function install_libevent2(){
   make install
 }
 
-function install_tmux(){
-  exist_tmux=`exist_command tmux`
+function install_tmux() {
+  exist_tmux=$(exist_command tmux)
   if [ $exist_tmux -ne 1 ]; then
     echo -e "\e[32m tmux install..........\e[m"
     # yum install -y tmux --enablerepo=rpmforge
     install_libevent2
-    echo /usr/local/lib >> /etc/ld.so.conf.d/libevent.conf
+    echo /usr/local/lib >>/etc/ld.so.conf.d/libevent.conf
     ldconfig
     ln -s /usr/local/lib/pkgconfig/libevent.pc /usr/lib64/pkgconfig/libevent.pc
 
@@ -117,28 +116,28 @@ function install_tmux(){
   fi
 }
 
-function pkg_install(){
-  exist_pkg=`rpm -qa | grep $1 | wc -l`
+function pkg_install() {
+  exist_pkg=$(rpm -qa | grep $1 | wc -l)
   # if [[ "$exist_pkg" -lt 1 ]]; then
-    yum install -y $1
+  yum install -y $1
   # fi
 }
 
-function install_zsh(){
-  exist_zsh=`exist_command zsh`
+function install_zsh() {
+  exist_zsh=$(exist_command zsh)
   if [ $exist_zsh -ne 1 ]; then
     wget "http://downloads.sourceforge.net/project/zsh/zsh/5.0.5/zsh-5.0.5.tar.gz"
     tar zxvf zsh-5.0.5.tar.gz
     cd zsh-5.0.5
     ./configure --enable-multibyte --enable-locale
     make install
-    zsh_path=`which zsh`
-    echo "$zsh_path" >> /etc/shells
+    zsh_path=$(which zsh)
+    echo "$zsh_path" >>/etc/shells
   fi
 }
 
-function install_peco(){
-  exist_peco=`exist_command peco`
+function install_peco() {
+  exist_peco=$(exist_command peco)
   if [ $exist_peco -ne 1 ]; then
     echo -e "\e[32m peco install..........\e[m"
     cd
@@ -148,12 +147,12 @@ function install_peco(){
   fi
 }
 
-function install_samba(){
+function install_samba() {
   pkg_install samba
   if [ -e /etc/samba/smb.conf ]; then
-    done_setting=`grep 'for local settings' /etc/samba/smb.conf | wc -l`
+    done_setting=$(grep 'for local settings' /etc/samba/smb.conf | wc -l)
     if [ $done_setting -lt 1 ]; then
-      cat << EOF >> /etc/samba/smb.conf
+      cat <<EOF >>/etc/samba/smb.conf
 # for local settings
 [global]
     security = share
@@ -172,14 +171,13 @@ EOF
   fi
 }
 
-function install_parallel(){
+function install_parallel() {
   rpm -ivh ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/home:/csbuild:/centosextra/CentOS_CentOS-6/noarch/parallel-20130122-2.1.noarch.rpm
 }
 
-function install_openssh6(){
+function install_openssh6() {
   pkgs="rpm-build openssl-devel libedit-devel tcp_wrappers-devel tcp_wrappers pam-devel libX11-devel glibc-devel xmkmf libXt libXt-devel gtk2-devel"
-  for pkg in $pkgs
-  do
+  for pkg in $pkgs; do
     pkg_install $pkg
   done
 
@@ -202,15 +200,14 @@ function install_openssh6(){
   rpmbuild -tb --clean openssh-6.6p1.tar.gz
 }
 
-function install_cheat(){
+function install_cheat() {
   easy_install pip
   pip install cheat
 }
 
-function install_git(){
+function install_git() {
   dependent_pkgs="zlib-devel perl-devel gettext gcc curl-devel"
-  for pkg in $dependent_pkgs
-  do
+  for pkg in $dependent_pkgs; do
     pkg_install $pkg
   done
 
@@ -222,17 +219,17 @@ function install_git(){
   make install
 }
 
-function install_ansible(){
+function install_ansible() {
   yum install -y --enablerepo=epel ansible
 }
 
-function install_CutyCapt(){
+function install_CutyCapt() {
   yum install -y --enablerepo=epel CutyCapt
   # for Xvfb
-  dbus-uuidgen > /var/lib/dbus/machine-id
+  dbus-uuidgen >/var/lib/dbus/machine-id
 }
 
-function install_nginx(){
+function install_nginx() {
   rpm -ivh http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
   yum install -y nginx
 
@@ -243,12 +240,12 @@ function install_nginx(){
   # 192.168.30.11 cleaver.local
 }
 
-function install_jq(){
+function install_jq() {
   curl -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -o /usr/local/bin/jq
   chmod +x /usr/local/bin/jq
 }
 
-function install_jo(){
+function install_jo() {
   curl -LO https://github.com/jpmens/jo/releases/download/v1.0/jo-1.0.tar.gz
   tar zxvf jo-1.0.tar.gz
   cd jo-1.0
@@ -257,11 +254,11 @@ function install_jo(){
   make install
 }
 
-function install_q(){
+function install_q() {
   rpm -ivh https://github.com/harelba/packages-for-q/raw/master/rpms/q-text-as-data-1.5.0-1.noarch.rpm
 }
 
-function install_tukubai(){
+function install_tukubai() {
   cd
   wget --no-check-certificate http://uec.usp-lab.com/TUKUBAI/DOWNLOAD/open-usp-tukubai-2014061402.tar.bz2
   tar jxf open-usp-tukubai-2014061402.tar.bz2
@@ -269,15 +266,14 @@ function install_tukubai(){
   make install
 }
 
-function install_percona_toolkit(){
+function install_percona_toolkit() {
   yum install -y perl-Time-HiRes perl-IO-Socket-SSL perl-DBI perl-DBD-MySQL perl-TermReadKey
   rpm -ivh https://www.percona.com/downloads/percona-toolkit/2.2.16/RPM/percona-toolkit-2.2.16-1.noarch.rpm
 }
 
 pkgs="patch sqlite-devel man ncurses-devel fontconfig bzip2-devel python-devel mlocate expect tcpdump telnet wget curl gzip tar unzip compat-glibc-headers bind-utils bc crontabs python-setuptools perl-JSON-XS dos2unix unix2dos ctags xorg-x11-server-Xvfb ImageMagick ImageMagick-devel libxml2-devel"
 
-for pkg in $pkgs
-do
+for pkg in $pkgs; do
   pkg_install $pkg
 done
 
@@ -301,5 +297,3 @@ install_jo
 install_q
 install_tukubai
 install_percona_toolkit
-
-

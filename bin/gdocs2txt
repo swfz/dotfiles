@@ -2,7 +2,7 @@
 set -euo pipefail
 
 _usage() {
-cat << EOS
+  cat <<EOS
 usage:
   gdocs2txt <document_id_or_url>
 

@@ -2,11 +2,11 @@
 
 # lambda-diff profile FunctionName1 FunctionName2
 
-get_lambda_zip(){
-  curl -o /tmp/$2.zip `aws --profile=$1 lambda get-function --function-name $2 | jq -r '.Code.Location'`
+get_lambda_zip() {
+  curl -o /tmp/$2.zip $(aws --profile=$1 lambda get-function --function-name $2 | jq -r '.Code.Location')
 }
 
-unzip_lambda_code(){
+unzip_lambda_code() {
   unzip -p /tmp/$1.zip | cat -
 }
 

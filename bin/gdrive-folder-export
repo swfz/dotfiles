@@ -2,7 +2,7 @@
 set -euo pipefail
 
 _usage() {
-cat << EOS
+  cat <<EOS
 usage:
   gdrive-folder-export <folder_id_or_url> [output_dir]
 

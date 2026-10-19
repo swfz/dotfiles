@@ -6,4 +6,3 @@ for color in "$@"; do
   b=$(printf '%d' 0x${color:5:2})
   echo -e "\e[48;2;${r};${g};${b}m      \e[0m $color"
 done
-

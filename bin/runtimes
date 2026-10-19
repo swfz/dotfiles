@@ -1,3 +1,6 @@
 #!/bin/sh
 
-starship module ruby; starship module nodejs; starship module python; starship module golang;
+starship module ruby
+starship module nodejs
+starship module python
+starship module golang

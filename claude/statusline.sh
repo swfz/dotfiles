@@ -38,10 +38,10 @@ SEP="${DIM} | ${R}"
 _gradient() {
   local pct="$1"
   if [ "$pct" -lt 50 ]; then
-    local r=$(( pct * 51 / 10 ))
+    local r=$((pct * 51 / 10))
     printf '\033[38;2;%d;200;80m' "$r"
   else
-    local g=$(( 200 - (pct - 50) * 4 ))
+    local g=$((200 - (pct - 50) * 4))
     [ "$g" -lt 0 ] && g=0
     printf '\033[38;2;255;%d;60m' "$g"
   fi
@@ -53,21 +53,30 @@ _fine_bar() {
   local pct="$1" width=10
   [ "$pct" -gt 100 ] && pct=100
   [ "$pct" -lt 0 ] && pct=0
-  local filled=$(( pct * width ))
-  local full=$(( filled / 100 ))
-  local remainder=$(( filled % 100 ))
-  local frac=$(( remainder * 4 / 100 ))
+  local filled=$((pct * width))
+  local full=$((filled / 100))
+  local remainder=$((filled % 100))
+  local frac=$((remainder * 4 / 100))
   local bar=""
   local i
-  for (( i=0; i<full; i++ )); do bar+="█"; done
-  local empty_count=$(( width - full ))
+  for ((i = 0; i < full; i++)); do bar+="█"; done
+  local empty_count=$((width - full))
   if [ "$empty_count" -gt 0 ]; then
     case "$frac" in
-      1) bar+="░"; empty_count=$(( empty_count - 1 )) ;;
-      2) bar+="▒"; empty_count=$(( empty_count - 1 )) ;;
-      3) bar+="▓"; empty_count=$(( empty_count - 1 )) ;;
+      1)
+        bar+="░"
+        empty_count=$((empty_count - 1))
+        ;;
+      2)
+        bar+="▒"
+        empty_count=$((empty_count - 1))
+        ;;
+      3)
+        bar+="▓"
+        empty_count=$((empty_count - 1))
+        ;;
     esac
-    for (( i=0; i<empty_count; i++ )); do bar+="░"; done
+    for ((i = 0; i < empty_count; i++)); do bar+="░"; done
   fi
   printf '%s' "$bar"
 }
@@ -77,8 +86,10 @@ _fine_bar() {
 _fmt() {
   local label="$1" pct="$2"
   local pct_int=$(printf '%.0f' "$pct" 2>/dev/null)
-  local color; color=$(_gradient "$pct_int")
-  local bar; bar=$(_fine_bar "$pct_int")
+  local color
+  color=$(_gradient "$pct_int")
+  local bar
+  bar=$(_fine_bar "$pct_int")
   printf '%s %s%s %d%%%s' "$label" "$color" "$bar" "$pct_int" "$R"
 }
 
@@ -135,21 +146,25 @@ session_time=""
 if [ -n "$PPID" ] && [ "$PPID" -gt 0 ] 2>/dev/null; then
   etime=$(ps -o etime= -p "$PPID" 2>/dev/null | tr -d ' ')
   if [ -n "$etime" ]; then
-    days=0; hours=0; mins=0
+    days=0
+    hours=0
+    mins=0
     if [[ "$etime" == *-* ]]; then
       days=${etime%%-*}
       etime=${etime##*-}
     fi
-    IFS=':' read -ra parts <<< "$etime"
+    IFS=':' read -ra parts <<<"$etime"
     count=${#parts[@]}
     if [ "$count" -eq 3 ]; then
-      hours=${parts[0]}; mins=${parts[1]}
+      hours=${parts[0]}
+      mins=${parts[1]}
     elif [ "$count" -eq 2 ]; then
       mins=${parts[0]}
     fi
-    total_mins=$(( days * 1440 + hours * 60 + mins ))
+    total_mins=$((days * 1440 + hours * 60 + mins))
     if [ "$total_mins" -ge 60 ]; then
-      h=$(( total_mins / 60 )); m=$(( total_mins % 60 ))
+      h=$((total_mins / 60))
+      m=$((total_mins % 60))
       session_time="${h}h${m}m"
     else
       session_time="${total_mins}m"
@@ -163,15 +178,16 @@ now_epoch=$(date +%s)
 _parse_reset() {
   local epoch="$1" show_time="${2:-1}"
   [ -z "$epoch" ] && return
-  local remaining=$(( epoch - now_epoch ))
+  local remaining=$((epoch - now_epoch))
   local rtime
   rtime=$(date -d @"$epoch" "+%H:%M" 2>/dev/null || date -r "$epoch" "+%H:%M" 2>/dev/null)
   if [ "$remaining" -gt 0 ]; then
-    local rm_total=$(( remaining / 60 ))
-    local rh=$(( rm_total / 60 )) rmm=$(( rm_total % 60 ))
+    local rm_total=$((remaining / 60))
+    local rh=$((rm_total / 60)) rmm=$((rm_total % 60))
     local dur
     if [ "$rh" -ge 24 ]; then
-      local rd=$(( rh / 24 )); rh=$(( rh % 24 ))
+      local rd=$((rh / 24))
+      rh=$((rh % 24))
       dur="${rd}d${rh}h${rmm}m"
     elif [ "$rh" -gt 0 ]; then
       dur="${rh}h${rmm}m"
@@ -204,7 +220,7 @@ fi
 # --- Cache efficiency ---
 cache_label=""
 if [ -n "$cache_read" ] && [ -n "$cache_create" ]; then
-  total_cache=$(( cache_read + cache_create ))
+  total_cache=$((cache_read + cache_create))
   if [ "$total_cache" -gt 0 ]; then
     cache_pct=$(echo "$cache_read $total_cache" | awk '{printf "%.0f", $1/$2*100}')
     cache_read_k=$(echo "$cache_read" | awk '{if($1>=1000) printf "%.0fK",$1/1000; else printf "%d",$1}')
