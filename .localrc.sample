@@ -8,3 +8,18 @@ export NOTIFY_PS1=c:/Users/UserName/notify.ps1
 export WORK_EMAIL='hoge.fuga@example.com'
 export WORK_GH_USER='work-github-user-name'
 
+
+# for gh switch (zsh/hooks) -- 通常時に使う gh のユーザー
+export DEFAULT_GH_USER='github-user-name'
+
+# for file2slack (bin/file2slack) -- 必須
+export SLACK_WEB_API_TOKEN='slack-web-api-token'
+
+# for switchbot (bin/switchbot) -- 必須
+# mtg-monitor.service から使う場合は ~/.config/switchbot/api.env にも同じ値を書く(EnvironmentFile)
+export SWITCHBOT_TOKEN='switchbot-token'
+export SWITCHBOT_SECRET='switchbot-secret'
+export SWITCHBOT_DEVICE_ID='switchbot-device-id'
+
+# for monitor-mtg (bin/monitor-mtg.sh) -- 任意。未設定なら常に自宅ネットワーク扱い
+export HOME_GATEWAY_MAC='aa-bb-cc-dd-ee-ff'
