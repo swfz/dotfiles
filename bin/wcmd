@@ -1,6 +1,6 @@
-#!/bin/bash -x 
+#!/bin/bash -x
 
-_usage(){
+_usage() {
   cat <<EOS
 usage:
   wcmd
@@ -8,10 +8,10 @@ usage:
 environment:
   EXCLUDE_PATTERN: exclude watch file pattern
 EOS
- exit 1
+  exit 1
 }
 
-main(){
+main() {
   default_exclude_pattern=".*\.sw[pox]|./log|./tmp|./git|__pycache__/*"
   if [[ -n "$EXCLUDE_PATTERN" ]]; then
     exclude="$default_exclude_pattern|$EXCLUDE_PATTERN"
@@ -22,8 +22,7 @@ main(){
   inotifywait --recursive --monitor --quiet \
     --event MODIFY \
     --exclude "$exclude" \
-    ./ | while read d e f;
-  do
+    ./ | while read d e f; do
     echo "$d$f"
     "$@"
     echo '---------- END ----------'

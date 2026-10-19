@@ -5,9 +5,12 @@ set -euo pipefail
 
 action="${1:-}"
 case "$action" in
-  on)  command='turnOn'  ;;
+  on) command='turnOn' ;;
   off) command='turnOff' ;;
-  *) echo "usage: $(basename "$0") <on|off>" >&2; exit 2 ;;
+  *)
+    echo "usage: $(basename "$0") <on|off>" >&2
+    exit 2
+    ;;
 esac
 
 : "${SWITCHBOT_TOKEN:?required}"

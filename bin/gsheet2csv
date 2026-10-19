@@ -2,7 +2,7 @@
 set -euo pipefail
 
 _usage() {
-cat << EOS
+  cat <<EOS
 usage:
   gsheet2csv <spreadsheet_id_or_url> [gid]
 

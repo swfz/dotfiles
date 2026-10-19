@@ -1,7 +1,7 @@
 #!/bin/bash
 
 display_history() {
-  eval `resize`
+  eval $(resize)
   head -n $(($LINES - 1)) $HOME/.node_repl_history | tac | bat --style='snip' --paging=never -l javascript --color=always
 }
 

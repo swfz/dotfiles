@@ -3,7 +3,7 @@
 # $1 branch
 
 curl -XPOST \
- https://api.github.com/graphql \
+  https://api.github.com/graphql \
   -H "Authorization: bearer ${GITHUB_TOKEN}" \
   -H "Content-Type: application/json" \
   -d @- <<EOF

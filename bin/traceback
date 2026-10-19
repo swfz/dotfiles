@@ -1,7 +1,7 @@
 #!/bin/bash
 
-_usage(){
-cat << EOS
+_usage() {
+  cat <<EOS
 usage:
   traceback
 
@@ -15,9 +15,8 @@ EOS
   exit 1
 }
 
-traceback_metric(){
+traceback_metric() {
   mkdir -p /tmp/traceback
-
 
   # TODO: RESULT_FILE名をプロセスID含めたので途中から書き込みのパターンに対応できていない
   out_file=${TARGET_FILE:-"./${EXECUTOR}-metrics.json"}
@@ -29,7 +28,7 @@ traceback_metric(){
   TMP_OUT_FILE=/tmp/traceback/tmp-out-$$.json
   RESULT_FILE=/tmp/traceback/${EXECUTOR}-$$.json
 
-cat << EOS
+  cat <<EOS
 ==================================================
   output file: ${out_file}
   run ${term} days back from ${start}.
@@ -37,21 +36,20 @@ cat << EOS
 EOS
 
   if "${is_new_file}"; then
-    echo '[["date","score"]]' > ${TMP_OUT_FILE}
-    echo '[["date","score"]]' > ${RESULT_FILE}
+    echo '[["date","score"]]' >${TMP_OUT_FILE}
+    echo '[["date","score"]]' >${RESULT_FILE}
   else
     cp ${out_file} ${RESULT_FILE}
   fi
 
   # install commands
   case ${executor} in
-    "rubycritic") gem install -N rubycritic;;
-    "rubocop") gem install -N bundler;;
+    "rubycritic") gem install -N rubycritic ;;
+    "rubocop") gem install -N bundler ;;
   esac
   # install commands
 
-  for i in `seq 0 ${term}`
-  do
+  for i in $(seq 0 ${term}); do
     date_str=$(date +"%F" --date "${start} $i days ago")
     echo ${date_str}
 
@@ -72,7 +70,7 @@ EOS
         echo $score
         ;;
     esac
-    cat ${RESULT_FILE} | jq "length as \$l|.[\$l] |= [\"${date_str}\", ${score}]|[.[0]]+([.[range(1;\$l+1)]]|sort_by(.[0]))" > ${TMP_OUT_FILE}
+    cat ${RESULT_FILE} | jq "length as \$l|.[\$l] |= [\"${date_str}\", ${score}]|[.[0]]+([.[range(1;\$l+1)]]|sort_by(.[0]))" >${TMP_OUT_FILE}
     # command
 
     if [ ! -s ${TMP_OUT_FILE} ]; then
@@ -85,23 +83,28 @@ EOS
   cp ${RESULT_FILE} ${out_file}
 }
 
-main(){
-  while getopts htf:r:d:e: opt
-  do
+main() {
+  while getopts htf:r:d:e: opt; do
     case ${opt} in
       h)
-        _usage;;
+        _usage
+        ;;
       t)
-        IS_NEW_FILE=false;;
+        IS_NEW_FILE=false
+        ;;
       f)
-        TARGET_FILE=${OPTARG};;
+        TARGET_FILE=${OPTARG}
+        ;;
       r)
-        RANGE=${OPTARG};;
+        RANGE=${OPTARG}
+        ;;
       d)
-        STARTING_DATE=${OPTARG};;
+        STARTING_DATE=${OPTARG}
+        ;;
       e)
-        EXECUTOR=${OPTARG};;
-      :|\?) _usage;;
+        EXECUTOR=${OPTARG}
+        ;;
+      : | \?) _usage ;;
     esac
   done
 

@@ -22,12 +22,12 @@ TOGGL_DIR="$HOME/.config/toggl"
 TOGGL_FILE="$TOGGL_DIR/api.env"
 
 if [ ! -f "$TOGGL_FILE" ]; then
-    echo "⚠️  WARNING: Token file not found at $TOGGL_FILE"
-    echo "   Creating directory..."
-    mkdir -p "$TOGGL_DIR"
-    echo "   Please create 'api.env' with TOGGL_TOKEN (and optionally TOGGL_WORKSPACE_ID / TOGGL2TS_PORT) manually."
+  echo "⚠️  WARNING: Token file not found at $TOGGL_FILE"
+  echo "   Creating directory..."
+  mkdir -p "$TOGGL_DIR"
+  echo "   Please create 'api.env' with TOGGL_TOKEN (and optionally TOGGL_WORKSPACE_ID / TOGGL2TS_PORT) manually."
 else
-    echo "✅ Toggl env file found."
+  echo "✅ Toggl env file found."
 fi
 
 echo "🔄 Reloading systemd..."

@@ -15,30 +15,30 @@ LAST_STATE=""
 EXCLUDE_APPS="MicrosoftWindows.Client.CBS"
 
 log() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
 }
 
 get_gateway_mac() {
-    local gateway_ip
-    gateway_ip=$("$ROUTE_EXE" print 0.0.0.0 2>/dev/null | awk '/0\.0\.0\.0/{for(i=1;i<=NF;i++) if($i~/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $i!="0.0.0.0") {print $i; exit}}')
-    if [ -n "$gateway_ip" ]; then
-        "$ARP_EXE" -a "$gateway_ip" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i~/[0-9a-f][0-9a-f]-[0-9a-f][0-9a-f]-/) {print $i; exit}}'
-    fi
+  local gateway_ip
+  gateway_ip=$("$ROUTE_EXE" print 0.0.0.0 2>/dev/null | awk '/0\.0\.0\.0/{for(i=1;i<=NF;i++) if($i~/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$/ && $i!="0.0.0.0") {print $i; exit}}')
+  if [ -n "$gateway_ip" ]; then
+    "$ARP_EXE" -a "$gateway_ip" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i~/[0-9a-f][0-9a-f]-[0-9a-f][0-9a-f]-/) {print $i; exit}}'
+  fi
 }
 
 is_home_network() {
-    if [ -z "$HOME_GATEWAY_MAC" ]; then
-        return 0
-    fi
+  if [ -z "$HOME_GATEWAY_MAC" ]; then
+    return 0
+  fi
 
-    local current_mac
-    current_mac=$(get_gateway_mac)
-    [ "$current_mac" = "$HOME_GATEWAY_MAC" ]
+  local current_mac
+  current_mac=$(get_gateway_mac)
+  [ "$current_mac" = "$HOME_GATEWAY_MAC" ]
 }
 
 check_device() {
-    local device=$1
-    "$REG_EXE" query "$BASE_KEY\\$device" /s 2>/dev/null | awk '
+  local device=$1
+  "$REG_EXE" query "$BASE_KEY\\$device" /s 2>/dev/null | awk '
         /^HKEY/ { path=$0 }
         /LastUsedTimeStop/ && /0x0/ {
             n=split(path, a, "\\");
@@ -50,39 +50,38 @@ check_device() {
 echo "Monitoring started..."
 
 while true; do
-    if ! is_home_network; then
-        if [ "$LAST_STATE" == "on" ]; then
-            log "Left home network, turning off"
-            ~/dotfiles/bin/switchbot off
-            LAST_STATE="off"
-        fi
-        sleep $INTERVAL
-        continue
+  if ! is_home_network; then
+    if [ "$LAST_STATE" == "on" ]; then
+      log "Left home network, turning off"
+      ~/dotfiles/bin/switchbot off
+      LAST_STATE="off"
     fi
-
-    CAM_APP=$(check_device "webcam")
-    MIC_APP=$(check_device "microphone")
-
-    if [ -n "$CAM_APP" ] || [ -n "$MIC_APP" ]; then
-        TARGET_STATE="on"
-        ACTIVE_APP="${CAM_APP}${MIC_APP}"
-    else
-        TARGET_STATE="off"
-        ACTIVE_APP=""
-    fi
-
-    if [ "$TARGET_STATE" != "$LAST_STATE" ]; then
-        if [ "$TARGET_STATE" == "on" ]; then
-            log "Status Change: OFF -> ON (Active App: $ACTIVE_APP)"
-            ~/dotfiles/bin/switchbot on
-        else
-            log "Status Change: ON -> OFF (Idle)"
-            ~/dotfiles/bin/switchbot off
-        fi
-
-        LAST_STATE="$TARGET_STATE"
-    fi
-
     sleep $INTERVAL
-done
+    continue
+  fi
 
+  CAM_APP=$(check_device "webcam")
+  MIC_APP=$(check_device "microphone")
+
+  if [ -n "$CAM_APP" ] || [ -n "$MIC_APP" ]; then
+    TARGET_STATE="on"
+    ACTIVE_APP="${CAM_APP}${MIC_APP}"
+  else
+    TARGET_STATE="off"
+    ACTIVE_APP=""
+  fi
+
+  if [ "$TARGET_STATE" != "$LAST_STATE" ]; then
+    if [ "$TARGET_STATE" == "on" ]; then
+      log "Status Change: OFF -> ON (Active App: $ACTIVE_APP)"
+      ~/dotfiles/bin/switchbot on
+    else
+      log "Status Change: ON -> OFF (Idle)"
+      ~/dotfiles/bin/switchbot off
+    fi
+
+    LAST_STATE="$TARGET_STATE"
+  fi
+
+  sleep $INTERVAL
+done

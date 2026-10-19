@@ -2,8 +2,8 @@
 
 OS_TYPE="$(uname -s)"
 
-_usage(){
-cat << EOS
+_usage() {
+  cat <<EOS
 usage:
   notify title message
   notify message
@@ -66,7 +66,7 @@ fi
 CLEAN_MESSAGE=$(echo "$MESSAGE" | tr '\n' ' ' | sed 's/"/\\"/g')
 CLEAN_TITLE=$(echo "$TITLE" | sed 's/"/\\"/g')
 
-echo "$CLEAN_TITLE : $CLEAN_MESSAGE" >> /tmp/notify-log.txt
+echo "$CLEAN_TITLE : $CLEAN_MESSAGE" >>/tmp/notify-log.txt
 
 if [ "$OS_TYPE" = "Darwin" ]; then
   osascript -e "display notification \"${CLEAN_MESSAGE}\" with title \"${CLEAN_TITLE}\" sound name \"default\""

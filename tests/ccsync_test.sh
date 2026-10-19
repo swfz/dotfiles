@@ -15,12 +15,12 @@ CODEX_DIR="${TMP_ROOT}/home/.codex"
 mkdir -p "${FIXTURE_DIR}/claude/skills/example" "${FIXTURE_DIR}/claude/rules"
 mkdir -p "${FIXTURE_DIR}/claude/skills/remove-me"
 mkdir -p "${FIXTURE_DIR}/codex/agents" "${AGENTS_DIR}/skills/conflict"
-printf '%s\n' '---' 'name: example' 'description: test skill' '---' > "${FIXTURE_DIR}/claude/skills/example/SKILL.md"
-printf '%s\n' '---' 'name: remove-me' 'description: removal test' '---' > "${FIXTURE_DIR}/claude/skills/remove-me/SKILL.md"
-printf '%s\n' '# shell rules' > "${FIXTURE_DIR}/claude/rules/shell.md"
-printf '%s\n' 'name = "example"' 'description = "test"' 'developer_instructions = "test"' > "${FIXTURE_DIR}/codex/agents/example.toml"
+printf '%s\n' '---' 'name: example' 'description: test skill' '---' >"${FIXTURE_DIR}/claude/skills/example/SKILL.md"
+printf '%s\n' '---' 'name: remove-me' 'description: removal test' '---' >"${FIXTURE_DIR}/claude/skills/remove-me/SKILL.md"
+printf '%s\n' '# shell rules' >"${FIXTURE_DIR}/claude/rules/shell.md"
+printf '%s\n' 'name = "example"' 'description = "test"' 'developer_instructions = "test"' >"${FIXTURE_DIR}/codex/agents/example.toml"
 mkdir -p "${FIXTURE_DIR}/claude/skills/conflict"
-printf '%s\n' 'keep me' > "${AGENTS_DIR}/skills/conflict/existing.txt"
+printf '%s\n' 'keep me' >"${AGENTS_DIR}/skills/conflict/existing.txt"
 
 run_ccsync() {
   env \

@@ -1,0 +1,16 @@
+root = true
+
+# shfmt 用(シェルスクリプトは拡張子なしが多いため shebang で判定する [[shell]] を使う)
+[[shell]]
+indent_style = space
+indent_size = 2
+switch_case_indent = true
+binary_next_line = true
+
+# shebang は sh だが bash の構文(function)を使っているため bash として解析する
+[setup.root.sh]
+shell_variant = bash
+
+# shfmt が解析できない構文(${1:.})を含むため対象外。中身の修正は別途
+[bin/jq2esc]
+ignore = true

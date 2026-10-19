@@ -20,12 +20,12 @@ SWITCHBOT_DIR="$HOME/.config/switchbot"
 SWITCHBOT_FILE="$SWITCHBOT_DIR/api.env"
 
 if [ ! -f "$SWITCHBOT_FILE" ]; then
-    echo "⚠️  WARNING: Token file not found at $SWITCHBOT_FILE"
-    echo "   Creating directory..."
-    mkdir -p "$SWITCHBOT_DIR"
-    echo "   Please create 'api.env' with SWITCHBOT_SWITCHBOT and SWITCHBOT_SECRET and SWITCHBOT_DEVICE_ID manually."
+  echo "⚠️  WARNING: Token file not found at $SWITCHBOT_FILE"
+  echo "   Creating directory..."
+  mkdir -p "$SWITCHBOT_DIR"
+  echo "   Please create 'api.env' with SWITCHBOT_SWITCHBOT and SWITCHBOT_SECRET and SWITCHBOT_DEVICE_ID manually."
 else
-    echo "✅ Switchbot file found."
+  echo "✅ Switchbot file found."
 fi
 
 echo "🔄 Reloading systemd..."
@@ -35,4 +35,3 @@ systemctl --user restart mtg-monitor
 
 echo "=== Setup Complete! ==="
 systemctl --user status mtg-monitor --no-pager | head -n 10
-

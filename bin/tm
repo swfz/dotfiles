@@ -96,7 +96,7 @@ apply_node() {
       abs_used=$((abs_used + abs_sizes[$i]))
     fi
     # 最小サイズを保証
-    (( abs_sizes[$i] < 2 )) && abs_sizes[$i]=2
+    ((abs_sizes[$i] < 2)) && abs_sizes[$i]=2
   done
 
   # 後ろから順にペインを分割

@@ -8,16 +8,16 @@ FP=$'\e[1;35m' # Light Purple
 FC=$'\e[1;36m' # Cyan
 FW=$'\e[0;37m' # White
 
-RS=$'\e[00m'  # Reset
+RS=$'\e[00m' # Reset
 
-BK=$'\e[40m'  # Background Black
-BR=$'\e[41m'  # Background Red
-BG=$'\e[42m'  # Background Green
-BY=$'\e[43m'  # Background Yellow
-BB=$'\e[44m'  # Background Blue
-BP=$'\e[45m'  # Background Magenta
-BC=$'\e[46m'  # Background Cyan
-BW=$'\e[47m'  # Background White
+BK=$'\e[40m' # Background Black
+BR=$'\e[41m' # Background Red
+BG=$'\e[42m' # Background Green
+BY=$'\e[43m' # Background Yellow
+BB=$'\e[44m' # Background Blue
+BP=$'\e[45m' # Background Magenta
+BC=$'\e[46m' # Background Cyan
+BW=$'\e[47m' # Background White
 
 echo "$FR red:    \e[1;31m $RS"
 echo "$FG green:  \e[1;32m $RS"
