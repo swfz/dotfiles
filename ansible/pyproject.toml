@@ -1,0 +1,16 @@
+[project]
+name = "dotfiles-ansible"
+version = "0.0.0"
+description = "dotfiles の playbook 実行と lint に使うツール群"
+requires-python = ">=3.12"
+dependencies = [
+    "ansible",
+    "ansible-lint",
+    "pexpect",
+    "yamllint",
+]
+
+[tool.uv]
+package = false
+# Renovate の minimumReleaseAge と揃え、公開直後のバージョンを避ける
+exclude-newer = "1 week"

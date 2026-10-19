@@ -43,3 +43,13 @@ sudo docker-compose run --rm centos ansible-playbook -i localhost, -c local ubun
 sudo docker compose run --rm ubuntu uv run ansible-lint
 ```
 
+
+# lint
+
+ansible / ansible-lint / yamllint のバージョンは `pyproject.toml` と `uv.lock` で固定している(CI も同じものを使う)
+
+```
+uv sync --locked
+uv run yamllint .
+uv run ansible-lint mac.yml ubuntu.yml codespace.yml
+```
