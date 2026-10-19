@@ -3,3 +3,16 @@
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 "${REPO_ROOT}/bin/ccsync.sh" link
+
+# apm のマニフェストが変わったら user スコープへ入れ直し、更新された lock を dotfiles 側へ戻す
+# ~/.apm/apm.lock.yaml は apm が install のたびに作り直すため symlink にできない
+if git diff --name-only ORIG_HEAD HEAD -- config/apm/apm.yml | grep -q . && command -v apm >/dev/null; then
+  echo "[post-merge] config/apm/apm.yml が更新されたため apm install -g を実行します"
+  if (cd "${HOME}/.apm" && apm install -g); then
+    cp "${HOME}/.apm/apm.lock.yaml" "${REPO_ROOT}/config/apm/apm.lock.yaml"
+    git -C "${REPO_ROOT}" diff --quiet -- config/apm/apm.lock.yaml \
+      || echo "[post-merge] config/apm/apm.lock.yaml が更新されました。差分を確認してコミットしてください"
+  else
+    echo "[post-merge] apm install -g に失敗しました。~/.apm で手動実行してください" >&2
+  fi
+fi
