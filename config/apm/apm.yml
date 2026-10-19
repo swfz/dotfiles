@@ -11,9 +11,9 @@ targets:
   - copilot
 dependencies:
   apm:
-    - mattpocock/skills/skills/productivity/grilling
-    - vercel-labs/skills/skills/find-skills
-    - nanaism/yomiyasu/skills/yomiyasu
+    - mattpocock/skills/skills/productivity/grilling#24fe0ef7737efae15c87225755e9f6f5965e4888 # v1.3.1
+    - vercel-labs/skills/skills/find-skills#671e8c320810d36fed80fac5f1a2c1bf7e82d812 # v1.7.2
+    - nanaism/yomiyasu/skills/yomiyasu#602a3690dadd5d620bb21524353b8d192914eabb # v1.1.2
   mcp: []
 includes: auto
 scripts: {}

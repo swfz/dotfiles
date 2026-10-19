@@ -24,6 +24,15 @@
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\n.*?_version: (?<currentValue>.*)\n"
       ],
       "versioningTemplate": "{{#if versioning}}{{versioning}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "description": "apm の依存（owner/repo/path#sha # tag）をタグ単位で追従し、SHA も合わせて更新する",
+      "fileMatch": ["^config/apm/apm\\.yml$"],
+      "matchStrings": [
+        "-\\s+(?<depName>[\\w.-]+/[\\w.-]+)/[^#\\s]+#(?<currentDigest>[0-9a-f]{40})\\s+#\\s+(?<currentValue>v?\\d[\\w.-]*)"
+      ],
+      "datasourceTemplate": "github-tags"
     }
   ]
 }

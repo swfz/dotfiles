@@ -4,7 +4,8 @@ dependencies:
 - repo_url: mattpocock/skills
   name: grilling
   host: github.com
-  resolved_commit: d81f3a183412e71a5b1e84ca21bc1a35eea03a60
+  resolved_commit: 24fe0ef7737efae15c87225755e9f6f5965e4888
+  resolved_ref: 24fe0ef7737efae15c87225755e9f6f5965e4888
   version: unknown
   virtual_path: skills/productivity/grilling
   is_virtual: true
@@ -25,69 +26,79 @@ dependencies:
 - repo_url: nanaism/yomiyasu
   name: yomiyasu
   host: github.com
-  resolved_commit: f03aecd9c4c4a69e229f3848ecba66c3871f734c
-  version: 1.0.2
+  resolved_commit: 602a3690dadd5d620bb21524353b8d192914eabb
+  resolved_ref: 602a3690dadd5d620bb21524353b8d192914eabb
+  version: 1.1.2
   virtual_path: skills/yomiyasu
   is_virtual: true
-  package_type: hybrid
+  package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/yomiyasu
   - .agents/skills/yomiyasu/.claude-plugin/marketplace.json
   - .agents/skills/yomiyasu/.claude-plugin/plugin.json
+  - .agents/skills/yomiyasu/LICENSE
   - .agents/skills/yomiyasu/SKILL.md
-  - .agents/skills/yomiyasu/apm.yml
+  - .agents/skills/yomiyasu/UNICODE-LICENSE.txt
   - .agents/skills/yomiyasu/assets/algo-artis.png
   - .agents/skills/yomiyasu/references/domains/business.md
   - .agents/skills/yomiyasu/references/domains/essay.md
   - .agents/skills/yomiyasu/references/domains/tech.md
   - .agents/skills/yomiyasu/references/gemini-syntax.md
   - .agents/skills/yomiyasu/references/slop-catalog.md
+  - .agents/skills/yomiyasu/scripts/markdown_visibility.py
   - .agents/skills/yomiyasu/scripts/yomiyasu_diff.py
   - .agents/skills/yomiyasu/scripts/yomiyasu_lint.py
   - .claude/skills/yomiyasu
   - .claude/skills/yomiyasu/.claude-plugin/marketplace.json
   - .claude/skills/yomiyasu/.claude-plugin/plugin.json
+  - .claude/skills/yomiyasu/LICENSE
   - .claude/skills/yomiyasu/SKILL.md
-  - .claude/skills/yomiyasu/apm.yml
+  - .claude/skills/yomiyasu/UNICODE-LICENSE.txt
   - .claude/skills/yomiyasu/assets/algo-artis.png
   - .claude/skills/yomiyasu/references/domains/business.md
   - .claude/skills/yomiyasu/references/domains/essay.md
   - .claude/skills/yomiyasu/references/domains/tech.md
   - .claude/skills/yomiyasu/references/gemini-syntax.md
   - .claude/skills/yomiyasu/references/slop-catalog.md
+  - .claude/skills/yomiyasu/scripts/markdown_visibility.py
   - .claude/skills/yomiyasu/scripts/yomiyasu_diff.py
   - .claude/skills/yomiyasu/scripts/yomiyasu_lint.py
   deployed_file_hashes:
-    .agents/skills/yomiyasu/.claude-plugin/marketplace.json: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
-    .agents/skills/yomiyasu/.claude-plugin/plugin.json: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
-    .agents/skills/yomiyasu/SKILL.md: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
-    .agents/skills/yomiyasu/apm.yml: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+    .agents/skills/yomiyasu/.claude-plugin/marketplace.json: sha256:1d563e4a0e24d8a419d01f4cd729ec2577f189f9dd61a1d4a8ab22119aef1d35
+    .agents/skills/yomiyasu/.claude-plugin/plugin.json: sha256:8cde4dc0893bc46827776a45610356f8997100bff0cc6e3e8699372f90316129
+    .agents/skills/yomiyasu/LICENSE: sha256:79d802f15bc8caf67f1a83c1bdbe214ccb41a0a0275f9046b329b89c65ee1fca
+    .agents/skills/yomiyasu/SKILL.md: sha256:0a8915986b0228abdf137d00f8e35959336f1914d36dfb73f1e8c053357209cf
+    .agents/skills/yomiyasu/UNICODE-LICENSE.txt: sha256:e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96
     .agents/skills/yomiyasu/assets/algo-artis.png: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
-    .agents/skills/yomiyasu/references/domains/business.md: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
-    .agents/skills/yomiyasu/references/domains/essay.md: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
-    .agents/skills/yomiyasu/references/domains/tech.md: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
-    .agents/skills/yomiyasu/references/gemini-syntax.md: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
-    .agents/skills/yomiyasu/references/slop-catalog.md: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
-    .agents/skills/yomiyasu/scripts/yomiyasu_diff.py: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
-    .agents/skills/yomiyasu/scripts/yomiyasu_lint.py: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
-    .claude/skills/yomiyasu/.claude-plugin/marketplace.json: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
-    .claude/skills/yomiyasu/.claude-plugin/plugin.json: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
-    .claude/skills/yomiyasu/SKILL.md: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
-    .claude/skills/yomiyasu/apm.yml: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+    .agents/skills/yomiyasu/references/domains/business.md: sha256:b9970281b5005bbbc998d5de9b9e6b2bc1bb83976b3862c0556425a142f4352c
+    .agents/skills/yomiyasu/references/domains/essay.md: sha256:8c0dc2afe132299ad111d4e3bc004d75da6291dc4857328717dc63ba5c9c6740
+    .agents/skills/yomiyasu/references/domains/tech.md: sha256:255b1bcbf42a0c7ea7f42c7293cd964e541d70f6f5079ebcbffc332ce6b7b0dd
+    .agents/skills/yomiyasu/references/gemini-syntax.md: sha256:7685424e9f63cd0d45c0fca673eabd10d7879f29e220b7d8517e73fcd2a9b6e7
+    .agents/skills/yomiyasu/references/slop-catalog.md: sha256:e7791d123db2573f50ee922c51f7d50694ab7e6b81f318713e9f405fe3c6daf2
+    .agents/skills/yomiyasu/scripts/markdown_visibility.py: sha256:7e6f739114bc28b132aa8e2bcfb51c7de7f441c12a54431c7248b5353a9966bb
+    .agents/skills/yomiyasu/scripts/yomiyasu_diff.py: sha256:b704e088fd6e1b01c21fb6b97373cc21d441cb14e976f3a47a95c3ba1c73a964
+    .agents/skills/yomiyasu/scripts/yomiyasu_lint.py: sha256:299a61970e8c30092f947e2ace95e80ff8a513fac87824363f89ba77e6cac468
+    .claude/skills/yomiyasu/.claude-plugin/marketplace.json: sha256:1d563e4a0e24d8a419d01f4cd729ec2577f189f9dd61a1d4a8ab22119aef1d35
+    .claude/skills/yomiyasu/.claude-plugin/plugin.json: sha256:8cde4dc0893bc46827776a45610356f8997100bff0cc6e3e8699372f90316129
+    .claude/skills/yomiyasu/LICENSE: sha256:79d802f15bc8caf67f1a83c1bdbe214ccb41a0a0275f9046b329b89c65ee1fca
+    .claude/skills/yomiyasu/SKILL.md: sha256:0a8915986b0228abdf137d00f8e35959336f1914d36dfb73f1e8c053357209cf
+    .claude/skills/yomiyasu/UNICODE-LICENSE.txt: sha256:e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96
     .claude/skills/yomiyasu/assets/algo-artis.png: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
-    .claude/skills/yomiyasu/references/domains/business.md: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
-    .claude/skills/yomiyasu/references/domains/essay.md: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
-    .claude/skills/yomiyasu/references/domains/tech.md: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
-    .claude/skills/yomiyasu/references/gemini-syntax.md: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
-    .claude/skills/yomiyasu/references/slop-catalog.md: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
-    .claude/skills/yomiyasu/scripts/yomiyasu_diff.py: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
-    .claude/skills/yomiyasu/scripts/yomiyasu_lint.py: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
-  content_hash: sha256:5bdf872b2db7b11717141fbf1c4397bed1b72b6ff065626917cb9eb0468d9993
+    .claude/skills/yomiyasu/references/domains/business.md: sha256:b9970281b5005bbbc998d5de9b9e6b2bc1bb83976b3862c0556425a142f4352c
+    .claude/skills/yomiyasu/references/domains/essay.md: sha256:8c0dc2afe132299ad111d4e3bc004d75da6291dc4857328717dc63ba5c9c6740
+    .claude/skills/yomiyasu/references/domains/tech.md: sha256:255b1bcbf42a0c7ea7f42c7293cd964e541d70f6f5079ebcbffc332ce6b7b0dd
+    .claude/skills/yomiyasu/references/gemini-syntax.md: sha256:7685424e9f63cd0d45c0fca673eabd10d7879f29e220b7d8517e73fcd2a9b6e7
+    .claude/skills/yomiyasu/references/slop-catalog.md: sha256:e7791d123db2573f50ee922c51f7d50694ab7e6b81f318713e9f405fe3c6daf2
+    .claude/skills/yomiyasu/scripts/markdown_visibility.py: sha256:7e6f739114bc28b132aa8e2bcfb51c7de7f441c12a54431c7248b5353a9966bb
+    .claude/skills/yomiyasu/scripts/yomiyasu_diff.py: sha256:b704e088fd6e1b01c21fb6b97373cc21d441cb14e976f3a47a95c3ba1c73a964
+    .claude/skills/yomiyasu/scripts/yomiyasu_lint.py: sha256:299a61970e8c30092f947e2ace95e80ff8a513fac87824363f89ba77e6cac468
+  content_hash: sha256:c020d25c12dc197ea45240118549e56dd6c6a0820294300367e76454f4c39002
   declared_license: MIT
 - repo_url: vercel-labs/skills
   name: find-skills
   host: github.com
-  resolved_commit: 3694740352eeef5cdd689af694c485f1ff62eec3
+  resolved_commit: 671e8c320810d36fed80fac5f1a2c1bf7e82d812
+  resolved_ref: 671e8c320810d36fed80fac5f1a2c1bf7e82d812
   version: unknown
   virtual_path: skills/find-skills
   is_virtual: true
@@ -164,7 +175,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
+  content_hash: sha256:1d563e4a0e24d8a419d01f4cd729ec2577f189f9dd61a1d4a8ab22119aef1d35
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/.claude-plugin/plugin.json
@@ -173,7 +184,16 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
+  content_hash: sha256:8cde4dc0893bc46827776a45610356f8997100bff0cc6e3e8699372f90316129
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/LICENSE
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:79d802f15bc8caf67f1a83c1bdbe214ccb41a0a0275f9046b329b89c65ee1fca
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/SKILL.md
@@ -182,16 +202,16 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
+  content_hash: sha256:0a8915986b0228abdf137d00f8e35959336f1914d36dfb73f1e8c053357209cf
 - kind: project-relative
   target: claude
-  value: .claude/skills/yomiyasu/apm.yml
+  value: .claude/skills/yomiyasu/UNICODE-LICENSE.txt
   runtime: null
   scope: project
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+  content_hash: sha256:e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/assets/algo-artis.png
@@ -209,7 +229,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
+  content_hash: sha256:b9970281b5005bbbc998d5de9b9e6b2bc1bb83976b3862c0556425a142f4352c
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/references/domains/essay.md
@@ -218,7 +238,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
+  content_hash: sha256:8c0dc2afe132299ad111d4e3bc004d75da6291dc4857328717dc63ba5c9c6740
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/references/domains/tech.md
@@ -227,7 +247,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
+  content_hash: sha256:255b1bcbf42a0c7ea7f42c7293cd964e541d70f6f5079ebcbffc332ce6b7b0dd
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/references/gemini-syntax.md
@@ -236,7 +256,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
+  content_hash: sha256:7685424e9f63cd0d45c0fca673eabd10d7879f29e220b7d8517e73fcd2a9b6e7
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/references/slop-catalog.md
@@ -245,7 +265,16 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
+  content_hash: sha256:e7791d123db2573f50ee922c51f7d50694ab7e6b81f318713e9f405fe3c6daf2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/yomiyasu/scripts/markdown_visibility.py
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:7e6f739114bc28b132aa8e2bcfb51c7de7f441c12a54431c7248b5353a9966bb
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/scripts/yomiyasu_diff.py
@@ -254,7 +283,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
+  content_hash: sha256:b704e088fd6e1b01c21fb6b97373cc21d441cb14e976f3a47a95c3ba1c73a964
 - kind: project-relative
   target: claude
   value: .claude/skills/yomiyasu/scripts/yomiyasu_lint.py
@@ -263,7 +292,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
+  content_hash: sha256:299a61970e8c30092f947e2ace95e80ff8a513fac87824363f89ba77e6cac468
 - kind: project-relative
   target: codex
   value: .agents/skills/find-skills
@@ -326,7 +355,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:f56a4a76aeeb37e8adc78d94be97eb7500083ca318f961530e967c26210b5ba0
+  content_hash: sha256:1d563e4a0e24d8a419d01f4cd729ec2577f189f9dd61a1d4a8ab22119aef1d35
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/.claude-plugin/plugin.json
@@ -335,7 +364,16 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:e0b90269d631b7cb0ee1f4208193bebefd7f68492499a6c7a5fca05d14f055ca
+  content_hash: sha256:8cde4dc0893bc46827776a45610356f8997100bff0cc6e3e8699372f90316129
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/LICENSE
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:79d802f15bc8caf67f1a83c1bdbe214ccb41a0a0275f9046b329b89c65ee1fca
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/SKILL.md
@@ -344,16 +382,16 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:b5ad6a09344cdd5b9eb4c1eeac99a96d31507c857458c296b4a3fa6c810fe3ca
+  content_hash: sha256:0a8915986b0228abdf137d00f8e35959336f1914d36dfb73f1e8c053357209cf
 - kind: project-relative
   target: codex
-  value: .agents/skills/yomiyasu/apm.yml
+  value: .agents/skills/yomiyasu/UNICODE-LICENSE.txt
   runtime: null
   scope: project
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:3b5a04a0beb23e31f48de721f82c6248ac6578a91b827348970e3aed1d6f7ca5
+  content_hash: sha256:e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/assets/algo-artis.png
@@ -371,7 +409,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:37d674c07fd7446135127d70cdd6c9e541316478349c444222f20b1d9815e422
+  content_hash: sha256:b9970281b5005bbbc998d5de9b9e6b2bc1bb83976b3862c0556425a142f4352c
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/references/domains/essay.md
@@ -380,7 +418,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:8b078e9e552699d401a37b8f8f2a7d9ab2be3b541a4008ca28d7537b86dfd72c
+  content_hash: sha256:8c0dc2afe132299ad111d4e3bc004d75da6291dc4857328717dc63ba5c9c6740
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/references/domains/tech.md
@@ -389,7 +427,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:9768bb2684ee32978b8165c5aa4883be19154cb3bc22d8194bbce91e40b75645
+  content_hash: sha256:255b1bcbf42a0c7ea7f42c7293cd964e541d70f6f5079ebcbffc332ce6b7b0dd
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/references/gemini-syntax.md
@@ -398,7 +436,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:eeadc3cb2fd5753f177d67741a418d81dd501452c73d21b263ee112fd4674963
+  content_hash: sha256:7685424e9f63cd0d45c0fca673eabd10d7879f29e220b7d8517e73fcd2a9b6e7
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/references/slop-catalog.md
@@ -407,7 +445,16 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:0841699f3a8894b446880c1c67246d5486ec8a4fa0068366583032945e775915
+  content_hash: sha256:e7791d123db2573f50ee922c51f7d50694ab7e6b81f318713e9f405fe3c6daf2
+- kind: project-relative
+  target: codex
+  value: .agents/skills/yomiyasu/scripts/markdown_visibility.py
+  runtime: null
+  scope: project
+  owners:
+  - nanaism/yomiyasu/skills/yomiyasu
+  active_owner: nanaism/yomiyasu/skills/yomiyasu
+  content_hash: sha256:7e6f739114bc28b132aa8e2bcfb51c7de7f441c12a54431c7248b5353a9966bb
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/scripts/yomiyasu_diff.py
@@ -416,7 +463,7 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:734717af480e408f93362a4ee5dcc99675276677979cfb3fc88fe29bfad9075a
+  content_hash: sha256:b704e088fd6e1b01c21fb6b97373cc21d441cb14e976f3a47a95c3ba1c73a964
 - kind: project-relative
   target: codex
   value: .agents/skills/yomiyasu/scripts/yomiyasu_lint.py
@@ -425,4 +472,4 @@ deployments:
   owners:
   - nanaism/yomiyasu/skills/yomiyasu
   active_owner: nanaism/yomiyasu/skills/yomiyasu
-  content_hash: sha256:b3db05011adf6f6903b03fa73ba7cdc4b8bcad061b24f4a12c10291f039dd9d0
+  content_hash: sha256:299a61970e8c30092f947e2ace95e80ff8a513fac87824363f89ba77e6cac468
