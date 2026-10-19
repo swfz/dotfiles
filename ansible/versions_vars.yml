@@ -1,5 +1,5 @@
 # datasource=github-releases depName=direnv/direnv
-direnv_version: v2.38.1
+direnv_version: v2.38.2
 # datasource=github-tags depName=git/git
 git_version: v2.56.0
 # dummy
@@ -19,4 +19,4 @@ agg_version: v1.9.0
 # datasource=github-releases depName=cli/cli
 gh_version: v2.102.0
 # datasource=github-releases depName=jdx/mise
-mise_version: v2026.10.5
+mise_version: v2026.10.8
