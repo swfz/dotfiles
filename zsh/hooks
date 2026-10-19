@@ -1,14 +1,5 @@
 autoload -Uz add-zsh-hook
 
-# tmux pane作成時に最後に実行したsshコマンドを実行するためのフック
-function tmux_ssh_preexec() {
-  local command=$1
-  if [[ "$command" = *ssh* ]]; then
-    tmux setenv TMUX_SSH_CMD_$(tmux display -p "#I") $command
-  fi
-}
-add-zsh-hook preexec tmux_ssh_preexec
-
 # gitのglobal hookとlocal hookを共存させるためのフック
 # Source: https://github.com/swfz/git-hooks
 function preexec_git_global_hooks() {
