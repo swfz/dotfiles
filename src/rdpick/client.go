@@ -107,14 +107,14 @@ func (c *Client) fetchPage(ctx context.Context, collectionID int, search, sort s
 	if err != nil {
 		return nil, fmt.Errorf("failed to call raindrop API: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusTooManyRequests {
 		wait := rateLimitWait(resp.Header.Get("Retry-After"))
 		if c.Verbose {
 			fmt.Fprintf(os.Stderr, "[DEBUG] rate limited (429), retrying in %s\n", wait)
 		}
-		io.Copy(io.Discard, resp.Body)
+		_, _ = io.Copy(io.Discard, resp.Body)
 		if err := sleepContext(ctx, wait); err != nil {
 			return nil, fmt.Errorf("interrupted while waiting to retry after 429: %w", err)
 		}
@@ -123,7 +123,7 @@ func (c *Client) fetchPage(ctx context.Context, collectionID int, search, sort s
 		if err != nil {
 			return nil, fmt.Errorf("failed to call raindrop API (retry after 429): %w", err)
 		}
-		defer retryResp.Body.Close()
+		defer func() { _ = retryResp.Body.Close() }()
 
 		if retryResp.StatusCode == http.StatusTooManyRequests {
 			return nil, fmt.Errorf("rate limited by raindrop API (HTTP 429) even after retry")
@@ -174,7 +174,7 @@ func decodeResponse(resp *http.Response) (*raindropResponse, error) {
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(io.LimitReader(resp.Body, 500))
-		io.Copy(io.Discard, resp.Body)
+		_, _ = io.Copy(io.Discard, resp.Body)
 		return nil, fmt.Errorf("raindrop API returned unexpected status %d: %s", resp.StatusCode, string(body))
 	}
 

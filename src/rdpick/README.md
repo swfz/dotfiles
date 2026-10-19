@@ -26,6 +26,15 @@ mise の shim が go を解決できない場合（`config/mise/config.toml` で
 "$(mise where go)/bin/go" build -o ../../bin/rdpick .
 ```
 
+## リント
+
+設定は `.golangci.yml`(golangci-lint v2)。CI と同じバージョンで実行する。
+
+```sh
+cd src/rdpick
+mise x golangci-lint@2.14.0 -- golangci-lint run ./...
+```
+
 ## 使い方
 
 ```

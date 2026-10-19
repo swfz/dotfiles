@@ -55,7 +55,7 @@ func run(args []string, stdout, stderr io.Writer) error {
 	fs := flag.NewFlagSet("rdpick", flag.ContinueOnError)
 	fs.SetOutput(stderr)
 	fs.Usage = func() {
-		fmt.Fprint(stderr, usageText)
+		_, _ = fmt.Fprint(stderr, usageText)
 		fs.PrintDefaults()
 	}
 
@@ -114,7 +114,7 @@ and set it, e.g.:
 	client := NewClient(token)
 	client.Verbose = *verbose
 	if *verbose {
-		fmt.Fprintf(stderr, "[DEBUG] search=%q collection=%d sort=%s limit=%d nested=%v\n", search, *collection, *sort, *limit, *nested)
+		_, _ = fmt.Fprintf(stderr, "[DEBUG] search=%q collection=%d sort=%s limit=%d nested=%v\n", search, *collection, *sort, *limit, *nested)
 	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
@@ -127,15 +127,15 @@ and set it, e.g.:
 
 	switch *format {
 	case "markdown":
-		fmt.Fprint(stdout, FormatMarkdown(items, total, search, *collection, *sort))
+		_, _ = fmt.Fprint(stdout, FormatMarkdown(items, total, search, *collection, *sort))
 	case "json":
 		out, err := FormatJSON(items)
 		if err != nil {
 			return err
 		}
-		fmt.Fprintln(stdout, out)
+		_, _ = fmt.Fprintln(stdout, out)
 	case "tsv":
-		fmt.Fprint(stdout, FormatTSV(items))
+		_, _ = fmt.Fprint(stdout, FormatTSV(items))
 	}
 
 	return nil
