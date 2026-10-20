@@ -4,6 +4,7 @@ extends: default
 ignore: |
   docker-compose*.yml
   versions_vars.yml
+  .venv/
 
 rules:
   braces:

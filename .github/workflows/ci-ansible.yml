@@ -92,11 +92,15 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.event.client_payload.ref }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          working-directory: ansible
+          cache-dependency-glob: ansible/uv.lock
+      # playbook のタスクに venv の PATH / VIRTUAL_ENV を持ち込まないよう、uv run ではなく venv の実行ファイルを直接呼ぶ
       - name: install ansible
-        run: |
-          sudo apt update
-          sudo apt-get install python3-setuptools
-          python3 -m pip install ansible pexpect --user
+        working-directory: ansible
+        run: uv sync --locked
       - name: run ansible
         env:
           CI: true
@@ -105,7 +109,7 @@ jobs:
           DOTFILES_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           cd ansible
-          ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.row.tag }}"
+          .venv/bin/ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.row.tag }}"
 
   build-mac:
     runs-on: macos-latest
@@ -116,9 +120,15 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.event.client_payload.ref }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          working-directory: ansible
+          cache-dependency-glob: ansible/uv.lock
+      # playbook のタスクに venv の PATH / VIRTUAL_ENV を持ち込まないよう、uv run ではなく venv の実行ファイルを直接呼ぶ
       - name: install ansible
-        run: |
-          brew install ansible
+        working-directory: ansible
+        run: uv sync --locked
       - name: run ansible
         env:
           CI: true
@@ -126,7 +136,7 @@ jobs:
         run: |
           cd ansible
           # mac.ymlはhosts: localを対象にしているため、localグループを定義したhostsをinventoryに使う
-          ansible-playbook -i hosts -c local mac.yml --extra-vars "user=$(whoami) brew_sudo_password=''"
+          .venv/bin/ansible-playbook -i hosts -c local mac.yml --extra-vars "user=$(whoami) brew_sudo_password=''"
       - name: verify deploy symlinks
         run: |
           for f in .zshrc .vimrc .tmux.conf .gvimrc .darwin.rc .sshrc .sshrc.d .vim/snippets \
@@ -167,11 +177,11 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
-          python-version: 3.12
+          working-directory: ansible
+          cache-dependency-glob: ansible/uv.lock
       - name: install ansible-lint yamllint
-        run: |
-          uv venv --python python3.12
-          uv pip install ansible ansible-lint
+        working-directory: ansible
+        run: uv sync --locked
       - name: yamllint
         env:
           CI: true
