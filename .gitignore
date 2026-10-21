@@ -1,2 +1,5 @@
 bin/rdpick
 .venv/
+
+# python3 -m unittest が生成するバイトコード
+__pycache__/
