@@ -53,6 +53,10 @@ mise x golangci-lint@2.14.0 -- golangci-lint run ./...
 git ls-files -z | xargs -0 mise x shfmt@3.14.1 -- shfmt -f | xargs mise x shfmt@3.14.1 -- shfmt --apply-ignore -d
 ```
 
+### git hooks
+
+コミット時は lefthook(`lefthook.yml`)が、ステージしたファイルに上の shfmt / gofmt / golangci-lint をかける。セットアップは `lefthook install`(README.md の「git hooks」)。
+
 ### rdpick のビルド
 
 ```sh
