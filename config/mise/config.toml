@@ -53,6 +53,10 @@ sqlite = 'latest'
 ffmpeg = "latest"
 gh = "2.102.0"
 rclone = "latest"
+# lefthook.yml を置いたリポジトリのコミット前フック用
+lefthook = "latest"
+# CI(golangci-lint-action の version)と揃える
+golangci-lint = "2.14.0"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"
