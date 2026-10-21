@@ -41,6 +41,10 @@ uv sync --locked
 uv run yamllint .
 uv run ansible-lint mac.yml ubuntu.yml codespace.yml
 
+# Python の型チェック(リポジトリルートで実行。対象は pyproject.toml の [tool.mypy] files)
+uv sync --locked
+uv run mypy
+
 # Go(バージョンは CI と同じ v2.14.0)
 cd src/rdpick
 mise x golangci-lint@2.14.0 -- golangci-lint run ./...
@@ -78,6 +82,6 @@ ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)
 
 | workflow | トリガー | 検証内容 |
 |---|---|---|
-| `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`statusline`(tests/statusline_test.sh)、`claude-session`(tests/claude_session_test.sh)、`tmux-layout`(tests/tmux_layout_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint) |
+| `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`statusline`(tests/statusline_test.sh)、`claude-session`(tests/claude_session_test.sh)、`tmux-layout`(tests/tmux_layout_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint)、`python-typecheck`(mypy) |
 | `ci-ansible.yml` | `ansible/**` `config/mise/**` 変更時の push / PR、週次 | yamllint / ansible-lint、ubuntu で tag ごと(deploy / init / tool / mise)と mac で playbook を実際に実行 |
 | `update-versions.yml` | 週次 | jo / zsh の新バージョンを検知して `ansible/versions_vars.yml` 更新の PR を作る |
