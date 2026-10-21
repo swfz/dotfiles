@@ -74,3 +74,13 @@ jobs:
         with:
           version: v2.14.0
           working-directory: src/rdpick
+
+  statusline:
+    runs-on: ubuntu-latest
+    name: 'statusline'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # jq は ubuntu-latest に入っているものを使う
+      - name: run statusline test
+        run: bash tests/statusline_test.sh
