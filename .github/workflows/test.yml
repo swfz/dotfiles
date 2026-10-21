@@ -26,6 +26,16 @@ jobs:
       - name: run ccsync test
         run: bash tests/ccsync_test.sh
 
+  tmux-layout:
+    runs-on: ubuntu-latest
+    name: 'tmux-layout'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # yq(mikefarah 版)と jq は ubuntu-latest に入っているものを使う
+      - name: run tmux layout test
+        run: bash tests/tmux_layout_test.sh
+
   shfmt:
     runs-on: ubuntu-latest
     name: 'shfmt'
@@ -64,6 +74,26 @@ jobs:
         with:
           version: v2.14.0
           working-directory: src/rdpick
+
+  statusline:
+    runs-on: ubuntu-latest
+    name: 'statusline'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # jq は ubuntu-latest に入っているものを使う
+      - name: run statusline test
+        run: bash tests/statusline_test.sh
+
+  claude-session:
+    runs-on: ubuntu-latest
+    name: 'claude-session'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # python3 は ubuntu-latest に入っているものを使う(標準ライブラリのみ)
+      - name: run claude-session test
+        run: bash tests/claude_session_test.sh
 
   python-typecheck:
     runs-on: ubuntu-latest
