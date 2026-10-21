@@ -10,7 +10,7 @@ bat = '0.26.1'
 delta = '0.20.1'
 terraform = '1.16.5'
 # 3.12.12はgcloudのCLOUDSDK_PYTHON用(gcloudは新しいpythonをサポートしないため別で保持する)
-python = ['3.14.8', '3.12.12']
+python = ['3.15.0', '3.12.12']
 pipx = 'latest'
 act = 'latest'
 vim = 'latest'
