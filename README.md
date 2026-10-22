@@ -50,6 +50,16 @@ bin/ccsync.sh remove skills/<name>
 `codex/agents/swfz.toml` はClaude Code版の本文を複製せず、実行時に
 `~/.claude/agents/swfz.md` を読む薄いラッパーとして管理している。
 
+## git hooks
+
+コミット前に lefthook(`lefthook.yml`)が、ステージしたファイルに shfmt / gofmt / golangci-lint(`src/rdpick`)をかける。lefthook と Go が必要。shfmt と golangci-lint は mise があれば CI と同じバージョンを `mise x` で使い、無ければ PATH のものを使う。
+
+```sh
+lefthook install
+```
+
+グローバルに `core.hooksPath` を設定している場合、`lefthook install` は拒否される。その場合はグローバル側のフックから `lefthook run pre-commit` を呼ぶ。
+
 ## environment
 
 | env | available values | description |

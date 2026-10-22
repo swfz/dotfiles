@@ -1,0 +1,33 @@
+[project]
+name = "dotfiles"
+version = "0.0.0"
+description = "bin/ と claude/skills/ の Python スクリプトの型チェックに使うツール群"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "mypy",
+]
+
+[tool.uv]
+package = false
+# Renovate の minimumReleaseAge と揃え、公開直後のバージョンを避ける
+exclude-newer = "1 week"
+
+[tool.mypy]
+# 拡張子なしのスクリプトが全て __main__ 扱いになり重複エラーになるのを避け、ファイル名をモジュール名にする
+scripts_are_modules = true
+# 拡張子なしのスクリプトも対象にするため、ディレクトリではなくファイルを列挙する
+files = [
+    "bin/claude-session-list",
+    "bin/claude-session-preview",
+    "claude/skills/artifact-review-comments/assets/inject.py",
+    "claude/skills/ci-watch/scripts/detect_failures.py",
+    "claude/skills/style-journal/assets/embed_fonts.py",
+]
+
+# fonttools は型情報(py.typed)を同梱していないため、import の解決だけ諦める
+[[tool.mypy.overrides]]
+module = ["fontTools.*"]
+ignore_missing_imports = true
