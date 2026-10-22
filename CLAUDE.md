@@ -12,7 +12,7 @@ swfz の dotfiles。シェル・エディタ・ターミナルの設定と、そ
 | `codex/` | Codex 固有のアセット(`codex/agents/*.toml`)。`bin/ccsync.sh` で配布される |
 | `config/` | `~/.config` 配下に置く設定(mise, nvim, starship, bat, ssh, apm) |
 | `src/rdpick/` | Raindrop.io の検索結果を整形出力する Go 製 CLI。詳細は `src/rdpick/README.md` |
-| `tests/` | シェルスクリプトのテスト(`tests/ccsync_test.sh`) |
+| `tests/` | シェルスクリプトのテスト(`tests/ccsync_test.sh`, `tests/tmux_layout_test.sh`) |
 | `vimrc/` | `.vimrc` から読み込む設定とプラグイン設定 |
 | `zsh/` | `.zshrc` から読み込む alias / 関数 / hooks / 環境変数 |
 | `hooks/` | git hooks。`post-merge` で `ccsync.sh link` を自動実行する |
@@ -26,6 +26,9 @@ swfz の dotfiles。シェル・エディタ・ターミナルの設定と、そ
 
 ```sh
 bash tests/ccsync_test.sh
+bash tests/statusline_test.sh
+bash tests/claude_session_test.sh
+bash tests/tmux_layout_test.sh  # bin/tm, bin/tms。yq と jq が必要
 (cd src/rdpick && go vet ./... && go test ./...)
 ```
 
@@ -38,6 +41,10 @@ uv sync --locked
 uv run yamllint .
 uv run ansible-lint mac.yml ubuntu.yml codespace.yml
 
+# Python の型チェック(リポジトリルートで実行。対象は pyproject.toml の [tool.mypy] files)
+uv sync --locked
+uv run mypy
+
 # Go(バージョンは CI と同じ v2.14.0)
 cd src/rdpick
 mise x golangci-lint@2.14.0 -- golangci-lint run ./...
@@ -45,6 +52,10 @@ mise x golangci-lint@2.14.0 -- golangci-lint run ./...
 # シェルスクリプト(設定は .editorconfig。CI と同じ v3.14.1)
 git ls-files -z | xargs -0 mise x shfmt@3.14.1 -- shfmt -f | xargs mise x shfmt@3.14.1 -- shfmt --apply-ignore -d
 ```
+
+### git hooks
+
+コミット時は lefthook(`lefthook.yml`)が、ステージしたファイルに上の shfmt / gofmt / golangci-lint をかける。セットアップは `lefthook install`(README.md の「git hooks」)。
 
 ### rdpick のビルド
 
@@ -75,6 +86,6 @@ ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)
 
 | workflow | トリガー | 検証内容 |
 |---|---|---|
-| `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint) |
+| `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`statusline`(tests/statusline_test.sh)、`claude-session`(tests/claude_session_test.sh)、`tmux-layout`(tests/tmux_layout_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint)、`python-typecheck`(mypy) |
 | `ci-ansible.yml` | `ansible/**` `config/mise/**` 変更時の push / PR、週次 | yamllint / ansible-lint、ubuntu で tag ごと(deploy / init / tool / mise)と mac で playbook を実際に実行 |
 | `update-versions.yml` | 週次 | jo / zsh の新バージョンを検知して `ansible/versions_vars.yml` 更新の PR を作る |

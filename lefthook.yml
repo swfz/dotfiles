@@ -1,0 +1,31 @@
+# コミット前に、ステージしたファイルだけ CI(.github/workflows/test.yml の shfmt / rdpick job)と同じ検査をかける。
+# mise があれば CI と同じバージョン(shfmt 3.14.1 / golangci-lint 2.14.0)を mise x で使い、無ければ PATH のものを使う。
+# ツールを実行できないときは、何を入れればよいかを出して失敗する。存在確認は command -v ではなく実行して行う
+# (mise の shim はバージョン未設定でも command -v が通るため)。セットアップは README.md の「git hooks」を参照
+pre-commit:
+  jobs:
+    - name: shfmt
+      # シェルスクリプトは拡張子なしが多いので glob では絞らず、shfmt -f(shebang でも判定)で選ぶ。
+      # 書式の設定と除外(bin/jq2esc)は .editorconfig
+      run: |
+        if command -v mise >/dev/null; then shfmt() { mise x shfmt@3.14.1 -- shfmt "$@"; }; fi
+        shfmt --version >/dev/null 2>&1 || { echo '[lefthook] shfmt を実行できません(mise か shfmt 3.14.1 を入れてください)' >&2; exit 1; }
+        files=$(shfmt -f {staged_files}) || exit 1
+        [ -z "$files" ] || shfmt --apply-ignore -d $files
+
+    - name: gofmt
+      root: src/rdpick/
+      glob: '*.go'
+      run: |
+        go version >/dev/null 2>&1 || { echo '[lefthook] Go を実行できません(mise use -g go など)' >&2; exit 1; }
+        unformatted=$(gofmt -l {staged_files}) || exit 1
+        [ -z "$unformatted" ] || { echo "[lefthook] gofmt -w で整形してください: $unformatted" >&2; exit 1; }
+
+    - name: golangci-lint
+      root: src/rdpick/
+      glob: '*.go'
+      # 設定は src/rdpick/.golangci.yml
+      run: |
+        if command -v mise >/dev/null; then golangci_lint() { mise x golangci-lint@2.14.0 -- golangci-lint "$@"; }; else golangci_lint() { golangci-lint "$@"; }; fi
+        golangci_lint --version >/dev/null 2>&1 || { echo '[lefthook] golangci-lint を実行できません(mise か golangci-lint 2.14.0 を入れてください)' >&2; exit 1; }
+        golangci_lint run ./...
