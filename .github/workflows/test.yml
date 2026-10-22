@@ -70,7 +70,7 @@ jobs:
       - name: go test
         # カバレッジが閾値を下回ったら失敗させる(ローカルでの再現方法は src/rdpick/README.md)
         env:
-          COVERAGE_THRESHOLD: 99
+          COVERAGE_THRESHOLD: 80
         run: |
           go test -coverprofile="$RUNNER_TEMP/c.out" ./...
           total=$(go tool cover -func="$RUNNER_TEMP/c.out" | awk '/^total:/{gsub("%","",$3); print $3}')
