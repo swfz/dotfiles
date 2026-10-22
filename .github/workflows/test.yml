@@ -94,3 +94,29 @@ jobs:
       # python3 は ubuntu-latest に入っているものを使う(標準ライブラリのみ)
       - name: run claude-session test
         run: bash tests/claude_session_test.sh
+
+  python-unittest:
+    runs-on: ubuntu-latest
+    name: 'python-unittest'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # python3 は ubuntu-latest に入っているものを使う(標準ライブラリの unittest のみ)
+      - name: unittest
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+
+  python-typecheck:
+    runs-on: ubuntu-latest
+    name: 'python-typecheck'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          cache-dependency-glob: uv.lock
+      - name: install mypy
+        run: uv sync --locked
+      - name: mypy
+        # 対象ファイルは pyproject.toml の [tool.mypy] files
+        run: uv run mypy
