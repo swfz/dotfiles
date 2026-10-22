@@ -68,7 +68,14 @@ jobs:
       - name: go vet
         run: go vet ./...
       - name: go test
-        run: go test ./...
+        # カバレッジが閾値を下回ったら失敗させる(ローカルでの再現方法は src/rdpick/README.md)
+        env:
+          COVERAGE_THRESHOLD: 80
+        run: |
+          go test -coverprofile="$RUNNER_TEMP/c.out" ./...
+          total=$(go tool cover -func="$RUNNER_TEMP/c.out" | awk '/^total:/{gsub("%","",$3); print $3}')
+          echo "coverage: ${total}% (threshold: ${COVERAGE_THRESHOLD}%)"
+          awk -v t="$total" -v min="$COVERAGE_THRESHOLD" 'BEGIN{exit !(t>=min)}'
       - name: golangci-lint
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
         with:
