@@ -17,6 +17,9 @@ Auto Scaling Group内で稼働中のEC2インスタンスのプライベートIP
 ## claude-hook-notify
 Claude Codeのフックで、通知の送信とtmuxウィンドウの見た目を更新する。
 
+## apm-skill-scan
+apm で入れた第三者スキルを cisco skill-scanner で検査し、ベースライン(`config/apm/skill-scan-baseline.json`)に無い指摘があれば失敗する。
+
 ## claude-session-list
 Claude Codeの全セッションを「日付/プロジェクト名+タイトル/jsonlパス」のタブ区切り一覧として出力する。
 

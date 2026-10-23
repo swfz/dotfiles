@@ -1,0 +1,149 @@
+{
+  "cloudflare/security-audit-skill/skills/security-audit": [
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "const created = spawnSync(\"mkfifo\", [fifoPath], { encoding: \"utf8\", timeout: CLI_TIMEOUT_MS });",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "const result = spawnSync(process.execPath, [validatorPath, fifoPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "const result = spawnSync(process.execPath, [validatorPath, missingPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "const result = spawnSync(process.execPath, [validatorPath, symlinkPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "const { spawnSync } = require(\"node:child_process\");",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "return spawnSync(process.execPath, [...nodeArgs, validatorPath, ledgerPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "const created = spawnSync(\"mkfifo\", [fifoPath], { encoding: \"utf8\", timeout: CLI_TIMEOUT_MS });",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "const result = spawnSync(process.execPath, [validatorPath, fifoPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "const result = spawnSync(process.execPath, [validatorPath, missingPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "const result = spawnSync(process.execPath, [validatorPath, symlinkPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "const { spawnSync } = require(\"node:child_process\");",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "COMMAND_INJECTION_JS_CHILD_PROCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "return spawnSync(process.execPath, [...nodeArgs, validatorPath, findingsPath], {",
+      "severity": "CRITICAL",
+      "title": "Node.js child_process module usage for shell command execution"
+    },
+    {
+      "rule_id": "DATA_EXFIL_JS_FS_ACCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "fs.writeFileSync(ledgerPath, contents);",
+      "severity": "LOW",
+      "title": "Node.js filesystem access candidate for sensitive-flow correlation"
+    },
+    {
+      "rule_id": "DATA_EXFIL_JS_FS_ACCESS",
+      "file": "validate-coverage-ledger.test.cjs",
+      "snippet": "fs.writeFileSync(targetPath, JSON.stringify([unit()]));",
+      "severity": "LOW",
+      "title": "Node.js filesystem access candidate for sensitive-flow correlation"
+    },
+    {
+      "rule_id": "DATA_EXFIL_JS_FS_ACCESS",
+      "file": "validate-findings.cjs",
+      "snippet": "const schema = JSON.parse(fs.readFileSync(schemaPath, \"utf8\"));",
+      "severity": "LOW",
+      "title": "Node.js filesystem access candidate for sensitive-flow correlation"
+    },
+    {
+      "rule_id": "DATA_EXFIL_JS_FS_ACCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "fs.writeFileSync(findingsPath, contents);",
+      "severity": "LOW",
+      "title": "Node.js filesystem access candidate for sensitive-flow correlation"
+    },
+    {
+      "rule_id": "DATA_EXFIL_JS_FS_ACCESS",
+      "file": "validate-findings.test.cjs",
+      "snippet": "fs.writeFileSync(targetPath, JSON.stringify(producerShapedFindings()));",
+      "severity": "LOW",
+      "title": "Node.js filesystem access candidate for sensitive-flow correlation"
+    },
+    {
+      "rule_id": "MANIFEST_MISSING_LICENSE",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Skill does not specify a license"
+    }
+  ],
+  "mattpocock/skills/skills/productivity/grilling": [
+    {
+      "rule_id": "MANIFEST_MISSING_LICENSE",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Skill does not specify a license"
+    }
+  ],
+  "nanaism/yomiyasu/skills/yomiyasu": [],
+  "vercel-labs/skills/skills/find-skills": [
+    {
+      "rule_id": "MANIFEST_MISSING_LICENSE",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Skill does not specify a license"
+    }
+  ]
+}
