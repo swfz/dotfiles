@@ -32,7 +32,7 @@ mise の shim が go を解決できない場合（`config/mise/config.toml` で
 
 ```sh
 cd src/rdpick
-mise x golangci-lint@2.14.0 -- golangci-lint run ./...
+mise x golangci-lint@2.15.0 -- golangci-lint run ./...
 ```
 
 ## テスト

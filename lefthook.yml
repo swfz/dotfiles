@@ -1,5 +1,5 @@
 # コミット前に、ステージしたファイルだけ CI(.github/workflows/test.yml の shfmt / rdpick job)と同じ検査をかける。
-# mise があれば CI と同じバージョン(shfmt 3.14.1 / golangci-lint 2.14.0)を mise x で使い、無ければ PATH のものを使う。
+# mise があれば CI と同じバージョン(shfmt 3.14.1 / golangci-lint 2.15.0)を mise x で使い、無ければ PATH のものを使う。
 # ツールを実行できないときは、何を入れればよいかを出して失敗する。存在確認は command -v ではなく実行して行う
 # (mise の shim はバージョン未設定でも command -v が通るため)。セットアップは README.md の「git hooks」を参照
 pre-commit:
@@ -26,6 +26,6 @@ pre-commit:
       glob: '*.go'
       # 設定は src/rdpick/.golangci.yml
       run: |
-        if command -v mise >/dev/null; then golangci_lint() { mise x golangci-lint@2.14.0 -- golangci-lint "$@"; }; else golangci_lint() { golangci-lint "$@"; }; fi
-        golangci_lint --version >/dev/null 2>&1 || { echo '[lefthook] golangci-lint を実行できません(mise か golangci-lint 2.14.0 を入れてください)' >&2; exit 1; }
+        if command -v mise >/dev/null; then golangci_lint() { mise x golangci-lint@2.15.0 -- golangci-lint "$@"; }; else golangci_lint() { golangci-lint "$@"; }; fi
+        golangci_lint --version >/dev/null 2>&1 || { echo '[lefthook] golangci-lint を実行できません(mise か golangci-lint 2.15.0 を入れてください)' >&2; exit 1; }
         golangci_lint run ./...
