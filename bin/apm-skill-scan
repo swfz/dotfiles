@@ -1,0 +1,250 @@
+#!/usr/bin/env python3
+"""apm で入れた第三者スキルを cisco skill-scanner で検査し、ベースラインに無い指摘があれば失敗する
+
+対象は config/apm/apm.yml の dependencies.apm に並ぶ依存。
+誤検出と確認済みの指摘は config/apm/skill-scan-baseline.json に依存ごとに記録しておく。
+照合は (rule_id, file, snippet) ごとの件数で行い、行番号は見ない(上流の更新で行がずれても既知の指摘として扱うため)。
+snippet を持たない指摘も、同じキーの件数が増えれば未確認として扱う。
+
+Usage: apm-skill-scan [--source fetch|deployed] [--update-baseline]
+  --source fetch     各依存を apm.yml の SHA で git fetch して検査する(既定。CI 用)
+  --source deployed  ~/.claude/skills に配置済みの実体を検査する(post-merge 用)
+  --update-baseline  今回の指摘でベースラインを書き換える。指摘の中身を確認してから使う
+
+終了コード: 0 = 未確認の指摘なし / 1 = 未確認の指摘あり / 2 = 実行エラー
+"""
+import argparse
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from collections import Counter
+from pathlib import Path
+from typing import NamedTuple
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+MANIFEST = REPO_ROOT / "config/apm/apm.yml"
+BASELINE = REPO_ROOT / "config/apm/skill-scan-baseline.json"
+
+# - owner/repo[/sub/path]#<40桁SHA> # vX.Y.Z
+DEP_RE = re.compile(r"^-\s+(?P<repo>[\w.-]+/[\w.-]+)(?:/(?P<path>[^#\s]+))?(?:#(?P<ref>\S+))?")
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+
+
+class Dep(NamedTuple):
+    repo: str
+    path: str
+    ref: str
+
+    # ベースラインのキー。SHA を含めないので、更新後も同じ依存として扱える
+    @property
+    def name(self) -> str:
+        return f"{self.repo}/{self.path}" if self.path else self.repo
+
+    # 配置先 ~/.claude/skills/<skill_name> のディレクトリ名
+    @property
+    def skill_name(self) -> str:
+        return (self.path or self.repo).rstrip("/").split("/")[-1]
+
+
+class Finding(NamedTuple):
+    rule_id: str
+    file: str
+    snippet: str
+    severity: str
+    title: str
+
+    @property
+    def key(self) -> tuple[str, str, str]:
+        return (self.rule_id, self.file, self.snippet)
+
+
+class ScanError(Exception):
+    pass
+
+
+# apm.yml の dependencies.apm を読む。YAML ライブラリに頼らず、この形式だけを扱う
+def parse_deps(text: str) -> list[Dep]:
+    deps: list[Dep] = []
+    in_deps = False
+    apm_indent: int | None = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        # キーの行は行末コメントを落として比べる(依存の行は # の後ろに SHA が来るので落とさない)
+        key = stripped if stripped.startswith("-") else stripped.split(" #", 1)[0].rstrip()
+        indent = len(line) - len(line.lstrip())
+        if indent == 0:
+            in_deps = key == "dependencies:"
+            apm_indent = None
+            continue
+        if not in_deps:
+            continue
+        if apm_indent is None:
+            if key == "apm:":
+                apm_indent = indent
+            continue
+        if indent <= apm_indent and not stripped.startswith("-"):
+            # apm: の次のキー(mcp: など)に入った
+            apm_indent = None
+            continue
+        m = DEP_RE.match(stripped)
+        if not m:
+            raise ScanError(f"apm.yml の依存を解釈できません: {stripped}")
+        ref = m.group("ref") or ""
+        if not SHA_RE.match(ref):
+            raise ScanError(f"依存が 40 桁の SHA で固定されていません: {stripped}")
+        deps.append(Dep(m.group("repo"), m.group("path") or "", ref))
+    if not deps:
+        # 書式が変わって読めなくなったときに「指摘なし」で通らないようにする
+        raise ScanError("apm.yml の dependencies.apm から依存を 1 件も読めませんでした")
+    return deps
+
+
+def parse_findings(report: dict) -> list[Finding]:
+    # 同じキーの指摘が何件あるかも照合に使うので、重複は除かない
+    findings = [
+        Finding(
+            rule_id=f.get("rule_id") or "",
+            file=f.get("file_path") or "",
+            snippet=(f.get("snippet") or "").strip(),
+            severity=f.get("severity") or "",
+            title=f.get("title") or "",
+        )
+        for f in report.get("findings", [])
+    ]
+    return sorted(findings)
+
+
+def run_scanner(skill_dir: Path) -> list[Finding]:
+    if not (skill_dir / "SKILL.md").is_file():
+        raise ScanError(f"SKILL.md がありません: {skill_dir}")
+    try:
+        proc = subprocess.run(
+            ["skill-scanner", "scan", str(skill_dir), "--format", "json", "--compact", "--use-behavioral"],
+            capture_output=True,
+            text=True,
+        )
+    except FileNotFoundError:
+        raise ScanError("skill-scanner が見つかりません(mise の pipx:cisco-ai-skill-scanner を入れてください)")
+    if proc.returncode != 0:
+        raise ScanError(f"skill-scanner が失敗しました: {skill_dir}\n{proc.stderr}")
+    try:
+        return parse_findings(json.loads(proc.stdout))
+    except json.JSONDecodeError:
+        raise ScanError(f"skill-scanner の出力を JSON として読めません: {skill_dir}\n{proc.stdout[:500]}")
+
+
+# 依存を固定 SHA で浅く取得し、スキル本体のディレクトリを返す
+def fetch_dep(dep: Dep, workdir: Path) -> Path:
+    # 同じリポジトリの別サブパスを同じ SHA で入れている場合は取得を使い回す
+    dest = workdir / f"{dep.repo.replace('/', '__')}__{dep.ref}"
+    if not dest.exists():
+        for cmd in (
+            ["git", "init", "-q", str(dest)],
+            ["git", "-C", str(dest), "fetch", "-q", "--depth", "1", f"https://github.com/{dep.repo}", dep.ref],
+            ["git", "-C", str(dest), "checkout", "-q", "FETCH_HEAD"],
+        ):
+            proc = subprocess.run(cmd, capture_output=True, text=True)
+            if proc.returncode != 0:
+                raise ScanError(f"{dep.name} の取得に失敗しました: {' '.join(cmd)}\n{proc.stderr}")
+    return dest / dep.path
+
+
+# 配置済みのスキルを __pycache__ を除いて一時ディレクトリへ写す。
+# __pycache__ は手元でスクリプトを動かすと生成されるもので上流には無く、fetch での検査結果と食い違うため除く
+def copy_deployed(dep: Dep, workdir: Path) -> Path:
+    src = Path(os.path.expanduser("~/.claude/skills")) / dep.skill_name
+    if not src.is_dir():
+        raise ScanError(f"配置済みのスキルがありません: {src}")
+    dest = workdir / dep.skill_name
+    shutil.copytree(src, dest, ignore=shutil.ignore_patterns("__pycache__"))
+    return dest
+
+
+def load_baseline(path: Path) -> dict[str, Counter[tuple[str, str, str]]]:
+    if not path.exists():
+        return {}
+    data = json.loads(path.read_text())
+    return {name: Counter((e["rule_id"], e["file"], e["snippet"]) for e in entries) for name, entries in data.items()}
+
+
+def dump_baseline(results: dict[str, list[Finding]]) -> str:
+    data = {
+        name: [{"rule_id": f.rule_id, "file": f.file, "snippet": f.snippet, "severity": f.severity, "title": f.title} for f in findings]
+        for name, findings in sorted(results.items())
+    }
+    return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+
+
+# (ベースラインに無い指摘, もう検出されないベースライン項目) を返す。
+# 同じキーはベースラインの件数までを既知とし、超えた分を未確認にする
+def compare(results: dict[str, list[Finding]], baseline: dict[str, Counter[tuple[str, str, str]]]) -> tuple[dict[str, list[Finding]], dict[str, set[tuple[str, str, str]]]]:
+    new: dict[str, list[Finding]] = {}
+    stale: dict[str, set[tuple[str, str, str]]] = {}
+    for name, findings in results.items():
+        remaining = Counter(baseline.get(name, Counter()))
+        unknown = []
+        for f in findings:
+            if remaining[f.key] > 0:
+                remaining[f.key] -= 1
+            else:
+                unknown.append(f)
+        if unknown:
+            new[name] = unknown
+        gone = set(baseline.get(name, Counter())) - {f.key for f in findings}
+        if gone:
+            stale[name] = gone
+    return new, stale
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="apm で入れた第三者スキルを skill-scanner で検査する")
+    parser.add_argument("--source", choices=["fetch", "deployed"], default="fetch")
+    parser.add_argument("--update-baseline", action="store_true")
+    args = parser.parse_args()
+
+    try:
+        deps = parse_deps(MANIFEST.read_text())
+        results: dict[str, list[Finding]] = {}
+        with tempfile.TemporaryDirectory(prefix="apm-skill-scan-") as tmp:
+            for dep in deps:
+                if args.source == "fetch":
+                    skill_dir = fetch_dep(dep, Path(tmp))
+                else:
+                    skill_dir = copy_deployed(dep, Path(tmp))
+                results[dep.name] = run_scanner(skill_dir)
+    except ScanError as e:
+        print(f"[error] {e}", file=sys.stderr)
+        return 2
+
+    if args.update_baseline:
+        BASELINE.write_text(dump_baseline(results))
+        print(f"[*] ベースラインを更新しました: {BASELINE.relative_to(REPO_ROOT)}")
+        return 0
+
+    new, stale = compare(results, load_baseline(BASELINE))
+    for name, findings in results.items():
+        mark = "new" if name in new else "ok"
+        print(f"[{mark}] {name}: 指摘 {len(findings)} 件 / 未確認 {len(new.get(name, []))} 件")
+        for f in new.get(name, []):
+            print(f"    {f.severity} {f.rule_id} {f.file}: {f.snippet or f.title}")
+    for name, keys in stale.items():
+        for rule_id, file, _ in sorted(keys):
+            print(f"[info] {name}: ベースラインの {rule_id} ({file}) はもう検出されません")
+    if new:
+        print(
+            "[!] ベースラインに無い指摘があります。中身を確認し、問題なければ"
+            " bin/apm-skill-scan --update-baseline で記録してください",
+            file=sys.stderr,
+        )
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

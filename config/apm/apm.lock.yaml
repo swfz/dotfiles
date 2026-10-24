@@ -1,6 +1,100 @@
 lockfile_version: '1'
 apm_version: 0.31.0
 dependencies:
+- repo_url: cloudflare/security-audit-skill
+  name: security-audit
+  host: github.com
+  resolved_commit: c1c8a8c1471069fb0e188eeaff69b8e8db6564a8
+  resolved_ref: c1c8a8c1471069fb0e188eeaff69b8e8db6564a8
+  version: unknown
+  virtual_path: skills/security-audit
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/security-audit
+  - .agents/skills/security-audit/AI-AND-LLM.md
+  - .agents/skills/security-audit/ATTACK-CLASSES.md
+  - .agents/skills/security-audit/CLIENT-SIDE.md
+  - .agents/skills/security-audit/CLOUD-AND-DEPLOYMENT.md
+  - .agents/skills/security-audit/DATA-ISOLATION-AND-LIFECYCLE.md
+  - .agents/skills/security-audit/DESKTOP-MOBILE-AND-LOCAL-IPC.md
+  - .agents/skills/security-audit/HUNTING.md
+  - .agents/skills/security-audit/MEMORY-SAFETY-AND-BINARY.md
+  - .agents/skills/security-audit/PROTOCOLS-RPC-AND-MESSAGING.md
+  - .agents/skills/security-audit/RECONNAISSANCE.md
+  - .agents/skills/security-audit/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md
+  - .agents/skills/security-audit/SKILL.md
+  - .agents/skills/security-audit/SUPPLY-CHAIN-AND-RELEASE.md
+  - .agents/skills/security-audit/VALIDATION-AND-REPORTING.md
+  - .agents/skills/security-audit/WEB-PROTOCOL-AND-AUTH.md
+  - .agents/skills/security-audit/report-schema.json
+  - .agents/skills/security-audit/validate-coverage-ledger.cjs
+  - .agents/skills/security-audit/validate-coverage-ledger.test.cjs
+  - .agents/skills/security-audit/validate-findings.cjs
+  - .agents/skills/security-audit/validate-findings.test.cjs
+  - .claude/skills/security-audit
+  - .claude/skills/security-audit/AI-AND-LLM.md
+  - .claude/skills/security-audit/ATTACK-CLASSES.md
+  - .claude/skills/security-audit/CLIENT-SIDE.md
+  - .claude/skills/security-audit/CLOUD-AND-DEPLOYMENT.md
+  - .claude/skills/security-audit/DATA-ISOLATION-AND-LIFECYCLE.md
+  - .claude/skills/security-audit/DESKTOP-MOBILE-AND-LOCAL-IPC.md
+  - .claude/skills/security-audit/HUNTING.md
+  - .claude/skills/security-audit/MEMORY-SAFETY-AND-BINARY.md
+  - .claude/skills/security-audit/PROTOCOLS-RPC-AND-MESSAGING.md
+  - .claude/skills/security-audit/RECONNAISSANCE.md
+  - .claude/skills/security-audit/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md
+  - .claude/skills/security-audit/SKILL.md
+  - .claude/skills/security-audit/SUPPLY-CHAIN-AND-RELEASE.md
+  - .claude/skills/security-audit/VALIDATION-AND-REPORTING.md
+  - .claude/skills/security-audit/WEB-PROTOCOL-AND-AUTH.md
+  - .claude/skills/security-audit/report-schema.json
+  - .claude/skills/security-audit/validate-coverage-ledger.cjs
+  - .claude/skills/security-audit/validate-coverage-ledger.test.cjs
+  - .claude/skills/security-audit/validate-findings.cjs
+  - .claude/skills/security-audit/validate-findings.test.cjs
+  deployed_file_hashes:
+    .agents/skills/security-audit/AI-AND-LLM.md: sha256:7335a95c43554eadefcf03ece639291bb0e038c398a179299e3887ffe06bd2ef
+    .agents/skills/security-audit/ATTACK-CLASSES.md: sha256:3ee4f00c6e8c9dcf6dd02dd5ac2a4ceb322e2085f3e9fbe79cf0c6330bc7ef83
+    .agents/skills/security-audit/CLIENT-SIDE.md: sha256:613f6b98f86083e045525c5b60154ffdab122bac35f1e05eb17488e6e453370c
+    .agents/skills/security-audit/CLOUD-AND-DEPLOYMENT.md: sha256:3c80f3088be22345e07b057c056d6ed99fe2b0304f794398964f7ccd5a496ca3
+    .agents/skills/security-audit/DATA-ISOLATION-AND-LIFECYCLE.md: sha256:307dcb3e24d292715c4a041190e7bb135646a37eb6187619ae01d000a634a4ad
+    .agents/skills/security-audit/DESKTOP-MOBILE-AND-LOCAL-IPC.md: sha256:58eae8ee0ca6a46611c501ec5a3ab47fdff88dd7db0d8d74789bbf8bb19d8cb2
+    .agents/skills/security-audit/HUNTING.md: sha256:71c121decea1322c47c718f6e110f1a892980bb4266bd7ac55ef043a213ade09
+    .agents/skills/security-audit/MEMORY-SAFETY-AND-BINARY.md: sha256:7c8b0dccfb35315cca2455509674d49632b2fe37e1f3aac16c1a496a7e9924a7
+    .agents/skills/security-audit/PROTOCOLS-RPC-AND-MESSAGING.md: sha256:8b73816fa5b3697c9c40977f0c836b40f01d6e81929ff2720fe83ce089e9a619
+    .agents/skills/security-audit/RECONNAISSANCE.md: sha256:02ca887aca84de8ae137f1891bd2f0a54f28d3fa6da92a27f54734382b3381a2
+    .agents/skills/security-audit/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md: sha256:4326fab5c92a0b4c420a70196254040105cd794026562130b59bf1a6db3e4baa
+    .agents/skills/security-audit/SKILL.md: sha256:5e3e96a1e438d8f35fef0a1e38f02d4f00e2bdf910401b7dfe00e6779c6dac85
+    .agents/skills/security-audit/SUPPLY-CHAIN-AND-RELEASE.md: sha256:f372e919940e335468ba1ae09f99026c3986a345f7fe26f8068f132e199f52a5
+    .agents/skills/security-audit/VALIDATION-AND-REPORTING.md: sha256:b892470cb89bb31f33403e050d4bdfbe2cdaef940ade1496fa65e32b2e129449
+    .agents/skills/security-audit/WEB-PROTOCOL-AND-AUTH.md: sha256:4f3066dffa23c5635859187be9b96c32f2aff29a688186b91ff0c63e47d62b5c
+    .agents/skills/security-audit/report-schema.json: sha256:6575c9de4a62255699ea052ebf9a49ebfb373a32891bcd89af6f55cc84b35519
+    .agents/skills/security-audit/validate-coverage-ledger.cjs: sha256:2eb280bd2e33c002916f86db9b29f9edfedb6454e5db973c766290465b868ac8
+    .agents/skills/security-audit/validate-coverage-ledger.test.cjs: sha256:cfb9df26b03469a4279a70e7664a2a5434dd6f8c2c204e91f9b0aeb9dd71e648
+    .agents/skills/security-audit/validate-findings.cjs: sha256:e85f232e36bfac0f866f244da50376692d6b45c690beadcb00608b0e6c8b5283
+    .agents/skills/security-audit/validate-findings.test.cjs: sha256:b92001117a92c4161d43777a0ba2fa182a8a4d97f2304cc8c0cee5331497b73b
+    .claude/skills/security-audit/AI-AND-LLM.md: sha256:7335a95c43554eadefcf03ece639291bb0e038c398a179299e3887ffe06bd2ef
+    .claude/skills/security-audit/ATTACK-CLASSES.md: sha256:3ee4f00c6e8c9dcf6dd02dd5ac2a4ceb322e2085f3e9fbe79cf0c6330bc7ef83
+    .claude/skills/security-audit/CLIENT-SIDE.md: sha256:613f6b98f86083e045525c5b60154ffdab122bac35f1e05eb17488e6e453370c
+    .claude/skills/security-audit/CLOUD-AND-DEPLOYMENT.md: sha256:3c80f3088be22345e07b057c056d6ed99fe2b0304f794398964f7ccd5a496ca3
+    .claude/skills/security-audit/DATA-ISOLATION-AND-LIFECYCLE.md: sha256:307dcb3e24d292715c4a041190e7bb135646a37eb6187619ae01d000a634a4ad
+    .claude/skills/security-audit/DESKTOP-MOBILE-AND-LOCAL-IPC.md: sha256:58eae8ee0ca6a46611c501ec5a3ab47fdff88dd7db0d8d74789bbf8bb19d8cb2
+    .claude/skills/security-audit/HUNTING.md: sha256:71c121decea1322c47c718f6e110f1a892980bb4266bd7ac55ef043a213ade09
+    .claude/skills/security-audit/MEMORY-SAFETY-AND-BINARY.md: sha256:7c8b0dccfb35315cca2455509674d49632b2fe37e1f3aac16c1a496a7e9924a7
+    .claude/skills/security-audit/PROTOCOLS-RPC-AND-MESSAGING.md: sha256:8b73816fa5b3697c9c40977f0c836b40f01d6e81929ff2720fe83ce089e9a619
+    .claude/skills/security-audit/RECONNAISSANCE.md: sha256:02ca887aca84de8ae137f1891bd2f0a54f28d3fa6da92a27f54734382b3381a2
+    .claude/skills/security-audit/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md: sha256:4326fab5c92a0b4c420a70196254040105cd794026562130b59bf1a6db3e4baa
+    .claude/skills/security-audit/SKILL.md: sha256:5e3e96a1e438d8f35fef0a1e38f02d4f00e2bdf910401b7dfe00e6779c6dac85
+    .claude/skills/security-audit/SUPPLY-CHAIN-AND-RELEASE.md: sha256:f372e919940e335468ba1ae09f99026c3986a345f7fe26f8068f132e199f52a5
+    .claude/skills/security-audit/VALIDATION-AND-REPORTING.md: sha256:b892470cb89bb31f33403e050d4bdfbe2cdaef940ade1496fa65e32b2e129449
+    .claude/skills/security-audit/WEB-PROTOCOL-AND-AUTH.md: sha256:4f3066dffa23c5635859187be9b96c32f2aff29a688186b91ff0c63e47d62b5c
+    .claude/skills/security-audit/report-schema.json: sha256:6575c9de4a62255699ea052ebf9a49ebfb373a32891bcd89af6f55cc84b35519
+    .claude/skills/security-audit/validate-coverage-ledger.cjs: sha256:2eb280bd2e33c002916f86db9b29f9edfedb6454e5db973c766290465b868ac8
+    .claude/skills/security-audit/validate-coverage-ledger.test.cjs: sha256:cfb9df26b03469a4279a70e7664a2a5434dd6f8c2c204e91f9b0aeb9dd71e648
+    .claude/skills/security-audit/validate-findings.cjs: sha256:e85f232e36bfac0f866f244da50376692d6b45c690beadcb00608b0e6c8b5283
+    .claude/skills/security-audit/validate-findings.test.cjs: sha256:b92001117a92c4161d43777a0ba2fa182a8a4d97f2304cc8c0cee5331497b73b
+  content_hash: sha256:ac796659de231c3ab76f6ee012836072bdc82928fb019199925c9062800e16c1
 - repo_url: mattpocock/skills
   name: grilling
   host: github.com
@@ -160,6 +254,195 @@ deployments:
   content_hash: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
 - kind: project-relative
   target: claude
+  value: .claude/skills/security-audit
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/AI-AND-LLM.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:7335a95c43554eadefcf03ece639291bb0e038c398a179299e3887ffe06bd2ef
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/ATTACK-CLASSES.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:3ee4f00c6e8c9dcf6dd02dd5ac2a4ceb322e2085f3e9fbe79cf0c6330bc7ef83
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/CLIENT-SIDE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:613f6b98f86083e045525c5b60154ffdab122bac35f1e05eb17488e6e453370c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/CLOUD-AND-DEPLOYMENT.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:3c80f3088be22345e07b057c056d6ed99fe2b0304f794398964f7ccd5a496ca3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/DATA-ISOLATION-AND-LIFECYCLE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:307dcb3e24d292715c4a041190e7bb135646a37eb6187619ae01d000a634a4ad
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/DESKTOP-MOBILE-AND-LOCAL-IPC.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:58eae8ee0ca6a46611c501ec5a3ab47fdff88dd7db0d8d74789bbf8bb19d8cb2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/HUNTING.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:71c121decea1322c47c718f6e110f1a892980bb4266bd7ac55ef043a213ade09
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/MEMORY-SAFETY-AND-BINARY.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:7c8b0dccfb35315cca2455509674d49632b2fe37e1f3aac16c1a496a7e9924a7
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/PROTOCOLS-RPC-AND-MESSAGING.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:8b73816fa5b3697c9c40977f0c836b40f01d6e81929ff2720fe83ce089e9a619
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/RECONNAISSANCE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:02ca887aca84de8ae137f1891bd2f0a54f28d3fa6da92a27f54734382b3381a2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:4326fab5c92a0b4c420a70196254040105cd794026562130b59bf1a6db3e4baa
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:5e3e96a1e438d8f35fef0a1e38f02d4f00e2bdf910401b7dfe00e6779c6dac85
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/SUPPLY-CHAIN-AND-RELEASE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:f372e919940e335468ba1ae09f99026c3986a345f7fe26f8068f132e199f52a5
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/VALIDATION-AND-REPORTING.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:b892470cb89bb31f33403e050d4bdfbe2cdaef940ade1496fa65e32b2e129449
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/WEB-PROTOCOL-AND-AUTH.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:4f3066dffa23c5635859187be9b96c32f2aff29a688186b91ff0c63e47d62b5c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/report-schema.json
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:6575c9de4a62255699ea052ebf9a49ebfb373a32891bcd89af6f55cc84b35519
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/validate-coverage-ledger.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:2eb280bd2e33c002916f86db9b29f9edfedb6454e5db973c766290465b868ac8
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/validate-coverage-ledger.test.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:cfb9df26b03469a4279a70e7664a2a5434dd6f8c2c204e91f9b0aeb9dd71e648
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/validate-findings.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:e85f232e36bfac0f866f244da50376692d6b45c690beadcb00608b0e6c8b5283
+- kind: project-relative
+  target: claude
+  value: .claude/skills/security-audit/validate-findings.test.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:b92001117a92c4161d43777a0ba2fa182a8a4d97f2304cc8c0cee5331497b73b
+- kind: project-relative
+  target: claude
   value: .claude/skills/yomiyasu
   runtime: null
   scope: project
@@ -294,7 +577,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:299a61970e8c30092f947e2ace95e80ff8a513fac87824363f89ba77e6cac468
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/find-skills
   runtime: null
   scope: project
@@ -303,7 +586,7 @@ deployments:
   active_owner: vercel-labs/skills/skills/find-skills
   content_hash: null
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/find-skills/SKILL.md
   runtime: null
   scope: project
@@ -312,7 +595,7 @@ deployments:
   active_owner: vercel-labs/skills/skills/find-skills
   content_hash: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/grilling
   runtime: null
   scope: project
@@ -321,7 +604,7 @@ deployments:
   active_owner: mattpocock/skills/skills/productivity/grilling
   content_hash: null
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/grilling/SKILL.md
   runtime: null
   scope: project
@@ -330,7 +613,7 @@ deployments:
   active_owner: mattpocock/skills/skills/productivity/grilling
   content_hash: sha256:10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/grilling/agents/openai.yaml
   runtime: null
   scope: project
@@ -339,7 +622,196 @@ deployments:
   active_owner: mattpocock/skills/skills/productivity/grilling
   content_hash: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
 - kind: project-relative
-  target: codex
+  target: legacy
+  value: .agents/skills/security-audit
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/AI-AND-LLM.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:7335a95c43554eadefcf03ece639291bb0e038c398a179299e3887ffe06bd2ef
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/ATTACK-CLASSES.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:3ee4f00c6e8c9dcf6dd02dd5ac2a4ceb322e2085f3e9fbe79cf0c6330bc7ef83
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/CLIENT-SIDE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:613f6b98f86083e045525c5b60154ffdab122bac35f1e05eb17488e6e453370c
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/CLOUD-AND-DEPLOYMENT.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:3c80f3088be22345e07b057c056d6ed99fe2b0304f794398964f7ccd5a496ca3
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/DATA-ISOLATION-AND-LIFECYCLE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:307dcb3e24d292715c4a041190e7bb135646a37eb6187619ae01d000a634a4ad
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/DESKTOP-MOBILE-AND-LOCAL-IPC.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:58eae8ee0ca6a46611c501ec5a3ab47fdff88dd7db0d8d74789bbf8bb19d8cb2
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/HUNTING.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:71c121decea1322c47c718f6e110f1a892980bb4266bd7ac55ef043a213ade09
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/MEMORY-SAFETY-AND-BINARY.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:7c8b0dccfb35315cca2455509674d49632b2fe37e1f3aac16c1a496a7e9924a7
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/PROTOCOLS-RPC-AND-MESSAGING.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:8b73816fa5b3697c9c40977f0c836b40f01d6e81929ff2720fe83ce089e9a619
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/RECONNAISSANCE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:02ca887aca84de8ae137f1891bd2f0a54f28d3fa6da92a27f54734382b3381a2
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/RESOURCE-EXHAUSTION-AND-AVAILABILITY.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:4326fab5c92a0b4c420a70196254040105cd794026562130b59bf1a6db3e4baa
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:5e3e96a1e438d8f35fef0a1e38f02d4f00e2bdf910401b7dfe00e6779c6dac85
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/SUPPLY-CHAIN-AND-RELEASE.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:f372e919940e335468ba1ae09f99026c3986a345f7fe26f8068f132e199f52a5
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/VALIDATION-AND-REPORTING.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:b892470cb89bb31f33403e050d4bdfbe2cdaef940ade1496fa65e32b2e129449
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/WEB-PROTOCOL-AND-AUTH.md
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:4f3066dffa23c5635859187be9b96c32f2aff29a688186b91ff0c63e47d62b5c
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/report-schema.json
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:6575c9de4a62255699ea052ebf9a49ebfb373a32891bcd89af6f55cc84b35519
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/validate-coverage-ledger.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:2eb280bd2e33c002916f86db9b29f9edfedb6454e5db973c766290465b868ac8
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/validate-coverage-ledger.test.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:cfb9df26b03469a4279a70e7664a2a5434dd6f8c2c204e91f9b0aeb9dd71e648
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/validate-findings.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:e85f232e36bfac0f866f244da50376692d6b45c690beadcb00608b0e6c8b5283
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/security-audit/validate-findings.test.cjs
+  runtime: null
+  scope: project
+  owners:
+  - cloudflare/security-audit-skill/skills/security-audit
+  active_owner: cloudflare/security-audit-skill/skills/security-audit
+  content_hash: sha256:b92001117a92c4161d43777a0ba2fa182a8a4d97f2304cc8c0cee5331497b73b
+- kind: project-relative
+  target: legacy
   value: .agents/skills/yomiyasu
   runtime: null
   scope: project
@@ -348,7 +820,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: null
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/.claude-plugin/marketplace.json
   runtime: null
   scope: project
@@ -357,7 +829,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:1d563e4a0e24d8a419d01f4cd729ec2577f189f9dd61a1d4a8ab22119aef1d35
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/.claude-plugin/plugin.json
   runtime: null
   scope: project
@@ -366,7 +838,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:8cde4dc0893bc46827776a45610356f8997100bff0cc6e3e8699372f90316129
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/LICENSE
   runtime: null
   scope: project
@@ -375,7 +847,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:79d802f15bc8caf67f1a83c1bdbe214ccb41a0a0275f9046b329b89c65ee1fca
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/SKILL.md
   runtime: null
   scope: project
@@ -384,7 +856,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:0a8915986b0228abdf137d00f8e35959336f1914d36dfb73f1e8c053357209cf
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/UNICODE-LICENSE.txt
   runtime: null
   scope: project
@@ -393,7 +865,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/assets/algo-artis.png
   runtime: null
   scope: project
@@ -402,7 +874,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:57c7c204d43d0e2873e3b61221db3ac4ba75a7ce29271a6deaeb3bd09f26fdec
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/references/domains/business.md
   runtime: null
   scope: project
@@ -411,7 +883,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:b9970281b5005bbbc998d5de9b9e6b2bc1bb83976b3862c0556425a142f4352c
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/references/domains/essay.md
   runtime: null
   scope: project
@@ -420,7 +892,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:8c0dc2afe132299ad111d4e3bc004d75da6291dc4857328717dc63ba5c9c6740
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/references/domains/tech.md
   runtime: null
   scope: project
@@ -429,7 +901,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:255b1bcbf42a0c7ea7f42c7293cd964e541d70f6f5079ebcbffc332ce6b7b0dd
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/references/gemini-syntax.md
   runtime: null
   scope: project
@@ -438,7 +910,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:7685424e9f63cd0d45c0fca673eabd10d7879f29e220b7d8517e73fcd2a9b6e7
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/references/slop-catalog.md
   runtime: null
   scope: project
@@ -447,7 +919,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:e7791d123db2573f50ee922c51f7d50694ab7e6b81f318713e9f405fe3c6daf2
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/scripts/markdown_visibility.py
   runtime: null
   scope: project
@@ -456,7 +928,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:7e6f739114bc28b132aa8e2bcfb51c7de7f441c12a54431c7248b5353a9966bb
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/scripts/yomiyasu_diff.py
   runtime: null
   scope: project
@@ -465,7 +937,7 @@ deployments:
   active_owner: nanaism/yomiyasu/skills/yomiyasu
   content_hash: sha256:b704e088fd6e1b01c21fb6b97373cc21d441cb14e976f3a47a95c3ba1c73a964
 - kind: project-relative
-  target: codex
+  target: legacy
   value: .agents/skills/yomiyasu/scripts/yomiyasu_lint.py
   runtime: null
   scope: project
