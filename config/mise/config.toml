@@ -54,7 +54,7 @@ ffmpeg = "latest"
 gh = "2.102.0"
 rclone = "latest"
 lefthook = "latest"
-golangci-lint = "2.14.0"
+golangci-lint = "2.15.0"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"
