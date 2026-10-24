@@ -46,9 +46,9 @@ uv run ansible-lint mac.yml ubuntu.yml codespace.yml
 uv sync --locked
 uv run mypy
 
-# Go(バージョンは CI と同じ v2.14.0)
+# Go(バージョンは CI と同じ v2.15.0)
 cd src/rdpick
-mise x golangci-lint@2.14.0 -- golangci-lint run ./...
+mise x golangci-lint@2.15.0 -- golangci-lint run ./...
 
 # シェルスクリプト(設定は .editorconfig。CI と同じ v3.14.1)
 git ls-files -z | xargs -0 mise x shfmt@3.14.1 -- shfmt -f | xargs mise x shfmt@3.14.1 -- shfmt --apply-ignore -d

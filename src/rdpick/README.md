@@ -32,7 +32,16 @@ mise の shim が go を解決できない場合（`config/mise/config.toml` で
 
 ```sh
 cd src/rdpick
-mise x golangci-lint@2.14.0 -- golangci-lint run ./...
+mise x golangci-lint@2.15.0 -- golangci-lint run ./...
+```
+
+## テスト
+
+CI はカバレッジ(statements)が 80% 未満だと失敗する(`.github/workflows/test.yml` の rdpick job)。同じ判定をローカルで再現する。
+
+```sh
+cd src/rdpick
+go test -coverprofile=/tmp/c.out ./... && go tool cover -func=/tmp/c.out | awk '/^total:/{gsub("%","",$3); print $3"%"; exit !($3>=80)}'
 ```
 
 ## 使い方
