@@ -10,11 +10,12 @@
       - libgdbm-compat-dev
       - liblzma-dev
       - xz-utils
-      - libncurses5-dev
-      - libreadline6-dev
+      - libncurses-dev
+      - libreadline-dev
       - lzma
-      - lzma-dev
       - tk-dev
       - uuid-dev
-      - python3.12-venv
+      - python3-venv
     state: present
+    update_cache: true
+    cache_valid_time: 3600
