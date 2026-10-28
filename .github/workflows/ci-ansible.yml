@@ -101,7 +101,7 @@ jobs:
 
   build-ubuntu:
     needs: set-tags-matrix
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     name: 'playbook ubuntu'
     strategy:
       fail-fast: false

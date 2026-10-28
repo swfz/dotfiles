@@ -26,7 +26,6 @@
       - sqlite3
       - libsqlite3-dev
       - inotify-tools
-      - translate-shell
       - silversearcher-ag
       - colorized-logs
       - crudini
@@ -39,4 +38,11 @@
       - wl-clipboard
     update_cache: true
     cache_valid_time: 3600
+    state: present
+
+# 26.04 (resolute) のアーカイブには translate-shell が無い
+- name: Install translate-shell
+  when: ansible_distribution_version is version('26.04', '<')
+  ansible.builtin.apt:
+    name: translate-shell
     state: present

@@ -9,8 +9,26 @@
 
 # apt repositroryには最新バージョンしか存在しない
 - name: Add wslu PPA Repository
+  when: ansible_distribution_version is version('26.04', '<')
   ansible.builtin.apt_repository:
     repo: ppa:wslutilities/wslu
+
+# 26.04 では ppa: 指定時の keyserver(hkp)からの鍵取得が失敗するため、
+# 鍵を HTTPS で取得して signed-by で指定する。
+# また PPA に resolute(26.04)向けの公開が無く、Ubuntu のアーカイブにも wslu が無い。
+# wslu はアーキテクチャ非依存のシェルスクリプトなので noble のスイートを使う
+- name: Add wslu PPA signing key
+  when: ansible_distribution_version is version('26.04', '>=')
+  ansible.builtin.get_url:
+    url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x254F460F2970E18123046570C1D0E7E6AB4095D6
+    dest: /etc/apt/keyrings/wslu.asc
+    mode: "0644"
+
+- name: Add wslu PPA Repository (signed-by)
+  when: ansible_distribution_version is version('26.04', '>=')
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/wslu.asc] https://ppa.launchpadcontent.net/wslutilities/wslu/ubuntu noble main"
+    filename: wslu
 
 - name: Install wslu
   ansible.builtin.apt:
