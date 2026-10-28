@@ -98,7 +98,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      # python3 は ubuntu-latest に入っているものを使う(標準ライブラリのみ)
+      # 手元と同じバージョンにするため、ルートの .python-version で固定する(標準ライブラリのみ)
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version-file: .python-version
       - name: run claude-session test
         run: bash tests/claude_session_test.sh
 
@@ -108,7 +111,10 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      # python3 は ubuntu-latest に入っているものを使う(標準ライブラリの unittest のみ)
+      # 手元と同じバージョンにするため、ルートの .python-version で固定する(標準ライブラリの unittest のみ)
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version-file: .python-version
       - name: unittest
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v
 
