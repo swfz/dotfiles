@@ -1,5 +1,5 @@
 [tools]
-node = '24.22.0'
+node = '24.22.1'
 ruby = '4.0.7'
 go = '1.27.3'
 gcloud = 'latest'
