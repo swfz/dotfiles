@@ -20,6 +20,7 @@ exclude-newer = "1 week"
 scripts_are_modules = true
 # 拡張子なしのスクリプトも対象にするため、ディレクトリではなくファイルを列挙する
 files = [
+    "bin/apm-skill-scan",
     "bin/claude-session-list",
     "bin/claude-session-preview",
     "claude/skills/artifact-review-comments/assets/inject.py",

@@ -33,6 +33,16 @@
         "-\\s+(?<depName>[\\w.-]+/[\\w.-]+)/[^#\\s]+#(?<currentDigest>[0-9a-f]{40})\\s+#\\s+(?<currentValue>v?\\d[\\w.-]*)"
       ],
       "datasourceTemplate": "github-tags"
+    },
+    {
+      "customType": "regex",
+      "description": "タグの無い apm の依存（owner/repo/path#sha # branch）はブランチの先頭 SHA を追従する。RE2 は先読みが使えないので、v+数字で始まるタグ注記は文字クラスで除外する",
+      "fileMatch": ["^config/apm/apm\\.yml$"],
+      "matchStrings": [
+        "-\\s+(?<depName>[\\w.-]+/[\\w.-]+)/[^#\\s]+#(?<currentDigest>[0-9a-f]{40})\\s+#\\s+(?<currentValue>(?:[a-uw-zA-Z]|v[^\\d\\s])[\\w./-]*)"
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{depName}}"
     }
   ]
 }

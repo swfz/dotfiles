@@ -12,6 +12,13 @@ if git diff --name-only ORIG_HEAD HEAD -- config/apm/apm.yml | grep -q . && comm
     cp "${HOME}/.apm/apm.lock.yaml" "${REPO_ROOT}/config/apm/apm.lock.yaml"
     git -C "${REPO_ROOT}" diff --quiet -- config/apm/apm.lock.yaml \
       || echo "[post-merge] config/apm/apm.lock.yaml が更新されました。差分を確認してコミットしてください"
+    # 配置された実体を検査する。マージは取り消せないので、未確認の指摘は警告に留める
+    if command -v skill-scanner >/dev/null; then
+      "${REPO_ROOT}/bin/apm-skill-scan" --source deployed \
+        || echo "[post-merge] 第三者スキルの検査で未確認の指摘か失敗があります。上の出力を確認してください" >&2
+    else
+      echo "[post-merge] skill-scanner が無いため第三者スキルの検査を飛ばしました(mise の pipx:cisco-ai-skill-scanner)" >&2
+    fi
   else
     echo "[post-merge] apm install -g に失敗しました。~/.apm で手動実行してください" >&2
   fi

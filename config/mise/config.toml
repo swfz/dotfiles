@@ -1,9 +1,9 @@
 [tools]
-node = '24.22.0'
+node = '24.22.1'
 ruby = '4.0.7'
-go = '1.27.2'
+go = '1.27.3'
 gcloud = 'latest'
-awscli = '2.38.1'
+awscli = '2.38.3'
 deno = 'latest'
 jq = '1.8.2'
 bat = '0.26.1'
@@ -33,12 +33,13 @@ apm = 'latest'
 "npm:@google/clasp" = 'latest'
 "npm:@github/copilot" = 'latest'
 "npm:@openai/codex" = 'latest'
+"npm:@google/gemini-cli" = 'latest'
 "pipx:mycli" = 'latest'
 "pipx:cheat" = 'latest'
 "pipx:mkdocs" = 'latest'
 "pipx:jc" = 'latest'
 "pipx:visidata" = 'latest'
-"pipx:cisco-ai-skill-scanner" = 'latest'
+"pipx:cisco-ai-skill-scanner" = '2.3.0'
 ollama = 'latest'
 rust = 'latest'
 ghq = "1.11.2"
@@ -54,7 +55,7 @@ ffmpeg = "latest"
 gh = "2.102.0"
 rclone = "latest"
 lefthook = "latest"
-golangci-lint = "2.14.0"
+golangci-lint = "2.15.0"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"

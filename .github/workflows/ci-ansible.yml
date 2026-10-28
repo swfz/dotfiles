@@ -12,13 +12,10 @@ on:
   repository_dispatch:
     types: [ansible]
   workflow_dispatch:
+  # 必須チェック ansible-ok を全 PR で報告するため paths では絞らず、changes ジョブで重いジョブをスキップする
   pull_request:
     branches:
       - master
-    paths:
-      - 'ansible/**'
-      - 'config/mise/**'
-      - '.github/workflows/ci-ansible.yml'
   schedule:
     - cron: '0 0 * * SAT'
 
@@ -30,7 +27,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    name: 'detect changes'
+    permissions:
+      pull-requests: read
+    outputs:
+      # PR 以外(push / schedule / dispatch)は常に全ジョブを走らせる
+      ansible: ${{ github.event_name != 'pull_request' || steps.filter.outputs.ansible == 'true' }}
+    steps:
+      - if: github.event_name == 'pull_request'
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        id: filter
+        with:
+          filters: |
+            ansible:
+              - 'ansible/**'
+              - 'config/mise/**'
+              - '.github/workflows/ci-ansible.yml'
+
   set-mise-tools:
+    needs: changes
+    if: needs.changes.outputs.ansible == 'true'
     runs-on: ubuntu-latest
     name: 'set mise tools list'
     outputs:
@@ -115,6 +133,8 @@ jobs:
           .venv/bin/ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars user=runner --tags "${{ matrix.row.tag }}"
 
   build-mac:
+    needs: changes
+    if: needs.changes.outputs.ansible == 'true'
     runs-on: macos-latest
     name: 'playbook mac'
     steps:
@@ -168,6 +188,8 @@ jobs:
   #         docker compose run -e CI=true codespace sh setup.sh
 
   lint:
+    needs: changes
+    if: needs.changes.outputs.ansible == 'true'
     runs-on: ubuntu-latest
     name: 'lint'
     steps:
@@ -200,10 +222,10 @@ jobs:
           uv run ansible-lint mac.yml ubuntu.yml codespace.yml
 
   action-timeline:
-    if: always()
+    if: always() && needs.changes.outputs.ansible == 'true'
     runs-on: ubuntu-latest
-    # needs: [lint, build-mac, build-ubuntu, build-codespace]
-    needs: [lint, build-mac, build-ubuntu]
+    # needs: [changes, lint, build-mac, build-ubuntu, build-codespace]
+    needs: [changes, lint, build-mac, build-ubuntu]
     permissions:
       actions: read
       contents: read
@@ -211,9 +233,9 @@ jobs:
       - uses: Kesin11/actions-timeline@57fc93f20c6da7fbc14063c6d24a2a5627c799ad # v3.2
 
   slack-notify:
-    if: always()
-    # needs: [lint, build-mac, build-ubuntu, build-codespace]
-    needs: [lint, build-mac, build-ubuntu]
+    if: always() && needs.changes.outputs.ansible == 'true'
+    # needs: [changes, lint, build-mac, build-ubuntu, build-codespace]
+    needs: [changes, lint, build-mac, build-ubuntu]
     name: post slack
     runs-on: ubuntu-latest
     permissions:
@@ -224,3 +246,17 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # 必須チェック用の固定名ジョブ。matrix でジョブ名が変わるため、結果をここに集約する
+  # failure / cancelled があれば失敗、success / skipped だけなら成功
+  ansible-ok:
+    if: always()
+    needs: [changes, set-mise-tools, set-tags-matrix, build-ubuntu, build-mac, lint]
+    name: 'ansible-ok'
+    runs-on: ubuntu-latest
+    steps:
+      - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: |
+          echo '::error::ansible の CI に failure / cancelled のジョブがあります'
+          exit 1
+      - run: echo 'ok'

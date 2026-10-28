@@ -30,6 +30,7 @@ bash tests/statusline_test.sh
 bash tests/claude_session_test.sh
 bash tests/tmux_layout_test.sh  # bin/tm, bin/tms。yq と jq が必要
 (cd src/rdpick && go vet ./... && go test ./...)
+python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
 ### lint / フォーマット
@@ -45,12 +46,20 @@ uv run ansible-lint mac.yml ubuntu.yml codespace.yml
 uv sync --locked
 uv run mypy
 
-# Go(バージョンは CI と同じ v2.14.0)
+# Go(バージョンは CI と同じ v2.15.0)
 cd src/rdpick
-mise x golangci-lint@2.14.0 -- golangci-lint run ./...
+mise x golangci-lint@2.15.0 -- golangci-lint run ./...
 
 # シェルスクリプト(設定は .editorconfig。CI と同じ v3.14.1)
 git ls-files -z | xargs -0 mise x shfmt@3.14.1 -- shfmt -f | xargs mise x shfmt@3.14.1 -- shfmt --apply-ignore -d
+```
+
+### 第三者スキルの検査
+
+```sh
+bin/apm-skill-scan                    # apm.yml の SHA で取得して検査(CI と同じ)
+bin/apm-skill-scan --source deployed  # ~/.claude/skills の実体を検査(post-merge と同じ)
+bin/apm-skill-scan --update-baseline  # 指摘を確認して誤検出と判断したら、ベースラインに記録する
 ```
 
 ### git hooks
@@ -87,5 +96,6 @@ ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)
 | workflow | トリガー | 検証内容 |
 |---|---|---|
 | `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`statusline`(tests/statusline_test.sh)、`claude-session`(tests/claude_session_test.sh)、`tmux-layout`(tests/tmux_layout_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint)、`python-typecheck`(mypy) |
+| `apm-skill-scan.yml` | `config/apm/**` `bin/apm-skill-scan` `config/mise/config.toml` 変更時の PR | apm で入れる第三者スキルを固定 SHA で取得して skill-scanner で検査し、`config/apm/skill-scan-baseline.json` に無い指摘があれば失敗 |
 | `ci-ansible.yml` | `ansible/**` `config/mise/**` 変更時の push / PR、週次 | yamllint / ansible-lint、ubuntu で tag ごと(deploy / init / tool / mise)と mac で playbook を実際に実行 |
 | `update-versions.yml` | 週次 | jo / zsh の新バージョンを検知して `ansible/versions_vars.yml` 更新の PR を作る |

@@ -1,0 +1,46 @@
+---
+name: apm-skill-scan
+
+# apm で入れる第三者スキルを、apm.yml で固定した SHA の中身で検査する。
+# ベースライン(config/apm/skill-scan-baseline.json)に無い指摘があれば失敗する。
+# Renovate が SHA を上げた PR はここで止まるので、指摘を確認してから
+# bin/apm-skill-scan --update-baseline の結果を同じ PR にコミットする
+# master への push では PR で通った内容と同じになるので流さない
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - config/apm/**
+      - bin/apm-skill-scan
+      - .github/workflows/apm-skill-scan.yml
+      # skill-scanner のバージョンが変わると検出結果も変わりうる
+      - config/mise/config.toml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    name: 'skill-scan'
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          enable-cache: false
+      - name: install skill-scanner
+        # バージョンは手元(mise)と揃える。推移的な依存は pyproject.toml の exclude-newer と同じく 1 週間前までに公開されたものに限る
+        run: |
+          version=$(sed -n "s/^\"pipx:cisco-ai-skill-scanner\" = '\(.*\)'$/\1/p" config/mise/config.toml)
+          [ -n "$version" ] || { echo "config/mise/config.toml から skill-scanner のバージョンを読めません" >&2; exit 1; }
+          uv tool install --exclude-newer "$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)" "cisco-ai-skill-scanner==${version}"
+          uv tool dir --bin >> "$GITHUB_PATH"
+      - name: scan
+        run: bin/apm-skill-scan
