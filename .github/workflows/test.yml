@@ -36,6 +36,16 @@ jobs:
       - name: run tmux layout test
         run: bash tests/tmux_layout_test.sh
 
+  gh-open-prs:
+    runs-on: ubuntu-latest
+    name: 'gh-open-prs'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # jq は ubuntu-latest に入っているものを使う。gh はテスト内のスタブを使う
+      - name: run gh-open-prs test
+        run: bash tests/gh_open_prs_test.sh
+
   shfmt:
     runs-on: ubuntu-latest
     name: 'shfmt'
