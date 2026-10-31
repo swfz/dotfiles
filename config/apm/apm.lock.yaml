@@ -1,5 +1,5 @@
 lockfile_version: '1'
-apm_version: 0.32.0
+apm_version: 0.31.0
 dependencies:
 - repo_url: cloudflare/security-audit-skill
   name: security-audit
@@ -95,6 +95,118 @@ dependencies:
     .claude/skills/security-audit/validate-findings.cjs: sha256:e85f232e36bfac0f866f244da50376692d6b45c690beadcb00608b0e6c8b5283
     .claude/skills/security-audit/validate-findings.test.cjs: sha256:b92001117a92c4161d43777a0ba2fa182a8a4d97f2304cc8c0cee5331497b73b
   content_hash: sha256:ac796659de231c3ab76f6ee012836072bdc82928fb019199925c9062800e16c1
+- repo_url: hirokita117/yaml-to-html-skill
+  name: generate-explainer-html
+  host: github.com
+  resolved_commit: 98667e80b260855af15d1cdc2c8e8395dbb3dd33
+  resolved_ref: 98667e80b260855af15d1cdc2c8e8395dbb3dd33
+  version: unknown
+  virtual_path: skills/generate-explainer-html
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/generate-explainer-html
+  - .agents/skills/generate-explainer-html/SKILL.md
+  - .agents/skills/generate-explainer-html/agents/openai.yaml
+  - .agents/skills/generate-explainer-html/references/examples.md
+  - .agents/skills/generate-explainer-html/references/html-generation-rules.md
+  - .agents/skills/generate-explainer-html/references/output-bundle-structure.md
+  - .agents/skills/generate-explainer-html/references/prompt-template-patterns.md
+  - .agents/skills/generate-explainer-html/references/quiz-view-rules.md
+  - .agents/skills/generate-explainer-html/references/sample-iframe.html
+  - .agents/skills/generate-explainer-html/references/sample-prompts.json
+  - .agents/skills/generate-explainer-html/references/sample-quiz-iframe.html
+  - .agents/skills/generate-explainer-html/scripts/build_html.py
+  - .agents/skills/generate-explainer-html/scripts/validate_html.py
+  - .claude/skills/generate-explainer-html
+  - .claude/skills/generate-explainer-html/SKILL.md
+  - .claude/skills/generate-explainer-html/agents/openai.yaml
+  - .claude/skills/generate-explainer-html/references/examples.md
+  - .claude/skills/generate-explainer-html/references/html-generation-rules.md
+  - .claude/skills/generate-explainer-html/references/output-bundle-structure.md
+  - .claude/skills/generate-explainer-html/references/prompt-template-patterns.md
+  - .claude/skills/generate-explainer-html/references/quiz-view-rules.md
+  - .claude/skills/generate-explainer-html/references/sample-iframe.html
+  - .claude/skills/generate-explainer-html/references/sample-prompts.json
+  - .claude/skills/generate-explainer-html/references/sample-quiz-iframe.html
+  - .claude/skills/generate-explainer-html/scripts/build_html.py
+  - .claude/skills/generate-explainer-html/scripts/validate_html.py
+  deployed_file_hashes:
+    .agents/skills/generate-explainer-html/SKILL.md: sha256:8f0b685cdd8f518487d5b874256488400757093f642af5e339f4a26dbc358468
+    .agents/skills/generate-explainer-html/agents/openai.yaml: sha256:209eae5350f9bfff8aef07a58b6b9f11551b744edd79bfa4099c1fe20b87efed
+    .agents/skills/generate-explainer-html/references/examples.md: sha256:62d008c50775846d73c8b09ed6e55774b5c9fc1781be0dd8646ef857f7fb7583
+    .agents/skills/generate-explainer-html/references/html-generation-rules.md: sha256:b33c709b9123bfe807297642179a90bb0153d2df1ddc71a887aaae9ec46449b3
+    .agents/skills/generate-explainer-html/references/output-bundle-structure.md: sha256:ac8051e6a2917ca08b2f3030dd62bd0124d6608ee95d96ea28df12003018912e
+    .agents/skills/generate-explainer-html/references/prompt-template-patterns.md: sha256:8a28be4bff0a3d85816fcde28ec95243298addd77e4ee0d8d790b9c53f55f460
+    .agents/skills/generate-explainer-html/references/quiz-view-rules.md: sha256:f40f2a5f5d388de6bb05de34fa98dfa0052d7b39666824299322859d9ea073bc
+    .agents/skills/generate-explainer-html/references/sample-iframe.html: sha256:838bfb09efd85caed1e513002ee4ccd54b9aa35b573ecf860731efa14f2418ce
+    .agents/skills/generate-explainer-html/references/sample-prompts.json: sha256:15787bcb96974f84270c0eb638428216f50af7c024cd089fe379971fdce340ea
+    .agents/skills/generate-explainer-html/references/sample-quiz-iframe.html: sha256:4aecf46bddf14cc7657d0677714a1a8206d491738e9b56080514beb92e1eead0
+    .agents/skills/generate-explainer-html/scripts/build_html.py: sha256:c3f69812c7f2c687fafcb1f703cbaff1db988ba9fb68ff01a62ba28024919ddb
+    .agents/skills/generate-explainer-html/scripts/validate_html.py: sha256:d8ef891cd8b13c6caf746ffc0e58644e66b6a675d90d66a42d9dc41ff5141be4
+    .claude/skills/generate-explainer-html/SKILL.md: sha256:8f0b685cdd8f518487d5b874256488400757093f642af5e339f4a26dbc358468
+    .claude/skills/generate-explainer-html/agents/openai.yaml: sha256:209eae5350f9bfff8aef07a58b6b9f11551b744edd79bfa4099c1fe20b87efed
+    .claude/skills/generate-explainer-html/references/examples.md: sha256:62d008c50775846d73c8b09ed6e55774b5c9fc1781be0dd8646ef857f7fb7583
+    .claude/skills/generate-explainer-html/references/html-generation-rules.md: sha256:b33c709b9123bfe807297642179a90bb0153d2df1ddc71a887aaae9ec46449b3
+    .claude/skills/generate-explainer-html/references/output-bundle-structure.md: sha256:ac8051e6a2917ca08b2f3030dd62bd0124d6608ee95d96ea28df12003018912e
+    .claude/skills/generate-explainer-html/references/prompt-template-patterns.md: sha256:8a28be4bff0a3d85816fcde28ec95243298addd77e4ee0d8d790b9c53f55f460
+    .claude/skills/generate-explainer-html/references/quiz-view-rules.md: sha256:f40f2a5f5d388de6bb05de34fa98dfa0052d7b39666824299322859d9ea073bc
+    .claude/skills/generate-explainer-html/references/sample-iframe.html: sha256:838bfb09efd85caed1e513002ee4ccd54b9aa35b573ecf860731efa14f2418ce
+    .claude/skills/generate-explainer-html/references/sample-prompts.json: sha256:15787bcb96974f84270c0eb638428216f50af7c024cd089fe379971fdce340ea
+    .claude/skills/generate-explainer-html/references/sample-quiz-iframe.html: sha256:4aecf46bddf14cc7657d0677714a1a8206d491738e9b56080514beb92e1eead0
+    .claude/skills/generate-explainer-html/scripts/build_html.py: sha256:c3f69812c7f2c687fafcb1f703cbaff1db988ba9fb68ff01a62ba28024919ddb
+    .claude/skills/generate-explainer-html/scripts/validate_html.py: sha256:d8ef891cd8b13c6caf746ffc0e58644e66b6a675d90d66a42d9dc41ff5141be4
+  content_hash: sha256:c02e76bb37c3da13bdbc6fe6ee2358361fd21ee48523f2c09cc3ddb0df5f0862
+- repo_url: hirokita117/yaml-to-html-skill
+  name: generate-explainer-yaml
+  host: github.com
+  resolved_commit: 98667e80b260855af15d1cdc2c8e8395dbb3dd33
+  resolved_ref: 98667e80b260855af15d1cdc2c8e8395dbb3dd33
+  version: unknown
+  virtual_path: skills/generate-explainer-yaml
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/generate-explainer-yaml
+  - .agents/skills/generate-explainer-yaml/SKILL.md
+  - .agents/skills/generate-explainer-yaml/agents/openai.yaml
+  - .agents/skills/generate-explainer-yaml/references/core-yaml-schema.md
+  - .agents/skills/generate-explainer-yaml/references/examples.md
+  - .agents/skills/generate-explainer-yaml/references/quiz-yaml-schema.md
+  - .agents/skills/generate-explainer-yaml/references/sample-core.yaml
+  - .agents/skills/generate-explainer-yaml/references/sample-quiz.yaml
+  - .agents/skills/generate-explainer-yaml/references/sample-view.yaml
+  - .agents/skills/generate-explainer-yaml/references/view-yaml-schema.md
+  - .claude/skills/generate-explainer-yaml
+  - .claude/skills/generate-explainer-yaml/SKILL.md
+  - .claude/skills/generate-explainer-yaml/agents/openai.yaml
+  - .claude/skills/generate-explainer-yaml/references/core-yaml-schema.md
+  - .claude/skills/generate-explainer-yaml/references/examples.md
+  - .claude/skills/generate-explainer-yaml/references/quiz-yaml-schema.md
+  - .claude/skills/generate-explainer-yaml/references/sample-core.yaml
+  - .claude/skills/generate-explainer-yaml/references/sample-quiz.yaml
+  - .claude/skills/generate-explainer-yaml/references/sample-view.yaml
+  - .claude/skills/generate-explainer-yaml/references/view-yaml-schema.md
+  deployed_file_hashes:
+    .agents/skills/generate-explainer-yaml/SKILL.md: sha256:20611fcb8feb3d5cb2168e1effb9b53e4d7f06e92bf8b003b9b745b33030c5ac
+    .agents/skills/generate-explainer-yaml/agents/openai.yaml: sha256:fe94c12cd9014729b5ffc2dd2fa760bd1d50f42c2ea84a936ba855332bf35595
+    .agents/skills/generate-explainer-yaml/references/core-yaml-schema.md: sha256:5151612ad983f8dbfa6d11bee0a0dca91ed5be76cc5df9fce85ce5a8c1765c3d
+    .agents/skills/generate-explainer-yaml/references/examples.md: sha256:406f92f7544e653e27de8b33df96b5bf2e394bf860bc3525508a328b4f44ee0b
+    .agents/skills/generate-explainer-yaml/references/quiz-yaml-schema.md: sha256:821ccbb87fd448d891d38cf905bb68bb9e96902f337056cc44ab492f49c83210
+    .agents/skills/generate-explainer-yaml/references/sample-core.yaml: sha256:52641a48e23fc8978b05a55f3c5180088781f1cdae4356e5bce088c23623b1c2
+    .agents/skills/generate-explainer-yaml/references/sample-quiz.yaml: sha256:9f011872a347eb39ca9126373854371476f0e16ed88c6f15a47a69316810ce4c
+    .agents/skills/generate-explainer-yaml/references/sample-view.yaml: sha256:98f13efb654e023de75cebc79181da8483980b9053ad95c5e08be9e93c4fd0ba
+    .agents/skills/generate-explainer-yaml/references/view-yaml-schema.md: sha256:ed06c612e936ae9c2a28002e8b0df91443f83644be3fe54a89597a0b73224111
+    .claude/skills/generate-explainer-yaml/SKILL.md: sha256:20611fcb8feb3d5cb2168e1effb9b53e4d7f06e92bf8b003b9b745b33030c5ac
+    .claude/skills/generate-explainer-yaml/agents/openai.yaml: sha256:fe94c12cd9014729b5ffc2dd2fa760bd1d50f42c2ea84a936ba855332bf35595
+    .claude/skills/generate-explainer-yaml/references/core-yaml-schema.md: sha256:5151612ad983f8dbfa6d11bee0a0dca91ed5be76cc5df9fce85ce5a8c1765c3d
+    .claude/skills/generate-explainer-yaml/references/examples.md: sha256:406f92f7544e653e27de8b33df96b5bf2e394bf860bc3525508a328b4f44ee0b
+    .claude/skills/generate-explainer-yaml/references/quiz-yaml-schema.md: sha256:821ccbb87fd448d891d38cf905bb68bb9e96902f337056cc44ab492f49c83210
+    .claude/skills/generate-explainer-yaml/references/sample-core.yaml: sha256:52641a48e23fc8978b05a55f3c5180088781f1cdae4356e5bce088c23623b1c2
+    .claude/skills/generate-explainer-yaml/references/sample-quiz.yaml: sha256:9f011872a347eb39ca9126373854371476f0e16ed88c6f15a47a69316810ce4c
+    .claude/skills/generate-explainer-yaml/references/sample-view.yaml: sha256:98f13efb654e023de75cebc79181da8483980b9053ad95c5e08be9e93c4fd0ba
+    .claude/skills/generate-explainer-yaml/references/view-yaml-schema.md: sha256:ed06c612e936ae9c2a28002e8b0df91443f83644be3fe54a89597a0b73224111
+  content_hash: sha256:47edd3d35a226ec434cb0a7da037bf82bc985b71e8ec828a769f27b33757e27e
 - repo_url: mattpocock/skills
   name: grilling
   host: github.com
@@ -117,6 +229,32 @@ dependencies:
     .claude/skills/grilling/SKILL.md: sha256:10ff989e7498b23b5acb49d5048f11dcd906757d2f79c5cdf8a00001381296f2
     .claude/skills/grilling/agents/openai.yaml: sha256:1411d7df7d99b7e621a1ff8283c8133cc2464be63d064e52d8ce169c6800ee9b
   content_hash: sha256:e98f109bca3d8889f673d9f32bf84086f85a70ff9e241f8a34a4560a07ab5a39
+- repo_url: mizchi/skills
+  name: empirical-prompt-tuning
+  host: github.com
+  resolved_commit: ab4eb2f7a92a13fb37c225ab427f2f492143ace1
+  resolved_ref: ab4eb2f7a92a13fb37c225ab427f2f492143ace1
+  version: unknown
+  virtual_path: empirical-prompt-tuning
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/empirical-prompt-tuning
+  - .agents/skills/empirical-prompt-tuning/README.md
+  - .agents/skills/empirical-prompt-tuning/SKILL-ja.md
+  - .agents/skills/empirical-prompt-tuning/SKILL.md
+  - .claude/skills/empirical-prompt-tuning
+  - .claude/skills/empirical-prompt-tuning/README.md
+  - .claude/skills/empirical-prompt-tuning/SKILL-ja.md
+  - .claude/skills/empirical-prompt-tuning/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/empirical-prompt-tuning/README.md: sha256:5fc8e7774a7290497c941e46baeb2712731dd92a7ea2ddff75fecc9173ccc347
+    .agents/skills/empirical-prompt-tuning/SKILL-ja.md: sha256:0a38d830802c2e08a7faca13928fedf6911e00b896946b4b03910d662de6dea5
+    .agents/skills/empirical-prompt-tuning/SKILL.md: sha256:252418e7ef022981d2dda2e3ec57fa1c786d30af68c50b7e062edf1d7361b0cb
+    .claude/skills/empirical-prompt-tuning/README.md: sha256:5fc8e7774a7290497c941e46baeb2712731dd92a7ea2ddff75fecc9173ccc347
+    .claude/skills/empirical-prompt-tuning/SKILL-ja.md: sha256:0a38d830802c2e08a7faca13928fedf6911e00b896946b4b03910d662de6dea5
+    .claude/skills/empirical-prompt-tuning/SKILL.md: sha256:252418e7ef022981d2dda2e3ec57fa1c786d30af68c50b7e062edf1d7361b0cb
+  content_hash: sha256:26042612e2d8b6ee1deebcdfc556da494640488e03471aaae74da587ae84fa2b
 - repo_url: nanaism/yomiyasu
   name: yomiyasu
   host: github.com
@@ -191,8 +329,8 @@ dependencies:
 - repo_url: vercel-labs/skills
   name: find-skills
   host: github.com
-  resolved_commit: 671e8c320810d36fed80fac5f1a2c1bf7e82d812
-  resolved_ref: 671e8c320810d36fed80fac5f1a2c1bf7e82d812
+  resolved_commit: a80e4c9d12d607631249d4d7d059f835d4b2f13a
+  resolved_ref: a80e4c9d12d607631249d4d7d059f835d4b2f13a
   version: unknown
   virtual_path: skills/find-skills
   is_virtual: true
@@ -207,6 +345,42 @@ dependencies:
     .claude/skills/find-skills/SKILL.md: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
   content_hash: sha256:913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396
 deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning/README.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:5fc8e7774a7290497c941e46baeb2712731dd92a7ea2ddff75fecc9173ccc347
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning/SKILL-ja.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:0a38d830802c2e08a7faca13928fedf6911e00b896946b4b03910d662de6dea5
+- kind: project-relative
+  target: claude
+  value: .claude/skills/empirical-prompt-tuning/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:252418e7ef022981d2dda2e3ec57fa1c786d30af68c50b7e062edf1d7361b0cb
 - kind: project-relative
   target: claude
   value: .claude/skills/find-skills
@@ -225,6 +399,213 @@ deployments:
   - vercel-labs/skills/skills/find-skills
   active_owner: vercel-labs/skills/skills/find-skills
   content_hash: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:8f0b685cdd8f518487d5b874256488400757093f642af5e339f4a26dbc358468
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/agents/openai.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:209eae5350f9bfff8aef07a58b6b9f11551b744edd79bfa4099c1fe20b87efed
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/examples.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:62d008c50775846d73c8b09ed6e55774b5c9fc1781be0dd8646ef857f7fb7583
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/html-generation-rules.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:b33c709b9123bfe807297642179a90bb0153d2df1ddc71a887aaae9ec46449b3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/output-bundle-structure.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:ac8051e6a2917ca08b2f3030dd62bd0124d6608ee95d96ea28df12003018912e
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/prompt-template-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:8a28be4bff0a3d85816fcde28ec95243298addd77e4ee0d8d790b9c53f55f460
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/quiz-view-rules.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:f40f2a5f5d388de6bb05de34fa98dfa0052d7b39666824299322859d9ea073bc
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/sample-iframe.html
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:838bfb09efd85caed1e513002ee4ccd54b9aa35b573ecf860731efa14f2418ce
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/sample-prompts.json
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:15787bcb96974f84270c0eb638428216f50af7c024cd089fe379971fdce340ea
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/references/sample-quiz-iframe.html
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:4aecf46bddf14cc7657d0677714a1a8206d491738e9b56080514beb92e1eead0
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/scripts/build_html.py
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:c3f69812c7f2c687fafcb1f703cbaff1db988ba9fb68ff01a62ba28024919ddb
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-html/scripts/validate_html.py
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:d8ef891cd8b13c6caf746ffc0e58644e66b6a675d90d66a42d9dc41ff5141be4
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:20611fcb8feb3d5cb2168e1effb9b53e4d7f06e92bf8b003b9b745b33030c5ac
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/agents/openai.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:fe94c12cd9014729b5ffc2dd2fa760bd1d50f42c2ea84a936ba855332bf35595
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/core-yaml-schema.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:5151612ad983f8dbfa6d11bee0a0dca91ed5be76cc5df9fce85ce5a8c1765c3d
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/examples.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:406f92f7544e653e27de8b33df96b5bf2e394bf860bc3525508a328b4f44ee0b
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/quiz-yaml-schema.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:821ccbb87fd448d891d38cf905bb68bb9e96902f337056cc44ab492f49c83210
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/sample-core.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:52641a48e23fc8978b05a55f3c5180088781f1cdae4356e5bce088c23623b1c2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/sample-quiz.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:9f011872a347eb39ca9126373854371476f0e16ed88c6f15a47a69316810ce4c
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/sample-view.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:98f13efb654e023de75cebc79181da8483980b9053ad95c5e08be9e93c4fd0ba
+- kind: project-relative
+  target: claude
+  value: .claude/skills/generate-explainer-yaml/references/view-yaml-schema.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:ed06c612e936ae9c2a28002e8b0df91443f83644be3fe54a89597a0b73224111
 - kind: project-relative
   target: claude
   value: .claude/skills/grilling
@@ -578,6 +959,42 @@ deployments:
   content_hash: sha256:299a61970e8c30092f947e2ace95e80ff8a513fac87824363f89ba77e6cac468
 - kind: project-relative
   target: codex
+  value: .agents/skills/empirical-prompt-tuning
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/empirical-prompt-tuning/README.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:5fc8e7774a7290497c941e46baeb2712731dd92a7ea2ddff75fecc9173ccc347
+- kind: project-relative
+  target: codex
+  value: .agents/skills/empirical-prompt-tuning/SKILL-ja.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:0a38d830802c2e08a7faca13928fedf6911e00b896946b4b03910d662de6dea5
+- kind: project-relative
+  target: codex
+  value: .agents/skills/empirical-prompt-tuning/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - mizchi/skills/empirical-prompt-tuning
+  active_owner: mizchi/skills/empirical-prompt-tuning
+  content_hash: sha256:252418e7ef022981d2dda2e3ec57fa1c786d30af68c50b7e062edf1d7361b0cb
+- kind: project-relative
+  target: codex
   value: .agents/skills/find-skills
   runtime: null
   scope: project
@@ -594,6 +1011,213 @@ deployments:
   - vercel-labs/skills/skills/find-skills
   active_owner: vercel-labs/skills/skills/find-skills
   content_hash: sha256:c00eeea0e13e74fe4a9d84ba0a8542205a1b736d65f13134fe1a6647eb14976f
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:8f0b685cdd8f518487d5b874256488400757093f642af5e339f4a26dbc358468
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/agents/openai.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:209eae5350f9bfff8aef07a58b6b9f11551b744edd79bfa4099c1fe20b87efed
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/examples.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:62d008c50775846d73c8b09ed6e55774b5c9fc1781be0dd8646ef857f7fb7583
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/html-generation-rules.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:b33c709b9123bfe807297642179a90bb0153d2df1ddc71a887aaae9ec46449b3
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/output-bundle-structure.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:ac8051e6a2917ca08b2f3030dd62bd0124d6608ee95d96ea28df12003018912e
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/prompt-template-patterns.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:8a28be4bff0a3d85816fcde28ec95243298addd77e4ee0d8d790b9c53f55f460
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/quiz-view-rules.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:f40f2a5f5d388de6bb05de34fa98dfa0052d7b39666824299322859d9ea073bc
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/sample-iframe.html
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:838bfb09efd85caed1e513002ee4ccd54b9aa35b573ecf860731efa14f2418ce
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/sample-prompts.json
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:15787bcb96974f84270c0eb638428216f50af7c024cd089fe379971fdce340ea
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/references/sample-quiz-iframe.html
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:4aecf46bddf14cc7657d0677714a1a8206d491738e9b56080514beb92e1eead0
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/scripts/build_html.py
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:c3f69812c7f2c687fafcb1f703cbaff1db988ba9fb68ff01a62ba28024919ddb
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-html/scripts/validate_html.py
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-html
+  content_hash: sha256:d8ef891cd8b13c6caf746ffc0e58644e66b6a675d90d66a42d9dc41ff5141be4
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:20611fcb8feb3d5cb2168e1effb9b53e4d7f06e92bf8b003b9b745b33030c5ac
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/agents/openai.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:fe94c12cd9014729b5ffc2dd2fa760bd1d50f42c2ea84a936ba855332bf35595
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/core-yaml-schema.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:5151612ad983f8dbfa6d11bee0a0dca91ed5be76cc5df9fce85ce5a8c1765c3d
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/examples.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:406f92f7544e653e27de8b33df96b5bf2e394bf860bc3525508a328b4f44ee0b
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/quiz-yaml-schema.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:821ccbb87fd448d891d38cf905bb68bb9e96902f337056cc44ab492f49c83210
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/sample-core.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:52641a48e23fc8978b05a55f3c5180088781f1cdae4356e5bce088c23623b1c2
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/sample-quiz.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:9f011872a347eb39ca9126373854371476f0e16ed88c6f15a47a69316810ce4c
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/sample-view.yaml
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:98f13efb654e023de75cebc79181da8483980b9053ad95c5e08be9e93c4fd0ba
+- kind: project-relative
+  target: codex
+  value: .agents/skills/generate-explainer-yaml/references/view-yaml-schema.md
+  runtime: null
+  scope: project
+  owners:
+  - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  active_owner: hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml
+  content_hash: sha256:ed06c612e936ae9c2a28002e8b0df91443f83644be3fe54a89597a0b73224111
 - kind: project-relative
   target: codex
   value: .agents/skills/grilling

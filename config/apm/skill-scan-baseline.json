@@ -127,7 +127,34 @@
       "title": "Skill does not specify a license"
     }
   ],
+  "hirokita117/yaml-to-html-skill/skills/generate-explainer-html": [
+    {
+      "rule_id": "MANIFEST_MISSING_LICENSE",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Skill does not specify a license"
+    }
+  ],
+  "hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml": [
+    {
+      "rule_id": "MANIFEST_MISSING_LICENSE",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Skill does not specify a license"
+    }
+  ],
   "mattpocock/skills/skills/productivity/grilling": [
+    {
+      "rule_id": "MANIFEST_MISSING_LICENSE",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Skill does not specify a license"
+    }
+  ],
+  "mizchi/skills/empirical-prompt-tuning": [
     {
       "rule_id": "MANIFEST_MISSING_LICENSE",
       "file": "SKILL.md",

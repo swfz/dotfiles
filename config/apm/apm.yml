@@ -15,6 +15,9 @@ dependencies:
     - vercel-labs/skills/skills/find-skills#a80e4c9d12d607631249d4d7d059f835d4b2f13a # v1.7.4
     - nanaism/yomiyasu/skills/yomiyasu#602a3690dadd5d620bb21524353b8d192914eabb # v1.1.2
     - cloudflare/security-audit-skill/skills/security-audit#c1c8a8c1471069fb0e188eeaff69b8e8db6564a8 # main
+    - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml#98667e80b260855af15d1cdc2c8e8395dbb3dd33 # v0.3.0
+    - hirokita117/yaml-to-html-skill/skills/generate-explainer-html#98667e80b260855af15d1cdc2c8e8395dbb3dd33 # v0.3.0
+    - mizchi/skills/empirical-prompt-tuning#ab4eb2f7a92a13fb37c225ab427f2f492143ace1 # main
   mcp: []
 includes: auto
 scripts: {}
