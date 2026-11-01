@@ -2,7 +2,7 @@
 name: apm-skill-scan
 
 # apm で入れる第三者スキルを、apm.yml で固定した SHA の中身で検査する。
-# ベースライン(config/apm/skill-scan-baseline.json)に無い指摘があれば失敗する。
+# ベースライン(config/apm/skill-scan-baseline.json)に無い CRITICAL / HIGH の指摘があれば失敗する。
 # Renovate が SHA を上げた PR はここで止まるので、指摘を確認してから
 # bin/apm-skill-scan --update-baseline の結果を同じ PR にコミットする
 # master への push では PR で通った内容と同じになるので流さない
