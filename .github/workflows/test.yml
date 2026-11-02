@@ -36,6 +36,16 @@ jobs:
       - name: run tmux layout test
         run: bash tests/tmux_layout_test.sh
 
+  notify:
+    runs-on: ubuntu-latest
+    name: 'notify'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # uname / osascript / powershell.exe はテスト内のスタブを使い、実際の通知は出さない
+      - name: run notify test
+        run: bash tests/notify_test.sh
+
   shfmt:
     runs-on: ubuntu-latest
     name: 'shfmt'
