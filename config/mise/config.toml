@@ -1,14 +1,14 @@
 [tools]
 node = '24.22.1'
-ruby = '4.0.7'
+ruby = '4.0.9'
 go = '1.27.3'
 gcloud = 'latest'
-awscli = '2.38.3'
+awscli = '2.38.5'
 deno = 'latest'
 jq = '1.8.2'
 bat = '0.26.1'
 delta = '0.20.1'
-terraform = '1.16.6'
+terraform = '1.17.0'
 # 3.12.12はgcloudのCLOUDSDK_PYTHON用(gcloudは新しいpythonをサポートしないため別で保持する)
 python = ['3.14.8', '3.12.12']
 pipx = 'latest'
@@ -39,7 +39,7 @@ apm = 'latest'
 "pipx:mkdocs" = 'latest'
 "pipx:jc" = 'latest'
 "pipx:visidata" = 'latest'
-"pipx:cisco-ai-skill-scanner" = '2.3.0'
+"pipx:cisco-ai-skill-scanner" = '2.3.1'
 ollama = 'latest'
 rust = 'latest'
 ghq = "1.11.2"
@@ -52,7 +52,7 @@ sqlite = 'latest'
 "github:k1LoW/mo" = "latest"
 "github:sxyazi/yazi" = "latest"
 ffmpeg = "latest"
-gh = "2.102.0"
+gh = "2.103.0"
 rclone = "latest"
 lefthook = "latest"
 golangci-lint = "2.15.0"

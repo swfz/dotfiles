@@ -134,6 +134,36 @@ class CompareTest(unittest.TestCase):
         self.assertEqual(stale, {"dep": {gone}})
 
 
+class BlockingTest(unittest.TestCase):
+    def test_critical_and_high_block(self):
+        for severity in ("CRITICAL", "HIGH"):
+            with self.subTest(severity=severity):
+                f = finding(severity=severity)
+                self.assertEqual(apm_skill_scan.blocking({"dep": [f]}), {"dep": [f]})
+
+    def test_medium_and_below_do_not_block(self):
+        for severity in ("MEDIUM", "LOW", "INFO"):
+            with self.subTest(severity=severity):
+                self.assertEqual(apm_skill_scan.blocking({"dep": [finding(severity=severity)]}), {})
+
+    def test_unreadable_severity_blocks(self):
+        # 書式が変わって重大度を読めなくなったときに、黙って通さない
+        for severity in ("", "critical", "UNKNOWN"):
+            with self.subTest(severity=severity):
+                f = finding(severity=severity)
+                self.assertEqual(apm_skill_scan.blocking({"dep": [f]}), {"dep": [f]})
+
+    def test_keeps_only_blocking_findings(self):
+        high, low = finding(snippet="high", severity="HIGH"), finding(snippet="low", severity="LOW")
+        self.assertEqual(apm_skill_scan.blocking({"a": [low, high], "b": [low]}), {"a": [high]})
+
+    def test_known_critical_does_not_block(self):
+        # ベースラインに記録済みの指摘は重大度に関係なく通す
+        f = finding(severity="CRITICAL")
+        new, _ = apm_skill_scan.compare({"dep": [f]}, {"dep": Counter([f.key])})
+        self.assertEqual(apm_skill_scan.blocking(new), {})
+
+
 class BaselineRoundTripTest(unittest.TestCase):
     def test_dump_then_load(self):
         import json
