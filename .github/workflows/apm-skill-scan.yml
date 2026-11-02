@@ -2,7 +2,7 @@
 name: apm-skill-scan
 
 # apm で入れる第三者スキルを、apm.yml で固定した SHA の中身で検査する。
-# ベースライン(config/apm/skill-scan-baseline.json)に無い指摘があれば失敗する。
+# ベースライン(config/apm/skill-scan-baseline.json)に無い CRITICAL / HIGH の指摘があれば失敗する。
 # Renovate が SHA を上げた PR はここで止まるので、指摘を確認してから
 # bin/apm-skill-scan --update-baseline の結果を同じ PR にコミットする
 # master への push では PR で通った内容と同じになるので流さない
@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install uv
-        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
         with:
           enable-cache: false
       - name: install skill-scanner

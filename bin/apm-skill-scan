@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""apm で入れた第三者スキルを cisco skill-scanner で検査し、ベースラインに無い指摘があれば失敗する
+"""apm で入れた第三者スキルを cisco skill-scanner で検査し、ベースラインに無い CRITICAL / HIGH の指摘があれば失敗する
 
 対象は config/apm/apm.yml の dependencies.apm に並ぶ依存。
 誤検出と確認済みの指摘は config/apm/skill-scan-baseline.json に依存ごとに記録しておく。
 照合は (rule_id, file, snippet) ごとの件数で行い、行番号は見ない(上流の更新で行がずれても既知の指摘として扱うため)。
 snippet を持たない指摘も、同じキーの件数が増えれば未確認として扱う。
+未確認でも MEDIUM 以下は表示だけで失敗にしない(skill-scanner の is_safe と同じ基準)。
 
 Usage: apm-skill-scan [--source fetch|deployed] [--update-baseline]
   --source fetch     各依存を apm.yml の SHA で git fetch して検査する(既定。CI 用)
   --source deployed  ~/.claude/skills に配置済みの実体を検査する(post-merge 用)
   --update-baseline  今回の指摘でベースラインを書き換える。指摘の中身を確認してから使う
 
-終了コード: 0 = 未確認の指摘なし / 1 = 未確認の指摘あり / 2 = 実行エラー
+終了コード: 0 = 未確認の CRITICAL / HIGH なし / 1 = 未確認の CRITICAL / HIGH あり / 2 = 実行エラー
 """
 import argparse
 import json
@@ -28,6 +29,8 @@ from typing import NamedTuple
 REPO_ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = REPO_ROOT / "config/apm/apm.yml"
 BASELINE = REPO_ROOT / "config/apm/skill-scan-baseline.json"
+# 未確認でも失敗にしない重大度。書式が変わって読めない値は失敗側に倒すため、許す側を列挙する
+NON_BLOCKING_SEVERITIES = {"MEDIUM", "LOW", "INFO"}
 
 # - owner/repo[/sub/path]#<40桁SHA> # vX.Y.Z
 DEP_RE = re.compile(r"^-\s+(?P<repo>[\w.-]+/[\w.-]+)(?:/(?P<path>[^#\s]+))?(?:#(?P<ref>\S+))?")
@@ -202,6 +205,12 @@ def compare(results: dict[str, list[Finding]], baseline: dict[str, Counter[tuple
     return new, stale
 
 
+# 未確認の指摘のうち、失敗にするものだけを返す
+def blocking(new: dict[str, list[Finding]]) -> dict[str, list[Finding]]:
+    result = {name: [f for f in findings if f.severity not in NON_BLOCKING_SEVERITIES] for name, findings in new.items()}
+    return {name: findings for name, findings in result.items() if findings}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="apm で入れた第三者スキルを skill-scanner で検査する")
     parser.add_argument("--source", choices=["fetch", "deployed"], default="fetch")
@@ -228,17 +237,18 @@ def main() -> int:
         return 0
 
     new, stale = compare(results, load_baseline(BASELINE))
+    blocked = blocking(new)
     for name, findings in results.items():
-        mark = "new" if name in new else "ok"
+        mark = "block" if name in blocked else "new" if name in new else "ok"
         print(f"[{mark}] {name}: 指摘 {len(findings)} 件 / 未確認 {len(new.get(name, []))} 件")
         for f in new.get(name, []):
             print(f"    {f.severity} {f.rule_id} {f.file}: {f.snippet or f.title}")
     for name, keys in stale.items():
         for rule_id, file, _ in sorted(keys):
             print(f"[info] {name}: ベースラインの {rule_id} ({file}) はもう検出されません")
-    if new:
+    if blocked:
         print(
-            "[!] ベースラインに無い指摘があります。中身を確認し、問題なければ"
+            "[!] ベースラインに無い CRITICAL / HIGH の指摘があります。中身を確認し、問題なければ"
             " bin/apm-skill-scan --update-baseline で記録してください",
             file=sys.stderr,
         )
