@@ -38,8 +38,11 @@ bin/ccsync.sh add skills/<name>
 # dotfiles管理下のClaude/Codex assetをsymlink作成
 bin/ccsync.sh link
 
-# 管理中のskills一覧と状態を表示
+# ~/.claude の全assetを出どころ(dotfiles / apm / external / unmanaged)とリンク状態つきで表示
 bin/ccsync.sh list
+
+# どこにも管理されていないassetだけ表示
+bin/ccsync.sh unmanaged
 
 # dotfiles管理から外し元の場所に復元
 bin/ccsync.sh remove skills/<name>

@@ -7,6 +7,7 @@ DOTFILES_DIR="${CCSYNC_DOTFILES_DIR:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
 CLAUDE_DIR="${CCSYNC_CLAUDE_DIR:-${HOME}/.claude}"
 AGENTS_DIR="${CCSYNC_AGENTS_DIR:-${HOME}/.agents}"
 CODEX_DIR="${CCSYNC_CODEX_DIR:-${HOME}/.codex}"
+APM_LOCK="${CCSYNC_APM_LOCK:-${HOME}/.apm/apm.lock.yaml}"
 ASSET_TYPES=(skills rules agents commands)
 
 usage() {
@@ -16,9 +17,11 @@ Usage: $(basename "$0") <command> [args]
 Commands:
   add <type>/<name>      Add a Claude asset to dotfiles management
   link                   Create symlinks for all managed Claude/Codex assets
-  list                   List managed assets and their status
+  list                   List all assets with their source
+                         (dotfiles / apm / external / unmanaged) and link status
   remove <type>/<name>   Remove an asset from dotfiles management
-  unmanaged              List assets in ~/.claude not managed by dotfiles
+  unmanaged              List assets in ~/.claude not managed anywhere
+                         (excluding dotfiles, apm and external symlinks)
 
 Examples:
   $(basename "$0") add skills/commit
@@ -195,131 +198,130 @@ cmd_link() {
   echo "Done: ${linked} linked, ${skipped} skipped, ${warned} warnings"
 }
 
-cmd_list() {
-  local dotfiles_claude="${DOTFILES_DIR}/claude"
-  local found=0
+# symlink の状態を返す: linked / conflict (-> X) / not linked (exists) / not linked
+link_status() {
+  local target="$1" src="$2"
+  if [[ -L "$target" ]]; then
+    local current_link
+    current_link="$(readlink "$target")"
+    if [[ "$current_link" == "$src" ]]; then
+      echo "linked"
+    else
+      echo "conflict (-> ${current_link})"
+    fi
+  elif [[ -e "$target" ]]; then
+    echo "not linked (exists)"
+  else
+    echo "not linked"
+  fi
+}
 
-  for type_dir in "${dotfiles_claude}"/*/; do
+# apm のロックファイルから ~/.claude 直下に配布された資産 (<type>/<name>) を列挙する
+apm_deployed_assets() {
+  [[ -f "$APM_LOCK" ]] || return 0
+  sed -nE 's#^[[:space:]]*-[[:space:]]+\.claude/([^/[:space:]]+/[^/[:space:]]+)[[:space:]]*$#\1#p' "$APM_LOCK"
+}
+
+# ~/.claude と dotfiles の資産を出どころ付きで列挙する
+# 出力: <label>\t<source>\t<detail>  (source: dotfiles / apm / external / unmanaged)
+collect_assets() {
+  local apm_assets
+  apm_assets="$(apm_deployed_assets)"
+
+  local types=("${ASSET_TYPES[@]}")
+  local type_dir
+  for type_dir in "${DOTFILES_DIR}/claude"/*/; do
+    [[ -d "$type_dir" ]] || continue
+    local t
+    t="$(basename "$type_dir")"
+    [[ " ${types[*]} " == *" ${t} "* ]] || types+=("$t")
+  done
+
+  local type
+  for type in "${types[@]}"; do
+    local names
+    names="$(
+      for path in "${CLAUDE_DIR}/${type}"/* "${DOTFILES_DIR}/claude/${type}"/*; do
+        if [[ -e "$path" || -L "$path" ]]; then basename "$path"; fi
+      done | sort -u
+    )"
+    [[ -n "$names" ]] || continue
+
+    local name
+    while IFS= read -r name; do
+      local src="${DOTFILES_DIR}/claude/${type}/${name}"
+      local target="${CLAUDE_DIR}/${type}/${name}"
+      local source detail
+
+      if [[ -e "$src" ]]; then
+        source="dotfiles"
+        detail="[$(link_status "$target" "$src")"
+        if [[ "$type" == "skills" ]]; then
+          detail+=", codex: $(link_status "${AGENTS_DIR}/skills/${name}" "$src")"
+        fi
+        detail+="]"
+      elif [[ -L "$target" ]]; then
+        source="external"
+        detail="-> $(readlink "$target")"
+        detail="${detail/#-> ${HOME}/-> ~}"
+      elif grep -qxF "${type}/${name}" <<<"$apm_assets"; then
+        source="apm"
+        detail=""
+      else
+        source="unmanaged"
+        detail=""
+      fi
+
+      printf '%s\t%s\t%s\n' "${type}/${name}" "$source" "$detail"
+    done <<<"$names"
+  done
+
+  local dotfiles_codex="${DOTFILES_DIR}/codex"
+  [[ -d "$dotfiles_codex" ]] || return 0
+  for type_dir in "${dotfiles_codex}"/*/; do
     [[ -d "$type_dir" ]] || continue
     local type
     type="$(basename "$type_dir")"
-
+    local asset_path
     for asset_path in "${type_dir}"*; do
       [[ -e "$asset_path" ]] || continue
       local name
       name="$(basename "$asset_path")"
-      local target="${CLAUDE_DIR}/${type}/${name}"
-      local src="${dotfiles_claude}/${type}/${name}"
-      local status
-
-      if [[ -L "$target" ]]; then
-        local current_link
-        current_link="$(readlink "$target")"
-        if [[ "$current_link" == "$src" ]]; then
-          status="linked"
-        else
-          status="conflict (-> ${current_link})"
-        fi
-      elif [[ -e "$target" ]]; then
-        status="not linked (exists)"
-      else
-        status="not linked"
-      fi
-
-      printf "  %-30s %s\n" "${type}/${name}" "[${status}]"
-
-      if [[ "$type" == "skills" ]]; then
-        local codex_target="${AGENTS_DIR}/skills/${name}"
-        local codex_status
-        if [[ -L "$codex_target" ]]; then
-          local codex_link
-          codex_link="$(readlink "$codex_target")"
-          if [[ "$codex_link" == "$src" ]]; then
-            codex_status="linked"
-          else
-            codex_status="conflict (-> ${codex_link})"
-          fi
-        elif [[ -e "$codex_target" ]]; then
-          codex_status="not linked (exists)"
-        else
-          codex_status="not linked"
-        fi
-        printf "  %-30s %s\n" "Codex skill ${name}" "[${codex_status}]"
-      fi
-      found=$((found + 1))
+      printf '%s\t%s\t%s\n' "Codex ${type}/${name}" "dotfiles" \
+        "[$(link_status "${CODEX_DIR}/${type}/${name}" "${dotfiles_codex}/${type}/${name}")]"
     done
   done
+}
 
-  local dotfiles_codex="${DOTFILES_DIR}/codex"
-  if [[ -d "$dotfiles_codex" ]]; then
-    for type_dir in "${dotfiles_codex}"/*/; do
-      [[ -d "$type_dir" ]] || continue
-      local type
-      type="$(basename "$type_dir")"
-      for asset_path in "${type_dir}"*; do
-        [[ -e "$asset_path" ]] || continue
-        local name
-        name="$(basename "$asset_path")"
-        local src="${dotfiles_codex}/${type}/${name}"
-        local target="${CODEX_DIR}/${type}/${name}"
-        local status
-        if [[ -L "$target" ]]; then
-          local current_link
-          current_link="$(readlink "$target")"
-          if [[ "$current_link" == "$src" ]]; then
-            status="linked"
-          else
-            status="conflict (-> ${current_link})"
-          fi
-        elif [[ -e "$target" ]]; then
-          status="not linked (exists)"
-        else
-          status="not linked"
-        fi
-        printf "  %-30s %s\n" "Codex ${type}/${name}" "[${status}]"
-        found=$((found + 1))
-      done
-    done
-  fi
+print_assets() {
+  local label source detail
+  while IFS=$'\t' read -r label source detail; do
+    if [[ -n "$detail" ]]; then
+      printf "  %-34s %-10s %s\n" "$label" "$source" "$detail"
+    else
+      printf "  %-34s %s\n" "$label" "$source"
+    fi
+  done
+}
 
-  if [[ "$found" -eq 0 ]]; then
-    echo "No managed assets found."
+cmd_list() {
+  local assets
+  assets="$(collect_assets)"
+  if [[ -z "$assets" ]]; then
+    echo "No assets found."
+    return
   fi
+  print_assets <<<"$assets"
 }
 
 cmd_unmanaged() {
-  local found=0
-
-  for type in "${ASSET_TYPES[@]}"; do
-    local claude_type_dir="${CLAUDE_DIR}/${type}"
-    [[ -d "$claude_type_dir" ]] || continue
-
-    for asset_path in "${claude_type_dir}"/*; do
-      [[ -e "$asset_path" || -L "$asset_path" ]] || continue
-      local name
-      name="$(basename "$asset_path")"
-      local expected_src="${DOTFILES_DIR}/claude/${type}/${name}"
-      local status
-
-      if [[ -L "$asset_path" ]]; then
-        local link_target
-        link_target="$(readlink "$asset_path")"
-        if [[ "$link_target" == "$expected_src" ]]; then
-          continue
-        fi
-        status="external -> ${link_target}"
-      else
-        status="unmanaged"
-      fi
-
-      printf "  %-30s %s\n" "${type}/${name}" "[${status}]"
-      found=$((found + 1))
-    done
-  done
-
-  if [[ "$found" -eq 0 ]]; then
+  local assets
+  assets="$(collect_assets | awk -F '\t' '$2 == "unmanaged"')"
+  if [[ -z "$assets" ]]; then
     echo "All assets are managed."
+    return
   fi
+  print_assets <<<"$assets"
 }
 
 cmd_remove() {
