@@ -26,6 +26,16 @@ jobs:
       - name: run ccsync test
         run: bash tests/ccsync_test.sh
 
+  check-version:
+    runs-on: ubuntu-latest
+    name: 'check-version'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # mikefarah 版 yq は ubuntu-latest に入っているものを使う
+      - name: run check_version test
+        run: bash tests/check_version_test.sh
+
   tmux-layout:
     runs-on: ubuntu-latest
     name: 'tmux-layout'
