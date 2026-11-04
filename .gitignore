@@ -3,3 +3,7 @@ bin/rdpick
 
 # python3 -m unittest が生成するバイトコード
 __pycache__/
+
+# マシン固有の mise 設定(仕事用ツールなど)。ディレクトリは symlink 先として残す
+config/mise/conf.d/*
+!config/mise/conf.d/.gitkeep
