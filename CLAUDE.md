@@ -26,6 +26,7 @@ swfz の dotfiles。シェル・エディタ・ターミナルの設定と、そ
 
 ```sh
 bash tests/ccsync_test.sh
+bash tests/ansi_hexlist_test.sh
 bash tests/statusline_test.sh
 bash tests/claude_session_test.sh
 bash tests/tmux_layout_test.sh  # bin/tm, bin/tms。yq と jq が必要
