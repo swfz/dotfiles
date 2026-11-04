@@ -35,6 +35,8 @@ bash tests/gh_open_prs_test.sh  # bin/gh-open-prs。jq が必要(gh はスタブ
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
+Python のバージョンはルートの `.python-version`(3.12)で固定している。CI の `claude-session` / `python-unittest` は setup-python で、`python-typecheck` は uv がこのファイルを読んで同じバージョンを使う。`ansible/.python-version` は ansible 用で別管理。
+
 ### lint / フォーマット
 
 ```sh
