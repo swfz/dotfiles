@@ -83,6 +83,12 @@
     dest: ~/.config/mise/config.toml
     state: link
 
+- name: Symlink mise conf.d
+  ansible.builtin.file:
+    src: "{{ dotfiles.dest }}/config/mise/conf.d"
+    dest: ~/.config/mise/conf.d
+    state: link
+
 # apm(Agent Package Manager)のグローバルマニフェストとロック
 # NOTE: 既存マシンでは~/.apm配下に実ファイルがあるためforceでsymlinkに置き換える
 - name: Symlink apm config
