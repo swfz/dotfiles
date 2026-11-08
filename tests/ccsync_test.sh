@@ -11,6 +11,7 @@ FIXTURE_DIR="${TMP_ROOT}/dotfiles"
 CLAUDE_DIR="${TMP_ROOT}/home/.claude"
 AGENTS_DIR="${TMP_ROOT}/home/.agents"
 CODEX_DIR="${TMP_ROOT}/home/.codex"
+APM_LOCK="${TMP_ROOT}/home/.apm/apm.lock.yaml"
 
 mkdir -p "${FIXTURE_DIR}/claude/skills/example" "${FIXTURE_DIR}/claude/rules"
 mkdir -p "${FIXTURE_DIR}/claude/skills/remove-me"
@@ -28,6 +29,7 @@ run_ccsync() {
     CCSYNC_CLAUDE_DIR="${CLAUDE_DIR}" \
     CCSYNC_AGENTS_DIR="${AGENTS_DIR}" \
     CCSYNC_CODEX_DIR="${CODEX_DIR}" \
+    CCSYNC_APM_LOCK="${APM_LOCK}" \
     "${REPO_DIR}/bin/ccsync.sh" "$@"
 }
 
@@ -44,12 +46,28 @@ second_output="$(run_ccsync link 2>&1)"
 [[ "$second_output" == *"0 linked"* ]]
 
 list_output="$(run_ccsync list)"
-[[ "$list_output" == *"Codex skill example"*"[linked]"* ]]
-[[ "$list_output" == *"Codex agents/example.toml"*"[linked]"* ]]
+[[ "$list_output" == *"skills/example"*"dotfiles"*"[linked, codex: linked]"* ]]
+[[ "$list_output" == *"skills/conflict"*"dotfiles"*"[linked, codex: not linked (exists)]"* ]]
+[[ "$list_output" == *"Codex agents/example.toml"*"dotfiles"*"[linked]"* ]]
 
 run_ccsync remove skills/remove-me >/dev/null
 [[ -d "${CLAUDE_DIR}/skills/remove-me" && ! -L "${CLAUDE_DIR}/skills/remove-me" ]]
 [[ ! -e "${AGENTS_DIR}/skills/remove-me" && ! -L "${AGENTS_DIR}/skills/remove-me" ]]
 [[ ! -e "${FIXTURE_DIR}/claude/skills/remove-me" ]]
+
+mkdir -p "${CLAUDE_DIR}/skills/from-apm" "${CLAUDE_DIR}/skills/handmade" "$(dirname "$APM_LOCK")" "${TMP_ROOT}/memo/private"
+ln -s "${TMP_ROOT}/memo/private" "${CLAUDE_DIR}/skills/private"
+printf '%s\n' 'dependencies:' '- name: from-apm' '  deployed_files:' '  - .claude/skills/from-apm' '  - .claude/skills/from-apm/SKILL.md' >"$APM_LOCK"
+
+list_output="$(run_ccsync list)"
+[[ "$list_output" == *"skills/from-apm"*"apm"* ]]
+[[ "$list_output" == *"skills/handmade"*"unmanaged"* ]]
+[[ "$list_output" == *"skills/private"*"external"*"-> ${TMP_ROOT}/memo/private"* ]]
+
+unmanaged_output="$(run_ccsync unmanaged)"
+[[ "$unmanaged_output" == *"skills/handmade"*"unmanaged"* ]]
+[[ "$unmanaged_output" != *"from-apm"* ]]
+[[ "$unmanaged_output" != *"skills/private"* ]]
+[[ "$unmanaged_output" != *"skills/example"* ]]
 
 echo "ccsync tests passed"

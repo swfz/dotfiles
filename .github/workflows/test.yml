@@ -35,6 +35,16 @@ jobs:
       - name: run ansi_hexlist test
         run: bash tests/ansi_hexlist_test.sh
 
+  check-version:
+    runs-on: ubuntu-latest
+    name: 'check-version'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # mikefarah 版 yq は ubuntu-latest に入っているものを使う
+      - name: run check_version test
+        run: bash tests/check_version_test.sh
+
   tmux-layout:
     runs-on: ubuntu-latest
     name: 'tmux-layout'
@@ -128,7 +138,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       # 手元と同じバージョンにするため、ルートの .python-version で固定する(標準ライブラリのみ)
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version-file: .python-version
       - name: run claude-session test
@@ -141,7 +151,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       # 手元と同じバージョンにするため、ルートの .python-version で固定する(標準ライブラリの unittest のみ)
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version-file: .python-version
       - name: unittest
@@ -154,7 +164,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install uv
-        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           cache-dependency-glob: uv.lock
       - name: install mypy
