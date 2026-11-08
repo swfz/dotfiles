@@ -65,6 +65,16 @@ jobs:
       - name: run notify test
         run: bash tests/notify_test.sh
 
+  latest-version:
+    runs-on: ubuntu-latest
+    name: 'latest-version'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      # curl はテスト内のスタブを使い、GitHub API には出ない。jq は ubuntu-latest に同梱
+      - name: run latest-version test
+        run: bash tests/latest_version_test.sh
+
   gh-open-prs:
     runs-on: ubuntu-latest
     name: 'gh-open-prs'
