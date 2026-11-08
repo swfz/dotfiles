@@ -26,6 +26,7 @@ swfz の dotfiles。シェル・エディタ・ターミナルの設定と、そ
 
 ```sh
 bash tests/ccsync_test.sh
+bash tests/ansi_hexlist_test.sh
 bash tests/check_version_test.sh
 bash tests/statusline_test.sh
 bash tests/claude_session_test.sh
@@ -100,7 +101,7 @@ ansible-playbook -i localhost, -c local ubuntu.yml --extra-vars "user='$(whoami)
 
 | workflow | トリガー | 検証内容 |
 |---|---|---|
-| `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`statusline`(tests/statusline_test.sh)、`claude-session`(tests/claude_session_test.sh)、`tmux-layout`(tests/tmux_layout_test.sh)、`notify`(tests/notify_test.sh)、`gh-open-prs`(tests/gh_open_prs_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint)、`python-typecheck`(mypy) |
+| `test.yml` | master への push / PR | `ccsync`(tests/ccsync_test.sh)、`ansi-hexlist`(tests/ansi_hexlist_test.sh)、`check-version`(tests/check_version_test.sh)、`statusline`(tests/statusline_test.sh)、`claude-session`(tests/claude_session_test.sh)、`tmux-layout`(tests/tmux_layout_test.sh)、`notify`(tests/notify_test.sh)、`gh-open-prs`(tests/gh_open_prs_test.sh)、`shfmt`(全シェルスクリプトの差分)、`rdpick`(go vet / go test / golangci-lint)、`python-typecheck`(mypy) |
 | `apm-skill-scan.yml` | `config/apm/**` `bin/apm-skill-scan` `config/mise/config.toml` 変更時の PR | apm で入れる第三者スキルを固定 SHA で取得して skill-scanner で検査し、`config/apm/skill-scan-baseline.json` に無い CRITICAL / HIGH の指摘があれば失敗(MEDIUM 以下は表示のみ) |
 | `ci-ansible.yml` | `ansible/**` `config/mise/**` 変更時の push / PR、週次 | yamllint / ansible-lint、ubuntu で tag ごと(deploy / init / tool / mise)と mac で playbook を実際に実行 |
 | `update-versions.yml` | 週次 | jo / zsh の新バージョンを検知して `ansible/versions_vars.yml` 更新の PR を作る |

@@ -26,6 +26,15 @@ jobs:
       - name: run ccsync test
         run: bash tests/ccsync_test.sh
 
+  ansi-hexlist:
+    runs-on: ubuntu-latest
+    name: 'ansi-hexlist'
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: run ansi_hexlist test
+        run: bash tests/ansi_hexlist_test.sh
+
   check-version:
     runs-on: ubuntu-latest
     name: 'check-version'
