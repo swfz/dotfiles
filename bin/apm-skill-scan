@@ -108,7 +108,7 @@ def parse_deps(text: str) -> list[Dep]:
     return deps
 
 
-def parse_findings(report: dict) -> list[Finding]:
+def parse_findings(report: dict[str, list[dict[str, str | None]]]) -> list[Finding]:
     # 同じキーの指摘が何件あるかも照合に使うので、重複は除かない
     findings = [
         Finding(

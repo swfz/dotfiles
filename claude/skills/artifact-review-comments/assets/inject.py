@@ -5,7 +5,7 @@ output 省略時は <input>.commented.html を同じディレクトリに出力�
 </body> が無いHTMLには </html> 直前、それも無ければ末尾に追記する。"""
 import sys, os
 
-def main():
+def main() -> None:
     if len(sys.argv) < 2:
         sys.exit("usage: inject.py <input.html> [output.html]")
     src = sys.argv[1]

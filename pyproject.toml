@@ -16,6 +16,7 @@ package = false
 exclude-newer = "1 week"
 
 [tool.mypy]
+strict = true
 # 拡張子なしのスクリプトが全て __main__ 扱いになり重複エラーになるのを避け、ファイル名をモジュール名にする
 scripts_are_modules = true
 # 拡張子なしのスクリプトも対象にするため、ディレクトリではなくファイルを列挙する

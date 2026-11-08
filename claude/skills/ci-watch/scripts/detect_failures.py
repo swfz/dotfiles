@@ -23,7 +23,7 @@ import sys
 FAIL_CONCLUSIONS = {"failure", "timed_out", "startup_failure"}
 
 
-def run(cmd):
+def run(cmd: list[str]) -> str | None:
     """コマンドを実行して stdout を返す。失敗時は警告を出して None。"""
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
@@ -32,7 +32,7 @@ def run(cmd):
     return r.stdout
 
 
-def list_repos(owner, limit, include_forks, include_archived):
+def list_repos(owner: str, limit: int, include_forks: bool, include_archived: bool) -> list[tuple[str, str]]:
     """owner 配下のリポジトリ(name, default_branch)の一覧を返す。"""
     out = run([
         "gh", "repo", "list", owner,
@@ -42,7 +42,7 @@ def list_repos(owner, limit, include_forks, include_archived):
     if out is None:
         sys.exit(1)
 
-    targets = []
+    targets: list[tuple[str, str]] = []
     for r in json.loads(out):
         if r.get("isArchived") and not include_archived:
             continue
@@ -55,9 +55,9 @@ def list_repos(owner, limit, include_forks, include_archived):
     return targets
 
 
-def resolve_repos(owner, names):
+def resolve_repos(owner: str, names: list[str]) -> list[tuple[str, str]]:
     """明示指定された repo 名について default branch を解決する。"""
-    targets = []
+    targets: list[tuple[str, str]] = []
     for name in names:
         out = run(["gh", "repo", "view", f"{owner}/{name}", "--json", "defaultBranchRef"])
         if out is None:
@@ -68,7 +68,7 @@ def resolve_repos(owner, names):
     return targets
 
 
-def latest_failures(owner, repo, branch, per_page):
+def latest_failures(owner: str, repo: str, branch: str, per_page: int) -> list[dict[str, object]]:
     """repo のデフォルトブランチで、ワークフローごとの最新 completed run のうち失敗を返す。"""
     path = f"repos/{owner}/{repo}/actions/runs?branch={branch}&per_page={per_page}"
     out = run(["gh", "api", path])
@@ -76,7 +76,7 @@ def latest_failures(owner, repo, branch, per_page):
         return []
 
     runs = json.loads(out).get("workflow_runs", [])
-    latest = {}  # workflow_id -> 最新の completed run
+    latest: dict[int, dict[str, object]] = {}  # workflow_id -> 最新の completed run
     for r in runs:
         if r.get("status") != "completed":
             continue
@@ -84,7 +84,7 @@ def latest_failures(owner, repo, branch, per_page):
         if wid not in latest:  # API は新しい順なので最初の completed が最新
             latest[wid] = r
 
-    failures = []
+    failures: list[dict[str, object]] = []
     for r in latest.values():
         if r.get("conclusion") in FAIL_CONCLUSIONS:
             failures.append({
@@ -98,7 +98,7 @@ def latest_failures(owner, repo, branch, per_page):
     return failures
 
 
-def main():
+def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--owner", default="swfz", help="対象オーナー(default: swfz)")
     ap.add_argument("--limit", type=int, default=500, help="リポジトリ取得上限")
@@ -114,7 +114,7 @@ def main():
     else:
         targets = list_repos(args.owner, args.limit, args.include_forks, args.include_archived)
 
-    results = []
+    results: list[dict[str, object]] = []
     for name, branch in targets:
         fails = latest_failures(args.owner, name, branch, args.per_page)
         if fails:
