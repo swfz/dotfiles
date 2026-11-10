@@ -1,0 +1,158 @@
+# Portable agent definition for the generate-explainer-html skill.
+# This describes the skill for non-Claude (e.g. OpenAI-style) agent runtimes.
+# It mirrors SKILL.md: read core.yaml/view.yaml by path, author iframe view documents,
+# and build/grow a switchable, light/dark HTML bundle.
+
+name: generate-explainer-html
+version: 2
+description: >
+  Turn a core.yaml (meaning) + view.yaml (presentation strategy) pair — plus quiz.yaml when
+  present — into a self-contained HTML bundle. The bundle is a directory: a light/dark
+  shell (index.html) whose right pane switches between multiple iframe view documents, plus
+  copyable prompt templates that ask a local-file-reading AI to add another switchable
+  view. An interactive quiz tab is added by default unless the user explicitly declines.
+  Views are additive. Produce the YAML first with the generate-explainer-yaml skill.
+
+use_when:
+  - user has (or wants) a core.yaml/view.yaml pair and wants a visual HTML explainer
+  - user wants to add a new representation (table, worktree, beginner, engineer, pdm, …) to
+    an existing bundle without overwriting the current view
+do_not_use_when:
+  - the core.yaml/view.yaml do not exist yet (use generate-explainer-yaml first)
+  - user wants a web app, server, API, or chat UI
+
+model:
+  recommended: gpt-4-class or stronger
+  temperature: 0.4
+  notes: >
+    The model authors iframe view documents and the prompt templates; the script only
+    assembles the bundle and the validator only checks it.
+
+# The renderer is NOT the center. The center is the meaning (core.yaml) and strategy
+# (view.yaml) produced by generate-explainer-yaml; here they become switchable views.
+workflow:
+  - id: read_yaml
+    goal: read core.yaml, view.yaml, and quiz.yaml (when present) by their absolute path
+      (from generate-explainer-yaml or the user); if missing, defer to
+      generate-explainer-yaml
+  - id: author_view_html
+    goal: author ONE iframe view document (full self-contained HTML); pick forms from
+      view.yaml; include concepts, relations, reading order, source refs, next questions;
+      light theme by default; read #theme from the URL hash (load + hashchange)
+    rules: references/html-generation-rules.md
+  - id: author_quiz_view_html
+    goal: author an interactive quiz view from quiz.yaml (or derive items from core.yaml
+      when it is absent) — answer, instant grading, explanation, audience/difficulty
+      adaptive ordering; DEFAULT step, skip only when the user explicitly declines a quiz
+    rules: references/quiz-view-rules.md
+  - id: author_prompts_json
+    goal: author the "add a view" templates (table, worktree, beginner, engineer, pdm/biz,
+      quiz, free-form); cite YAML by absolute path via {{core_yaml_path}} /
+      {{view_yaml_path}} / {{quiz_yaml_path}}; never embed YAML content; never a
+      whole-HTML regenerate template
+    rules: references/prompt-template-patterns.md
+  - id: build
+    goal: build/grow the bundle (append/update views)
+    tool: build_html
+  - id: validate
+    goal: enforce the safety / self-containment contract over index.html and every view
+    tool: validate_html
+  - id: repair
+    goal: fix any validator finding and re-validate before delivery
+  - id: add_view_later
+    goal: to add a representation, author one more view document and re-run build_html with
+      only the new --view-html; it appends a switchable tab and preserves existing views
+
+tools:
+  - name: build_html
+    type: shell
+    command: python3 scripts/build_html.py
+    description: >
+      Build/grow the bundle: write the shell (index.html), merge views into views.json,
+      copy core.yaml/view.yaml/quiz.yaml in, and render prompt cards. Substitutes
+      {{core_yaml_path}} / {{view_yaml_path}} / {{quiz_yaml_path}} (absolute paths) into
+      prompts. Assembler, not a renderer.
+    args:
+      - name: --bundle
+        required: true
+        description: output bundle directory (created if missing)
+      - name: --view-html
+        required: false
+        repeatable: true
+        description: 'a view to add as "LABEL=PATH" (tab label + path to its iframe HTML doc)'
+      - name: --core
+        required: false
+        description: path to core.yaml (copied in; abs path cited by prompts)
+      - name: --view
+        required: false
+        description: path to view.yaml (copied in; abs path cited by prompts)
+      - name: --quiz
+        required: false
+        description: path to quiz.yaml (optional; copied in; abs path cited by prompts)
+      - name: --prompts
+        required: true
+        description: path to prompts.json (array of prompt-template objects)
+      - name: --title
+        required: false
+      - name: --subtitle
+        required: false
+  - name: validate_html
+    type: shell
+    command: python3 scripts/validate_html.py
+    description: >
+      Scan the bundle (index.html + each views/*.html) for unsafe / non-self-contained
+      patterns. Exits non-zero on any error. A local relative iframe src is allowed; a
+      remote-loading iframe is not.
+    args:
+      - name: files
+        required: true
+        description: index.html and every views/*.html to validate
+      - name: --strict
+        required: false
+        description: also fail on warnings
+
+constraints:
+  output: a self-contained bundle directory; opens offline in a browser
+  shell: written ONLY by build_html.py — never hand-edit index.html or the prompts
+  iframe:
+    required: true
+    embed_via: local relative src (views/<file>)
+    sandbox: allow-scripts
+    forbid: allow-same-origin
+    theme: light by default; read #theme from URL hash (load + hashchange)
+  views: additive — new views append as switchable tabs; never overwrite the shell
+  prompts: cite YAML by absolute path; never embed YAML content; no whole-HTML regenerate
+  forbidden:
+    - external <script src> / external CSS / remote iframe (scheme:// or //)
+    - <object> / <embed>
+    - fetch / XMLHttpRequest / WebSocket
+    - localStorage / sessionStorage / document.cookie
+    - access to window.parent or window.top / top navigation
+    - form submit to an endpoint
+    - embedded API keys or secrets
+    - large verbatim dumps of the source text
+
+inputs:
+  - absolute path to core.yaml
+  - absolute path to view.yaml
+  - absolute path to quiz.yaml (optional; the quiz tab is still expected by default)
+  - the desired representation(s) / reader(s)
+
+outputs:
+  - a bundle directory (index.html + views.json + core.yaml/view.yaml/quiz.yaml +
+    views/*.html, incl. a quiz view by default)
+
+open_note: >
+  Chrome/Edge block file:// iframe loads; open index.html in Firefox over file://, or serve
+  the bundle folder with a trivial local static server (reads only local files).
+
+references:
+  - SKILL.md
+  - references/html-generation-rules.md
+  - references/quiz-view-rules.md
+  - references/output-bundle-structure.md
+  - references/prompt-template-patterns.md
+  - references/sample-iframe.html
+  - references/sample-quiz-iframe.html
+  - references/sample-prompts.json
+  - references/examples.md
