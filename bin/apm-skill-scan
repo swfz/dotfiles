@@ -108,12 +108,28 @@ def parse_deps(text: str) -> list[Dep]:
     return deps
 
 
-def parse_findings(report: dict[str, list[dict[str, str | None]]]) -> list[Finding]:
+# 指摘のファイルをスキルのディレクトリからの相対パスにする。
+# skill-scanner は一部の指摘(BEHAVIOR_DATAFLOW_ANALYSIS_INCOMPLETE など)で絶対パスを返し、
+# 一時ディレクトリの名前が毎回変わってベースラインと一致しなくなるため。相対パスはそのまま返す
+def relative_file(file: str, skill_dir: Path) -> str:
+    path = Path(file)
+    if not path.is_absolute():
+        return file
+    # 一時ディレクトリが symlink 経由のとき(macOS の /var → /private/var など)も外せるように、解決後のパスでも試す
+    for base in (skill_dir, skill_dir.resolve()):
+        try:
+            return path.relative_to(base).as_posix()
+        except ValueError:
+            continue
+    return file
+
+
+def parse_findings(report: dict[str, list[dict[str, str | None]]], skill_dir: Path | None = None) -> list[Finding]:
     # 同じキーの指摘が何件あるかも照合に使うので、重複は除かない
     findings = [
         Finding(
             rule_id=f.get("rule_id") or "",
-            file=f.get("file_path") or "",
+            file=relative_file(f.get("file_path") or "", skill_dir) if skill_dir else f.get("file_path") or "",
             snippet=(f.get("snippet") or "").strip(),
             severity=f.get("severity") or "",
             title=f.get("title") or "",
@@ -137,7 +153,7 @@ def run_scanner(skill_dir: Path) -> list[Finding]:
     if proc.returncode != 0:
         raise ScanError(f"skill-scanner が失敗しました: {skill_dir}\n{proc.stderr}")
     try:
-        return parse_findings(json.loads(proc.stdout))
+        return parse_findings(json.loads(proc.stdout), skill_dir)
     except json.JSONDecodeError:
         raise ScanError(f"skill-scanner の出力を JSON として読めません: {skill_dir}\n{proc.stdout[:500]}")
 
