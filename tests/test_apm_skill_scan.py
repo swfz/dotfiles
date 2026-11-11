@@ -92,6 +92,42 @@ class ParseFindingsTest(unittest.TestCase):
             ],
         )
 
+    def test_absolute_file_becomes_relative_to_skill_dir(self):
+        # 一時ディレクトリの絶対パスで返る指摘も、ベースラインと照合できる相対パスにそろえる
+        skill_dir = Path("/tmp/apm-skill-scan-abc/owner__repo__sha/skills/foo")
+        report = {
+            "findings": [
+                {"rule_id": "D", "file_path": f"{skill_dir}/scripts/a.py", "snippet": None, "severity": "INFO", "title": "t"},
+                {"rule_id": "R", "file_path": "scripts/b.py", "snippet": "x", "severity": "LOW", "title": "t"},
+                {"rule_id": "S", "file_path": None, "snippet": None, "severity": "INFO", "title": "t"},
+            ]
+        }
+        self.assertEqual(
+            [f.file for f in apm_skill_scan.parse_findings(report, skill_dir)],
+            ["scripts/a.py", "scripts/b.py", ""],
+        )
+
+
+class RelativeFileTest(unittest.TestCase):
+    def test_keeps_relative_path(self):
+        self.assertEqual(apm_skill_scan.relative_file("scripts/a.py", Path("/tmp/x")), "scripts/a.py")
+
+    def test_keeps_absolute_path_outside_skill_dir(self):
+        self.assertEqual(apm_skill_scan.relative_file("/etc/passwd", Path("/tmp/x")), "/etc/passwd")
+
+    def test_resolves_symlinked_skill_dir(self):
+        import os
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            real = Path(tmp) / "real"
+            (real / "scripts").mkdir(parents=True)
+            link = Path(tmp) / "link"
+            os.symlink(real, link)
+            # skill-scanner が解決後のパスで返しても、symlink 側のディレクトリから外せる
+            file = str(real.resolve() / "scripts/a.py")
+            self.assertEqual(apm_skill_scan.relative_file(file, link), "scripts/a.py")
+
 
 class CompareTest(unittest.TestCase):
     def test_known_findings_pass(self):
