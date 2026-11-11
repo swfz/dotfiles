@@ -194,7 +194,7 @@
     },
     {
       "rule_id": "BEHAVIOR_DATAFLOW_ANALYSIS_INCOMPLETE",
-      "file": "/tmp/apm-skill-scan-4ake8ynk/nanaism__yomiyasu__29d67ccb05e370b5958d72920a9cd1aa829dee80/skills/yomiyasu/scripts/yomiyasu_diff.py",
+      "file": "scripts/yomiyasu_diff.py",
       "snippet": "",
       "severity": "INFO",
       "title": "Behavioral dataflow analysis incomplete (analysis budget exceeded)"
