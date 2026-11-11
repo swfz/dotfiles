@@ -163,7 +163,99 @@
       "title": "Skill does not specify a license"
     }
   ],
-  "nanaism/yomiyasu/skills/yomiyasu": [],
+  "nanaism/yomiyasu/skills/yomiyasu": [
+    {
+      "rule_id": "ALLOWED_TOOLS_BASH_VIOLATION",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "HIGH",
+      "title": "Code executes bash but Bash tool not in allowed-tools"
+    },
+    {
+      "rule_id": "ALLOWED_TOOLS_GREP_VIOLATION",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "LOW",
+      "title": "Code uses search/grep patterns but Grep tool not in allowed-tools"
+    },
+    {
+      "rule_id": "ALLOWED_TOOLS_READ_VIOLATION",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "MEDIUM",
+      "title": "Code reads files but Read tool not in allowed-tools"
+    },
+    {
+      "rule_id": "ALLOWED_TOOLS_WRITE_VIOLATION",
+      "file": "SKILL.md",
+      "snippet": "",
+      "severity": "MEDIUM",
+      "title": "Skill declares no Write tool but bundled scripts write files"
+    },
+    {
+      "rule_id": "BEHAVIOR_DATAFLOW_ANALYSIS_INCOMPLETE",
+      "file": "/tmp/apm-skill-scan-4ake8ynk/nanaism__yomiyasu__29d67ccb05e370b5958d72920a9cd1aa829dee80/skills/yomiyasu/scripts/yomiyasu_diff.py",
+      "snippet": "",
+      "severity": "INFO",
+      "title": "Behavioral dataflow analysis incomplete (analysis budget exceeded)"
+    },
+    {
+      "rule_id": "FILE_MAGIC_MISMATCH",
+      "file": "references/lists/feelings.txt",
+      "snippet": "",
+      "severity": "MEDIUM",
+      "title": "File extension does not match actual content type"
+    },
+    {
+      "rule_id": "FILE_MAGIC_MISMATCH",
+      "file": "references/lists/nominalization.txt",
+      "snippet": "",
+      "severity": "MEDIUM",
+      "title": "File extension does not match actual content type"
+    },
+    {
+      "rule_id": "FILE_MAGIC_MISMATCH",
+      "file": "references/lists/renyo-nouns.txt",
+      "snippet": "",
+      "severity": "MEDIUM",
+      "title": "File extension does not match actual content type"
+    },
+    {
+      "rule_id": "FILE_MAGIC_MISMATCH",
+      "file": "references/lists/thin-evaluation.txt",
+      "snippet": "",
+      "severity": "MEDIUM",
+      "title": "File extension does not match actual content type"
+    },
+    {
+      "rule_id": "HIDDEN_DATA_FILE",
+      "file": ".codex-plugin/plugin.json",
+      "snippet": "",
+      "severity": "LOW",
+      "title": "Hidden data file detected"
+    },
+    {
+      "rule_id": "PATH_TRAVERSAL_OPEN",
+      "file": "scripts/yomiyasu_check.py",
+      "snippet": "path = os.path.join(folder, name)",
+      "severity": "CRITICAL",
+      "title": "Path traversal vulnerability - user-controlled file path"
+    },
+    {
+      "rule_id": "SECRET_PASSWORD_VAR",
+      "file": "scripts/yomiyasu_check.py",
+      "snippet": "toke****.format(",
+      "severity": "MEDIUM",
+      "title": "Hardcoded password or secret in variable"
+    },
+    {
+      "rule_id": "SECRET_PASSWORD_VAR",
+      "file": "scripts/yomiyasu_check.py",
+      "snippet": "toke****.format(args.run_id or \"-\", count)",
+      "severity": "MEDIUM",
+      "title": "Hardcoded password or secret in variable"
+    }
+  ],
   "vercel-labs/skills/skills/find-skills": [
     {
       "rule_id": "MANIFEST_MISSING_LICENSE",
