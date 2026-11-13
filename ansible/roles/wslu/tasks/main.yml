@@ -12,6 +12,11 @@
   when: ansible_distribution_version is version('26.04', '<')
   ansible.builtin.apt_repository:
     repo: ppa:wslutilities/wslu
+  # Launchpad からの PPA 情報取得が一過性のタイムアウトで落ちることがあるためリトライする
+  register: wslu_ppa
+  retries: 3
+  delay: 10
+  until: wslu_ppa is succeeded
 
 # 26.04 では ppa: 指定時の keyserver(hkp)からの鍵取得が失敗するため、
 # 鍵を HTTPS で取得して signed-by で指定する。
@@ -23,12 +28,21 @@
     url: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x254F460F2970E18123046570C1D0E7E6AB4095D6
     dest: /etc/apt/keyrings/wslu.asc
     mode: "0644"
+  register: wslu_key
+  retries: 3
+  delay: 10
+  until: wslu_key is succeeded
 
 - name: Add wslu PPA Repository (signed-by)
   when: ansible_distribution_version is version('26.04', '>=')
   ansible.builtin.apt_repository:
     repo: "deb [signed-by=/etc/apt/keyrings/wslu.asc] https://ppa.launchpadcontent.net/wslutilities/wslu/ubuntu noble main"
     filename: wslu
+  # 追加時の apt update で PPA へ取得しに行くためリトライする
+  register: wslu_ppa_signed
+  retries: 3
+  delay: 10
+  until: wslu_ppa_signed is succeeded
 
 - name: Install wslu
   ansible.builtin.apt:
