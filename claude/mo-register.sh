@@ -21,7 +21,11 @@ case "$fp" in
     ;;
 esac
 
-url=$(mo --json --no-open "$fp" --target "$target" 2>/dev/null | jq -r '.files[-1].url')
+# mo --json は登録済みの全ファイルを順不同で返すため、パスで突き合わせる
+# hook の stdin が渡ると mo は「redirected stdin with positional arguments」で失敗するので切り離す
+url=$(mo --json --no-open "$fp" --target "$target" </dev/null 2>/dev/null |
+  jq -r --arg fp "$fp" 'first(.files[] | select(.path == $fp) | .url) // empty')
+[[ -n "$url" ]] || exit 0
 
 jq -nc --arg url "$url" --arg target "$target" '{
   hookSpecificOutput: {
