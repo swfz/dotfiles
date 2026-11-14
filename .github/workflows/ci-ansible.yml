@@ -87,10 +87,20 @@ jobs:
             // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvとpipxが依存として要求される
             const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv', 'pipx'] };
             // gcloudのインストールスクリプトはCLOUDSDK_PYTHONのpythonを実行するため先に入っている必要がある
-            const toolDeps = { gcloud: ['python'] };
+            // apmはapm.ymlのtargetsにcodexを含み、Codexプラグインを持つスキル(yomiyasu v2以降)の登録にCodex CLIがPATHに無いと失敗する
+            const toolDeps = { gcloud: ['python'], apm: ['npm:@openai/codex'] };
+            const directDepsOf = (tool) => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : toolDeps[tool] ?? [];
+            // 依存の依存(npm:@openai/codex -> node, pnpm)も補う
             const depsOf = (chunk) => {
-              const deps = chunk.flatMap(tool => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : toolDeps[tool] ?? []);
-              return [...new Set(deps)].filter(dep => !chunk.includes(dep));
+              const deps = new Set();
+              const queue = chunk.flatMap(directDepsOf);
+              while (queue.length > 0) {
+                const dep = queue.shift();
+                if (deps.has(dep)) continue;
+                deps.add(dep);
+                queue.push(...directDepsOf(dep));
+              }
+              return [...deps].filter(dep => !chunk.includes(dep));
             };
             return tags.map(tag => {
               if (tag === "mise") {
