@@ -87,10 +87,14 @@ jobs:
             // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvとpipxが依存として要求される
             const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv', 'pipx'] };
             // gcloudのインストールスクリプトはCLOUDSDK_PYTHONのpythonを実行するため先に入っている必要がある
-            const toolDeps = { gcloud: ['python'] };
+            // apmはapm.ymlのtargetsにcodexがあり、install時にCodex CLIがPATHに無いと失敗するため同じジョブに入れる
+            const toolDeps = { gcloud: ['python'], apm: ['npm:@openai/codex'] };
+            const directDepsOf = (tool) => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : toolDeps[tool] ?? [];
+            // 依存自体がnpm:等の場合は依存のインストール時点でそのバックエンドの依存が要るため、chunkに含まれていても先に並べる
+            const withTransitive = (dep) => [...directDepsOf(dep).flatMap(withTransitive), dep];
             const depsOf = (chunk) => {
-              const deps = chunk.flatMap(tool => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : toolDeps[tool] ?? []);
-              return [...new Set(deps)].filter(dep => !chunk.includes(dep));
+              const deps = chunk.flatMap(directDepsOf).filter(dep => !chunk.includes(dep)).flatMap(withTransitive);
+              return [...new Set(deps)];
             };
             return tags.map(tag => {
               if (tag === "mise") {
