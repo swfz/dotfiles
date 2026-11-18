@@ -82,7 +82,10 @@ jobs:
             const tools = ${{ needs.set-mise-tools.outputs.list }};
             const chunks = process.env.TOOLS_CHUNKS || 3;
             // 空のchunkは`mise i`が引数なしで全ツールをインストールしてしまうため除外する
-            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks))).filter(chunk => chunk.length > 0);
+            // apm は targets に codex があると Codex CLI が PATH に無い場合に install が失敗するため、同じジョブに codex も入れる
+            const companions = { apm: ['npm:@openai/codex'] };
+            const withCompanions = (chunk) => [...new Set([...chunk, ...chunk.flatMap(tool => companions[tool] ?? []).filter(tool => tools.includes(tool))])];
+            const chunkedTools = Array.from({ length: chunks }, (_, i) => tools.slice(i * Math.ceil(tools.length / chunks), (i + 1) * Math.ceil(tools.length / chunks))).filter(chunk => chunk.length > 0).map(withCompanions);
             // npm:やpipx:のツールはバックエンドが使うツールが同じジョブにインストールされていないと失敗するため、chunkごとに補う
             // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvとpipxが依存として要求される
             const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv', 'pipx'] };
