@@ -46,8 +46,30 @@ query($q: String!, $endCursor: String) {
   }
 }'
 
+readonly MAX_ATTEMPTS="${GH_OPEN_PRS_MAX_ATTEMPTS:-3}"
+readonly RETRY_INTERVAL="${GH_OPEN_PRS_RETRY_INTERVAL:-3}"
+
+# NOTE: GitHub が 502/504 などで HTML のエラーページを返すと gh が
+# "invalid character '<' looking for beginning of value" で失敗する。一時的な障害なのでリトライする
+# Usage: fetch_with_retry <gh api の引数...>
+function fetch_with_retry() {
+  local attempt output
+  for ((attempt = 1; attempt <= MAX_ATTEMPTS; attempt++)); do
+    if output="$(gh "$@")"; then
+      printf '%s' "$output"
+      return 0
+    fi
+    if ((attempt < MAX_ATTEMPTS)); then
+      echo "gh api failed (attempt ${attempt}/${MAX_ATTEMPTS}), retrying in ${RETRY_INTERVAL}s..." >&2
+      sleep "$RETRY_INTERVAL"
+    fi
+  done
+  echo "Error: gh api failed after ${MAX_ATTEMPTS} attempts" >&2
+  return 1
+}
+
 # Fetch all pages using gh api --paginate
-all_prs=$(gh api graphql --paginate \
+all_prs=$(fetch_with_retry api graphql --paginate \
   -f q="is:open is:pr user:${username} archived:false" \
   -f query="$graphql_query" \
   --jq '.data.search.nodes[] | {
