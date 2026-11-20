@@ -87,8 +87,7 @@ jobs:
             // npm:はsettings.npm.package_managerのpnpm、pipx:は設定済みのuvとpipxが依存として要求される
             const backendDeps = { npm: ['node', 'pnpm'], pipx: ['python', 'uv', 'pipx'] };
             // gcloudのインストールスクリプトはCLOUDSDK_PYTHONのpythonを実行するため先に入っている必要がある
-            // apm install -g はapm.ymlのtargetsにcodexがあるとCodex CLIをPATHに要求するため、apmと同じジョブに入れる(npm:なのでnode/pnpmも要る)
-            const toolDeps = { gcloud: ['python'], apm: ['node', 'pnpm', 'npm:@openai/codex'] };
+            const toolDeps = { gcloud: ['python'] };
             const depsOf = (chunk) => {
               const deps = chunk.flatMap(tool => tool.includes(':') ? backendDeps[tool.split(':')[0]] ?? [] : toolDeps[tool] ?? []);
               return [...new Set(deps)].filter(dep => !chunk.includes(dep));
