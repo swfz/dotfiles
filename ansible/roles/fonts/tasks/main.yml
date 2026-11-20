@@ -6,21 +6,21 @@
     owner: root
     group: root
     mode: "0755"
-  with_dict: "{{ fonts }}"
+  with_dict: "{{ fonts_sources }}"
 
 - name: Get zip
   ansible.builtin.get_url:
     url: "{{ item.value.src }}"
     dest: /tmp/{{ item.value.zip }}
     mode: 0600
-  with_dict: "{{ fonts }}"
+  with_dict: "{{ fonts_sources }}"
 
 - name: Unarchive zip
   ansible.builtin.unarchive:
     src: /tmp/{{ item.value.zip }}
     dest: /usr/share/fonts/{{ item.key }}/
     copy: false
-  with_dict: "{{ fonts }}"
+  with_dict: "{{ fonts_sources }}"
 
 - name: Font-cache
   ansible.builtin.command:

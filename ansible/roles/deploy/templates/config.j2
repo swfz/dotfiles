@@ -1,6 +1,6 @@
 [user]
-  name = {{ git.username|default('vagrant') }}
-  email = {{ git.usermail|default('vagrant@example.com') }}
+  name = {{ deploy_git_username|default('vagrant') }}
+  email = {{ deploy_git_usermail|default('vagrant@example.com') }}
 [pull]
   rebase = false
 [rebase]

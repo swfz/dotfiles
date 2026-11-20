@@ -1,14 +1,14 @@
 ---
 # 環境変数CIがそもそも存在しないか、設定されていてもtrueではない
-- name: Set git repo prefix(git)  # noqa var-naming[no-role-prefix]
+- name: Set git repo prefix(git)
   ansible.builtin.set_fact:
-    repo_prefix: 'git@github.com:'
+    deploy_repo_prefix: 'git@github.com:'
   when: ansible_env.CI is not defined or ansible_env.CI != "true"
 
 # CI環境
-- name: Set git repo prefix(https)  # noqa var-naming[no-role-prefix]
+- name: Set git repo prefix(https)
   ansible.builtin.set_fact:
-    repo_prefix: https://github.com/
+    deploy_repo_prefix: https://github.com/
   when: ansible_env.get('CI', '') == "true"
 
 - name: Command directory
@@ -24,30 +24,30 @@
     owner: "{{ user }}"
     mode: "0644"
 
-- name: Check repository directory exists  # noqa var-naming[no-role-prefix]
+- name: Check repository directory exists
   ansible.builtin.stat:
     path: "{{ dotfiles.dest }}"
-  register: dotfiles_dir
+  register: deploy_dotfiles_dir
 
-- name: Check unstaged changes  # noqa command-instead-of-module var-naming[no-role-prefix]
+- name: Check unstaged changes  # noqa command-instead-of-module
   ansible.builtin.command:
     cmd: git diff --exit-code
     chdir: "{{ dotfiles.dest }}"
-  register: repo_changed
+  register: deploy_repo_changed
   ignore_errors: true
-  changed_when: repo_changed.rc != 0
-  when: dotfiles_dir.stat.exists
+  changed_when: deploy_repo_changed.rc != 0
+  when: deploy_dotfiles_dir.stat.exists
 
 - name: Stash Changes  # noqa command-instead-of-module
   ansible.builtin.command: git stash
-  when: repo_changed is defined and repo_changed.rc is defined and repo_changed.rc != 0
+  when: deploy_repo_changed is defined and deploy_repo_changed.rc is defined and deploy_repo_changed.rc != 0
   changed_when: true
 
 # CIではPRのブランチを検証したいためDOTFILES_REFで上書きできるようにする
 # 未指定なら従来どおりデフォルトブランチ(HEAD)をclone
 - name: Clone dotfiles repository
   ansible.builtin.git:
-    repo: "{{ repo_prefix }}{{ dotfiles.src.repo }}"
+    repo: "{{ deploy_repo_prefix }}{{ dotfiles.src.repo }}"
     dest: "{{ dotfiles.dest }}"
     version: "{{ ansible_env.get('DOTFILES_REF', 'HEAD') }}"
     clone: true
@@ -56,7 +56,7 @@
 
 - name: Pop stash changes  # noqa command-instead-of-module
   ansible.builtin.command: git stash pop
-  when: repo_changed is defined and repo_changed.rc is defined and repo_changed.rc != 0
+  when: deploy_repo_changed is defined and deploy_repo_changed.rc is defined and deploy_repo_changed.rc != 0
   changed_when: true
 
 - name: Symlink bat config
@@ -161,7 +161,7 @@
 # git-hooksのセットアップ
 - name: Clone git-hooks repository
   ansible.builtin.git:
-    repo: "{{ repo_prefix }}{{ git_hooks.src.repo }}"
+    repo: "{{ deploy_repo_prefix }}{{ git_hooks.src.repo }}"
     dest: "{{ git_hooks.dest }}"
     clone: true
     update: true

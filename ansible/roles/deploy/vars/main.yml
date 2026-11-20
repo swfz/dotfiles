@@ -1,4 +1,3 @@
 ---
-git:  # noqa var-naming[no-role-prefix]
-  username: "{{ git_username | default('vagrant') }}"
-  usermail: "{{ git_usermail | default('vagrant@example.com') }}"
+deploy_git_username: "{{ git_username | default('vagrant') }}"
+deploy_git_usermail: "{{ git_usermail | default('vagrant@example.com') }}"

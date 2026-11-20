@@ -1,4 +1,3 @@
 ---
-agg:  # noqa var-naming[no-role-prefix]
-  src:
-    linux: https://github.com/asciinema/agg/releases/download/{{ agg_version }}/agg-x86_64-unknown-linux-musl
+agg_src:
+  linux: https://github.com/asciinema/agg/releases/download/{{ agg_version }}/agg-x86_64-unknown-linux-musl

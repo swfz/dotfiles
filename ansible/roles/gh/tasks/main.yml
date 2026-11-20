@@ -21,7 +21,7 @@
   block:
     - name: Get source
       ansible.builtin.get_url:
-        url: "{{ gh.deb }}"
+        url: "{{ gh_deb }}"
         dest: /tmp/gh-{{ gh_version }}.deb
         mode: 0600
 

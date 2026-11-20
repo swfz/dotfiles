@@ -1,3 +1,2 @@
 ---
-direnv:  # noqa var-naming[no-role-prefix]
-  src: https://github.com/direnv/direnv/releases/download/{{ direnv_version }}/direnv.linux-amd64
+direnv_src: https://github.com/direnv/direnv/releases/download/{{ direnv_version }}/direnv.linux-amd64

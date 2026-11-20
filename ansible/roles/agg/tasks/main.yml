@@ -19,6 +19,6 @@
 - name: Install
   when: agg_exist.rc != 0 or ( agg_current_version is defined and agg_current_version.stdout.find(agg_version) == -1 )
   ansible.builtin.get_url:
-    url: "{{ agg.src.linux }}"
+    url: "{{ agg_src.linux }}"
     dest: /usr/local/bin/agg
     mode: "0755"

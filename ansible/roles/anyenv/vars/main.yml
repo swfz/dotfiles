@@ -1,3 +1,2 @@
 ---
-anyenv:  # noqa var-naming[no-role-prefix]
-  url: https://github.com/riywo/anyenv
+anyenv_url: https://github.com/riywo/anyenv
