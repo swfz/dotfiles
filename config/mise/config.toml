@@ -27,7 +27,7 @@ fzf = 'latest'
 neovim = 'latest'
 tmux = '3.7c'
 # 0.35系はlockのsymlinkとcodex向け登録で apm install -g が失敗するため固定。追従は lock の配置と targets を見直してから
-apm = '0.34.0'
+apm = '0.35.1'
 "npm:zx" = 'latest'
 "npm:opencommit" = 'latest'
 "npm:yarn" = 'latest'
