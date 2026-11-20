@@ -19,3 +19,10 @@ rules:
     level: error
   line-length: disable
   truthy: disable
+  # ansible-lint が要求する設定(合わないと ansible-lint が WARNING を出す)
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
