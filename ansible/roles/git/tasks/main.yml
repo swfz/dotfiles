@@ -27,7 +27,7 @@
       ansible.builtin.get_url:
         url: "{{ git.src }}"
         dest: /tmp/{{ git.tgz }}
-        mode: 0600
+        mode: "0600"
 
     - name: Unarchive tar.gz
       ansible.builtin.unarchive:
