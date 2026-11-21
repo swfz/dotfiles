@@ -1,5 +1,5 @@
 ---
-fonts:  # noqa var-naming[no-role-prefix]
+fonts_sources:
   notofont:
     src: https://github.com/notofonts/noto-cjk/releases/download/Sans2.004/06_NotoSansCJKjp.zip
     zip: 06_NotoSansCJKjp.zip

@@ -1,5 +1,4 @@
 ---
-jo:  # noqa var-naming[no-role-prefix]
-  dir: jo-{{ jo_version }}
-  tgz: jo-{{ jo_version }}.tar.gz
-  src: https://github.com/jpmens/jo/releases/download/{{ jo_version }}/jo-{{ jo_version }}.tar.gz
+jo_dir: jo-{{ jo_version }}
+jo_tgz: jo-{{ jo_version }}.tar.gz
+jo_src: https://github.com/jpmens/jo/releases/download/{{ jo_version }}/jo-{{ jo_version }}.tar.gz

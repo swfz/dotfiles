@@ -23,7 +23,7 @@
       become: true
       become_user: root
       ansible.builtin.get_url:
-        url: "{{ direnv.src }}"
+        url: "{{ direnv_src }}"
         dest: /usr/local/bin/direnv
         mode: "0755"
 

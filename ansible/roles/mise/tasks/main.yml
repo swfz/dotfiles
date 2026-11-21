@@ -21,6 +21,6 @@
   block:
     - name: Install
       ansible.builtin.get_url:
-        url: "{{ mise[ansible_os_family] }}"
+        url: "{{ mise_src[ansible_os_family] }}"
         dest: /usr/local/bin/mise
         mode: "0755"

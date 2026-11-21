@@ -21,19 +21,19 @@
   block:
     - name: Get source
       ansible.builtin.get_url:
-        url: "{{ jo.src }}"
-        dest: /tmp/{{ jo.tgz }}
+        url: "{{ jo_src }}"
+        dest: /tmp/{{ jo_tgz }}
         mode: "0600"
 
     - name: Unarchive tar.gz
       ansible.builtin.unarchive:
-        src: /tmp/{{ jo.tgz }}
+        src: /tmp/{{ jo_tgz }}
         dest: /tmp
         copy: false
 
     - name: Configure make install jo
       ansible.builtin.command:
-        chdir: /tmp/{{ jo.dir }}
+        chdir: /tmp/{{ jo_dir }}
         cmd: "{{ item }}"
       changed_when: true
       with_items:
