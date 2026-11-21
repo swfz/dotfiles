@@ -12,7 +12,7 @@
   ansible.builtin.get_url:
     url: "{{ item.value.src }}"
     dest: /tmp/{{ item.value.zip }}
-    mode: 0600
+    mode: "0600"
   with_dict: "{{ fonts }}"
 
 - name: Unarchive zip
