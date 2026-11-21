@@ -57,7 +57,7 @@ gh = "2.103.3"
 rclone = "latest"
 lefthook = "latest"
 golangci-lint = "2.15.0"
-"gitlab:gitlab-org/cli" = "v1.128.0"
+"gitlab:gitlab-org/cli" = "v1.130.0"
 
 [hooks]
 postinstall = "misecompsync --shell zsh"
