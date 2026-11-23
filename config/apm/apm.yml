@@ -12,7 +12,7 @@ targets:
 dependencies:
   apm:
     - mattpocock/skills/skills/productivity/grilling#d1478fcb140db0b93c0c8df17bcfd311844749d0 # v1.3.2
-    - vercel-labs/skills/skills/find-skills#e781cb4d07433dfe1d19e924ed45cc61738c55ec # v1.8.1
+    - vercel-labs/skills/skills/find-skills#50894c1d98bc45ca1ab127213e59d6525065b5e7 # v1.9.0
     - nanaism/yomiyasu/skills/yomiyasu#db78b9bc5e868549b517a037df7a4d1c93edac23 # v3.1.0
     - cloudflare/security-audit-skill/skills/security-audit#c1c8a8c1471069fb0e188eeaff69b8e8db6564a8 # main
     - hirokita117/yaml-to-html-skill/skills/generate-explainer-yaml#98667e80b260855af15d1cdc2c8e8395dbb3dd33 # v0.3.0
