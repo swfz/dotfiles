@@ -1,6 +1,6 @@
 [tools]
 node = '26.13.1'
-ruby = '4.0.9'
+ruby = '4.0.10'
 go = '1.27.4'
 gcloud = 'latest'
 awscli = '2.40.4'
