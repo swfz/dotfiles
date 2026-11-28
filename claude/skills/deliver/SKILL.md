@@ -1,6 +1,6 @@
 ---
-name: "ship"
-description: "commit → push-pr → assign-projects をまとめて実行し、コミットからPR作成・Project紐づけまでを一気に行う。トリガー例：「shipして」「コミットからPR作成まで一気にやって」「PRまで出してプロジェクトに紐づけて」"
+name: "deliver"
+description: "commit → push-pr → assign-projects をまとめて実行し、コミットからPR作成・Project紐づけまでを一気に行う。トリガー例：「deliverして」「shipして」「コミットからPR作成まで一気にやって」「PRまで出してプロジェクトに紐づけて」"
 ---
 
 以下の3つのスキルをSkillツールで順番に実行する。各スキルの手順・ルールはそれぞれのSKILL.mdに従う。
