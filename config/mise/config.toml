@@ -7,7 +7,7 @@ awscli = '2.41.1'
 deno = 'latest'
 jq = '1.8.2'
 bat = '0.26.1'
-delta = '0.21.1'
+delta = '0.21.2'
 terraform = '1.17.2'
 # 3.12.12はgcloudのCLOUDSDK_PYTHON用(gcloudは新しいpythonをサポートしないため別で保持する)
 python = ['3.14.8', '3.12.12']
